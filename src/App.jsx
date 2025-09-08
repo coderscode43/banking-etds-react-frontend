@@ -29,6 +29,7 @@ import HomeWOTLayout from "./layouts/HomeWOTLayout";
 import CorrectionRequestWOT from "./pages/WOT/CorrectionRequest";
 import GenerateReport from "./pages/WOT/GenerateReport";
 import RegularReturnWOT from "./pages/WOT/RegularReturn";
+import PageNotFound from "./components/component/PageNotFound";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -72,7 +73,7 @@ const App = () => {
         </Route>
 
         {/* Catch-all route for 404s */}
-        <Route path="*" element={<ErrorPage />} />
+        <Route path="*" element={<PageNotFound />} />
       </>
     )
   );
