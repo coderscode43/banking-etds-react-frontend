@@ -16,6 +16,15 @@ import Logs from "./pages/SC/Logs";
 import RegularReturn from "./pages/SC/RegularReturn";
 import UploadCertificate from "./pages/SC/UploadCertificate";
 import UserDetails from "./pages/SC/UserDetails";
+import Form24QDeductee from "./pages/SC/Form24QDeductee";
+import Form26QDeductee from "./pages/SC/Form26QDeductee";
+import Form27EQDeductee from "./pages/SC/Form27EQDeductee";
+import Form27QDeductee from "./pages/SC/Form27QDeductee";
+import Challan from "./pages/SC/Challan";
+import TotalAmountDetails from "./pages/SC/TotalAmountDetails";
+import PanUpdateDetails from "./pages/SC/PanUpdateDetails";
+import StatementStatus from "./pages/SC/StatementStatus";
+
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -28,6 +37,14 @@ const App = () => {
         >
           <Route path="homepage" element={<Homepage />} />
           <Route path="branch" element={<Branch />} />
+          <Route path="form24QDeductee" element={<Form24QDeductee />} />
+          <Route path="form26QDeductee" element={<Form26QDeductee />} />
+          <Route path="form27EQDeductee" element={<Form27EQDeductee />} />
+          <Route path="form27QDeductee" element={<Form27QDeductee />} />
+          <Route path="challan" element={<Challan />} />
+          <Route path="totalAmount" element={<TotalAmountDetails />} />
+          <Route path="panUpdateList" element={<PanUpdateDetails />} />
+          <Route path="statementStatus" element={<StatementStatus />} />
           <Route path="deductorDetails" element={<DeductorDetails />} />
           <Route path="correctionRequest" element={<CorrectionRequest />} />
           <Route path="regularReturn" element={<RegularReturn />} />

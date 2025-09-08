@@ -1,0 +1,256 @@
+import clsx from "clsx";
+import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
+import { Field, Input, Label } from "@headlessui/react";
+import React, { useState } from "react";
+
+const Form24QDeductee = () => {
+  const [showDivs, setShowDivs] = useState(false);
+
+  // Table Details
+  const tableHead = [
+    { label: "Sr.No.", key: "srNo" },
+    { label: "Quarter", key: "quarter" },
+    { label: "Month", key: "month" },
+    { label: "RO Code", key: "roCode" },
+    { label: "Branch Code", key: "branchCode" },
+    { label: "Challan Heading", key: "challanHeading" },
+    { label: "PAN", key: "pan" },
+    { label: "Name", key: "name" },
+    { label: "Section Code", key: "sectionCode" },
+    { label: "TAN", key: "TAN" },
+    { label: "Action", key: "action" },
+  ];
+
+  const tableData = [
+    {
+      id: 150118,
+      challanHeading: "Interest_24Q",
+      deducteeRefNo: null,
+      panRefNo: null,
+      pan: "ABFPL4107P",
+      name: "R.D.LAKHAN . 26056)",
+      sectionCode: "92B",
+      dateOfPayment: "2024-03-31",
+      dateOfDeduction: "2024-04-22",
+      amountPaid: 5122795.0,
+      tds: 0.0,
+      surcharge: 0.0,
+      eduCess: 0.0,
+      totalTaxDeducted: 0.0,
+      totalTaxDeposited: 0.0,
+      certificateNumber: null,
+      remarksReason: null,
+      fy: "2023-24",
+      quarter: "Q4",
+      branchCode: 100000,
+      accNo: null,
+      challanSrNo: 3,
+      month: "MARCH",
+      custVendId: "123456789",
+      uniqueRefNo: null,
+      TAN: "MUMT09716A",
+      roCode: "100000",
+      errorDescription: null,
+      warningDescription: null,
+      shortDeduction: 0.0,
+      interestOnShortDeduction: 0.0,
+      interestOnLatePayment: 0.0,
+      interestOnLateDeduction: 0.0,
+      resolved: true,
+      comments: null,
+      deducteeSrNo: 59,
+      tranAmt: 0,
+      additionalDetail: null,
+      tan: "MUMT09716A",
+    },
+  ];
+
+  return (
+    <>
+      <div className="space-y-5">
+        <h1 className="text-2xl font-bold text-[var(--primary-color)]">
+          Form 24Q Deductee Details
+        </h1>
+
+        <div className="flex items-end justify-start gap-5">
+          <Field className="flex gap-3">
+            <div>
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Quarter
+              </Label>
+              <select
+                name="quarter"
+                id="quarter"
+                className={clsx(
+                  "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "h-[38px]"
+                )}
+              >
+                <option value="">Select Quarter</option>
+                <option value="qtr1">Quarter 1</option>
+                <option value="qtr2">Quarter 2</option>
+                <option value="qtr3">Quarter 3</option>
+                <option value="qtr4">Quarter 4</option>
+              </select>
+            </div>
+
+            <div>
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Branch Code
+              </Label>
+              <Input
+                placeholder="Branch Code"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                )}
+              />
+            </div>
+            <div>
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Name
+              </Label>
+              <Input
+                placeholder="Name"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                )}
+              />
+            </div>
+          </Field>
+
+          <div className="flex gap-4">
+            <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+            <button
+              onClick={() => setShowDivs((prev) => !prev)}
+              className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
+            >
+              <i class="fa-solid fa-filter"></i>
+            </button>
+
+            <button className="h-[38px] cursor-pointer rounded-sm bg-[#024dec] px-3 text-2xl font-black text-white">
+              <i className="fa-solid fa-table"></i>
+            </button>
+          </div>
+        </div>
+        {showDivs && (
+          <div>
+            <Field className="flex gap-3">
+              <div>
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  TAN
+                </Label>
+                <select
+                  name="tan"
+                  id="tan"
+                  className={clsx(
+                    "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "h-[38px]"
+                  )}
+                >
+                  <option value="">Select TAN</option>
+                  <option value="tan1">TAN 1</option>
+                  <option value="tan2">TAN 2</option>
+                </select>
+              </div>
+
+              <div>
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  PAN
+                </Label>
+                <Input
+                  placeholder="PAN"
+                  className={clsx(
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  )}
+                />
+              </div>
+              <div>
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  Challan Heading
+                </Label>
+                <Input
+                  placeholder="Challan Heading"
+                  className={clsx(
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  )}
+                />
+              </div>
+            </Field>
+          </div>
+        )}
+
+        {showDivs && (
+          <div>
+            <Field className="flex gap-3">
+              <div>
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  RO Code
+                </Label>
+                <Input
+                  placeholder="RO Code"
+                  className={clsx(
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  )}
+                />
+              </div>
+
+              <div>
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  Section Code
+                </Label>
+                <select
+                  name="sectionCode"
+                  id="sectionCode"
+                  className={clsx(
+                    "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "h-[38px]"
+                  )}
+                >
+                  <option value="">Select Section</option>
+                  <option value="section 1">Section 1</option>
+                  <option value="section 2">Section 2</option>
+                </select>
+              </div>
+
+              <div>
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  Status
+                </Label>
+                <select
+                  name="selectStatus"
+                  id="selectStatus"
+                  className={clsx(
+                    "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "h-[38px]"
+                  )}
+                >
+                  <option value="">Select Status</option>
+                  <option value="resolved">Resolved</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </div>
+            </Field>
+          </div>
+        )}
+
+        <div>
+          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Form24QDeductee;
