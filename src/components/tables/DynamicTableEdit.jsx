@@ -1,6 +1,6 @@
 const DynamicTableEdit = ({ tableHead, tableData }) => {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <div className="w-full overflow-clip rounded-md">
         <table className="w-full text-[14px]">
           <thead className="bg-[var(--secondary-color)] whitespace-nowrap text-white">

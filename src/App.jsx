@@ -25,11 +25,17 @@ import TotalAmountDetails from "./pages/SC/TotalAmountDetails";
 import PanUpdateDetails from "./pages/SC/PanUpdateDetails";
 import StatementStatus from "./pages/SC/StatementStatus";
 
+import HomeWOTLayout from "./layouts/HomeWOTLayout";
+import CorrectionRequestWOT from "./pages/WOT/CorrectionRequest";
+import GenerateReport from "./pages/WOT/GenerateReport";
+import RegularReturnWOT from "./pages/WOT/RegularReturn";
+
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path="/" element={<Navigate to={"/home/homepage"} replace />} />
+
         <Route
           path="home"
           element={<HomeSClayout />}
@@ -52,6 +58,17 @@ const App = () => {
           <Route path="ldc" element={<Ldc />} />
           <Route path="userDetails" element={<UserDetails />} />
           <Route path="logs" element={<Logs />} />
+        </Route>
+
+        <Route
+          path="homeWOT"
+          element={<HomeWOTLayout />}
+          errorElement={<ErrorPage />}
+        >
+          <Route path="homepage" element={<Homepage />} />
+          <Route path="correctionRequest" element={<CorrectionRequestWOT />} />
+          <Route path="regularReturn" element={<RegularReturnWOT />} />
+          <Route path="generateReport" element={<GenerateReport />} />
         </Route>
 
         {/* Catch-all route for 404s */}
