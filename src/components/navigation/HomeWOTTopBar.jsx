@@ -4,12 +4,19 @@ const HomeWOTTopBar = () => {
   return (
     <header className="border-b-2 border-gray-300 bg-white">
       <div className="mx-10 flex h-14 items-center justify-between">
-        <div className="ps-16">
-          <button>
+        <div className="flex items-center gap-10">
+          <button type="button">
             <i className="fa-solid fa-bars cursor-pointer text-gray-400"></i>
           </button>
+          <div>
+            <img
+              className="h-10 object-contain"
+              src="/images/TOS-TRANSPARENT.png"
+              alt="TOS Logo"
+            />
+          </div>
         </div>
-        <div className="ml-[105px]">
+        <div className="mr-[90px]">
           <h1 className="text-2xl text-[var(--primary-color)]">
             Financial Year : <span className="font-bold">2025-26</span>, Branch
             Code : <span className="font-bold">1000</span>
