@@ -1,8 +1,10 @@
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
 import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
+import React, { useState } from "react";
 
 const Ldc = () => {
+  const [showDivs, setShowDivs] = useState(false);
   const tableHead = [
     {
       key: "srNo",
@@ -112,65 +114,182 @@ const Ldc = () => {
         </h1>
 
         <div>
-          <form className="flex items-end justify-start gap-5">
-            <Field className="flex gap-3">
-              <div>
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Financial Year
-                </Label>
-                <select
-                  name="FY"
-                  id="FY"
-                  className={clsx(
-                    "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                    "h-[38px]"
-                  )}
-                >
-                  {" "}
-                  <option value="">Select Financial Year</option>
-                  <option value="2025-26">2025-26</option>
-                  <option value="2024-25">2024-25</option>
-                  <option value="2023-24">2023-24</option>
-                </select>
-              </div>
-              <div>
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Entity
-                </Label>
-                <Input
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
-                  )}
-                />
-              </div>
-              <div>
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  IP-Address
-                </Label>
-                <Input
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
-                  )}
-                />
-              </div>
-            </Field>
+          <Field className="flex flex-wrap gap-3">
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Financial Year
+              </Label>
+              <select
+                name="FY"
+                id="FY"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "h-[38px]"
+                )}
+              >
+                <option value="">Select Financial Year</option>
+                <option value="2025-26">2025-26</option>
+                <option value="2024-25">2024-25</option>
+                <option value="2023-24">2023-24</option>
+              </select>
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                PAN
+              </Label>
+              <Input
+                name="pan"
+                id="pan"
+                placeholder="PAN"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                )}
+              />
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Name
+              </Label>
+              <Input
+                name="name"
+                id="name"
+                placeholder="Name"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                )}
+              />
+            </div>
 
-            <div className="flex gap-4">
+            <div className="mt-6.5 flex gap-4">
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>
 
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white">
+              <button
+                onClick={() => setShowDivs((prev) => !prev)}
+                className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
+              >
                 <i className="fa-solid fa-filter"></i>
               </button>
             </div>
-          </form>
+          </Field>
         </div>
 
-        <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        {showDivs && (
+          <div>
+            <Field className="flex flex-wrap gap-3">
+              <div className="w-full md:w-1/4">
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  TAN
+                </Label>
+                <select
+                  name="tan"
+                  id="tan"
+                  className={clsx(
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "h-[38px]"
+                  )}
+                >
+                  <option value="">Select TAN</option>
+                  <option value="tan1">Tan 1</option>
+                  <option value="tan2">Tan 2</option>
+                  <option value="tan3">Tan 3</option>
+                </select>
+              </div>
+              <div className="w-full md:w-1/4">
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  Section Code
+                </Label>
+                <select
+                  name="sectionCode"
+                  id="sectionCode"
+                  className={clsx(
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "h-[38px]"
+                  )}
+                >
+                  <option value="">Select Section Code</option>
+                  <option value="scode1">Section Code 1</option>
+                  <option value="scode2">Section Code 2</option>
+                  <option value="scode3">Section Code 3</option>
+                </select>
+              </div>
+              <div className="w-full md:w-1/4">
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  LDC Rate
+                </Label>
+                <Input
+                  name="ldcRate"
+                  id="ldcRate"
+                  placeholder="LDC Rate"
+                  className={clsx(
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  )}
+                />
+              </div>
+
+              <br />
+
+              <div className="w-full md:w-1/4">
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  LDC Number
+                </Label>
+                <Input
+                  name="ldcNumber"
+                  id="ldcNumber"
+                  placeholder="LDC Number"
+                  className={clsx(
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  )}
+                />
+              </div>
+              <div className="w-full md:w-1/4">
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  Amount Consumed
+                </Label>
+                <Input
+                  name="amountConsumed"
+                  id="amountConsumed"
+                  placeholder="Amount Consumed"
+                  className={clsx(
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  )}
+                />
+              </div>
+              <div className="w-full md:w-1/4">
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  Nature of Payment
+                </Label>
+                <Input
+                  name="natureofPayment"
+                  id="natureofPayment"
+                  placeholder="Nature of Payment "
+                  className={clsx(
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  )}
+                />
+              </div>
+              <div>
+                <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                  Export to Excel
+                </button>
+              </div>
+            </Field>
+          </div>
+        )}
+
+        <div>
+          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        </div>
       </div>
     </>
   );

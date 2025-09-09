@@ -72,9 +72,9 @@ const Form24QDeductee = () => {
           Form 24Q Deductee Details
         </h1>
 
-        <div className="flex items-end justify-start gap-5">
-          <Field className="flex gap-3">
-            <div>
+        <div>
+          <Field className="flex flex-wrap gap-3">
+            <div className="w-full md:w-1/4">
               <Label className="font-semibold text-[var(--primary-color)]">
                 Quarter
               </Label>
@@ -82,7 +82,7 @@ const Form24QDeductee = () => {
                 name="quarter"
                 id="quarter"
                 className={clsx(
-                  "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
                   "h-[38px]"
                 )}
@@ -95,11 +95,13 @@ const Form24QDeductee = () => {
               </select>
             </div>
 
-            <div>
+            <div className="w-full md:w-1/4">
               <Label className="font-semibold text-[var(--primary-color)]">
                 Branch Code
               </Label>
               <Input
+                name="branchCode"
+                id="branchCode"
                 placeholder="Branch Code"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
@@ -107,11 +109,13 @@ const Form24QDeductee = () => {
                 )}
               />
             </div>
-            <div>
+            <div className="w-full md:w-1/4">
               <Label className="font-semibold text-[var(--primary-color)]">
                 Name
               </Label>
               <Input
+                name="name"
+                id="name"
                 placeholder="Name"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
@@ -119,29 +123,30 @@ const Form24QDeductee = () => {
                 )}
               />
             </div>
+
+            <div className="mt-6.5 flex gap-4">
+              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </button>
+
+              <button
+                onClick={() => setShowDivs((prev) => !prev)}
+                className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
+              >
+                <i class="fa-solid fa-filter"></i>
+              </button>
+
+              <button className="h-[38px] cursor-pointer rounded-sm bg-[#024dec] px-3 text-2xl font-black text-white">
+                <i className="fa-solid fa-table"></i>
+              </button>
+            </div>
           </Field>
-
-          <div className="flex gap-4">
-            <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </button>
-
-            <button
-              onClick={() => setShowDivs((prev) => !prev)}
-              className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
-            >
-              <i class="fa-solid fa-filter"></i>
-            </button>
-
-            <button className="h-[38px] cursor-pointer rounded-sm bg-[#024dec] px-3 text-2xl font-black text-white">
-              <i className="fa-solid fa-table"></i>
-            </button>
-          </div>
         </div>
+
         {showDivs && (
           <div>
-            <Field className="flex gap-3">
-              <div>
+            <Field className="flex flex-wrap gap-3">
+              <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   TAN
                 </Label>
@@ -149,7 +154,7 @@ const Form24QDeductee = () => {
                   name="tan"
                   id="tan"
                   className={clsx(
-                    "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
                     "h-[38px]"
                   )}
@@ -160,11 +165,13 @@ const Form24QDeductee = () => {
                 </select>
               </div>
 
-              <div>
+              <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   PAN
                 </Label>
                 <Input
+                  name="pan"
+                  id="pan"
                   placeholder="PAN"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
@@ -172,11 +179,13 @@ const Form24QDeductee = () => {
                   )}
                 />
               </div>
-              <div>
+              <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   Challan Heading
                 </Label>
                 <Input
+                  name="challanHeading"
+                  id="challanHeading"
                   placeholder="Challan Heading"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
@@ -184,18 +193,16 @@ const Form24QDeductee = () => {
                   )}
                 />
               </div>
-            </Field>
-          </div>
-        )}
 
-        {showDivs && (
-          <div>
-            <Field className="flex gap-3">
-              <div>
+              <br />
+
+              <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   RO Code
                 </Label>
                 <Input
+                  name="roCode"
+                  id="roCode"
                   placeholder="RO Code"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
@@ -204,7 +211,7 @@ const Form24QDeductee = () => {
                 />
               </div>
 
-              <div>
+              <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   Section Code
                 </Label>
@@ -212,7 +219,7 @@ const Form24QDeductee = () => {
                   name="sectionCode"
                   id="sectionCode"
                   className={clsx(
-                    "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
                     "h-[38px]"
                   )}
@@ -223,7 +230,7 @@ const Form24QDeductee = () => {
                 </select>
               </div>
 
-              <div>
+              <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   Status
                 </Label>
@@ -231,7 +238,7 @@ const Form24QDeductee = () => {
                   name="selectStatus"
                   id="selectStatus"
                   className={clsx(
-                    "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
                     "h-[38px]"
                   )}
@@ -240,6 +247,11 @@ const Form24QDeductee = () => {
                   <option value="resolved">Resolved</option>
                   <option value="pending">Pending</option>
                 </select>
+              </div>
+              <div>
+                <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                  Export to Excel
+                </button>
               </div>
             </Field>
           </div>

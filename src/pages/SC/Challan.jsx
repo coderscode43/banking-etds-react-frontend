@@ -5,7 +5,8 @@ import clsx from "clsx";
 
 const Challan = () => {
   const [date, setDate] = useState("");
-  const [date1, setDate1] = useState("");
+  const [newDate, newSetDate] = useState("");
+  const [showDivs, setShowDivs] = useState(false);
 
   // Table Details
   const tableHead = [
@@ -23,12 +24,12 @@ const Challan = () => {
       cin: "kjlkljiouoiu",
       tan: "PNET00060E",
       availableBalance: "hgf",
-      amountOfChallan: "jhj",
-      dateOfDeposition: null,
+      amountOfChallan: "659253",
+      dateOfDeposition: "26-03-2025",
       asOnDate: "24-06-2025",
-      challanMismatch: null,
-      section: null,
-      minorHead: null,
+      challanMismatch: "null",
+      section: "section",
+      minorHead: "minor Head Data",
     },
   ];
 
@@ -40,80 +41,15 @@ const Challan = () => {
         </h1>
 
         <div>
-          <form className="flex items-end justify-start gap-5">
-            <Field className="flex gap-3">
-              <div>
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  CIN
-                </Label>
-                <Input
-                  placeholder="CIN"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
-                  )}
-                />
-              </div>
-
-              <div>
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  TAN
-                </Label>
-                <select
-                  name="tan"
-                  id="tan"
-                  className={clsx(
-                    "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                    "h-[38px]"
-                  )}
-                >
-                  <option value="">Select TAN</option>
-                  <option value="tan1">TAN 1</option>
-                  <option value="tan2">TAN 2</option>
-                </select>
-              </div>
-
-              <div>
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Challan Mismatch
-                </Label>
-                <select
-                  name="challanMismatch"
-                  id="challanMismatch"
-                  className={clsx(
-                    "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                    "h-[38px]"
-                  )}
-                >
-                  <option value="">Select Option</option>
-                  <option value="true">True</option>
-                  <option value="false">False</option>
-                </select>
-              </div>
-            </Field>
-
-            <div className="flex gap-4">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-filter"></i>
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <div>
-          <Field className="flex gap-3">
-            <div>
+          <Field className="flex flex-wrap gap-3">
+            <div className="w-full md:w-1/4">
               <Label className="font-semibold text-[var(--primary-color)]">
-                Amount of challan
+                CIN
               </Label>
               <Input
-                placeholder="Amount of challan"
+                name="cin"
+                id="cin"
+                placeholder="CIN"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
@@ -121,41 +57,118 @@ const Challan = () => {
               />
             </div>
 
-            <div>
+            <div className="w-full md:w-1/4">
               <Label className="font-semibold text-[var(--primary-color)]">
-                Date of Deposition
+                TAN
               </Label>
-              <Input
-                type="date"
-                id="dateofdeposition"
-                name="dateofdeposition"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+              <select
+                name="tan"
+                id="tan"
                 className={clsx(
-                  "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "h-[38px]"
                 )}
-              />
+              >
+                <option value="">Select TAN</option>
+                <option value="tan1">TAN 1</option>
+                <option value="tan2">TAN 2</option>
+              </select>
             </div>
 
-            <div>
+            <div className="w-full md:w-1/4">
               <Label className="font-semibold text-[var(--primary-color)]">
-                As on Date
+                Challan Mismatch
               </Label>
-              <Input
-                type="date"
-                id="asOnDate"
-                name="asOnDate"
-                value={date1}
-                onChange={(e) => setDate1(e.target.value)}
+              <select
+                name="challanMismatch"
+                id="challanMismatch"
                 className={clsx(
-                  "mt-1 w-full rounded-md border border-gray-300 bg-white px-6 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "h-[38px]"
                 )}
-              />
+              >
+                <option value="">Select Option</option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </select>
+            </div>
+
+            <div className="mt-6.5 flex gap-4">
+              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </button>
+
+              <button
+                onClick={() => setShowDivs((prev) => !prev)}
+                className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
+              >
+                <i className="fa-solid fa-filter"></i>
+              </button>
             </div>
           </Field>
         </div>
+
+        {showDivs && (
+          <div>
+            <Field className="flex flex-wrap gap-3">
+              <div className="w-full md:w-1/4">
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  Amount of challan
+                </Label>
+                <Input
+                  name="amountofchallan"
+                  id="amountofchallan"
+                  placeholder="Amount of challan"
+                  className={clsx(
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  )}
+                />
+              </div>
+
+              <div className="w-full md:w-1/4">
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  Date of Deposition
+                </Label>
+                <Input
+                  type="date"
+                  id="dateofdeposition"
+                  name="dateofdeposition"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className={clsx(
+                    "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  )}
+                />
+              </div>
+
+              <div className="w-full md:w-1/4">
+                <Label className="font-semibold text-[var(--primary-color)]">
+                  As on Date
+                </Label>
+                <Input
+                  type="date"
+                  id="asOnDate"
+                  name="asOnDate"
+                  value={newDate}
+                  onChange={(e) => newSetDate(e.target.value)}
+                  className={clsx(
+                    "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
+                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  )}
+                />
+              </div>
+              <div>
+                <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                  Export to Excel
+                </button>
+              </div>
+            </Field>
+          </div>
+        )}
 
         <div>
           <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
