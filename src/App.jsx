@@ -26,10 +26,15 @@ import PanUpdateDetails from "./pages/SC/PanUpdateDetails";
 import StatementStatus from "./pages/SC/StatementStatus";
 
 import HomeWOTLayout from "./layouts/HomeWOTLayout";
+import Form24QDeducteeWOT from "./pages/WOT/Form24QDeductee";
+import Form26QDeducteeWOT from "./pages/WOT/Form26QDeductee";
+import Form27EQDeducteeWOT from "./pages/WOT/Form27EQDeductee";
+import Form27QDeducteeWOT from "./pages/WOT/Form27QDeductee";
 import CorrectionRequestWOT from "./pages/WOT/CorrectionRequest";
 import GenerateReport from "./pages/WOT/GenerateReport";
 import RegularReturnWOT from "./pages/WOT/RegularReturn";
 import PageNotFound from "./components/component/PageNotFound";
+import DownloadCertificate from "./pages/WOT/DownloadCertificate";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -45,6 +50,7 @@ const App = () => {
           <Route path="homepage" element={<Homepage />} />
           <Route path="branch" element={<Branch />} />
           <Route path="form24QDeductee" element={<Form24QDeductee />} />
+
           <Route path="form26QDeductee" element={<Form26QDeductee />} />
           <Route path="form27EQDeductee" element={<Form27EQDeductee />} />
           <Route path="form27QDeductee" element={<Form27QDeductee />} />
@@ -67,6 +73,11 @@ const App = () => {
           errorElement={<ErrorPage />}
         >
           <Route path="homepage" element={<Homepage />} />
+          <Route path="downloadCertificate" element={<DownloadCertificate />} />
+          <Route path="form24QDeductee" element={<Form24QDeducteeWOT />} />
+          <Route path="form26QDeductee" element={<Form26QDeducteeWOT />} />
+          <Route path="form27EQDeductee" element={<Form27EQDeducteeWOT />} />
+          <Route path="form27QDeductee" element={<Form27QDeducteeWOT />} />
           <Route path="correctionRequest" element={<CorrectionRequestWOT />} />
           <Route path="regularReturn" element={<RegularReturnWOT />} />
           <Route path="generateReport" element={<GenerateReport />} />
