@@ -74,8 +74,7 @@ const CorrectionRequest = () => {
                 id="status"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                  "h-[38px]"
+                  "h-[38px] focus:outline-none"
                 )}
               >
                 <option value="">Select Status</option>
@@ -89,12 +88,11 @@ const CorrectionRequest = () => {
                 Financial Year
               </Label>
               <select
-                name="FY"
-                id="FY"
+                name="fy"
+                id="fy"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                  "h-[38px]"
+                  "h-[38px] focus:outline-none"
                 )}
               >
                 {" "}
@@ -151,10 +149,12 @@ const CorrectionRequest = () => {
                   Ticket Number
                 </Label>
                 <Input
+                  id="ticketNo"
+                  name="ticketNo"
                   placeholder="Ticket Number"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -163,10 +163,12 @@ const CorrectionRequest = () => {
                   Name of Customer
                 </Label>
                 <Input
+                  id="customer"
+                  name="customer"
                   placeholder="Name of Customer"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -175,10 +177,12 @@ const CorrectionRequest = () => {
                   PAN of Customer
                 </Label>
                 <Input
+                  id="pan"
+                  name="pan"
                   placeholder="Pan number"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -191,8 +195,7 @@ const CorrectionRequest = () => {
                   id="correctionType"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                    "h-[38px]"
+                    "h-[38px] focus:outline-none"
                   )}
                 >
                   {" "}
@@ -213,7 +216,7 @@ const CorrectionRequest = () => {
                   type="date"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -228,7 +231,7 @@ const CorrectionRequest = () => {
                   type="date"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>

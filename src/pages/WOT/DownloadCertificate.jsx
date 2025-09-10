@@ -21,9 +21,6 @@ const categories = [
   {
     name: "Download All Certificates",
     title: "Form 16A/16/27D",
-    date: "4d ago",
-    commentCount: 1,
-    shareCount: 2,
   },
 ];
 
@@ -33,15 +30,15 @@ const DownloadCertificate = () => {
     <>
       <div className="">
         <TabGroup className="flex w-full flex-col items-center">
-          <TabList className="flex w-[73.5%] justify-between rounded-md border-gray-200 bg-gray-200 p-1">
+          <TabList className="flex w-[73.5%] justify-between rounded-md border-gray-200 bg-gray-100 p-1">
             {categories.map(({ name }) => (
               <Tab
                 key={name}
                 className={({ selected }) =>
-                  `cursor-pointer space-x-1 rounded-md border-0 px-4 py-2 font-semibold ${
+                  `w-full cursor-pointer space-x-1 rounded-md border-0 px-2 py-2 font-semibold ${
                     selected
-                      ? "bg-white text-[#1d3864] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] outline-none"
-                      : "bg-gray-200 text-gray-700 outline-none"
+                      ? "bg-[#1d3864] text-[#fff] outline-none"
+                      : "w-full text-[#1d3864] outline-none"
                   }`
                 }
               >
@@ -69,6 +66,8 @@ const DownloadCertificate = () => {
                       PAN Number
                     </label>
                     <Input
+                      id="pan"
+                      name="pan"
                       placeholder="Enter PAN Number"
                       className={clsx(
                         "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
@@ -85,8 +84,8 @@ const DownloadCertificate = () => {
                       TAN Number
                     </label>
                     <select
-                      name="tanNumber"
-                      id="tanNumber"
+                      name="tan"
+                      id="tan"
                       className={clsx(
                         "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
                       )}
@@ -110,7 +109,7 @@ const DownloadCertificate = () => {
                       id="certificateType"
                       value={formData.certificateType}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Certificate</option>
@@ -133,7 +132,7 @@ const DownloadCertificate = () => {
                       id="fy"
                       value={formData.fy}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Financial Year</option>
@@ -157,7 +156,7 @@ const DownloadCertificate = () => {
                         id="quarter"
                         value={formData.quarter}
                         className={clsx(
-                          "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                          "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                         )}
                       >
                         <option value="">Select Quarter</option>
@@ -207,7 +206,7 @@ const DownloadCertificate = () => {
                       id="tanNumber"
                       value={formData.tanNumber}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select TAN Number</option>
@@ -228,7 +227,7 @@ const DownloadCertificate = () => {
                       id="certificateType"
                       value={formData.certificateType}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Certificate</option>
@@ -272,7 +271,7 @@ const DownloadCertificate = () => {
                       id="quarter"
                       value={formData.quarter}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Quarter</option>
@@ -289,8 +288,7 @@ const DownloadCertificate = () => {
                     <Input
                       placeholder="Enter PAN Number"
                       className={clsx(
-                        "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                        "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                        "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     />
                   </div>
@@ -333,7 +331,7 @@ const DownloadCertificate = () => {
                       id="tanNumber"
                       value={formData.tanNumber}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select TAN Number</option>
@@ -354,7 +352,7 @@ const DownloadCertificate = () => {
                       id="certificateType"
                       value={formData.certificateType}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Certificate</option>
@@ -373,7 +371,7 @@ const DownloadCertificate = () => {
                     </label>
                     <select
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                       name="fy"
                       id="fy"
@@ -398,7 +396,7 @@ const DownloadCertificate = () => {
                       id="quarter"
                       value={formData.quarter}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Quarter</option>

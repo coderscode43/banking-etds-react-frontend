@@ -110,6 +110,8 @@ const Form27QDeductee = () => {
                 Branch Code
               </Label>
               <Input
+              id="roCode"
+              name="roCode"
                 placeholder="Branch Code"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
@@ -122,6 +124,8 @@ const Form27QDeductee = () => {
                 Name
               </Label>
               <Input
+              id="name"
+              name="name"
                 placeholder="Name"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",

@@ -8,6 +8,8 @@
 @theme {
   --primary-color: #303e67;
   --secondary-color: #32375e;
+  /* --primary-color: #1c3865;
+  --secondary-color: #244170; */
 }
 
 body {
