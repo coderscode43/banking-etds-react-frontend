@@ -98,9 +98,9 @@ const navItems = [
     iconClass: "fa-solid fa-clock-rotate-left",
   },
   {
-    id: "userDetails-2",
-    label: "Users",
-    page: "userDetails",
+    id: "logout",
+    label: "Logout",
+    page: "logout",
     iconClass: "fa-solid fa-power-off",
   },
 ];
@@ -108,14 +108,14 @@ const navItems = [
 const HomeSCSidebar = () => {
   return (
     <>
-      <div className="absolute top-14 z-10 h-[36.1rem]">
+      <div className="fixed top-14 z-10 h-screen">
         <nav
-          className="group transition-width flex h-full w-16 flex-col overflow-hidden rounded-r-md border border-t-2 border-l-0 border-gray-300 bg-white p-2.5 text-gray-500 duration-300 ease-in-out hover:w-60"
+          className="group transition-width flex h-[91%] w-16 flex-col overflow-hidden rounded-r-md border border-t-2 border-l-0 border-gray-300 bg-white p-2.5 text-gray-500 duration-300 ease-in-out hover:w-60"
           style={{ transitionProperty: "width" }}
         >
           {/* Scrollable nav items */}
           <div className="hide-scrollbar flex-1 overflow-y-auto">
-            <ul className="space-y-3 text-[15px]">
+            <ul className="space-y-1 text-[15px]">
               {navItems.map(({ id, label, page, iconClass, textIcon }) => {
                 return (
                   <li key={id}>

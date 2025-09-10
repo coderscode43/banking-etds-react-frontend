@@ -1,8 +1,21 @@
+import clsx from "clsx";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
 import { Field, Input, Label } from "@headlessui/react";
-import clsx from "clsx";
 
 const Branch = () => {
+  const entity = "branch";
+  const [listData, setListData] = useState([]);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      const response = await common.getListData(entity);
+      setListData(response.data.entities);
+    };
+    fetchListData();
+  }, []);
+
   // Table Details
   const tableHead = [
     {
@@ -39,44 +52,10 @@ const Branch = () => {
     },
   ];
 
-  const tableData = [
-    {
-      id: 2285929,
-      roCode: "100",
-      branchCode: 1000,
-      branchName: "tset",
-      branchEmail: "tset@gmail.com",
-      branchContactNo: "9874561230",
-      branchAddress: "kinjal",
-      branchPinCode: "400091",
-      branchState: "Maharashtra-19",
-      tan: null,
-    },
-    {
-      id: 2285929,
-      roCode: "100",
-      branchCode: 1000,
-      branchName: "tset",
-      branchEmail: "tset@gmail.com",
-      branchContactNo: "9874561230",
-      branchAddress: "kinjal",
-      branchPinCode: "400091",
-      branchState: "Maharashtra-19",
-      tan: null,
-    },
-    {
-      id: 2285929,
-      roCode: "100",
-      branchCode: 1000,
-      branchName: "tset",
-      branchEmail: "tset@gmail.com",
-      branchContactNo: "9874561230",
-      branchAddress: "kinjal",
-      branchPinCode: "400091",
-      branchState: "Maharashtra-19",
-      tan: null,
-    },
-  ];
+  const tableData = listData.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -135,7 +114,7 @@ const Branch = () => {
               </select>
             </div>
 
-          <div className="mt-6.5 flex gap-4">
+            <div className="mt-6.5 flex gap-4">
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>

@@ -5,8 +5,8 @@ import { Outlet } from "react-router-dom";
 const HomeWOTLayout = () => {
   return (
     <>
-      <HomeWOTSidebar />
       <HomeWOTTopBar />
+      <HomeWOTSidebar />
       <main className="mx-10 my-5 ms-[104px]">
         <Outlet />
       </main>

@@ -1,7 +1,7 @@
 const DynamicTableEdit = ({ tableHead, tableData }) => {
   return (
     <div className="relative w-full">
-      <div className="w-full overflow-clip rounded-md">
+      <div className="w-full overflow-clip rounded-md border border-gray-200">
         <table className="w-full text-[14px]">
           <thead className="bg-[var(--secondary-color)] whitespace-nowrap text-white">
             <tr className="border-[1.5px] border-[var(--secondary-color)]">
@@ -50,7 +50,11 @@ const DynamicTableEdit = ({ tableHead, tableData }) => {
                       key={colIndex}
                       className="max-w-[70px] min-w-[100px] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
                     >
-                      {data[key] ?? "-"}
+                      {key == "branchEdit" ? (
+                        <i className="fa-solid fa-pen-to-square text-lg"></i>
+                      ) : (
+                        (data[key] ?? "-")
+                      )}
                     </td>
                   ))}
                 </tr>
