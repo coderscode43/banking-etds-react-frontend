@@ -120,7 +120,7 @@ const HomeSCSidebar = () => {
                 return (
                   <li key={id}>
                     <a
-                      href={page}
+                      href={`/home/list/${page}`}
                       className="flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100"
                     >
                       <div

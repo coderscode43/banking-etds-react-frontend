@@ -11,48 +11,24 @@ const Branch = () => {
   useEffect(() => {
     const fetchListData = async () => {
       const response = await common.getListData(entity);
-      setListData(response.data.entities);
+      setListData(response.data.entities || []);
     };
     fetchListData();
   }, []);
 
   // Table Details
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "branchName",
-      label: "ROCode",
-    },
-    {
-      key: "branchEmail",
-      label: "RO Email",
-    },
-    {
-      key: "branchContactNo",
-      label: "RO Contact No",
-    },
-    {
-      key: "branchAddress",
-      label: "RO Address",
-    },
-    {
-      key: "branchPinCode",
-      label: "Ro PinCode",
-    },
-    {
-      key: "branchState",
-      label: "Ro State",
-    },
-    {
-      key: "branchEdit",
-      label: "RO Edit",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "branchName", label: "ROCode" },
+    { key: "branchEmail", label: "RO Email" },
+    { key: "branchContactNo", label: "RO Contact No" },
+    { key: "branchAddress", label: "RO Address" },
+    { key: "branchPinCode", label: "Ro PinCode" },
+    { key: "branchState", label: "Ro State" },
+    { key: "branchEdit", label: "RO Edit" },
   ];
 
-  const tableData = listData.map((data, index) => ({
+  const tableData = listData?.map((data, index) => ({
     srNo: index + 1,
     ...data,
   }));
@@ -73,7 +49,7 @@ const Branch = () => {
               <Input
                 name="roCode"
                 id="roCode"
-                placeholder="roCode"
+                placeholder="RO Code"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
@@ -126,7 +102,11 @@ const Branch = () => {
           </Field>
         </div>
 
-        <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        <DynamicTableEdit
+          entity={entity}
+          tableHead={tableHead}
+          tableData={tableData}
+        />
       </div>
     </>
   );

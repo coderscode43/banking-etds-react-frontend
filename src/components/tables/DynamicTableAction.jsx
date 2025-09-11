@@ -1,4 +1,7 @@
-const DynamicTableAction = ({ tableHead, tableData }) => {
+import { useNavigate } from "react-router-dom";
+
+const DynamicTableAction = ({ entity, tableHead, tableData }) => {
+  const navigate = useNavigate();
   // Key of the column to total — adjust as needed
   const totalKey = "amount";
 
@@ -47,6 +50,13 @@ const DynamicTableAction = ({ tableHead, tableData }) => {
                   <tr
                     key={index}
                     className="cursor-pointer text-center hover:bg-gray-100"
+                    onDoubleClick={() => {
+                      if (entity !== "branch") {
+                        navigate(
+                          `/home/detail/${entity}/${data.id}/${data.fy}/${data.branchCode}/detailForm24QDeductee`
+                        );
+                      }
+                    }}
                   >
                     {tableHead.map(({ key }, colIndex) => (
                       <td

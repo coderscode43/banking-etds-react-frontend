@@ -1,4 +1,8 @@
-const DynamicTableEdit = ({ tableHead, tableData }) => {
+import { useNavigate } from "react-router-dom";
+
+const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="relative w-full">
       <div className="w-full overflow-clip rounded-md border border-gray-200">
@@ -37,13 +41,11 @@ const DynamicTableEdit = ({ tableHead, tableData }) => {
                 <tr
                   key={index}
                   className="cursor-pointer text-center hover:bg-gray-100"
-                  //   onDoubleClick={() => {
-                  //     common.clientDetailsWithNavigate(
-                  //       data.tan,
-                  //       "processHome",
-                  //       navigate
-                  //     );
-                  //   }}
+                  onDoubleClick={() => {
+                    if (entity === "branch") {
+                      navigate(`/homeWOT/${data.branchCode}/2025-26/homepage`);
+                    }
+                  }}
                 >
                   {tableHead.map(({ key }, colIndex) => (
                     <td
