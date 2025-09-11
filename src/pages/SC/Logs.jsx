@@ -64,7 +64,7 @@ const Logs = () => {
                 placeholder="Name"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -78,7 +78,7 @@ const Logs = () => {
                 placeholder="Entity"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -92,7 +92,7 @@ const Logs = () => {
                 placeholder="IP-Address"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -125,7 +125,7 @@ const Logs = () => {
                   onChange={(e) => setDate(e.target.value)}
                   className={clsx(
                     "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -142,7 +142,7 @@ const Logs = () => {
                   onChange={(e) => setDate1(e.target.value)}
                   className={clsx(
                     "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>

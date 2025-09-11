@@ -83,7 +83,7 @@ const Form24QDeductee = () => {
                 id="quarter"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "focus:outline-none",
                   "h-[38px]"
                 )}
               >
@@ -105,7 +105,7 @@ const Form24QDeductee = () => {
                 placeholder="Branch Code"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -119,7 +119,7 @@ const Form24QDeductee = () => {
                 placeholder="Name"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -155,7 +155,7 @@ const Form24QDeductee = () => {
                   id="tan"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "focus:outline-none",
                     "h-[38px]"
                   )}
                 >
@@ -175,7 +175,7 @@ const Form24QDeductee = () => {
                   placeholder="PAN"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -189,7 +189,7 @@ const Form24QDeductee = () => {
                   placeholder="Challan Heading"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -206,7 +206,7 @@ const Form24QDeductee = () => {
                   placeholder="RO Code"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -220,7 +220,7 @@ const Form24QDeductee = () => {
                   id="sectionCode"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "focus:outline-none",
                     "h-[38px]"
                   )}
                 >
@@ -239,7 +239,7 @@ const Form24QDeductee = () => {
                   id="selectStatus"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "focus:outline-none",
                     "h-[38px]"
                   )}
                 >

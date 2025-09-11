@@ -109,7 +109,7 @@ const CorrectionRequest = () => {
                 id="status"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "focus:outline-none",
                   "h-[38px]"
                 )}
               >
@@ -128,7 +128,7 @@ const CorrectionRequest = () => {
                 id="quarter"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "focus:outline-none",
                   "h-[38px]"
                 )}
               >
@@ -147,7 +147,7 @@ const CorrectionRequest = () => {
                 id="FY"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "focus:outline-none",
                   "h-[38px]"
                 )}
               >
@@ -189,7 +189,7 @@ const CorrectionRequest = () => {
                   id="ticketNumber"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "focus:outline-none",
                     "h-[38px]"
                   )}
                 >
@@ -209,7 +209,7 @@ const CorrectionRequest = () => {
                   placeholder="Name of Customer"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -223,7 +223,7 @@ const CorrectionRequest = () => {
                   placeholder="PAN Number"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -240,7 +240,7 @@ const CorrectionRequest = () => {
                   placeholder="Type of Correction"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -257,7 +257,7 @@ const CorrectionRequest = () => {
                   onChange={(e) => setDate(e.target.value)}
                   className={clsx(
                     "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -274,7 +274,7 @@ const CorrectionRequest = () => {
                   onChange={(e) => setDate1(e.target.value)}
                   className={clsx(
                     "mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -284,12 +284,6 @@ const CorrectionRequest = () => {
                 </button>
               </div>
             </Field>
-          </div>
-        )}
-
-        {showDivs && (
-          <div>
-            <Field className="flex flex-wrap gap-3"></Field>
           </div>
         )}
 

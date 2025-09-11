@@ -54,7 +54,7 @@ const StatementStatus = () => {
                 id="tan"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "focus:outline-none",
                   "h-[38px]"
                 )}
               >
@@ -73,7 +73,7 @@ const StatementStatus = () => {
                 id="quarter"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "focus:outline-none",
                   "h-[38px]"
                 )}
               >
@@ -94,7 +94,7 @@ const StatementStatus = () => {
                 id="fy"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                  "focus:outline-none",
                   "h-[38px]"
                 )}
               >
@@ -132,7 +132,7 @@ const StatementStatus = () => {
                   placeholder="Status"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -147,7 +147,7 @@ const StatementStatus = () => {
                   placeholder="RT"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -161,7 +161,7 @@ const StatementStatus = () => {
                   id="form"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "focus:outline-none",
                     "h-[38px]"
                   )}
                 >

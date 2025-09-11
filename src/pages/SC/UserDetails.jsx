@@ -48,7 +48,7 @@ const UserDetails = () => {
                 placeholder="User Details"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -61,9 +61,8 @@ const UserDetails = () => {
                 name="typeOfUser"
                 id="typeOfUser"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
                 )}
               >
                 <option value="">Select Type Of User</option>

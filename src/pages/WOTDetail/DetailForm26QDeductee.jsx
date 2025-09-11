@@ -1,9 +1,10 @@
 import { DetailGrid } from "@/components/component/DetailGrid";
 import React from "react";
 import { Navigate } from "react-router-dom";
+
 const DetailForm26QDeductee = () => {
   const navigate = Navigate;
-  const hanleNavigateBack = navigate(-1);
+  const handleNavigateBack = navigate(-1);
   const fields = [
     {
       label: "Quarter",
@@ -163,8 +164,8 @@ const DetailForm26QDeductee = () => {
 
         <div className="flex justify-end gap-4 pr-5">
           <button
-            className="rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={hanleNavigateBack}
+            className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
+            onClick={handleNavigateBack}
           >
             <i class="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>

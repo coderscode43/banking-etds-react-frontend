@@ -56,7 +56,7 @@ const TotalAmountDetails = () => {
                 placeholder="Customer ID"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -71,7 +71,7 @@ const TotalAmountDetails = () => {
                 placeholder="Challan Heading"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -86,7 +86,7 @@ const TotalAmountDetails = () => {
                 placeholder="PAN"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -118,7 +118,7 @@ const TotalAmountDetails = () => {
                   id="month"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "focus:outline-none",
                     "h-[38px]"
                   )}
                 >
@@ -147,7 +147,7 @@ const TotalAmountDetails = () => {
                   id="fy"
                   className={clsx(
                     "mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "focus:outline-none",
                     "h-[38px]"
                   )}
                 >
@@ -166,7 +166,7 @@ const TotalAmountDetails = () => {
                   id="section"
                   className={clsx(
                     "mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
+                    "focus:outline-none",
                     "h-[38px]"
                   )}
                 >
@@ -188,7 +188,7 @@ const TotalAmountDetails = () => {
                   placeholder="System Amount"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -203,7 +203,7 @@ const TotalAmountDetails = () => {
                   placeholder="Traces Amount"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -218,7 +218,7 @@ const TotalAmountDetails = () => {
                   placeholder="System Tax Amount"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>
@@ -235,7 +235,7 @@ const TotalAmountDetails = () => {
                   placeholder="Traces Tax Amount"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "focus:outline-none"
                   )}
                 />
               </div>

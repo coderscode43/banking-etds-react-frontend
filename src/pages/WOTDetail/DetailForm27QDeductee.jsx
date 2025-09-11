@@ -164,7 +164,7 @@ const DetailForm27QDeductee = () => {
 
         <div className="flex justify-end gap-4 pr-5">
           <button
-            className="rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
+            className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={handleNavigateBack}
           >
             <i class="fa-solid fa-reply-all"></i>&nbsp; Back

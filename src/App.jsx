@@ -24,6 +24,8 @@ import StatementStatus from "./pages/SC/StatementStatus";
 import TotalAmountDetails from "./pages/SC/TotalAmountDetails";
 import UploadCertificate from "./pages/SC/UploadCertificate";
 import UserDetails from "./pages/SC/UserDetails";
+import DetailForm24Q from "./pages/SCDetail/DetailForm24Q";
+import DetailForm26Q from "./pages/SCDetail/DetailForm26Q";
 
 import PageNotFound from "./components/component/PageNotFound";
 import HomeWOTLayout from "./layouts/HomeWOTLayout";
@@ -35,12 +37,16 @@ import Form27EQDeducteeWOT from "./pages/WOT/Form27EQDeductee";
 import Form27QDeducteeWOT from "./pages/WOT/Form27QDeductee";
 import GenerateReport from "./pages/WOT/GenerateReport";
 import RegularReturnWOT from "./pages/WOT/RegularReturn";
-import DetailCorrectionRequest from "./pages/WOTDetail/DetailCorrectionRequest";
+import DetailCorrectionRequestWOT from "./pages/WOTDetail/DetailCorrectionRequest";
 import DetailForm24QDeducteeWOT from "./pages/WOTDetail/DetailForm24QDeductee";
 import DetailForm26QDeducteeWOT from "./pages/WOTDetail/DetailForm26QDeductee";
-import DetailRegularReturn from "./pages/WOTDetail/DetailRegularReturn";
+import DetailRegularReturnWOT from "./pages/WOTDetail/DetailRegularReturn";
 import DetailForm27EQDeducteeWOT from "./pages/WOTDetail/DetailForm27EQDeductee";
 import DetailForm27QDeducteeWOT from "./pages/WOTDetail/DetailForm27QDeductee";
+import DetailForm27EQ from "./pages/SCDetail/DetailForm27EQ";
+import DetailForm27Q from "./pages/SCDetail/DetailForm27Q";
+import DetailRegularReturn from "./pages/SCDetail/DetailRegularReturn";
+import DetailCorrectionRequest from "./pages/SCDetail/DetailCorrectionRequest";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -71,6 +77,15 @@ const App = () => {
           <Route path="ldc" element={<Ldc />} />
           <Route path="userDetails" element={<UserDetails />} />
           <Route path="logs" element={<Logs />} />
+          <Route path="detailForm24QDeductee" element={<DetailForm24Q />} />
+          <Route path="detailForm26QDeductee" element={<DetailForm26Q />} />
+          <Route path="detailForm27EQDeductee" element={<DetailForm27EQ />} />
+          <Route path="detailForm27QDeductee" element={<DetailForm27Q />} />
+          <Route path="detailRegularReturn" element={<DetailRegularReturn />} />
+          <Route
+            path="detailCorrectionRequest"
+            element={<DetailCorrectionRequest />}
+          />
         </Route>
 
         <Route
@@ -103,10 +118,13 @@ const App = () => {
             path="detailForm27QDeductee"
             element={<DetailForm27QDeducteeWOT />}
           />
-          <Route path="detailRegularReturn" element={<DetailRegularReturn />} />
+          <Route
+            path="detailRegularReturn"
+            element={<DetailRegularReturnWOT />}
+          />
           <Route
             path="detailCorrectionRequest"
-            element={<DetailCorrectionRequest />}
+            element={<DetailCorrectionRequestWOT />}
           />
         </Route>
 

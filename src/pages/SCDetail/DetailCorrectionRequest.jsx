@@ -51,10 +51,10 @@ const DetailCorrectionRequest = () => {
       label: "Response",
       key: "status",
     },
-    {
-      label: "Document",
-      key: "fileName",
-    },
+    // {
+    //   label: "Document",
+    //   key: "fileName",
+    // },
   ];
 
   const fields1 = [
@@ -64,78 +64,77 @@ const DetailCorrectionRequest = () => {
     },
     {
       label: "Request Created On",
-      key: "fy",
-      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
+      key: "",
+      formatter: (d) =>
+        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
     },
     {
       label: "Status",
-      key: "quarter",
+      key: "status",
     },
     {
       label: "Checker Approved By",
-      key: "correctionRequestDate",
+      key: "checkerApprovedBy",
     },
     {
       label: "Checker Approved On",
-      key: "fy",
+      key: "checkerApprovedOn",
       formatter: (d) =>
         d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
     },
     {
       label: "Tax Team Approved By",
-      key: "ticketNumber",
+      key: "taxTeamApprovedBy",
     },
     {
       label: "Tax Team Approved On",
-      key: "fy",
-      formatter: (d) =>
-        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
+      key: "taxTeamApprovedOn",
+      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
     },
     {
       label: "Correction By",
-      key: "ticketNumber",
+      key: "correctionBy",
     },
     {
       label: "Correction On",
-      key: "fy",
-      formatter: (d) =>
-        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
+      key: "correctionOn",
+      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
     },
   ];
 
   const data = [
     {
-      id: 2290445,
-      correctionRequestDate: "06-03-2025 14:57:32",
-      custId: null,
-      name: "test",
-      pan: null,
-      nameOfRequest: null,
-      branchCode: 100000,
-      empNo: null,
-      ticketNumber: 202503060003,
+      id: 2291061,
+      correctionRequestDate: "07-08-2025 16:59:17",
+      custId: 123,
+      name: "Divyanshu Singh",
+      pan: 123,
+      nameOfRequest: 123,
+      branchCode: 1223,
+      empNo: 123,
+      ticketNumber: 202508070001,
       typeOfCorrection: "PAN Updation",
-      remark: "tEST",
-      checkerApprovedBy: null,
-      checkerApprovedOn: null,
-      taxTeamApprovedBy: null,
-      taxTeamApprovedOn: null,
-      correctionBy: null,
-      correctionOn: null,
+      remark: "Test",
+      checkerApprovedBy: "tejas",
+      checkerApprovedOn: "07-08-2025 17:15:01",
+      taxTeamApprovedBy: "tejas",
+      taxTeamApprovedOn: "07-08-2025 17:15:01",
+      correctionBy: 123,
+      correctionOn: 123,
       makerBy: "admin",
       status: "Pending Checker Approval",
       fy: "2024-25",
-      quarter: "Q1",
+      quarter: "Q1, Q2, Q3, Q4",
       rejectStatus: false,
-      fileName: "GSTR1Summary.xlsx^",
+      fileName: 123,
       correctionStatus: false,
-      mobileNumber: "9987442365",
+      mobileNumber: "8323594479",
       typeOfForm: "24Q-Salary",
-      tan: null,
-      lastUpdatedOn: "06-03-2025 14:57:32",
-      reasonForExemption: null,
-      regenarateRequest: null,
-      newRequestTicketNo: null,
+      tan: 123,
+      lastUpdatedOn: "02-09-2025 17:00:51",
+      reasonForExemption: 123,
+      regenarateRequest: 123,
+      newRequestTicketNo: 123,
     },
   ];
 
@@ -145,7 +144,7 @@ const DetailCorrectionRequest = () => {
       label: "Sr.No",
     },
     {
-      key: "correctionRemark",
+      key: "correctionRequestId",
       label: "Correction Response",
     },
     {
@@ -157,25 +156,47 @@ const DetailCorrectionRequest = () => {
       label: "Added By",
     },
     {
-      key: "dateTime",
+      key: "",
       label: "Added On",
     },
     {
-      key: "remarkStatus",
+      key: "",
       label: "Action",
     },
   ];
 
   const tableData = [
     {
-      id: 2290711,
-      correctionRequestId: 2290361,
-      dateTime: "03-06-2025 17:15:13",
-      correctionRemark: "Tst",
-      addedBy: "admin",
-      branchCode: 100000,
-      supportingDocName: "AAEPD9007G_2024-25_1.pdf",
-      remarkStatus: "Resolved",
+      id: 2291065,
+      correctionRequestId: 2291061,
+      dateTime: "07-08-2025 17:15:01",
+      correctionRemark: "ok",
+      addedBy: "tejas",
+      branchCode: 1223,
+      supportingDocName: "file01",
+      remarkStatus: "Approved",
+    },
+
+    {
+      id: 2291065,
+      correctionRequestId: 123,
+      dateTime: "07-08-2025 17:15:01",
+      correctionRemark: "ok",
+      addedBy: "abhishek",
+      branchCode: 1223,
+      supportingDocName: "file02",
+      remarkStatus: "Approved",
+    },
+
+    {
+      id: 2291065,
+      correctionRequestId: 22910,
+      dateTime: "07-08-2025 17:15:01",
+      correctionRemark: "ok",
+      addedBy: "khushi",
+      branchCode: 1223,
+      supportingDocName: "file03",
+      remarkStatus: "Approved",
     },
   ];
 
@@ -185,36 +206,24 @@ const DetailCorrectionRequest = () => {
       label: "Sr.No",
     },
     {
-      key: "name",
-      label: "Name",
+      key: "correctionRequestId",
+      label: "Correction Response",
     },
     {
-      key: "dateOfPayment",
-      label: "Date of Payment",
+      key: "supportingDocName",
+      label: "Supporting Document Name",
     },
     {
-      key: "tds",
-      label: "TDS Amount",
+      key: "addedBy",
+      label: "Added By",
     },
     {
-      key: "amountPaid",
-      label: "Gross Amount",
+      key: "",
+      label: "Added On",
     },
     {
-      key: "quarter",
-      label: "Quarter",
-    },
-    {
-      key: "pan",
-      label: "PAN",
-    },
-    {
-      key: "correctPan",
-      label: "Correct PAN",
-    },
-    {
-      key: "status",
-      label: "Other Response",
+      key: "",
+      label: "Action",
     },
   ];
 
@@ -229,20 +238,36 @@ const DetailCorrectionRequest = () => {
 
   const tableDataOtherDetails = [
     {
-      id: 2290364,
-      correctionRequestId: 2290361,
-      dateOfPayment: "05-08-2024",
-      amountPaid: 72170,
-      correctAmountPaid: null,
-      tds: 14434,
-      correctTds: null,
-      pan: "AAAPA1234A",
-      correctPan: "AAAAC0641A",
-      sectionCode: "94A",
-      correctSection: null,
-      correctRemark: null,
-      quarter: "Q2",
-      name: "Sample",
+      id: 2291065,
+      correctionRequestId: 2291061,
+      dateTime: "07-08-2025 17:15:01",
+      correctionRemark: "ok",
+      addedBy: "tejas",
+      branchCode: 1223,
+      supportingDocName: "file01",
+      remarkStatus: "Approved",
+    },
+
+    {
+      id: 2291065,
+      correctionRequestId: 123,
+      dateTime: "07-08-2025 17:15:01",
+      correctionRemark: "ok",
+      addedBy: "abhishek",
+      branchCode: 1223,
+      supportingDocName: "file02",
+      remarkStatus: "Approved",
+    },
+
+    {
+      id: 2291065,
+      correctionRequestId: 22910,
+      dateTime: "07-08-2025 17:15:01",
+      correctionRemark: "ok",
+      addedBy: "khushi",
+      branchCode: 1223,
+      supportingDocName: "file03",
+      remarkStatus: "Approved",
     },
   ];
 
@@ -257,11 +282,11 @@ const DetailCorrectionRequest = () => {
         <hr className="m-5 bg-gray-400" />
         <DetailGrid fields={fields1} data={data[0]} columns={3} />
         <div className="mb-3 flex justify-end gap-4 py-5">
-          <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
+          <button className="rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
             <i class="fa-solid fa-plus"></i>&nbsp; Add Response
           </button>
           <button
-            className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
+            className="rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={handleNavigateBack}
           >
             <i class="fa-solid fa-reply-all"></i>&nbsp; Back
@@ -293,15 +318,17 @@ const DetailCorrectionRequest = () => {
               <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
             </TabPanel>
 
-            <TabPanel
-              key={categories.name}
-              className="rounded-xl bg-white shadow-sm"
-            >
-              <DynamicTableEdit
-                tableHead={tableHeadOtherDetails}
-                tableData={tableDataOtherDetails}
-              />
-            </TabPanel>
+            {
+              <TabPanel
+                key={categories.name}
+                className="rounded-xl bg-white shadow-sm"
+              >
+                <DynamicTableEdit
+                  tableHead={tableHeadOtherDetails}
+                  tableData={tableDataOtherDetails}
+                />
+              </TabPanel>
+            }
           </TabPanels>
         </TabGroup>
       </div>

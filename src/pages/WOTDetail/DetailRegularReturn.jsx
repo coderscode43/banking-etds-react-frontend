@@ -26,7 +26,7 @@ const DetailRegularReturn = () => {
     {
       label: "Added On",
       key: "addedOn",
-       formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
+      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
     },
     {
       label: "Added By",
