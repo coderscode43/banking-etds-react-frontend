@@ -1,28 +1,78 @@
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
+import AIButton from "@/components/component/AIButton";
+import DynamicTable from "@/components/tables/DynamicTable";
 import React from "react";
 
 const Homepage = () => {
   const tableHead = [
     { key: "month", label: "Month" },
-    { key: "challanDueDate", label: "Due Date of Challan Payment" },
-    { key: "returnDueDate", label: "Due Date Of Return Filling" },
+    { key: "challanDate", label: "Due Date of Challan Payment" },
+    { key: "returnDate", label: "Due Date Of Return Filling" },
   ];
 
   const tableData = [
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
-    { month: "April", challanDueDate: "7 May", returnDueDate: "31 July" },
+    { month: "April", challanDate: "7 May", returnDate: "31 July" },
+    { month: "May", challanDate: "7 June", returnDate: "31 July" },
+    { month: "June", challanDate: "7 July", returnDate: "31 July" },
+    {
+      month: "July",
+      challanDate: "7 August",
+      returnDate: "31 October",
+    },
+    {
+      month: "August",
+      challanDate: "7 September",
+      returnDate: "31 October",
+    },
+    {
+      month: "September",
+      challanDate: "7 October",
+      returnDate: "31 October",
+    },
+    {
+      month: "October",
+      challanDate: "7 November",
+      returnDate: "31 January",
+    },
+    {
+      month: "November",
+      challanDate: "7 December",
+      returnDate: "31 January",
+    },
+    {
+      month: "December",
+      challanDate: "7 January",
+      returnDate: "31 January",
+    },
+    {
+      month: "January",
+      challanDate: "7 February",
+      returnDate: "31 May",
+    },
+    {
+      month: "February",
+      challanDate: "7 March",
+      returnDate: "31 May",
+    },
+    { month: "March", challanDate: "30 April", returnDate: "31 May" },
+  ];
+  const today = new Date();
+
+  let months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
+  const month = months[today.getMonth()];
   return (
     <>
       <h2 className="my-5 text-center text-3xl font-medium text-[#303e67]">
@@ -30,19 +80,15 @@ const Homepage = () => {
       </h2>
 
       <div className="relative my-3 flex items-center justify-center">
-        <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        <DynamicTable
+          tableHead={tableHead}
+          tableData={tableData}
+          month={month}
+        />
       </div>
 
-      <div className="aishadow absolute right-2 bottom-3 flex w-1/6 cursor-pointer rounded-xl bg-linear-to-r from-indigo-600 to-pink-500 px-2 py-2 text-[#ffffff]">
-        <span>
-          <img
-            className="mx-3 h-8 w-6 cursor-move text-white brightness-0 invert saturate-100 filter transition-transform duration-500 hover:rotate-y-[180deg]"
-            src="/images/ROBO-TRANSPARENT.png"
-            alt="HELP"
-          />
-        </span>
-
-        <p className="text-base">Get Data With AI</p>
+      <div className="sticky bottom-6 flex justify-end">
+        <AIButton />
       </div>
     </>
   );
