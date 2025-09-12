@@ -1,112 +1,41 @@
+import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import { useNavigate } from "react-router-dom";
 
 const DetailForm27QDeductee = () => {
   const navigate = useNavigate();
-  const handleNavigateBack = navigate(-1);
+
   const fields = [
-    {
-      label: "Quarter",
-      key: "quarter",
-    },
-    {
-      label: "Month",
-      key: "month",
-    },
-    {
-      label: "Branch Code",
-      key: "branchCode",
-    },
-    {
-      label: "Customer / Vendor ID",
-      key: "custVendId",
-    },
-    {
-      label: "RO Code",
-      key: "roCode",
-    },
-    {
-      label: "Tan",
-      key: "tan",
-    },
-    {
-      label: "Unique Ref No",
-      key: "uniqueRefNo",
-    },
-    {
-      label: "Account No",
-      key: "accNo",
-    },
-    {
-      label: "Challan Heading",
-      key: "challanHeading",
-    },
-    {
-      label: "Section Code",
-      key: "sectionCode",
-    },
+    { label: "Quarter", key: "quarter" },
+    { label: "Month", key: "month" },
+    { label: "Branch Code", key: "branchCode" },
+    { label: "Customer / Vendor ID", key: "custVendId" },
+    { label: "RO Code", key: "roCode" },
+    { label: "Tan", key: "tan" },
+    { label: "Unique Ref No", key: "uniqueRefNo" },
+    { label: "Account No", key: "accNo" },
+    { label: "Challan Heading", key: "challanHeading" },
+    { label: "Section Code", key: "sectionCode" },
     {
       label: "Date of Payment",
       key: "dateOfPayment",
       formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
     },
-    {
-      label: "Amount Paid",
-      key: "amountPaid",
-    },
-    {
-      label: "TDS",
-      key: "tds",
-    },
-    {
-      label: "Surcharge",
-      key: "surcharge",
-    },
-    {
-      label: "Education Cess",
-      key: "eduCess",
-    },
-    {
-      label: "Total TDS",
-      key: "tds",
-    },
-    {
-      label: "Total Tax Deposited",
-      key: "totalTaxDeposited",
-    },
+    { label: "Amount Paid", key: "amountPaid" },
+    { label: "TDS", key: "tds" },
+    { label: "Surcharge", key: "surcharge" },
+    { label: "Education Cess", key: "eduCess" },
+    { label: "Total TDS", key: "tds" },
+    { label: "Total Tax Deposited", key: "totalTaxDeposited" },
 
-    {
-      label: "Certificate Number",
-      key: "certificateNumber",
-    },
-    {
-      label: "Error Description",
-      key: "errorDescription",
-    },
-    {
-      label: "Warning Description",
-      key: "warningDescription",
-    },
-    {
-      label: "Short Deduction",
-      key: "shortDeduction",
-    },
-    {
-      label: "Interest on Short Deduction",
-      key: "interestOnShortDeduction",
-    },
-    {
-      label: "Interest on Late Payment",
-      key: "interestOnLatePayment",
-    },
-    {
-      label: "Interest on Late Deduction",
-      key: "interestOnLateDeduction",
-    },
-    {
-      label: "Status",
-      key: "comments",
-    },
+    { label: "Certificate Number", key: "certificateNumber" },
+    { label: "Error Description", key: "errorDescription" },
+    { label: "Warning Description", key: "warningDescription" },
+    { label: "Short Deduction", key: "shortDeduction" },
+    { label: "Interest on Short Deduction", key: "interestOnShortDeduction" },
+    { label: "Interest on Late Payment", key: "interestOnLatePayment" },
+    { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
+    { label: "Status", key: "comments" },
   ];
 
   const data = [
@@ -165,9 +94,9 @@ const DetailForm27QDeductee = () => {
         <div className="flex justify-end gap-4 pr-5">
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={handleNavigateBack}
+            onClick={common.navigateBack(navigate)}
           >
-            <i class="fa-solid fa-reply-all"></i>&nbsp; Back
+            <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
         </div>
       </div>

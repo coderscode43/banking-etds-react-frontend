@@ -1,273 +1,101 @@
+import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import { Navigate } from "react-router-dom";
-import React from "react";
 
 const DetailForm27Q = () => {
   const navigate = Navigate;
-  const handleNavigateBack = navigate(-1);
+
   const fields = [
-    {
-      label: "Quarter",
+    { label: "Quarter", key: "quarter" },
 
-      key: "quarter",
-    },
+    { label: "Grossing up Indicator", key: "grossingUpIndicator" },
 
-    {
-      label: "Grossing up Indicator",
+    { label: "Month", key: "month" },
 
-      key: "grossingUpIndicator",
-    },
+    { label: "No of certificate under section ", key: "" },
 
-    {
-      label: "Month",
+    { label: "Branch Code", key: "branchCode" },
 
-      key: "month",
-    },
+    { label: "TDS Rate As Per It Acts", key: "tdsRateAsPerItActs" },
 
-    {
-      label: "No of certificate under section ",
+    { label: "RO Code", key: "roCode" },
 
-      key: "",
-    },
+    { label: "TAN", key: "tan" },
 
-    {
-      label: "Branch Code",
+    { label: "Vend/Cust Id", key: "custVendId" },
 
-      key: "branchCode",
-    },
+    { label: "Vend/Nature Of Remittance", key: "natureOfRemittance" },
 
-    {
-      label: "TDS Rate As Per It Acts",
+    { label: "Unique Ref No", key: "uniqueRefNo" },
 
-      key: "tdsRateAsPerItActs",
-    },
+    { label: "Unique Knowledge No.", key: "uniqueAcknowledgeNo" },
 
-    {
-      label: "RO Code",
+    { label: "Account Number", key: "accNo" },
 
-      key: "roCode",
-    },
+    { label: "Country", key: "countryOfResidence" },
 
-    {
-      label: "TAN",
+    { label: "Challan Heading", key: "challanHeading" },
 
-      key: "tan",
-    },
+    { label: "E-Mail", key: "emailId" },
 
-    {
-      label: "Vend/Cust Id",
+    { label: "Deductee Reference No.", key: "deducteeRefNo" },
 
-      key: "custVendId",
-    },
+    { label: "Contact No.", key: "contactNoOfDeductee" },
 
-    {
-      label: "Vend/Nature Of Remittance",
+    { label: "Deductee Code", key: "deducteeCode" },
 
-      key: "natureOfRemittance",
-    },
+    { label: "Address", key: "addressOfDeductee" },
 
-    {
-      label: "Unique Ref No",
+    { label: "PAN", key: "pan" },
 
-      key: "uniqueRefNo",
-    },
+    { label: "Tax Identification Number  ", key: "taxIdentificationNo" },
 
-    {
-      label: "Unique Knowledge No.",
+    { label: "Name", key: "name" },
 
-      key: "uniqueAcknowledgeNo",
-    },
+    { label: "Cash Withdrawl (194N)", key: "cashWithdrawal194N" },
 
-    {
-      label: "Account Number",
-
-      key: "accNo",
-    },
-
-    {
-      label: "Country",
-
-      key: "countryOfResidence",
-    },
-
-    {
-      label: "Challan Heading",
-
-      key: "challanHeading",
-    },
-
-    {
-      label: "E-Mail",
-
-      key: "emailId",
-    },
-
-    {
-      label: "Deductee Reference No.",
-
-      key: "deducteeRefNo",
-    },
-
-    {
-      label: "Contact No.",
-
-      key: "contactNoOfDeductee",
-    },
-
-    {
-      label: "Deductee Code",
-
-      key: "deducteeCode",
-    },
-
-    {
-      label: "Address",
-
-      key: "addressOfDeductee",
-    },
-
-    {
-      label: "PAN",
-
-      key: "pan",
-    },
-
-    {
-      label: "Tax Identification Number  ",
-
-      key: "taxIdentificationNo",
-    },
-
-    {
-      label: "Name",
-
-      key: "name",
-    },
-
-    {
-      label: "Cash Withdrawl (194N)",
-
-      key: "cashWithdrawal194N",
-    },
-
-    {
-      label: "Section Code",
-
-      key: "sectionCode",
-    },
+    { label: "Section Code", key: "sectionCode" },
 
     {
       label: "Cash Withdrawl 194N(20L to 1cr) ",
-
       key: "cashWithdrawal194N20Lto1Cr",
     },
 
-    {
-      label: "Date of Payment",
+    { label: "Date of Payment", key: "dateOfPayment" },
 
-      key: "dateOfPayment",
-    },
+    { label: "Cash Withdrawl 194N(>1cr)", key: "cashWithdrawal194N1Cr" },
 
-    {
-      label: "Cash Withdrawl 194N(>1cr)",
+    { label: "Paid Amount", key: "amountPaid" },
 
-      key: "cashWithdrawal194N1Cr",
-    },
+    { label: "Error Description", key: "errorDescription" },
 
-    {
-      label: "Paid Amount",
+    { label: "TDS", key: "tds" },
 
-      key: "amountPaid",
-    },
+    { label: "Warning Description", key: "warningDescription" },
 
-    {
-      label: "Error Description",
+    { label: "Surcharge", key: "surcharge" },
 
-      key: "errorDescription",
-    },
+    { label: "Short Deduction", key: "shortDeduction" },
 
-    {
-      label: "TDS",
+    { label: "Education Cess.", key: "eduCess" },
 
-      key: "tds",
-    },
+    { label: "Interest on Short Deduction", key: "interestOnShortDeduction" },
 
-    {
-      label: "Warning Description",
+    { label: "Total Tax Deducted", key: "totalTaxDeducted" },
 
-      key: "warningDescription",
-    },
+    { label: "Interest on Late Payment", key: "interestOnLatePayment" },
 
-    {
-      label: "Surcharge",
+    { label: "Total Tax Deposited", key: "totalTaxDeposited" },
 
-      key: "surcharge",
-    },
+    { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
 
-    {
-      label: "Short Deduction",
-      key: "shortDeduction",
-    },
+    { label: "Date of Deduction", key: "dateOfDeduction" },
 
-    {
-      label: "Education Cess.",
+    { label: "Reason for non Deduction", key: "" },
 
-      key: "eduCess",
-    },
+    { label: "Reason for Non Collection", key: "" },
 
-    {
-      label: "Interest on Short Deduction",
-
-      key: "interestOnShortDeduction",
-    },
-
-    {
-      label: "Total Tax Deducted",
-
-      key: "totalTaxDeducted",
-    },
-
-    {
-      label: "Interest on Late Payment",
-
-      key: "interestOnLatePayment",
-    },
-
-    {
-      label: "Total Tax Deposited",
-
-      key: "totalTaxDeposited",
-    },
-
-    {
-      label: "Interest on Late Deduction",
-
-      key: "interestOnLateDeduction",
-    },
-
-    {
-      label: "Date of Deduction",
-
-      key: "dateOfDeduction",
-    },
-
-    {
-      label: "Reason for non Deduction",
-
-      key: "",
-    },
-
-    {
-      label: "Reason for Non Collection",
-
-      key: "",
-    },
-
-    {
-      label: "Status ",
-
-      key: "",
-    },
+    { label: "Status ", key: "" },
   ];
 
   const data = [
@@ -342,9 +170,9 @@ const DetailForm27Q = () => {
           </button>
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={handleNavigateBack}
+            onClick={common.navigateBack(navigate)}
           >
-            <i class="fa-solid fa-reply-all"></i>&nbsp; Back
+            <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
         </div>
       </div>

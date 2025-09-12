@@ -1,10 +1,28 @@
-import React, { useState } from "react";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
+import { useEffect } from "react";
+import common from "@/common/common";
+import React, { useState } from "react";
+import DynamicTable from "@/components/tables/DynamicTable";
+import { Field, Input, Label } from "@headlessui/react";
 
-const PanUpdateDetails = () => {
+const PanUpdateList = () => {
+  const entity = "panUpdateList";
   const [showDivs, setShowDivs] = useState(false);
+  const [listData, setListData] = useState([]);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   // Table Details
   const tableHead = [
     { label: "Sr.No.", key: "srNo" },
@@ -17,20 +35,11 @@ const PanUpdateDetails = () => {
     { label: "Remark", key: "remark" },
   ];
 
-  const tableData = [
-    {
-      id: 87,
-      fy: "2024-25",
-      month: "SEPTEMBER",
-      challanHeading: "Interest_26Q",
-      custVendId: "60526495",
-      previousPAN: "NA",
-      newPAN: "FQKPK0019N",
-      action: null,
-      remark: null,
-      addNewEntry: null,
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
+
   return (
     <>
       <div className="space-y-5">
@@ -175,11 +184,11 @@ const PanUpdateDetails = () => {
         )}
 
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTable tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
     </>
   );
 };
 
-export default PanUpdateDetails;
+export default PanUpdateList;

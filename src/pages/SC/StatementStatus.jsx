@@ -1,10 +1,27 @@
-import React, { useState } from "react";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import DynamicTable from "@/components/tables/DynamicTable";
+import { Field, Input, Label } from "@headlessui/react";
 
 const StatementStatus = () => {
+  const entity = "statementStatus";
+  const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   // Table Details
   const tableHead = [
     { label: "Sr.No.", key: "srNo" },
@@ -17,25 +34,11 @@ const StatementStatus = () => {
     { label: "RT", key: "rt" },
   ];
 
-  const tableData = [
-    {
-      id: 2290968,
-      TAN: "MUMT27600G",
-      FORM: "27Q",
-      QUARTER: "Q3",
-      AS_ON_DATE: "2025-06-26",
-      FY: "201718",
-      STATUS: "Processed Without Defaults",
-      RT: "Regular",
-      tan: "MUMT27600G",
-      fy: "201718",
-      form: "27Q",
-      quarter: "Q3",
-      status: "Processed Without Defaults",
-      rt: "Regular",
-      as_ON_DATE: "2025-06-26",
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
+
   return (
     <>
       <div className="space-y-5">
@@ -182,7 +185,7 @@ const StatementStatus = () => {
         )}
 
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTable tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
     </>

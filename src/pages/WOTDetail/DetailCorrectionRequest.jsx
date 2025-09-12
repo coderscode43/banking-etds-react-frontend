@@ -1,100 +1,57 @@
+import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import React from "react";
 import { useNavigate } from "react-router-dom";
-
 const DetailCorrectionRequest = () => {
   const navigate = useNavigate();
-  const handleNavigateBack = navigate(-1);
+
   const fields = [
-    {
-      label: "Ticket Number",
-      key: "ticketNumber",
-    },
-    {
-      label: "Financial Year",
-      key: "fy",
-    },
-    {
-      label: "Quarter",
-      key: "quarter",
-    },
+    { label: "Ticket Number", key: "ticketNumber" },
+    { label: "Financial Year", key: "fy" },
+    { label: "Quarter", key: "quarter" },
     {
       label: "Date of Request",
       key: "correctionRequestDate",
       formatter: (d) =>
         d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
     },
-    {
-      label: "Name of Customer",
-      key: "name",
-    },
-    {
-      label: "Type of Form",
-      key: "typeOfForm",
-    },
-    {
-      label: "Type of Correction",
-      key: "typeOfCorrection",
-    },
-    {
-      label: "PAN of Customer",
-      key: "pan",
-    },
+    { label: "Name of Customer", key: "name" },
+    { label: "Type of Form", key: "typeOfForm" },
+    { label: "Type of Correction", key: "typeOfCorrection" },
+    { label: "PAN of Customer", key: "pan" },
     {
       label: "Mobile Number of who Generated Correction/Query Request",
       key: "mobileNumber",
       // fullRow: true,
     },
-    {
-      label: "Response",
-      key: "status",
-    },
-    {
-      label: "Document",
-      key: "fileName",
-    },
+    { label: "Response", key: "status" },
+    { label: "Document", key: "fileName" },
   ];
 
   const fields1 = [
-    {
-      label: "Request Created By",
-      key: "",
-    },
+    { label: "Request Created By", key: "" },
     {
       label: "Request Created On",
       key: "fy",
       formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
     },
-    {
-      label: "Status",
-      key: "quarter",
-    },
-    {
-      label: "Checker Approved By",
-      key: "correctionRequestDate",
-    },
+    { label: "Status", key: "quarter" },
+    { label: "Checker Approved By", key: "correctionRequestDate" },
     {
       label: "Checker Approved On",
       key: "fy",
       formatter: (d) =>
         d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
     },
-    {
-      label: "Tax Team Approved By",
-      key: "ticketNumber",
-    },
+    { label: "Tax Team Approved By", key: "ticketNumber" },
     {
       label: "Tax Team Approved On",
       key: "fy",
       formatter: (d) =>
         d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
     },
-    {
-      label: "Correction By",
-      key: "ticketNumber",
-    },
+    { label: "Correction By", key: "ticketNumber" },
     {
       label: "Correction On",
       key: "fy",
@@ -140,30 +97,12 @@ const DetailCorrectionRequest = () => {
   ];
 
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "correctionRemark",
-      label: "Correction Response",
-    },
-    {
-      key: "supportingDocName",
-      label: "Supporting Document Name",
-    },
-    {
-      key: "addedBy",
-      label: "Added By",
-    },
-    {
-      key: "dateTime",
-      label: "Added On",
-    },
-    {
-      key: "remarkStatus",
-      label: "Action",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "correctionRemark", label: "Correction Response" },
+    { key: "supportingDocName", label: "Supporting Document Name" },
+    { key: "addedBy", label: "Added By" },
+    { key: "dateTime", label: "Added On" },
+    { key: "remarkStatus", label: "Action" },
   ];
 
   const tableData = [
@@ -180,42 +119,15 @@ const DetailCorrectionRequest = () => {
   ];
 
   const tableHeadOtherDetails = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "name",
-      label: "Name",
-    },
-    {
-      key: "dateOfPayment",
-      label: "Date of Payment",
-    },
-    {
-      key: "tds",
-      label: "TDS Amount",
-    },
-    {
-      key: "amountPaid",
-      label: "Gross Amount",
-    },
-    {
-      key: "quarter",
-      label: "Quarter",
-    },
-    {
-      key: "pan",
-      label: "PAN",
-    },
-    {
-      key: "correctPan",
-      label: "Correct PAN",
-    },
-    {
-      key: "status",
-      label: "Other Response",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "name", label: "Name" },
+    { key: "dateOfPayment", label: "Date of Payment" },
+    { key: "tds", label: "TDS Amount" },
+    { key: "amountPaid", label: "Gross Amount" },
+    { key: "quarter", label: "Quarter" },
+    { key: "pan", label: "PAN" },
+    { key: "correctPan", label: "Correct PAN" },
+    { key: "status", label: "Other Response" },
   ];
 
   const categories = [
@@ -257,14 +169,11 @@ const DetailCorrectionRequest = () => {
         <hr className="m-5 bg-gray-400" />
         <DetailGrid fields={fields1} data={data[0]} columns={3} />
         <div className="mb-3 flex justify-end gap-4 py-5">
-          <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-            <i class="fa-solid fa-plus"></i>&nbsp; Add Response
-          </button>
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={handleNavigateBack}
+            onClick={common.navigateBack(navigate)}
           >
-            <i class="fa-solid fa-reply-all"></i>&nbsp; Back
+            <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
         </div>
 
@@ -292,7 +201,6 @@ const DetailCorrectionRequest = () => {
             >
               <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
             </TabPanel>
-
             <TabPanel
               key={categories.name}
               className="rounded-xl bg-white shadow-sm"

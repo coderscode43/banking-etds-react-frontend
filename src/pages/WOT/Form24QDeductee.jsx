@@ -132,7 +132,7 @@ const Form24QDeductee = () => {
                 onClick={() => setShowDivs((prev) => !prev)}
                 className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
               >
-                <i class="fa-solid fa-filter"></i>
+                <i className="fa-solid fa-filter"></i>
               </button>
 
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#024dec] px-3 text-2xl font-black text-white">

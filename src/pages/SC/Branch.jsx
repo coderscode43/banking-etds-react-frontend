@@ -19,7 +19,8 @@ const Branch = () => {
   // Table Details
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
-    { key: "branchName", label: "ROCode" },
+    { key: "roCode", label: "ROCode" },
+    { key: "branchName", label: "RO Branch Name" },
     { key: "branchEmail", label: "RO Email" },
     { key: "branchContactNo", label: "RO Contact No" },
     { key: "branchAddress", label: "RO Address" },

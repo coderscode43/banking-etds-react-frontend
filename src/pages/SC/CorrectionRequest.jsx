@@ -1,96 +1,49 @@
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
+import common from "@/common/common";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import { Field, Label, Input } from "@headlessui/react";
 import clsx from "clsx";
 import React, { useState } from "react";
+import { useEffect } from "react";
 
 const CorrectionRequest = () => {
+  const entity = "correctionRequest";
+  const [listData, setListData] = useState([]);
   const [date, setDate] = useState("");
   const [date1, setDate1] = useState("");
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "ticketNumber",
-      label: "Ticket Number",
-    },
-    {
-      key: "fy",
-      label: "Financial Year",
-    },
-    {
-      key: "branchCode",
-      label: "Branch",
-    },
-    {
-      key: "quarter",
-      label: "Quarter",
-    },
-    {
-      key: "name",
-      label: "Name of Customer",
-    },
-    {
-      pan: "pan",
-      label: "Pan Of Customer",
-    },
-    {
-      key: "typeOfCorrection",
-      label: "Type of Correction",
-    },
-
-    {
-      key: "status",
-      label: "Status",
-    },
-    {
-      key: "lastUpdatedOn",
-      label: "Last Updated On",
-    },
-    {
-      key: "status",
-      label: "Action",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "ticketNumber", label: "Ticket Number" },
+    { key: "fy", label: "Financial Year" },
+    { key: "branchCode", label: "Branch" },
+    { key: "quarter", label: "Quarter" },
+    { key: "name", label: "Name of Customer" },
+    { key: "pan", label: "Pan Of Customer" },
+    { key: "typeOfCorrection", label: "Type of Correction" },
+    { key: "status", label: "Status" },
+    { key: "lastUpdatedOn", label: "Last Updated On" },
+    { key: "action", label: "Action" },
   ];
 
-  const tableData = [
-    {
-      ticketNumber: 202508070001,
-      taxTeamApprovedBy: "tejas",
-      correctionBy: null,
-      fileName: null,
-      typeOfCorrection: "PAN Updation",
-      newRequestTicketNo: null,
-      color: "yellow",
-      mobileNumber: "8323594479",
-      taxTeamApprovedOn: "07-08-2025 17:15:01",
-      remark: "Test",
-      correctionOn: null,
-      reasonForExemption: null,
-      correctionRequestDate: "07-08-2025 16:59:17",
-      fy: "2024-25",
-      typeOfForm: "24Q-Salary",
-      custId: null,
-      lastUpdatedOn: "02-09-2025 17:00:51",
-      id: 2291061,
-      makerBy: "admin",
-      pan: "ABCDE1235F",
-      tan: "TAN NUMBER",
-      rejectStatus: false,
-      regenarateRequest: null,
-      empNo: null,
-      branchCode: 1223,
-      checkerApprovedBy: "tejas",
-      name: "Divyanshu Singh",
-      checkerApprovedOn: "07-08-2025 17:15:01",
-      correctionStatus: false,
-      nameOfRequest: null,
-      status: "Pending Checker Approval",
-      quarter: "Q1, Q2, Q3, Q4",
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
+
   return (
     <>
       <div className="space-y-5">
@@ -171,7 +124,7 @@ const CorrectionRequest = () => {
               </button>
 
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white">
-                <i class="fa-solid fa-plus"></i>
+                <i className="fa-solid fa-plus"></i>
               </button>
             </div>
           </Field>
@@ -288,7 +241,7 @@ const CorrectionRequest = () => {
         )}
 
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTableAction tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
     </>

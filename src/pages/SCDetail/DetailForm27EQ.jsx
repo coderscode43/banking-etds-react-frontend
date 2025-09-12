@@ -1,233 +1,88 @@
+import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import { Navigate } from "react-router-dom";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const DetailForm27EQ = () => {
-  const navigate = Navigate;
-  const handleNavigateBack = navigate(-1);
+  const navigate = useNavigate();
+
   const fields = [
-    {
-      label: "Quarter",
+    { label: "Quarter", key: "quarter" },
 
-      key: "quarter",
-    },
+    { label: "Month", key: "month" },
 
-    {
-      label: "Month",
+    { label: "Branch Code", key: "branchCode" },
 
-      key: "month",
-    },
+    { label: "Vend/Cust Id", key: "custVendId" },
 
-    {
-      label: "Branch Code",
+    { label: "RO Code", key: "roCode" },
 
-      key: "branchCode",
-    },
+    { label: "TAN", key: "tan" },
 
-    {
-      label: "Vend/Cust Id",
+    { label: "Unique Ref No", key: "uniqueRefNo" },
 
-      key: "custVendId",
-    },
+    { label: "Account Number", key: "accNo" },
 
-    {
-      label: "RO Code",
+    { label: "Challan Heading", key: "challanHeading" },
 
-      key: "roCode",
-    },
+    { label: "Party Reference No.", key: "" },
 
-    {
-      label: "TAN",
+    { label: "Party Code", key: "" },
 
-      key: "tan",
-    },
+    { label: "PAN of the Party", key: "pan" },
 
-    {
-      label: "Unique Ref No",
+    { label: "Name of the Party", key: "name" },
 
-      key: "uniqueRefNo",
-    },
+    { label: "Amount Receipt/Debited", key: "" },
 
-    {
-      label: "Account Number",
+    { label: "Date of Received/Debited", key: "dateOfDeduction" },
 
-      key: "accNo",
-    },
+    { label: "TDS", key: "tds" },
 
-    {
-      label: "Challan Heading",
+    { label: "Surcharge", key: "surcharge" },
 
-      key: "challanHeading",
-    },
+    { label: "Education Cess.", key: "eduCess" },
 
-    {
-      label: "Party Reference No.",
+    { label: "Total Tax Collected", key: "" },
 
-      key: "",
-    },
+    { label: "Total Tax Deposited", key: "totalTaxDeposited" },
 
-    {
-      label: "Party Code",
+    { label: "Date of Collected", key: "" },
 
-      key: "",
-    },
+    { label: "Total Value of Purchase", key: "dateOfPayment" },
 
-    {
-      label: "PAN of the Party",
+    { label: "Rate at which Tax Collected", key: "rateAtWhichTaxCollected" },
 
-      key: "pan",
-    },
+    { label: "Reason for Non Collection", key: "" },
 
-    {
-      label: "Name of the Party",
+    { label: "Section / Collection Code", key: "sectionCode" },
 
-      key: "name",
-    },
+    { label: "Certificate Number  ", key: "certificateNumber" },
 
-    {
-      label: "Amount Receipt/Debited",
+    { label: "Deductee is Non-Resident", key: "" },
 
-      key: "",
-    },
+    { label: "Permanent Establishment ", key: "" },
 
-    {
-      label: "Date of Received/Debited",
+    { label: "Reason For NonCollection F or G", key: "" },
 
-      key: "dateOfDeduction",
-    },
-
-    {
-      label: "TDS",
-
-      key: "tds",
-    },
-
-    {
-      label: "Surcharge",
-
-      key: "surcharge",
-    },
-
-    {
-      label: "Education Cess.",
-
-      key: "eduCess",
-    },
-
-    {
-      label: "Total Tax Collected",
-
-      key: "",
-    },
-
-    {
-      label: "Total Tax Deposited",
-
-      key: "totalTaxDeposited",
-    },
-
-    {
-      label: "Date of Collected",
-
-      key: "",
-    },
-
-    {
-      label: "Total Value of Purchase",
-
-      key: "dateOfPayment",
-    },
-
-    {
-      label: "Rate at which Tax Collected",
-
-      key: "rateAtWhichTaxCollected",
-    },
-
-    {
-      label: "Reason for Non Collection",
-
-      key: "",
-    },
-
-    {
-      label: "Section / Collection Code",
-
-      key: "sectionCode",
-    },
-
-    {
-      label: "Certificate Number  ",
-
-      key: "certificateNumber",
-    },
-
-    {
-      label: "Deductee is Non-Resident",
-
-      key: "",
-    },
-
-    {
-      label: "Permanent Establishment ",
-
-      key: "",
-    },
-
-    {
-      label: "Reason For NonCollection F or G",
-      key: "",
-    },
-
-    {
-      label: "if Answer to 681A is Yes Then Challan Number",
-      key: "",
-    },
+    { label: "if Answer to 681A is Yes Then Challan Number", key: "" },
 
     {
       label:
         "if Answer to 681A is Yes Then Date Of Payment Of TDS To Central Government",
-
       key: "",
     },
 
-    {
-      label: "Error Description",
+    { label: "Error Description", key: "errorDescription" },
 
-      key: "errorDescription",
-    },
+    { label: "Warning Description", key: "warningDescription" },
 
-    {
-      label: "Warning Description",
+    { label: "Short Deduction", key: "shortDeduction" },
 
-      key: "warningDescription",
-    },
-
-    {
-      label: "Short Deduction",
-      key: "shortDeduction",
-    },
-
-    {
-      label: "Interest On Short Deduction",
-
-      key: "interestOnShortDeduction",
-    },
-    {
-      label: "Interest On Late Payment  ",
-
-      key: "interestOnLatePayment",
-    },
-    {
-      label: "Interest On Late Deduction   ",
-
-      key: "interestOnLateDeduction",
-    },
-    {
-      label: "Status ",
-
-      key: "",
-    },
+    { label: "Interest On Short Deduction", key: "interestOnShortDeduction" },
+    { label: "Interest On Late Payment  ", key: "interestOnLatePayment" },
+    { label: "Interest On Late Deduction   ", key: "interestOnLateDeduction" },
+    { label: "Status ", key: "" },
   ];
 
   const data = [
@@ -293,9 +148,9 @@ const DetailForm27EQ = () => {
           </button>
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={handleNavigateBack}
+            onClick={common.navigateBack(navigate)}
           >
-            <i class="fa-solid fa-reply-all"></i>&nbsp; Back
+            <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
         </div>
       </div>

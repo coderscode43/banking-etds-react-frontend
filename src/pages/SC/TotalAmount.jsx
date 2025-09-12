@@ -1,10 +1,27 @@
-import React, { useState } from "react";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { Field, Input, Label } from "@headlessui/react";
+import DynamicTable from "@/components/tables/DynamicTable";
 
-const TotalAmountDetails = () => {
+const TotalAmount = () => {
+  const entity = "totalAmount";
+  const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   // Table Details
   const tableHead = [
     { label: "Sr.No.", key: "srNo" },
@@ -16,27 +33,17 @@ const TotalAmountDetails = () => {
     { label: "FY", key: "fy" },
     { label: "System Amount", key: "null" },
     { label: "Traces Amount", key: "null" },
+    { label: "System Amount Tax", key: "null" },
+    { label: "Traces Amount Tax", key: "null" },
     { label: "Remark", key: "remark" },
     { label: "Source", key: "source" },
   ];
 
-  const tableData = [
-    {
-      id: 87,
-      custVendId: "33541530",
-      pan: "AIKPG3766B",
-      sectionCode: "94A",
-      challanHeading: "Interest_26Q",
-      month: "SEPTEMBER",
-      fy: "2024-25",
-      totalAmountPaidRaw: -14.0,
-      totalAmountPaidUpload: 0.0,
-      totaltaxRaw: 0.0,
-      totalTaxUploaded: 0.0,
-      remark: "ProcesChallan ,Uploaded on=16-10-2024 ,By=DivyangO",
-      source: null,
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
+
   return (
     <>
       <div className="space-y-5">
@@ -249,11 +256,11 @@ const TotalAmountDetails = () => {
         )}
 
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTable tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
     </>
   );
 };
 
-export default TotalAmountDetails;
+export default TotalAmount;

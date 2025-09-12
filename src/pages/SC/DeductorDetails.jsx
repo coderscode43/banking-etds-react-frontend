@@ -1,65 +1,39 @@
+import common from "@/common/common";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
 import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const DeductorDetails = () => {
+  const entity = "deductorDetails";
+  const [listData, setListData] = useState([]);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "tan",
-      label: "TAN",
-    },
-    {
-      key: "state",
-      label: "State",
-    },
-    {
-      key: "CITY",
-      label: "City",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "tan", label: "TAN" },
+    { key: "state", label: "State" },
+    { key: "CITY", label: "City" },
   ];
 
-  const tableData = [
-    {
-      id: 10006,
-      clientId: null,
-      TAN: "VPNC00430D",
-      FLATORFLOAR: "101",
-      BUILDINGNAME: null,
-      ROADSTREET: null,
-      AREALOCALITY: null,
-      CITY: "this is city",
-      STATE: "19-MAHARASHTRA",
-      PIN: "400091",
-      STD: null,
-      TELEPHONE: null,
-      COMPANYEMAIL: null,
-      STD_ALTERNATE: null,
-      TELEPHONEALTERNATE: null,
-      COMPANYEMAILALTERNATE: null,
-      CHANGEADDRESSSINCELASTRETURN: "N",
-      GSTIN: null,
-      telephonealternate: null,
-      companyemailalternate: null,
-      roadstreet: null,
-      telephone: null,
-      flatorfloar: "101",
-      buildingname: null,
-      arealocality: null,
-      companyemail: null,
-      std_ALTERNATE: null,
-      city: null,
-      std: null,
-      pin: "400091",
-      state: "19-MAHARASHTRA",
-      gstin: null,
-      changeaddresssincelastreturn: "N",
-      tan: "VPNC00430D",
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
+
   return (
     <>
       <div className="space-y-5">

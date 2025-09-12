@@ -146,7 +146,7 @@ const Form27QDeductee = () => {
               </button>
 
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#024dec] px-3 text-2xl font-black text-white">
-                <i class="fa-solid fa-table"></i>
+                <i className="fa-solid fa-table"></i>
               </button>
             </div>
           </Field>

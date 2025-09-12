@@ -1,37 +1,45 @@
-import React, { useState } from "react";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import DynamicTable from "@/components/tables/DynamicTable";
+import { Field, Input, Label } from "@headlessui/react";
 
 const Challan = () => {
+  const entity = "challan";
   const [date, setDate] = useState("");
   const [newDate, newSetDate] = useState("");
   const [showDivs, setShowDivs] = useState(false);
+  const [listData, setListData] = useState([]);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
 
   // Table Details
   const tableHead = [
     { label: "Sr.No.", key: "srNo" },
     { label: "CIN", key: "cin" },
     { label: "TAN", key: "tan" },
-    { label: "Amount of Challan", key: "amountOfChallan" },
-    { label: "Date of Deposition", key: "dateOfDeposition" },
-    { label: "As on Date", key: "asOnDate" },
-    { label: "Challan Mismatch", key: "challanMismatch" },
+    { label: "Amount of Challan", key: "AMOUNT_OF_CLALLAN" },
+    { label: "Date of Deposition", key: "DATE_OF_DEPOSITION" },
+    { label: "As on Date", key: "AS_ON_DATE" },
+    { label: "Challan Mismatch", key: "CHALLAN_MISMATCH" },
   ];
 
-  const tableData = [
-    {
-      cin: "kjlkljiouoiu",
-      tan: "PNET00060E",
-      availableBalance: "hgf",
-      amountOfChallan: "659253",
-      dateOfDeposition: "26-03-2025",
-      asOnDate: "24-06-2025",
-      challanMismatch: "null",
-      section: "section",
-      minorHead: "minor Head Data",
-    },
-  ];
+  // Table Data
+  const tableData = listData.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -171,7 +179,7 @@ const Challan = () => {
         )}
 
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTable tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
     </>

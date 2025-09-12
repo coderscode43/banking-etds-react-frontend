@@ -34,13 +34,15 @@ const DynamicTable = ({ tableHead, tableData, month }) => {
               </tr>
             ) : (
               tableData.map((data, index) => {
-                const isCurrentMonth = data.month === month;
-
                 return (
                   <tr
                     key={index}
                     className={`cursor-pointer text-center ${
-                      isCurrentMonth ? "bg-blue-200" : "hover:bg-gray-100"
+                      "month" in data
+                        ? data.month === month
+                          ? "bg-blue-100"
+                          : "bg-white hover:bg-gray-100"
+                        : ""
                     }`}
                   >
                     {tableHead.map(({ key }, colIndex) => (
@@ -48,7 +50,11 @@ const DynamicTable = ({ tableHead, tableData, month }) => {
                         key={colIndex}
                         className="max-w-[70px] min-w-[100px] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
                       >
-                        {data[key] ?? "----------"}
+                        {key === "CHALLAN_MISMATCH"
+                          ? data[key] === "1"
+                            ? "True"
+                            : "False"
+                          : (data[key] ?? " ")}
                       </td>
                     ))}
                   </tr>

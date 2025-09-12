@@ -1,176 +1,64 @@
+import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import { Navigate } from "react-router-dom";
-import React from "react";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
+import { useNavigate } from "react-router-dom";
 
 const DetailForm24Q = () => {
-  const navigate = Navigate;
-  const handleNavigateBack = navigate(-1);
+  const navigate = useNavigate();
+
   const fields = [
-    {
-      label: "Quarter",
+    { label: "Quarter", key: "quarter" },
 
-      key: "quarter",
-    },
+    { label: "Month", key: "month" },
 
-    {
-      label: "Month",
+    { label: "RO Code", key: "roCode" },
 
-      key: "month",
-    },
+    { label: "Branch Code", key: "branchCode" },
 
-    {
-      label: "RO Code",
+    { label: "Transaction ID", key: "custVendId" },
 
-      key: "roCode",
-    },
+    { label: "Unique Ref No", key: "uniqueRefNo" },
 
-    {
-      label: "Branch Code",
+    { label: "Account No", key: "accNo" },
 
-      key: "branchCode",
-    },
+    { label: "Challan Heading", key: "challanHeading" },
 
-    {
-      label: "Transaction ID",
+    { label: "PAN Ref No.", key: "panRefNo" },
 
-      key: "custVendId",
-    },
+    { label: "PAN", key: "pan" },
 
-    {
-      label: "Unique Ref No",
+    { label: "Section Code", key: "sectionCode" },
 
-      key: "uniqueRefNo",
-    },
+    { label: "Date of Payment", key: "dateOfPayment" },
 
-    {
-      label: "Account No",
+    { label: "Date of Deduction", key: "dateOfDeduction" },
 
-      key: "accNo",
-    },
+    { label: "Amount Paid", key: "amountPaid" },
 
-    {
-      label: "Challan Heading",
+    { label: "TDS", key: "tds" },
 
-      key: "challanHeading",
-    },
+    { label: "Surcharge", key: "surcharge" },
 
-    {
-      label: "PAN Ref No.",
+    { label: "Education Cess", key: "eduCess" },
 
-      key: "panRefNo",
-    },
+    { label: "Total TDS ", key: "" },
 
-    {
-      label: "PAN",
+    { label: "Total Tax Deposited", key: "totalTaxDeposited" },
 
-      key: "pan",
-    },
+    { label: "TAN ", key: "tan" },
 
-    {
-      label: "Section Code",
+    { label: "Certificate Number  ", key: "certificateNumber" },
 
-      key: "sectionCode",
-    },
+    { label: "Error Description", key: "errorDescription" },
 
-    {
-      label: "Date of Payment",
+    { label: "Warning Description", key: "warningDescription" },
 
-      key: "dateOfPayment",
-    },
+    { label: "Short Deduction", key: "shortDeduction" },
 
-    {
-      label: "Date of Deduction",
-
-      key: "dateOfDeduction",
-    },
-
-    {
-      label: "Amount Paid",
-
-      key: "amountPaid",
-    },
-
-    {
-      label: "TDS",
-
-      key: "tds",
-    },
-
-    {
-      label: "Surcharge",
-
-      key: "surcharge",
-    },
-
-    {
-      label: "Education Cess",
-
-      key: "eduCess",
-    },
-
-    {
-      label: "Total TDS ",
-
-      key: "",
-    },
-
-    {
-      label: "Total Tax Deposited",
-
-      key: "totalTaxDeposited",
-    },
-
-    {
-      label: "TAN ",
-
-      key: "tan",
-    },
-
-    {
-      label: "Certificate Number  ",
-
-      key: "certificateNumber",
-    },
-
-    {
-      label: "Error Description",
-
-      key: "errorDescription",
-    },
-
-    {
-      label: "Warning Description",
-
-      key: "warningDescription",
-    },
-
-    {
-      label: "Short Deduction",
-
-      key: "shortDeduction",
-    },
-
-    {
-      label: "Interest On Short Deduction",
-
-      key: "interestOnShortDeduction",
-    },
-    {
-      label: "Interest On Late Payment  ",
-
-      key: "interestOnLatePayment",
-    },
-    {
-      label: "Interest On Late Deduction   ",
-
-      key: "interestOnLateDeduction",
-    },
-    {
-      label: "Status ",
-
-      key: "",
-    },
+    { label: "Interest On Short Deduction", key: "interestOnShortDeduction" },
+    { label: "Interest On Late Payment  ", key: "interestOnLatePayment" },
+    { label: "Interest On Late Deduction   ", key: "interestOnLateDeduction" },
+    { label: "Status ", key: "" },
   ];
 
   const data = [
@@ -218,42 +106,15 @@ const DetailForm24Q = () => {
   ];
 
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "zipFile",
-      label: "Zip File",
-    },
-    {
-      key: "username",
-      label: "Username",
-    },
-    {
-      key: "tan",
-      label: "Tan",
-    },
-    {
-      key: "fy",
-      label: "Financial Year",
-    },
-    {
-      key: "quarter",
-      label: "Quarter",
-    },
-    {
-      key: "form",
-      label: "Form",
-    },
-    {
-      key: "date",
-      label: "Date",
-    },
-    {
-      key: "status",
-      label: "Status",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "zipFile", label: "Zip File" },
+    { key: "username", label: "Username" },
+    { key: "tan", label: "Tan" },
+    { key: "fy", label: "Financial Year" },
+    { key: "quarter", label: "Quarter" },
+    { key: "form", label: "Form" },
+    { key: "date", label: "Date" },
+    { key: "status", label: "Status" },
   ];
 
   const tableData = [
@@ -299,9 +160,9 @@ const DetailForm24Q = () => {
           </button>
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={handleNavigateBack}
+            onClick={common.navigateBack(navigate)}
           >
-            <i class="fa-solid fa-reply-all"></i>&nbsp; Back
+            <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
         </div>
         <div className="mt-5">

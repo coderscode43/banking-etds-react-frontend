@@ -147,7 +147,7 @@ const UploadCertificate = () => {
               </button>
 
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#f5325c] px-3 text-2xl font-black text-white">
-                <i class="fa-solid fa-upload"></i>
+                <i className="fa-solid fa-upload"></i>
               </button>
 
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">

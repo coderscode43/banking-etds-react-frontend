@@ -1,46 +1,25 @@
+import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const DetailRegularReturn = () => {
   const navigate = useNavigate();
-  const handleNavigateBack = navigate(-1);
+
   const fields = [
-    {
-      label: "Financial Year",
-      key: "fy",
-    },
-    {
-      label: "Tan",
-      key: "tan",
-    },
-    {
-      label: "Quarter",
-      key: "quarter",
-    },
-    {
-      label: "Form",
-      key: "form",
-    },
+    { label: "Financial Year", key: "fy" },
+    { label: "Tan", key: "tan" },
+    { label: "Quarter", key: "quarter" },
+    { label: "Form", key: "form" },
     {
       label: "Added On",
       key: "addedOn",
       formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
     },
-    {
-      label: "Added By",
-      key: "addedBy",
-    },
+    { label: "Added By", key: "addedBy" },
 
-    {
-      label: "Latest Response",
-      key: "latestRemark",
-    },
-    {
-      label: "Status",
-      key: "status",
-    },
+    { label: "Latest Response", key: "latestRemark" },
+    { label: "Status", key: "status" },
   ];
 
   const data = [
@@ -58,43 +37,17 @@ const DetailRegularReturn = () => {
       returnFilingDate: null,
     },
   ];
+
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "ipaddrs",
-      label: "Zip File",
-    },
-    {
-      key: "username",
-      label: "Username",
-    },
-    {
-      key: "tan",
-      label: "Tan",
-    },
-    {
-      key: "fy",
-      label: "Financial Year",
-    },
-    {
-      key: "quarter",
-      label: "Quarter",
-    },
-    {
-      key: "form",
-      label: "Form",
-    },
-    {
-      key: "date",
-      label: "Date",
-    },
-    {
-      key: "status",
-      label: "Status",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "ipaddrs", label: "Zip File" },
+    { key: "username", label: "Username" },
+    { key: "tan", label: "Tan" },
+    { key: "fy", label: "Financial Year" },
+    { key: "quarter", label: "Quarter" },
+    { key: "form", label: "Form" },
+    { key: "date", label: "Date" },
+    { key: "status", label: "Status" },
   ];
 
   const tableData = [
@@ -122,14 +75,14 @@ const DetailRegularReturn = () => {
         <DetailGrid fields={fields} data={data[0]} columns={2} />
 
         <div className="mb-3 flex justify-end gap-4 pr-5">
-          <button className="rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-            <i class="fa-solid fa-plus"></i>&nbsp; Add Response
+          <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
+            <i className="fa-solid fa-plus mr-2"></i> <span>Add Response</span>
           </button>
           <button
-            className="rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={handleNavigateBack}
+            className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
+            onClick={common.navigateBack(navigate)}
           >
-            <i class="fa-solid fa-reply-all"></i>&nbsp; Back
+            <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
         </div>
 

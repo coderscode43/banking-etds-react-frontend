@@ -18,10 +18,10 @@ import Form27QDeductee from "./pages/SC/Form27QDeductee";
 import Homepage from "./pages/SC/Homepage";
 import Ldc from "./pages/SC/Ldc";
 import Logs from "./pages/SC/Logs";
-import PanUpdateDetails from "./pages/SC/PanUpdateDetails";
+import PanUpdateList from "./pages/SC/PanUpdateList";
 import RegularReturn from "./pages/SC/RegularReturn";
 import StatementStatus from "./pages/SC/StatementStatus";
-import TotalAmountDetails from "./pages/SC/TotalAmountDetails";
+import TotalAmount from "./pages/SC/TotalAmount";
 import UploadCertificate from "./pages/SC/UploadCertificate";
 import UserDetails from "./pages/SC/UserDetails";
 import DetailForm24Q from "./pages/SCDetail/DetailForm24Q";
@@ -29,6 +29,10 @@ import DetailForm26Q from "./pages/SCDetail/DetailForm26Q";
 
 import PageNotFound from "./components/component/PageNotFound";
 import HomeWOTLayout from "./layouts/HomeWOTLayout";
+import DetailCorrectionRequest from "./pages/SCDetail/DetailCorrectionRequest";
+import DetailForm27EQ from "./pages/SCDetail/DetailForm27EQ";
+import DetailForm27Q from "./pages/SCDetail/DetailForm27Q";
+import DetailRegularReturn from "./pages/SCDetail/DetailRegularReturn";
 import CorrectionRequestWOT from "./pages/WOT/CorrectionRequest";
 import DownloadCertificate from "./pages/WOT/DownloadCertificate";
 import Form24QDeducteeWOT from "./pages/WOT/Form24QDeductee";
@@ -40,13 +44,9 @@ import RegularReturnWOT from "./pages/WOT/RegularReturn";
 import DetailCorrectionRequestWOT from "./pages/WOTDetail/DetailCorrectionRequest";
 import DetailForm24QDeducteeWOT from "./pages/WOTDetail/DetailForm24QDeductee";
 import DetailForm26QDeducteeWOT from "./pages/WOTDetail/DetailForm26QDeductee";
-import DetailRegularReturnWOT from "./pages/WOTDetail/DetailRegularReturn";
 import DetailForm27EQDeducteeWOT from "./pages/WOTDetail/DetailForm27EQDeductee";
 import DetailForm27QDeducteeWOT from "./pages/WOTDetail/DetailForm27QDeductee";
-import DetailForm27EQ from "./pages/SCDetail/DetailForm27EQ";
-import DetailForm27Q from "./pages/SCDetail/DetailForm27Q";
-import DetailRegularReturn from "./pages/SCDetail/DetailRegularReturn";
-import DetailCorrectionRequest from "./pages/SCDetail/DetailCorrectionRequest";
+import DetailRegularReturnWOT from "./pages/WOTDetail/DetailRegularReturn";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -68,8 +68,8 @@ const App = () => {
             <Route path="form27EQDeductee" element={<Form27EQDeductee />} />
             <Route path="form27QDeductee" element={<Form27QDeductee />} />
             <Route path="challan" element={<Challan />} />
-            <Route path="totalAmount" element={<TotalAmountDetails />} />
-            <Route path="panUpdateList" element={<PanUpdateDetails />} />
+            <Route path="totalAmount" element={<TotalAmount />} />
+            <Route path="panUpdateList" element={<PanUpdateList />} />
             <Route path="statementStatus" element={<StatementStatus />} />
             <Route path="deductorDetails" element={<DeductorDetails />} />
             <Route path="correctionRequest" element={<CorrectionRequest />} />

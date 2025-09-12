@@ -1,64 +1,28 @@
+import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import { Navigate } from "react-router-dom";
-import React from "react";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
+import { useNavigate } from "react-router-dom";
 
 const DetailRegularReturn = () => {
-  const navigate = Navigate;
-  const handleNavigateBack = navigate(-1);
+  const navigate = useNavigate();
+
   const fields = [
-    {
-      label: "Financial Year  ",
+    { label: "Financial Year  ", key: "fy" },
 
-      key: "fy",
-    },
+    { label: "TAN", key: "tan" },
 
-    {
-      label: "TAN",
+    { label: "Quarter", key: "quarter" },
 
-      key: "tan",
-    },
+    { label: "Form", key: "form" },
 
-    {
-      label: "Quarter",
+    { label: "Added On", key: "addedOn" },
 
-      key: "quarter",
-    },
+    { label: "Added By", key: "addedBy" },
+    { label: "Latest Response", key: "latestRemark" },
 
-    {
-      label: "Form",
+    { label: "Status", key: "status" },
 
-      key: "form",
-    },
-
-    {
-      label: "Added On",
-
-      key: "addedOn",
-    },
-
-    {
-      label: "Added By",
-
-      key: "addedBy",
-    },
-    {
-      label: "Latest Response",
-
-      key: "latestRemark",
-    },
-
-    {
-      label: "Status",
-
-      key: "status",
-    },
-
-    {
-      label: "Return Filing Date ",
-
-      key: "returnFilingDate",
-    },
+    { label: "Return Filing Date ", key: "returnFilingDate" },
   ];
 
   const data = [
@@ -82,33 +46,14 @@ const DetailRegularReturn = () => {
       key: "srNo",
       label: "Sr.No",
     },
-    {
-      key: "",
-      label: "Correction Response",
-    },
-    {
-      key: "remarkStatus",
-      label: "Status",
-    },
-    {
-      key: "supportingDocName",
-      label: "Supporting Document Name",
-    },
+    { key: "", label: "Correction Response" },
+    { key: "remarkStatus", label: "Status" },
+    { key: "supportingDocName", label: "Supporting Document Name" },
 
-    {
-      key: "addedBy",
-      label: "Added By",
-    },
-    {
-      key: "addedOn",
-      label: "Added On",
-    },
-    {
-      key: "",
-      label: "Action",
-    },
+    { key: "addedBy", label: "Added By" },
+    { key: "addedOn", label: "Added On" },
+    { key: "", label: "Action" },
   ];
-
   const tableData = [
     {
       id: 2291074,
@@ -143,13 +88,13 @@ const DetailRegularReturn = () => {
         <DetailGrid fields={fields} data={data[0]} columns={2} />
         <div className="flex justify-end gap-4 pr-5">
           <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-            <i class="fa-solid fa-plus"></i>&nbsp; Add Response
+            <i className="fa-solid fa-plus"></i>&nbsp; Add Response
           </button>
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={handleNavigateBack}
+            onClick={common.navigateBack(navigate)}
           >
-            <i class="fa-solid fa-reply-all"></i>&nbsp; Back
+            <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
         </div>
         <div className="mt-5">

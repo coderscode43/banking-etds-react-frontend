@@ -1,201 +1,76 @@
+import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import { Navigate } from "react-router-dom";
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const DetailForm26Q = () => {
-  const navigate = Navigate;
-  const handleNavigateBack = navigate(-1);
+  const navigate = useNavigate();
+
   const fields = [
-    {
-      label: "Quarter",
+    { label: "Quarter", key: "quarter" },
 
-      key: "quarter",
-    },
+    { label: "Month", key: "month" },
 
-    {
-      label: "Month",
+    { label: "Branch Code", key: "branchCode" },
 
-      key: "month",
-    },
+    { label: "Transaction ID", key: "custVendId" },
 
-    {
-      label: "Branch Code",
+    { label: "RO Code", key: "roCode" },
 
-      key: "branchCode",
-    },
+    { label: "TAN", key: "tan" },
 
-    {
-      label: "Transaction ID",
+    { label: "Unique Ref No", key: "uniqueRefNo" },
 
-      key: "custVendId",
-    },
+    { label: "Account No", key: "accNo" },
 
-    {
-      label: "RO Code",
+    { label: "Challan Heading", key: "challanHeading" },
 
-      key: "roCode",
-    },
+    { label: "Deductee Code", key: "deducteeCode" },
 
-    {
-      label: "TAN",
+    { label: "PAN of the Deductee", key: "pan" },
 
-      key: "tan",
-    },
+    { label: "Name of the Deductee", key: "name" },
 
-    {
-      label: "Unique Ref No",
+    { label: "Section Code", key: "sectionCode" },
 
-      key: "uniqueRefNo",
-    },
+    { label: "Date of Payment", key: "dateOfPayment" },
 
-    {
-      label: "Account No",
+    { label: "Amount Paid", key: "amountPaid" },
 
-      key: "accNo",
-    },
+    { label: "TDS", key: "tds" },
 
-    {
-      label: "Challan Heading",
+    { label: "Surcharge", key: "surcharge" },
 
-      key: "challanHeading",
-    },
+    { label: "Education Cess", key: "eduCess" },
 
-    {
-      label: "Deductee Code",
+    { label: "Total Tax Deducted", key: "totalTaxDeducted" },
 
-      key: "deducteeCode",
-    },
+    { label: "Total Tax Deposited", key: "totalTaxDeposited" },
 
-    {
-      label: "PAN of the Deductee",
+    { label: "Date of Deduction ", key: "dateOfDeduction" },
 
-      key: "pan",
-    },
+    { label: "Rate at which Tax Deducted", key: "rate_at_which_tax_deducted" },
 
-    {
-      label: "Name of the Deductee",
+    { label: "Short Deduction", key: "shortDeduction" },
 
-      key: "name",
-    },
+    { label: "Certificate Number  ", key: "certificateNumber" },
 
-    {
-      label: "Section Code",
-
-      key: "sectionCode",
-    },
-
-    {
-      label: "Date of Payment",
-
-      key: "dateOfPayment",
-    },
-
-    {
-      label: "Amount Paid",
-
-      key: "amountPaid",
-    },
-
-    {
-      label: "TDS",
-
-      key: "tds",
-    },
-
-    {
-      label: "Surcharge",
-
-      key: "surcharge",
-    },
-
-    {
-      label: "Education Cess",
-
-      key: "eduCess",
-    },
-
-    {
-      label: "Total Tax Deducted",
-
-      key: "totalTaxDeducted",
-    },
-
-    {
-      label: "Total Tax Deposited",
-
-      key: "totalTaxDeposited",
-    },
-
-    {
-      label: "Date of Deduction ",
-
-      key: "dateOfDeduction",
-    },
-
-    {
-      label: "Rate at which Tax Deducted",
-      key: "rate_at_which_tax_deducted",
-    },
-
-    {
-      label: "Short Deduction",
-      key: "shortDeduction",
-    },
-
-    {
-      label: "Certificate Number  ",
-
-      key: "certificateNumber",
-    },
-
-    {
-      label: "Cash Withdrawl (194N) Description",
-
-      key: "cashWithdrawal194N",
-    },
+    { label: "Cash Withdrawl (194N) Description", key: "cashWithdrawal194N" },
 
     {
       label: "Cash Withdrawl 194N(20L to 1cr)",
-
       key: "cashWithdrawal194N20Lto1Cr",
     },
 
-    {
-      label: "Cash Withdrawl 194N(>1cr)",
+    { label: "Cash Withdrawl 194N(>1cr)", key: "cashWithdrawal194N1Cr" },
 
-      key: "cashWithdrawal194N1Cr",
-    },
+    { label: "Error Description", key: "errorDescription" },
 
-    {
-      label: "Error Description",
-      key: "errorDescription",
-    },
+    { label: "Warning  Description", key: "warningDescription" },
 
-    {
-      label: "Warning  Description",
-      key: "warningDescription",
-    },
-
-    {
-      label: "Interest On Short Deduction",
-
-      key: "interestOnShortDeduction",
-    },
-    {
-      label: "Interest On Late Payment  ",
-
-      key: "interestOnLatePayment",
-    },
-    {
-      label: "Interest On Late Deduction   ",
-
-      key: "interestOnLateDeduction",
-    },
-    {
-      label: "Status ",
-
-      key: "",
-    },
+    { label: "Interest On Short Deduction", key: "interestOnShortDeduction" },
+    { label: "Interest On Late Payment  ", key: "interestOnLatePayment" },
+    { label: "Interest On Late Deduction   ", key: "interestOnLateDeduction" },
+    { label: "Status ", key: "" },
   ];
 
   const data = [
@@ -261,9 +136,9 @@ const DetailForm26Q = () => {
           </button>
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={handleNavigateBack}
+            onClick={common.navigateBack(navigate)}
           >
-            <i class="fa-solid fa-reply-all"></i>&nbsp; Back
+            <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
         </div>
       </div>

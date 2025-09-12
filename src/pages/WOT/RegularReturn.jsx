@@ -7,42 +7,15 @@ const RegularReturn = () => {
   const [showDivs, setShowDivs] = useState(false);
 
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "ipaddrs",
-      label: "Zip File",
-    },
-    {
-      key: "username",
-      label: "Username",
-    },
-    {
-      key: "tan",
-      label: "Tan",
-    },
-    {
-      key: "fy",
-      label: "Financial Year",
-    },
-    {
-      key: "quarter",
-      label: "Quarter",
-    },
-    {
-      key: "form",
-      label: "Form",
-    },
-    {
-      key: "date",
-      label: "Date",
-    },
-    {
-      key: "status",
-      label: "Status",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "ipaddrs", label: "Zip File" },
+    { key: "username", label: "Username" },
+    { key: "tan", label: "Tan" },
+    { key: "fy", label: "Financial Year" },
+    { key: "quarter", label: "Quarter" },
+    { key: "form", label: "Form" },
+    { key: "date", label: "Date" },
+    { key: "status", label: "Status" },
   ];
 
   const tableData = [
@@ -71,6 +44,7 @@ const RegularReturn = () => {
       fy: null,
     },
   ];
+
   return (
     <>
       {" "}

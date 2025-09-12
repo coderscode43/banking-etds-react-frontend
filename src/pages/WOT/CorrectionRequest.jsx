@@ -136,7 +136,7 @@ const CorrectionRequest = () => {
               </button>
 
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white">
-                <i class="fa-solid fa-plus"></i>
+                <i className="fa-solid fa-plus"></i>
               </button>
             </div>
           </Field>
