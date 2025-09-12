@@ -1,7 +1,7 @@
 const DynamicTable = ({ tableHead, tableData, month }) => {
   return (
     <div className="relative w-full">
-      <div className="w-full overflow-clip rounded-md">
+      <div className="w-full overflow-clip rounded-md border border-gray-200">
         <table className="w-full text-[14px]">
           <thead className="bg-[var(--secondary-color)] whitespace-nowrap text-white">
             <tr className="border-[1.5px] border-[var(--secondary-color)]">

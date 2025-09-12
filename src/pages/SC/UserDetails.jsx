@@ -1,34 +1,37 @@
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import { Field, Input, Label } from "@headlessui/react";
 
 const UserDetails = () => {
+  const entity = "userDetails";
+  const [listData, setListData] = useState([]);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "employeeId",
-      label: "Employee ID",
-    },
-    {
-      key: "typeOfUser",
-      label: "Type Of Admin",
-    },
-    {
-      key: "action",
-      label: "Action",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "employeeId", label: "Employee ID" },
+    { key: "typeOfUser", label: "Type Of Admin" },
+    { key: "action", label: "Action" },
   ];
 
-  const tableData = [
-    {
-      id: 2291353,
-      employeeId: "vaibhav",
-      typeOfUser: "admin",
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
   return (
     <>
       <div className="space-y-5">
@@ -87,7 +90,11 @@ const UserDetails = () => {
           </Field>
         </div>
 
-        <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        <DynamicTableAction
+          entity={entity}
+          tableHead={tableHead}
+          tableData={tableData}
+        />
       </div>
     </>
   );

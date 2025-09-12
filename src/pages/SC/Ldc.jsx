@@ -1,111 +1,51 @@
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
-import React, { useState } from "react";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import DynamicTable from "@/components/tables/DynamicTable";
+import { Field, Input, Label } from "@headlessui/react";
 
 const Ldc = () => {
+  const entity = "ldc";
+
   const [showDivs, setShowDivs] = useState(false);
+  const [listData, setListData] = useState([]);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "LDC_NUMBER",
-      label: "LDC_NUMBER",
-    },
-    {
-      key: "NAME",
-      label: "NAME",
-    },
-    {
-      key: "TAN",
-      label: "TAN",
-    },
-    {
-      key: "PAN",
-      label: "PAN",
-    },
-    {
-      key: "FY",
-      label: "Finanial Year",
-    },
-    {
-      key: "VALID_FROM",
-      label: "Valid From",
-    },
-    {
-      key: "VALID_TO",
-      label: "Valid To",
-    },
-    {
-      key: "SECTION_CODE",
-      label: "Section Code",
-    },
-    {
-      key: "NATURE_OF_PAYMENT",
-      label: "Nature of Payment",
-    },
-    {
-      key: "LDC_RATE",
-      label: "LDC Rate",
-    },
-    {
-      key: "certificate_LIMIT",
-      label: "Certificate Limit",
-    },
-    {
-      key: "AMOUNT_CONSUMED",
-      label: "Amount Consumed",
-    },
-    {
-      key: "ISSUE_DATE",
-      label: "Issued Date",
-    },
-    {
-      key: "CANCEL_DATE",
-      label: "Cancel Date",
-    },
-    {
-      key: "as_ON_DATE",
-      label: "As on Date",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "LDC_NUMBER", label: "LDC_NUMBER" },
+    { key: "NAME", label: "NAME" },
+    { key: "TAN", label: "TAN" },
+    { key: "PAN", label: "PAN" },
+    { key: "FY", label: "Finanial Year" },
+    { key: "VALID_FROM", label: "Valid From" },
+    { key: "VALID_TO", label: "Valid To" },
+    { key: "SECTION_CODE", label: "Section Code" },
+    { key: "NATURE_OF_PAYMENT", label: "Nature of Payment" },
+    { key: "LDC_RATE", label: "LDC Rate" },
+    { key: "certificate_LIMIT", label: "Certificate Limit" },
+    { key: "AMOUNT_CONSUMED", label: "Amount Consumed" },
+    { key: "ISSUE_DATE", label: "Issued Date" },
+    { key: "CANCEL_DATE", label: "Cancel Date" },
+    { key: "as_ON_DATE", label: "As on Date" },
   ];
 
-  const tableData = [
-    {
-      LDC_NUMBER: "sdgsdg",
-      NAME: "dsfgdg",
-      TAN: "MUMP20147B",
-      PAN: "dfgdgdsd",
-      FY: "202021",
-      VALID_FROM: "2025-06-16",
-      VALID_TO: "2025-06-12",
-      SECTION_CODE: null,
-      NATURE_OF_PAYMENT: "gfdfg",
-      LDC_RATE: "sdgdsfg",
-      CERTIFICATE_LIMIT: "dfg",
-      AMOUNT_CONSUMED: "sdfg",
-      ISSUE_DATE: "2025-06-19",
-      CANCEL_DATE: "2025-06-11",
-      AS_ON_DATE: "2025-06-25",
-      pan: "dfgdgdsd",
-      as_ON_DATE: "2025-06-25",
-      valid_FROM: "2025-06-16",
-      valid_TO: "2025-06-12",
-      issue_DATE: "2025-06-19",
-      section_CODE: null,
-      cancel_DATE: "2025-06-11",
-      ldc_NUMBER: "sdgsdg",
-      amount_CONSUMED: "sdfg",
-      ldc_RATE: "sdgdsfg",
-      certificate_LIMIT: "dfg",
-      nature_OF_PAYMENT: "gfdfg",
-      fy: "202021",
-      name: "dsfgdg",
-      tan: "MUMP20147B",
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
   return (
     <>
       <div className="space-y-5">
@@ -288,7 +228,7 @@ const Ldc = () => {
         )}
 
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTable tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
     </>

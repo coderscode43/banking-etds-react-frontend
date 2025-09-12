@@ -1,73 +1,42 @@
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Label } from "@headlessui/react";
 import clsx from "clsx";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { Field, Label } from "@headlessui/react";
+import DynamicTable from "@/components/tables/DynamicTable";
 
 const UploadCertificate = () => {
+  const entity = "uploadCertificate";
+  const [listData, setListData] = useState([]);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "ipaddrs",
-      label: "Zip File",
-    },
-    {
-      key: "username",
-      label: "Username",
-    },
-    {
-      key: "tan",
-      label: "Tan",
-    },
-    {
-      key: "fy",
-      label: "Financial Year",
-    },
-    {
-      key: "quarter",
-      label: "Quarter",
-    },
-    {
-      key: "form",
-      label: "Form",
-    },
-    {
-      key: "date",
-      label: "Date",
-    },
-    {
-      key: "status",
-      label: "Status",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "zipFile", label: "Zip File" },
+    { key: "username", label: "Username" },
+    { key: "tan", label: "Tan" },
+    { key: "fy", label: "Financial Year" },
+    { key: "quarter", label: "Quarter" },
+    { key: "form", label: "Form" },
+    { key: "date", label: "Date" },
+    { key: "status", label: "Status" },
   ];
 
-  const tableData = [
-    {
-      id: 2291353,
-      username: "directdownload",
-      logsDate: "2025-09-02",
-      quarter: "Q65",
-      form: "Download Certificate",
-      date: "2025-09-02",
-      status: "this is status",
-      tan: "skjhdfjkh",
-      zipFile: "skjhdfjkh",
-      fy: null,
-    },
-    {
-      id: 2291353,
-      username: "directdownload",
-      logsDate: "2025-09-02",
-      quarter: "Q65",
-      form: "Download Certificate",
-      date: "2025-09-02",
-      status: "this is status",
-      tan: "skjhdfjkh",
-      zipFile: "skjhdfjkh",
-      fy: null,
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
   return (
     <>
       <div className="space-y-5">
@@ -157,7 +126,7 @@ const UploadCertificate = () => {
           </Field>
         </div>
 
-        <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        <DynamicTable tableHead={tableHead} tableData={tableData} />
       </div>
     </>
   );

@@ -25,6 +25,7 @@ const RegularReturn = () => {
   }, []);
 
   const tableHead = [
+    { label: "Sr.No.", key: "srNo" },
     { key: "addedOn", label: "Date" },
     { key: "fy", label: "Financial Year", format: (value) => value || "-" },
     { key: "tan", label: "TAN" },
@@ -42,7 +43,8 @@ const RegularReturn = () => {
     { key: "action", label: "Action" },
   ];
 
-  const tableData = listData?.map((data) => ({
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
     ...data,
   }));
 

@@ -1,51 +1,43 @@
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
-import React, { useState } from "react";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import { Field, Input, Label } from "@headlessui/react";
 
 const Logs = () => {
+  const entity = "logs";
+
   const [date, setDate] = useState("");
   const [date1, setDate1] = useState("");
+  const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    {
-      key: "username",
-      label: "Username",
-    },
-    {
-      key: "ipaddrs",
-      label: "IP Address",
-    },
-    {
-      key: "entity",
-      label: "Entity",
-    },
-    {
-      key: "logsDate",
-      label: "Date",
-    },
-    {
-      key: "action",
-      label: "Action",
-    },
+    { key: "srNo", label: "Sr.No" },
+    { key: "username", label: "Username" },
+    { key: "ipaddrs", label: "IP Address" },
+    { key: "entity", label: "Entity" },
+    { key: "logsDate", label: "Date" },
+    { key: "action", label: "Action" },
   ];
 
-  const tableData = [
-    {
-      id: 2291353,
-      username: "directdownload",
-      logsDate: "2025-09-02",
-      ipaddrs: "192.168.0.98",
-      entity: "Download Certificate",
-      action: "Download",
-      details: null,
-      fy: null,
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -156,7 +148,11 @@ const Logs = () => {
         )}
 
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTableAction
+            entity={entity}
+            tableHead={tableHead}
+            tableData={tableData}
+          />
         </div>
       </div>
     </>

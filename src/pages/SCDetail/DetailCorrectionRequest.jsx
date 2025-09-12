@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import AddCorrectionResponseModal from "@/components/component/AddCorrectionResponseModal";
 
 const DetailCorrectionRequest = () => {
   const navigate = useNavigate();
@@ -203,11 +204,9 @@ const DetailCorrectionRequest = () => {
         <hr className="m-5 bg-gray-400" />
         <DetailGrid fields={fields1} data={data[0]} columns={3} />
         <div className="mb-3 flex justify-end gap-4 py-5">
-          <button className="rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-            <i className="fa-solid fa-plus"></i>&nbsp; Add Response
-          </button>
+          <AddCorrectionResponseModal />
           <button
-            className="rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
+            className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={common.navigateBack(navigate)}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back

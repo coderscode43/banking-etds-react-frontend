@@ -1,7 +1,8 @@
 import common from "@/common/common";
+import { useNavigate } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { useNavigate } from "react-router-dom";
+import AddRegularReturnResponseModal from "@/components/component/AddRegularReturnResponseModal";
 
 const DetailRegularReturn = () => {
   const navigate = useNavigate();
@@ -87,9 +88,7 @@ const DetailRegularReturn = () => {
 
         <DetailGrid fields={fields} data={data[0]} columns={2} />
         <div className="flex justify-end gap-4 pr-5">
-          <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-            <i className="fa-solid fa-plus"></i>&nbsp; Add Response
-          </button>
+          <AddRegularReturnResponseModal />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={common.navigateBack(navigate)}
