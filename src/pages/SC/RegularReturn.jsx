@@ -1,76 +1,51 @@
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Label, Input } from "@headlessui/react";
 import clsx from "clsx";
-import React, { useState } from "react";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import DynamicTableCheckBoxAction from "@/components/tables/DynamicTableCheckBoxAction";
+import { Field, Input, Label } from "@headlessui/react";
 
 const RegularReturn = () => {
+  const entity = "regularReturn";
+
   const [date, setDate] = useState("");
+  const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const response = await common.getListData(entity);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   const tableHead = [
+    { key: "addedOn", label: "Date" },
+    { key: "fy", label: "Financial Year", format: (value) => value || "-" },
+    { key: "tan", label: "TAN" },
+    { key: "quarter", label: "Quarter" },
+    { key: "form", label: "Form" },
+    { key: "addedBy", label: "Added By" },
+    { key: "latestRemark", label: "Latest Response" },
+    { key: "status", label: "Status" },
     {
-      key: "srNo",
-      label: "Sr.No",
+      key: "returnFilingDate",
+      label: "Return Filing Date",
+      format: (d) =>
+        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
     },
-    {
-      key: "ipaddrs",
-      label: "Zip File",
-    },
-    {
-      key: "username",
-      label: "Username",
-    },
-    {
-      key: "tan",
-      label: "Tan",
-    },
-    {
-      key: "fy",
-      label: "Financial Year",
-    },
-    {
-      key: "quarter",
-      label: "Quarter",
-    },
-    {
-      key: "form",
-      label: "Form",
-    },
-    {
-      key: "date",
-      label: "Date",
-    },
-    {
-      key: "status",
-      label: "Status",
-    },
+    { key: "action", label: "Action" },
   ];
 
-  const tableData = [
-    {
-      id: 2291353,
-      username: "directdownload",
-      logsDate: "2025-09-02",
-      quarter: "Q65",
-      form: "Download Certificate",
-      date: "2025-09-02",
-      status: "this is status",
-      tan: "skjhdfjkh",
-      zipFile: "skjhdfjkh",
-      fy: null,
-    },
-    {
-      id: 2291353,
-      username: "directdownload",
-      logsDate: "2025-09-02",
-      quarter: "Q65",
-      form: "Download Certificate",
-      date: "2025-09-02",
-      status: "this is status",
-      tan: "skjhdfjkh",
-      zipFile: "skjhdfjkh",
-      fy: null,
-    },
-  ];
+  const tableData = listData?.map((data) => ({
+    ...data,
+  }));
+
   return (
     <>
       <div className="space-y-5">
@@ -150,11 +125,11 @@ const RegularReturn = () => {
               </button>
 
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i class="fa-solid fa-comment"></i>
+                <i className="fa-solid fa-comment"></i>
               </button>
 
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white">
-                <i class="fa-solid fa-plus"></i>
+                <i className="fa-solid fa-plus"></i>
               </button>
             </div>
           </Field>
@@ -219,14 +194,17 @@ const RegularReturn = () => {
               </div>
               <div>
                 <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#f5325c] px-3 text-2xl font-black text-white">
-                  <i class="fa-solid fa-upload"></i>
+                  <i className="fa-solid fa-upload"></i>
                 </button>
               </div>
             </Field>
           </div>
         )}
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTableCheckBoxAction
+            tableHead={tableHead}
+            tableData={tableData}
+          />
         </div>
       </div>
     </>

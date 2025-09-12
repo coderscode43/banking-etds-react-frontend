@@ -3,9 +3,13 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
 import { Field, Input, Label } from "@headlessui/react";
+import { useNavigate } from "react-router-dom";
 
 const Branch = () => {
   const entity = "branch";
+
+  const navigate = useNavigate();
+
   const [listData, setListData] = useState([]);
 
   useEffect(() => {
@@ -92,7 +96,13 @@ const Branch = () => {
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>
 
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white">
+              <button
+                className="z-30 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
+                onClick={() => {
+                  console.log("clicked");
+                  navigate(`/home/add/addBranch`);
+                }}
+              >
                 <i className="fa-solid fa-plus"></i>
               </button>
 
