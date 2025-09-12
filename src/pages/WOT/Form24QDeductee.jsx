@@ -1,10 +1,26 @@
 import clsx from "clsx";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
+import { useEffect } from "react";
 import React, { useState } from "react";
+import common from "@/common/common";
+import { useParams } from "react-router-dom";
+import { Field, Input, Label } from "@headlessui/react";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
 
 const Form24QDeductee = () => {
+  const entity = "form24QDeductee";
+
+  const { fy, branchCode } = useParams();
+
+  const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      const response = await common.getWOTListData(entity, fy, branchCode);
+      setListData(response.data.entities || []);
+    };
+    fetchListData();
+  }, [fy, branchCode]);
 
   // Table Details
   const tableHead = [
@@ -21,49 +37,10 @@ const Form24QDeductee = () => {
     { label: "Action", key: "action" },
   ];
 
-  const tableData = [
-    {
-      id: 150118,
-      challanHeading: "Interest_24Q",
-      deducteeRefNo: null,
-      panRefNo: null,
-      pan: "ABFPL4107P",
-      name: "R.D.LAKHAN . 26056)",
-      sectionCode: "92B",
-      dateOfPayment: "2024-03-31",
-      dateOfDeduction: "2024-04-22",
-      amountPaid: 5122795.0,
-      tds: 0.0,
-      surcharge: 0.0,
-      eduCess: 0.0,
-      totalTaxDeducted: 0.0,
-      totalTaxDeposited: 0.0,
-      certificateNumber: null,
-      remarksReason: null,
-      fy: "2023-24",
-      quarter: "Q4",
-      branchCode: 100000,
-      accNo: null,
-      challanSrNo: 3,
-      month: "MARCH",
-      custVendId: "123456789",
-      uniqueRefNo: null,
-      TAN: "MUMT09716A",
-      roCode: "100000",
-      errorDescription: null,
-      warningDescription: null,
-      shortDeduction: 0.0,
-      interestOnShortDeduction: 0.0,
-      interestOnLatePayment: 0.0,
-      interestOnLateDeduction: 0.0,
-      resolved: true,
-      comments: null,
-      deducteeSrNo: 59,
-      tranAmt: 0,
-      additionalDetail: null,
-      tan: "MUMT09716A",
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -205,7 +182,7 @@ const Form24QDeductee = () => {
         )}
 
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTableAction tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
     </>

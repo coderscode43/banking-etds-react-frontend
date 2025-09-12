@@ -17,3 +17,15 @@ export const listData = async (entity) => {
     console.error(error);
   }
 };
+
+export const WOTListData = async (entity, fy, branchCode) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}${entity}/list/${fy}/${branchCode}/count/`,
+      credentials
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};

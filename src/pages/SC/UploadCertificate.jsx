@@ -23,13 +23,13 @@ const UploadCertificate = () => {
 
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
-    { key: "zipFile", label: "Zip File" },
-    { key: "username", label: "Username" },
+    { key: "fileName", label: "Zip File" },
+    { key: "userName", label: "Username" },
     { key: "tan", label: "Tan" },
     { key: "fy", label: "Financial Year" },
     { key: "quarter", label: "Quarter" },
     { key: "form", label: "Form" },
-    { key: "date", label: "Date" },
+    { key: "uploadedTime", label: "Date" },
     { key: "status", label: "Status" },
   ];
 

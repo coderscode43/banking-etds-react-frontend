@@ -118,13 +118,20 @@ const App = () => {
         >
           <Route path="homepage" element={<Homepage />} />
           <Route path="downloadCertificate" element={<DownloadCertificate />} />
-          <Route path="form24QDeductee" element={<Form24QDeducteeWOT />} />
-          <Route path="form26QDeductee" element={<Form26QDeducteeWOT />} />
-          <Route path="form27EQDeductee" element={<Form27EQDeducteeWOT />} />
-          <Route path="form27QDeductee" element={<Form27QDeducteeWOT />} />
-          <Route path="correctionRequest" element={<CorrectionRequestWOT />} />
-          <Route path="regularReturn" element={<RegularReturnWOT />} />
           <Route path="generateReport" element={<GenerateReport />} />
+
+          <Route path="list">
+            <Route path="form24QDeductee" element={<Form24QDeducteeWOT />} />
+            <Route path="form26QDeductee" element={<Form26QDeducteeWOT />} />
+            <Route path="form27EQDeductee" element={<Form27EQDeducteeWOT />} />
+            <Route path="form27QDeductee" element={<Form27QDeducteeWOT />} />
+            <Route
+              path="correctionRequest"
+              element={<CorrectionRequestWOT />}
+            />
+            <Route path="regularReturn" element={<RegularReturnWOT />} />
+          </Route>
+
           <Route
             path="detailForm24QDeductee"
             element={<DetailForm24QDeducteeWOT />}

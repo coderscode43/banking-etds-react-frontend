@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import common from "@/common/common";
 import { useEffect, useState } from "react";
-import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import DynamicTable from "@/components/tables/DynamicTable";
 import { Field, Input, Label } from "@headlessui/react";
 
 const Logs = () => {
@@ -148,7 +148,7 @@ const Logs = () => {
         )}
 
         <div>
-          <DynamicTableAction
+          <DynamicTable
             entity={entity}
             tableHead={tableHead}
             tableData={tableData}
