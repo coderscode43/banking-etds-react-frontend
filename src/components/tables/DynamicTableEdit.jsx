@@ -41,7 +41,13 @@ const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
                 <tr
                   key={index}
                   className="cursor-pointer text-center hover:bg-gray-100"
-                  onDoubleClick={() => {
+                  onDoubleClick={(e) => {
+                    // Check if the clicked column is the last one
+                    if (e.target.cellIndex === tableHead.length - 1) {
+                      console.log(e.target.cellIndex);
+
+                      return; // Do nothing if it's the last column
+                    }
                     if (entity === "branch") {
                       navigate(`/homeWOT/${data.branchCode}/2025-26/homepage`);
                     }
@@ -53,7 +59,16 @@ const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
                       className="max-w-[70px] min-w-[100px] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
                     >
                       {key == "branchEdit" ? (
-                        <i className="fa-solid fa-pen-to-square text-lg"></i>
+                        <i
+                          onClick={() => {
+                            navigate(
+                              `/home/detail/${entity}/${data.id}/detail${
+                                entity.charAt(0).toUpperCase() + entity.slice(1)
+                              }`
+                            );
+                          }}
+                          className="fa-solid fa-pen-to-square text-lg"
+                        ></i>
                       ) : (
                         (data[key] ?? "-")
                       )}

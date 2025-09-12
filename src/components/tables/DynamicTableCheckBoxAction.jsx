@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const DynamicTableCheckBoxAction = ({ tableHead, tableData }) => {
+const DynamicTableCheckBoxAction = ({ entity, tableHead, tableData }) => {
+  const navigate = useNavigate();
+
   const [selectedRows, setSelectedRows] = useState([]);
 
   const isAllSelected =
@@ -79,6 +82,17 @@ const DynamicTableCheckBoxAction = ({ tableHead, tableData }) => {
                   <tr
                     key={index}
                     className={`cursor-pointer bg-white text-center ${isChecked ? "bg-blue-100" : ""}`}
+                    onDoubleClick={() => {
+                      console.log("Hello");
+
+                      if (entity !== "branch") {
+                        navigate(
+                          `/home/detail/${entity}/${data.id}/detail${
+                            entity.charAt(0).toUpperCase() + entity.slice(1)
+                          }`
+                        );
+                      }
+                    }}
                   >
                     {/* Checkbox cell */}
                     <td className="border-[1.5px] border-gray-300 p-2">

@@ -53,7 +53,9 @@ const DynamicTableAction = ({ entity, tableHead, tableData }) => {
                     onDoubleClick={() => {
                       if (entity !== "branch") {
                         navigate(
-                          `/home/detail/${entity}/${data.id}/${data.fy}/${data.branchCode}/detailForm24QDeductee`
+                          `/home/detail/${entity}/${data.id}/${data.fy}/${data.branchCode}/detail${
+                            entity.charAt(0).toUpperCase() + entity.slice(1)
+                          }`
                         );
                       }
                     }}

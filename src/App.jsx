@@ -48,6 +48,7 @@ import DetailForm27EQDeducteeWOT from "./pages/WOTDetail/DetailForm27EQDeductee"
 import DetailForm27QDeducteeWOT from "./pages/WOTDetail/DetailForm27QDeductee";
 import DetailRegularReturnWOT from "./pages/WOTDetail/DetailRegularReturn";
 import AddBranch from "./pages/SCAdd/AddBranch";
+import DetailBranch from "./pages/SCDetail/DetailBranch";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -81,19 +82,28 @@ const App = () => {
             <Route path="logs" element={<Logs />} />
           </Route>
 
-          <Route path="detail/:entity/:id/:fy/:branchCode">
-            <Route path="detailForm24QDeductee" element={<DetailForm24Q />} />
-            <Route path="detailForm26QDeductee" element={<DetailForm26Q />} />
-            <Route path="detailForm27EQDeductee" element={<DetailForm27EQ />} />
-            <Route path="detailForm27QDeductee" element={<DetailForm27Q />} />
-            <Route
-              path="detailRegularReturn"
-              element={<DetailRegularReturn />}
-            />
-            <Route
-              path="detailCorrectionRequest"
-              element={<DetailCorrectionRequest />}
-            />
+          <Route path="detail">
+            <Route path=":entity/:id/:fy/:branchCode">
+              <Route path="detailForm24QDeductee" element={<DetailForm24Q />} />
+              <Route path="detailForm26QDeductee" element={<DetailForm26Q />} />
+              <Route
+                path="detailForm27EQDeductee"
+                element={<DetailForm27EQ />}
+              />
+              <Route path="detailForm27QDeductee" element={<DetailForm27Q />} />
+              <Route
+                path="detailCorrectionRequest"
+                element={<DetailCorrectionRequest />}
+              />
+            </Route>
+
+            <Route path=":entity/:id">
+              <Route path="detailBranch" element={<DetailBranch />} />
+              <Route
+                path="detailRegularReturn"
+                element={<DetailRegularReturn />}
+              />
+            </Route>
           </Route>
 
           <Route path="add">

@@ -202,6 +202,7 @@ const RegularReturn = () => {
         )}
         <div>
           <DynamicTableCheckBoxAction
+            entity={entity}
             tableHead={tableHead}
             tableData={tableData}
           />

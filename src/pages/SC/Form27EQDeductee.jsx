@@ -233,7 +233,11 @@ const Form27EQDeductee = () => {
         )}
 
         <div>
-          <DynamicTableAction tableHead={tableHead} tableData={tableData} />
+          <DynamicTableAction
+            entity={entity}
+            tableHead={tableHead}
+            tableData={tableData}
+          />
         </div>
       </div>
     </>
