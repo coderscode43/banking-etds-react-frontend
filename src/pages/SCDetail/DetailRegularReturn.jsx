@@ -2,7 +2,7 @@ import common from "@/common/common";
 import { useNavigate } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import AddRegularReturnResponseModal from "@/components/component/AddRegularReturnResponseModal";
+import AddRegularReturnResponseModal from "@/components/modals/AddRegularReturnResponseModal";
 
 const DetailRegularReturn = () => {
   const navigate = useNavigate();

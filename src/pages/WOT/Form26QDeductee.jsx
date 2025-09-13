@@ -1,10 +1,26 @@
-import React, { useState } from "react";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Field, Input, Label } from "@headlessui/react";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
 
 const Form26QDeductee = () => {
+  const entity = "form26QDeductee";
+
+  const { fy, branchCode } = useParams();
+
+  const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      const response = await common.getWOTListData(entity, fy, branchCode);
+      setListData(response.data.entities || []);
+    };
+    fetchListData();
+  }, [fy, branchCode]);
+
   // Table Details
   const tableHead = [
     { label: "Sr.No.", key: "srNo" },
@@ -20,53 +36,10 @@ const Form26QDeductee = () => {
     { label: "Action", key: "action" },
   ];
 
-  const tableData = [
-    {
-      id: 917297,
-      challanHeading: "INTEREST_26Q",
-      deducteeRefNo: "GA00014738",
-      deducteeCode: "2",
-      pan: "AAEFE9798B",
-      name: "Mr. EXPRESS WHEELS AUTO SERVICES",
-      sectionCode: "94C",
-      dateOfPayment: "2024-03-27",
-      amountPaid: 10670.0,
-      tds: 213.0,
-      surcharge: 0.0,
-      eduCess: 0.0,
-      totalTaxDeducted: 213.0,
-      totalTaxDeposited: 213.0,
-      dateOfDeduction: "2024-05-31",
-      rateAtWhichTaxCollected: 2.0,
-      remarksReason: null,
-      certificateNumber: null,
-      fy: "2023-24",
-      quarter: "Q4",
-      branchCode: "150000",
-      accNo: null,
-      challanSrNo: 22,
-      month: "MARCH",
-      custVendId: "152651293",
-      uniqueRefNo: null,
-      cashWithdrawal194N: 0.0,
-      cashWithdrawal194N20Lto1Cr: 0.0,
-      cashWithdrawal194N1Cr: 0.0,
-      TAN: "PNET00060E",
-      roCode: "150000",
-      errorDescription: null,
-      warningDescription: null,
-      shortDeduction: 0.0,
-      interestOnShortDeduction: 0.0,
-      interestOnLatePayment: 0.0,
-      interestOnLateDeduction: 0.0,
-      resolved: false,
-      comments: null,
-      deducteeSrNo: 29,
-      tranAmt: 0.0,
-      additionalDetail: null,
-      tan: "PNET00060E",
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -203,7 +176,11 @@ const Form26QDeductee = () => {
           </div>
         )}
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTableAction
+            entity={entity}
+            tableHead={tableHead}
+            tableData={tableData}
+          />
         </div>
       </div>
     </>

@@ -59,21 +59,41 @@ const AddRegularReturnResponse = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="relative w-full max-w-md transform overflow-hidden rounded-md bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <DialogPanel className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <DialogTitle
                     as="h2"
                     className="mb-5 text-lg leading-6 font-medium text-gray-900"
                   >
-                    Add Correction Response
+                    Add Regular Return Response
                   </DialogTitle>
-                  <div className="w-full">
-                    <div>
-                      <label>Responses:</label>
+                  <div className="justify-center">
+                    <div className="w-full">
+                      <label>
+                        Remark:<span className="text-red-600">*</span>
+                      </label>
                       <textarea
                         name="remark"
                         id="remark"
+                        color="15"
+                        rows="3"
                         className="form-input"
-                      ></textarea>
+                      />
+                    </div>
+
+                    <div className="w-full">
+                      <label>
+                        Select Status:<span className="text-red-600">*</span>
+                      </label>
+                      <select
+                        name="status"
+                        id="status"
+                        className="block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                      >
+                        <option value="">Status</option>
+                        <option value="status1">status 1</option>
+                        <option value="status2">status 2</option>
+                        <option value="status3">status 3</option>
+                      </select>
                     </div>
 
                     <div className="w-full">
@@ -99,7 +119,10 @@ const AddRegularReturnResponse = () => {
                       Add
                     </button>
 
-                    <button className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white">
+                    <button
+                      onClick={closeModal}
+                      className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
+                    >
                       No
                     </button>
                   </div>

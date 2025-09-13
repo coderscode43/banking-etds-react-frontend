@@ -8,10 +8,6 @@ const common = {
   getWOTListData: async (entity, fy, branchCode) => {
     return await WOTListData(entity, fy, branchCode);
   },
-
-  navigateBack: (navigate) => {
-    navigate(-1);
-  },
 };
 
 export default common;

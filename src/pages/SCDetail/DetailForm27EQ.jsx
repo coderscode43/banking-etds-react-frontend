@@ -1,84 +1,48 @@
-import common from "@/common/common";
-import { DetailGrid } from "@/components/component/DetailGrid";
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import { DetailGrid } from "@/components/component/DetailGrid";
 
 const DetailForm27EQ = () => {
   const navigate = useNavigate();
 
   const fields = [
     { label: "Quarter", key: "quarter" },
-
     { label: "Month", key: "month" },
-
     { label: "Branch Code", key: "branchCode" },
-
     { label: "Vend/Cust Id", key: "custVendId" },
-
     { label: "RO Code", key: "roCode" },
-
     { label: "TAN", key: "tan" },
-
     { label: "Unique Ref No", key: "uniqueRefNo" },
-
     { label: "Account Number", key: "accNo" },
-
     { label: "Challan Heading", key: "challanHeading" },
-
     { label: "Party Reference No.", key: "" },
-
     { label: "Party Code", key: "" },
-
     { label: "PAN of the Party", key: "pan" },
-
     { label: "Name of the Party", key: "name" },
-
     { label: "Amount Receipt/Debited", key: "" },
-
     { label: "Date of Received/Debited", key: "dateOfDeduction" },
-
     { label: "TDS", key: "tds" },
-
     { label: "Surcharge", key: "surcharge" },
-
     { label: "Education Cess.", key: "eduCess" },
-
     { label: "Total Tax Collected", key: "" },
-
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
-
     { label: "Date of Collected", key: "" },
-
     { label: "Total Value of Purchase", key: "dateOfPayment" },
-
     { label: "Rate at which Tax Collected", key: "rateAtWhichTaxCollected" },
-
     { label: "Reason for Non Collection", key: "" },
-
     { label: "Section / Collection Code", key: "sectionCode" },
-
     { label: "Certificate Number  ", key: "certificateNumber" },
-
     { label: "Deductee is Non-Resident", key: "" },
-
     { label: "Permanent Establishment ", key: "" },
-
     { label: "Reason For NonCollection F or G", key: "" },
-
     { label: "if Answer to 681A is Yes Then Challan Number", key: "" },
-
     {
       label:
         "if Answer to 681A is Yes Then Date Of Payment Of TDS To Central Government",
       key: "",
     },
-
     { label: "Error Description", key: "errorDescription" },
-
     { label: "Warning Description", key: "warningDescription" },
-
     { label: "Short Deduction", key: "shortDeduction" },
-
     { label: "Interest On Short Deduction", key: "interestOnShortDeduction" },
     { label: "Interest On Late Payment  ", key: "interestOnLatePayment" },
     { label: "Interest On Late Deduction   ", key: "interestOnLateDeduction" },
@@ -148,7 +112,9 @@ const DetailForm27EQ = () => {
           </button>
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={common.navigateBack(navigate)}
+            onClick={() => {
+              navigate(-1);
+            }}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>

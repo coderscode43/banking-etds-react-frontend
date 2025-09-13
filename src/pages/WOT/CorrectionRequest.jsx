@@ -1,10 +1,26 @@
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
-import { useState } from "react";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Field, Input, Label } from "@headlessui/react";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
 
 const CorrectionRequest = () => {
+  const entity = "correctionRequest";
+
+  const { fy, branchCode } = useParams();
+
+  const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      const response = await common.getWOTListData(entity, fy, branchCode);
+      console.log(response);
+      setListData(response.data.entities || []);
+    };
+    fetchListData();
+  }, [fy, branchCode]);
 
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
@@ -13,49 +29,18 @@ const CorrectionRequest = () => {
     { key: "branchCode", label: "Branch" },
     { key: "quarter", label: "Quarter" },
     { key: "name", label: "Name of Customer" },
-    { pan: "fy", label: "Pan Of Customer" },
+    { pan: "pan", label: "Pan Of Customer" },
     { key: "typeOfCorrection", label: "Type of Correction" },
     { key: "status", label: "Status" },
     { key: "lastUpdatedOn", label: "Last Updated On" },
-    { key: "status", abel: "Action" },
+    { key: "status", label: "Action" },
   ];
 
-  const tableData = [
-    {
-      ticketNumber: 202508070001,
-      taxTeamApprovedBy: "tejas",
-      correctionBy: null,
-      fileName: null,
-      typeOfCorrection: "PAN Updation",
-      newRequestTicketNo: null,
-      color: "yellow",
-      mobileNumber: "8323594479",
-      taxTeamApprovedOn: "07-08-2025 17:15:01",
-      remark: "Test",
-      correctionOn: null,
-      reasonForExemption: null,
-      correctionRequestDate: "07-08-2025 16:59:17",
-      fy: "2024-25",
-      typeOfForm: "24Q-Salary",
-      custId: null,
-      lastUpdatedOn: "02-09-2025 17:00:51",
-      id: 2291061,
-      makerBy: "admin",
-      pan: null,
-      tan: null,
-      rejectStatus: false,
-      regenarateRequest: null,
-      empNo: null,
-      branchCode: 1223,
-      checkerApprovedBy: "tejas",
-      name: "Divyanshu Singh",
-      checkerApprovedOn: "07-08-2025 17:15:01",
-      correctionStatus: false,
-      nameOfRequest: null,
-      status: "Pending Checker Approval",
-      quarter: "Q1, Q2, Q3, Q4",
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
+
   return (
     <>
       <div className="space-y-5">
@@ -243,7 +228,11 @@ const CorrectionRequest = () => {
             </Field>
           </div>
         )}
-        <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        <DynamicTableAction
+          entity={entity}
+          tableHead={tableHead}
+          tableData={tableData}
+        />
       </div>
     </>
   );

@@ -1,53 +1,47 @@
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
-import { useState } from "react";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Field, Input, Label } from "@headlessui/react";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
 
 const RegularReturn = () => {
+  const entity = "regularReturn";
+
+  const { fy, branchCode } = useParams();
+
+  const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      const response = await common.getWOTListData(entity, fy, branchCode);
+      setListData(response.data.entities || []);
+    };
+    fetchListData();
+  }, [fy, branchCode]);
 
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
-    { key: "ipaddrs", label: "Zip File" },
-    { key: "username", label: "Username" },
+    { key: "date", label: "Date" },
+    { key: "fy", label: "Financial year" },
     { key: "tan", label: "Tan" },
-    { key: "fy", label: "Financial Year" },
     { key: "quarter", label: "Quarter" },
     { key: "form", label: "Form" },
-    { key: "date", label: "Date" },
+    { key: "addedBy", label: "Added by" },
+    { key: "latestRemark", label: "Latest remark" },
     { key: "status", label: "Status" },
+    { key: "returnFiling", label: "Return filing date" },
+    { key: "action", label: "Action" },
   ];
 
-  const tableData = [
-    {
-      id: 2291353,
-      username: "directdownload",
-      logsDate: "2025-09-02",
-      quarter: "Q65",
-      form: "Download Certificate",
-      date: "2025-09-02",
-      status: "this is status",
-      tan: "skjhdfjkh",
-      zipFile: "skjhdfjkh",
-      fy: null,
-    },
-    {
-      id: 2291353,
-      username: "directdownload",
-      logsDate: "2025-09-02",
-      quarter: "Q65",
-      form: "Download Certificate",
-      date: "2025-09-02",
-      status: "this is status",
-      tan: "skjhdfjkh",
-      zipFile: "skjhdfjkh",
-      fy: null,
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
-      {" "}
       <div className="space-y-5">
         <h1 className="text-2xl font-bold text-[var(--primary-color)]">
           Regular Return
@@ -87,7 +81,6 @@ const RegularReturn = () => {
                   "h-[38px]"
                 )}
               >
-                {" "}
                 <option value="">Select Quarter</option>
                 <option value="Q1">Q1</option>
                 <option value="Q2">Q2</option>
@@ -107,7 +100,6 @@ const RegularReturn = () => {
                   "h-[38px]"
                 )}
               >
-                {" "}
                 <option value="">Select Form</option>
                 <option value="Form1">Form 1</option>
                 <option value="Form2">Form 2</option>
@@ -132,7 +124,7 @@ const RegularReturn = () => {
         {showDivs && (
           <div className="">
             <Field className="flex flex-wrap gap-3">
-              <div>
+              <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   Status
                 </Label>
@@ -140,7 +132,7 @@ const RegularReturn = () => {
                   name="status"
                   id="status"
                   className={clsx(
-                    "mt-1 block w-72 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
                     "h-[38px]"
                   )}
@@ -174,7 +166,11 @@ const RegularReturn = () => {
             </Field>
           </div>
         )}
-        <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        <DynamicTableAction
+          entity={entity}
+          tableHead={tableHead}
+          tableData={tableData}
+        />
       </div>
     </>
   );

@@ -1,10 +1,26 @@
-import React, { useState } from "react";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Field, Input, Label } from "@headlessui/react";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
 
 const Form27QDeductee = () => {
+  const entity = "form27QDeductee";
+
+  const { fy, branchCode } = useParams();
+
+  const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      const response = await common.getWOTListData(entity, fy, branchCode);
+      setListData(response.data.entities || []);
+    };
+    fetchListData();
+  }, [fy, branchCode]);
+
   // Table Details
   const tableHead = [
     { label: "Sr.No.", key: "srNo" },
@@ -20,62 +36,10 @@ const Form27QDeductee = () => {
     { label: "Action", key: "action" },
   ];
 
-  const tableData = [
-    {
-      id: 5481507,
-      challanHeading: "Interest_27Q",
-      deducteeRefNo: null,
-      deducteeCode: "02-INDIVIDUAL",
-      pan: "AKHPJ5307L",
-      name: "ISHU JOSHI",
-      sectionCode: "195",
-      dateOfPayment: "2023-04-30",
-      amountPaid: 166.0,
-      tds: 52.0,
-      surcharge: 0.0,
-      eduCess: 0.0,
-      totalTaxDeducted: 52.0,
-      totalTaxDeposited: 52.0,
-      dateOfDeduction: "2023-04-30",
-      rateAtWhichTaxCollected: 31.2,
-      remarksReason: null,
-      grossingUpIndicator: "N",
-      certificateNumber: null,
-      uniqueAcknowledgeNo: 0,
-      countryOfResidence: "113-INDIA",
-      emailId: null,
-      contactNoOfDeductee: null,
-      addressOfDeductee: null,
-      taxIdentificationNo: 0,
-      fy: "2023-24",
-      quarter: "Q4",
-      tdsRateAsPerItActs: "A-If TDS rate is as per Income Tax Act",
-      natureOfRemittance: "27-INTEREST PAYMENT",
-      branchCode: 4265,
-      accNo: "2513613456",
-      challanSrNo: 1,
-      month: "JANUARY",
-      custVendId: "82509532",
-      uniqueRefNo: "KM73652431",
-      cashWithdrawal194N: 0.0,
-      cashWithdrawal194N20Lto1Cr: 0.0,
-      cashWithdrawal194N1Cr: 0.0,
-      TAN: "CALU00023C",
-      roCode: "TXNRG,NROCU,TDA,,NRO",
-      errorDescription: null,
-      warningDescription: null,
-      shortDeduction: 0.0,
-      interestOnShortDeduction: 0.0,
-      interestOnLatePayment: 0.0,
-      interestOnLateDeduction: 0.0,
-      resolved: false,
-      comments: null,
-      deducteeSrNo: 10351,
-      tranAmt: 0,
-      additionalDetail: null,
-      tan: "CALU00023C",
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
   return (
     <>
       <div className="space-y-5">
@@ -110,8 +74,8 @@ const Form27QDeductee = () => {
                 Branch Code
               </Label>
               <Input
-              id="roCode"
-              name="roCode"
+                id="roCode"
+                name="roCode"
                 placeholder="Branch Code"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
@@ -124,8 +88,8 @@ const Form27QDeductee = () => {
                 Name
               </Label>
               <Input
-              id="name"
-              name="name"
+                id="name"
+                name="name"
                 placeholder="Name"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
@@ -211,7 +175,11 @@ const Form27QDeductee = () => {
           </div>
         )}
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTableAction
+            entity={entity}
+            tableHead={tableHead}
+            tableData={tableData}
+          />
         </div>
       </div>
     </>

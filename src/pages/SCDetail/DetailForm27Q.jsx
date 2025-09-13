@@ -1,27 +1,18 @@
-import common from "@/common/common";
+import { useNavigate } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import { Navigate } from "react-router-dom";
 
 const DetailForm27Q = () => {
-  const navigate = Navigate;
+  const navigate = useNavigate();
 
   const fields = [
     { label: "Quarter", key: "quarter" },
-
     { label: "Grossing up Indicator", key: "grossingUpIndicator" },
-
     { label: "Month", key: "month" },
-
     { label: "No of certificate under section ", key: "" },
-
     { label: "Branch Code", key: "branchCode" },
-
     { label: "TDS Rate As Per It Acts", key: "tdsRateAsPerItActs" },
-
     { label: "RO Code", key: "roCode" },
-
     { label: "TAN", key: "tan" },
-
     { label: "Vend/Cust Id", key: "custVendId" },
 
     { label: "Vend/Nature Of Remittance", key: "natureOfRemittance" },
@@ -170,7 +161,9 @@ const DetailForm27Q = () => {
           </button>
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={common.navigateBack(navigate)}
+            onClick={() => {
+              navigate(-1);
+            }}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>

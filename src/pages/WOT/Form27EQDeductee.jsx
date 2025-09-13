@@ -1,10 +1,26 @@
-import React, { useState } from "react";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Field, Input, Label } from "@headlessui/react";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
 
 const Form27EQDeductee = () => {
+  const entity = "form27EQDeductee";
+
+  const { fy, branchCode } = useParams();
+
+  const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      const response = await common.getWOTListData(entity, fy, branchCode);
+      setListData(response.data.entities || []);
+    };
+    fetchListData();
+  }, [fy, branchCode]);
+
   // Table Details
   const tableHead = [
     { label: "Sr.No.", key: "srNo" },
@@ -20,57 +36,11 @@ const Form27EQDeductee = () => {
     { label: "Action", key: "action" },
   ];
 
-  const tableData = [
-    {
-      id: 213722,
-      deducteeRefNo: null,
-      deducteeCode: "02-INDIVIDUAL",
-      pan: "HLOPS1384H",
-      name: "Abhay Pratap Singh",
-      amountPaid: 455.76,
-      dateOfPayment: "2023-08-29",
-      tds: 0.0,
-      surcharge: 0.0,
-      quarter: "Q4",
-      fy: "2023-24",
-      eduCess: 0.0,
-      totalTaxDeducted: 0.0,
-      totalTaxDeposited: 0.0,
-      dateOfDeduction: "2023-08-29",
-      totalValueofPurchase: 455.76,
-      rateatwhichTaxCollected: 0.0,
-      remarksReason: "D",
-      certificateNumber: null,
-      deducteeisNonResident: null,
-      permanentEstablishment: null,
-      branchCode: 1001,
-      accNo: "2412453146",
-      challanSrNo: 1,
-      month: "FEBRUARY",
-      challanHeading: "TCS_27EQ",
-      custVendId: "224355559",
-      uniqueRefNo: "108602918",
-      reasonForNonCollectionForG: null,
-      ifAnswerTo681AisyesthenChallanNumber: 0,
-      ifAnswerto681AisyesthenDateofpaymentofTDStoCentralGovernment: null,
-      TAN: "RTKB02522C",
-      roCode: null,
-      sectionCode: "Q",
-      errorDescription: null,
-      warningDescription: null,
-      shortDeduction: 0.0,
-      interestOnShortDeduction: 0.0,
-      interestOnLatePayment: 0.0,
-      interestOnLateDeduction: 0.0,
-      resolved: false,
-      comments: null,
-      deducteeSrNo: 210833,
-      tranAmt: 0,
-      additionalDetail: null,
-      tan: "RTKB02522C",
-      dateofCollected: "2023-08-29",
-    },
-  ];
+  const tableData = listData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
+
   return (
     <>
       <div className="space-y-5">
@@ -204,7 +174,11 @@ const Form27EQDeductee = () => {
           </div>
         )}
         <div>
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTableAction
+            entity={entity}
+            tableHead={tableHead}
+            tableData={tableData}
+          />
         </div>
       </div>
     </>

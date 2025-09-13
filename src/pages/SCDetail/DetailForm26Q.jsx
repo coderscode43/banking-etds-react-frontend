@@ -1,72 +1,42 @@
-import common from "@/common/common";
-import { DetailGrid } from "@/components/component/DetailGrid";
 import { useNavigate } from "react-router-dom";
+import { DetailGrid } from "@/components/component/DetailGrid";
 
 const DetailForm26Q = () => {
   const navigate = useNavigate();
 
   const fields = [
     { label: "Quarter", key: "quarter" },
-
     { label: "Month", key: "month" },
-
     { label: "Branch Code", key: "branchCode" },
-
     { label: "Transaction ID", key: "custVendId" },
-
     { label: "RO Code", key: "roCode" },
-
     { label: "TAN", key: "tan" },
-
     { label: "Unique Ref No", key: "uniqueRefNo" },
-
     { label: "Account No", key: "accNo" },
-
     { label: "Challan Heading", key: "challanHeading" },
-
     { label: "Deductee Code", key: "deducteeCode" },
-
     { label: "PAN of the Deductee", key: "pan" },
-
     { label: "Name of the Deductee", key: "name" },
-
     { label: "Section Code", key: "sectionCode" },
-
     { label: "Date of Payment", key: "dateOfPayment" },
-
     { label: "Amount Paid", key: "amountPaid" },
-
     { label: "TDS", key: "tds" },
-
     { label: "Surcharge", key: "surcharge" },
-
     { label: "Education Cess", key: "eduCess" },
-
     { label: "Total Tax Deducted", key: "totalTaxDeducted" },
-
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
-
     { label: "Date of Deduction ", key: "dateOfDeduction" },
-
     { label: "Rate at which Tax Deducted", key: "rate_at_which_tax_deducted" },
-
     { label: "Short Deduction", key: "shortDeduction" },
-
     { label: "Certificate Number  ", key: "certificateNumber" },
-
     { label: "Cash Withdrawl (194N) Description", key: "cashWithdrawal194N" },
-
     {
       label: "Cash Withdrawl 194N(20L to 1cr)",
       key: "cashWithdrawal194N20Lto1Cr",
     },
-
     { label: "Cash Withdrawl 194N(>1cr)", key: "cashWithdrawal194N1Cr" },
-
     { label: "Error Description", key: "errorDescription" },
-
     { label: "Warning  Description", key: "warningDescription" },
-
     { label: "Interest On Short Deduction", key: "interestOnShortDeduction" },
     { label: "Interest On Late Payment  ", key: "interestOnLatePayment" },
     { label: "Interest On Late Deduction   ", key: "interestOnLateDeduction" },
@@ -136,7 +106,9 @@ const DetailForm26Q = () => {
           </button>
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={common.navigateBack(navigate)}
+            onClick={() => {
+              navigate(-1);
+            }}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
