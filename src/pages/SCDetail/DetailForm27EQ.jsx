@@ -112,9 +112,7 @@ const DetailForm27EQ = () => {
           </button>
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={() => {
-              navigate(-1);
-            }}
+            onClick={() => navigate(-1)}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>

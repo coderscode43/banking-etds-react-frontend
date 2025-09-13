@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const navItems = [
   {
@@ -106,6 +107,8 @@ const navItems = [
 ];
 
 const HomeSCSidebar = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="fixed top-14 z-10 h-screen">
@@ -119,8 +122,10 @@ const HomeSCSidebar = () => {
               {navItems.map(({ id, label, page, iconClass, textIcon }) => {
                 return (
                   <li key={id}>
-                    <a
-                      href={`/home/list/${page}`}
+                    <div
+                      onClick={() => {
+                        navigate(`/home/list/${page}`);
+                      }}
                       className="flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100"
                     >
                       <div
@@ -140,7 +145,7 @@ const HomeSCSidebar = () => {
                           </span>
                         )}
                       </div>
-                    </a>
+                    </div>
                   </li>
                 );
               })}

@@ -1,4 +1,3 @@
-import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import { useNavigate } from "react-router-dom";
 
@@ -92,7 +91,7 @@ const DetailForm26QDeductee = () => {
         <div className="flex justify-end gap-4 pr-5">
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={common.navigateBack(navigate)}
+            onClick={() => navigate(-1)}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>

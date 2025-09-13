@@ -1,74 +1,75 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
+const navItems = [
+  {
+    id: "downloadCertificate",
+    label: "Download 16A/16/27D",
+    page: "downloadCertificate",
+    iconClass: "fa-solid fa-download",
+    type: "wot",
+  },
+  {
+    id: "form24QDeductee",
+    label: "Form 24Q",
+    page: "form24QDeductee",
+    textIcon: "24Q",
+    type: "listWOT",
+  },
+  {
+    id: "form26QDeductee",
+    label: "Form 26Q",
+    page: "form26QDeductee",
+    textIcon: "26Q",
+    type: "listWOT",
+  },
+  {
+    id: "form27EQDeductee",
+    label: "Form 27EQ",
+    page: "form27EQDeductee",
+    textIcon: "27EQ",
+    type: "listWOT",
+  },
+  {
+    id: "form27QDeductee",
+    label: "Form 27Q",
+    page: "form27QDeductee",
+    textIcon: "27Q",
+    type: "listWOT",
+  },
+  {
+    id: "correctionRequest",
+    label: "Correction/Query Request",
+    page: "correctionRequest",
+    iconClass: "fa-solid fa-clipboard-user",
+    type: "listWOT",
+  },
+  {
+    id: "regularReturn",
+    label: "Regular Return",
+    page: "regularReturn",
+    iconClass: "fa-solid fa-clipboard-check",
+    type: "listWOT",
+  },
+  {
+    id: "generateReport",
+    label: "MIS Generate Report",
+    page: "generateReport",
+    iconClass: "fa-solid fa-clipboard-user",
+    type: "wot",
+  },
+  {
+    id: "back",
+    label: "Back",
+    page: "back",
+    iconClass: "fa-solid fa-reply-all",
+    type: "back",
+  },
+];
 
 const HomeWOTSidebar = () => {
+  const navigate = useNavigate();
   const { branchCode, fy } = useParams();
 
-  const navItems = [
-    {
-      id: "downloadCertificate",
-      label: "Download 16A/16/27D",
-      page: "downloadCertificate",
-      iconClass: "fa-solid fa-download",
-      type: "wot",
-    },
-    {
-      id: "form24QDeductee",
-      label: "Form 24Q",
-      page: "form24QDeductee",
-      textIcon: "24Q",
-      type: "listWOT",
-    },
-    {
-      id: "form26QDeductee",
-      label: "Form 26Q",
-      page: "form26QDeductee",
-      textIcon: "26Q",
-      type: "listWOT",
-    },
-    {
-      id: "form27EQDeductee",
-      label: "Form 27EQ",
-      page: "form27EQDeductee",
-      textIcon: "27EQ",
-      type: "listWOT",
-    },
-    {
-      id: "form27QDeductee",
-      label: "Form 27Q",
-      page: "form27QDeductee",
-      textIcon: "27Q",
-      type: "listWOT",
-    },
-    {
-      id: "correctionRequest",
-      label: "Correction/Query Request",
-      page: "correctionRequest",
-      iconClass: "fa-solid fa-clipboard-user",
-      type: "listWOT",
-    },
-    {
-      id: "regularReturn",
-      label: "Regular Return",
-      page: "regularReturn",
-      iconClass: "fa-solid fa-clipboard-check",
-      type: "listWOT",
-    },
-    {
-      id: "generateReport",
-      label: "MIS Generate Report",
-      page: "generateReport",
-      iconClass: "fa-solid fa-clipboard-user",
-      type: "wot",
-    },
-    {
-      id: "back",
-      label: "Back",
-      page: "back",
-      iconClass: "fa-solid fa-reply-all",
-      type: "back",
-    },
-  ];
   return (
     <>
       <div className="fixed top-14 z-10 h-screen">
@@ -83,12 +84,14 @@ const HomeWOTSidebar = () => {
                 ({ id, label, page, iconClass, textIcon, type }) => {
                   return (
                     <li key={id}>
-                      <a
-                        href={
-                          type === "wot"
-                            ? `/homeWOT/${branchCode}/${fy}/${page}`
-                            : `/homeWOT/${branchCode}/${fy}/list/${page}`
-                        }
+                      <div
+                        onClick={() => {
+                          navigate(
+                            type === "wot"
+                              ? `/homeWOT/${branchCode}/${fy}/${page}`
+                              : `/homeWOT/${branchCode}/${fy}/list/${page}`
+                          );
+                        }}
                         className="flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100"
                       >
                         <div
@@ -108,7 +111,7 @@ const HomeWOTSidebar = () => {
                             </span>
                           )}
                         </div>
-                      </a>
+                      </div>
                     </li>
                   );
                 }

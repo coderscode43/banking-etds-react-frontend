@@ -1,6 +1,4 @@
-import common from "@/common/common";
 import { Input, Textarea } from "@headlessui/react";
-import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -369,7 +367,7 @@ const AddBranch = () => {
             </button>
             <button
               className="mt-7 h-[38px] cursor-pointer rounded-sm bg-red-600 px-2 text-white"
-              onClick={() => common.navigateBack(navigate)}
+              onClick={() => navigate(-1)}
             >
               Back
             </button>

@@ -1,4 +1,3 @@
-import common from "@/common/common";
 import { useNavigate } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
@@ -91,7 +90,7 @@ const DetailRegularReturn = () => {
           <AddRegularReturnResponseModal />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-            onClick={common.navigateBack(navigate)}
+            onClick={() => navigate(-1)}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>

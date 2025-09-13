@@ -1,6 +1,9 @@
+import { useParams } from "react-router-dom";
 import DropdownMenu from "../component/DropdownMenu";
 
 const HomeWOTTopBar = () => {
+  const { fy, branchCode } = useParams();
+
   return (
     <div className="sticky top-0 z-10">
       <header className="border-b-2 border-gray-300 bg-white">
@@ -19,8 +22,8 @@ const HomeWOTTopBar = () => {
           </div>
           <div className="mr-[90px]">
             <h1 className="text-2xl text-[var(--primary-color)]">
-              Financial Year : <span className="font-bold">2025-26</span>,
-              Branch Code : <span className="font-bold">1000</span>
+              Financial Year : <span className="font-bold">{fy}</span>, Branch
+              Code : <span className="font-bold">{branchCode}</span>
             </h1>
           </div>
           <div className="flex items-center justify-center gap-5">

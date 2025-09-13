@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import common from "@/common/common";
 import { useEffect, useState } from "react";
-import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import { Field, Input, Label } from "@headlessui/react";
+import UserDetailsTable from "@/components/tables/UserDetailsTable";
 
 const UserDetails = () => {
   const entity = "userDetails";
@@ -90,11 +90,7 @@ const UserDetails = () => {
           </Field>
         </div>
 
-        <DynamicTableAction
-          entity={entity}
-          tableHead={tableHead}
-          tableData={tableData}
-        />
+        <UserDetailsTable tableHead={tableHead} tableData={tableData} />
       </div>
     </>
   );
