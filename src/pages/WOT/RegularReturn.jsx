@@ -2,8 +2,8 @@ import clsx from "clsx";
 import common from "@/common/common";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Field, Input, Label } from "@headlessui/react";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import { Field, Input, Label } from "@headlessui/react";
 
 const RegularReturn = () => {
   const entity = "regularReturn";
@@ -57,9 +57,7 @@ const RegularReturn = () => {
                 name="FY"
                 id="FY"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
               >
                 <option value="">Select Financial Year</option>
@@ -76,9 +74,7 @@ const RegularReturn = () => {
                 name="quarter"
                 id="quarter"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
               >
                 <option value="">Select Quarter</option>
@@ -95,9 +91,7 @@ const RegularReturn = () => {
                 name="form"
                 id="form"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
               >
                 <option value="">Select Form</option>
@@ -132,9 +126,7 @@ const RegularReturn = () => {
                   name="status"
                   id="status"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                    "h-[38px]"
+                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
                 >
                   <option value="">Select Status</option>
@@ -153,8 +145,7 @@ const RegularReturn = () => {
                   id="addedDate"
                   type="date"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
                 />
               </div>

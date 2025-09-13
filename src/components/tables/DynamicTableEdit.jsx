@@ -44,8 +44,6 @@ const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
                   onDoubleClick={(e) => {
                     // Check if the clicked column is the last one
                     if (e.target.cellIndex === tableHead.length - 1) {
-                      console.log(e.target.cellIndex);
-
                       return; // Do nothing if it's the last column
                     }
                     if (entity === "branch") {
@@ -53,7 +51,7 @@ const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
                     }
                   }}
                 >
-                  {tableHead.map(({ key }, colIndex) => (
+                  {tableHead.map(({ key, formatter }, colIndex) => (
                     <td
                       key={colIndex}
                       className="max-w-[70px] min-w-[100px] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
@@ -69,8 +67,10 @@ const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
                           }}
                           className="fa-solid fa-pen-to-square text-lg"
                         ></i>
+                      ) : formatter ? (
+                        formatter(data[key])
                       ) : (
-                        (data[key] ?? "-")
+                        (data[key] ?? " ")
                       )}
                     </td>
                   ))}

@@ -45,7 +45,7 @@ const DynamicTable = ({ tableHead, tableData, month }) => {
                         : ""
                     }`}
                   >
-                    {tableHead.map(({ key }, colIndex) => (
+                    {tableHead.map(({ key, formatter }, colIndex) => (
                       <td
                         key={colIndex}
                         className="max-w-[70px] min-w-[100px] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
@@ -54,7 +54,9 @@ const DynamicTable = ({ tableHead, tableData, month }) => {
                           ? data[key] === "1"
                             ? "True"
                             : "False"
-                          : (data[key] ?? " ")}
+                          : formatter
+                            ? formatter(data[key])
+                            : (data[key] ?? " ")}
                       </td>
                     ))}
                   </tr>

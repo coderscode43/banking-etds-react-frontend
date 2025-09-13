@@ -2,8 +2,8 @@ import clsx from "clsx";
 import common from "@/common/common";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import { Field, Input, Label } from "@headlessui/react";
-import DynamicTableAction from "@/components/tables/DynamicTableAction";
 
 const Form26QDeductee = () => {
   const entity = "form26QDeductee";
@@ -176,7 +176,7 @@ const Form26QDeductee = () => {
           </div>
         )}
         <div>
-          <DynamicTableAction
+          <DynamicTableActionTotal
             entity={entity}
             tableHead={tableHead}
             tableData={tableData}

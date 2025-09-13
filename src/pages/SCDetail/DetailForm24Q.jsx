@@ -1,148 +1,83 @@
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { useNavigate } from "react-router-dom";
+import DynamicTable from "@/components/tables/DynamicTable";
 
 const DetailForm24Q = () => {
+  const entity = "form24QDeductee";
+
   const navigate = useNavigate();
+  const { fy, branchCode, id } = useParams();
+
+  const [detailGridData, setDetailGridData] = useState({});
+  const [detailListData, setDetailListData] = useState([]);
+
+  useEffect(() => {
+    const fetchDetailListData = async () => {
+      try {
+        const response = await common.getDetailListData(
+          entity,
+          fy,
+          branchCode,
+          id
+        );
+        setDetailListData(response.data.remarks || []);
+        setDetailGridData(response.data.deductee || {});
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchDetailListData();
+  }, [branchCode, fy, id]);
 
   const fields = [
     { label: "Quarter", key: "quarter" },
-
     { label: "Month", key: "month" },
-
     { label: "RO Code", key: "roCode" },
-
     { label: "Branch Code", key: "branchCode" },
-
     { label: "Transaction ID", key: "custVendId" },
-
     { label: "Unique Ref No", key: "uniqueRefNo" },
-
     { label: "Account No", key: "accNo" },
-
     { label: "Challan Heading", key: "challanHeading" },
-
     { label: "PAN Ref No.", key: "panRefNo" },
-
     { label: "PAN", key: "pan" },
-
     { label: "Section Code", key: "sectionCode" },
-
     { label: "Date of Payment", key: "dateOfPayment" },
-
     { label: "Date of Deduction", key: "dateOfDeduction" },
-
     { label: "Amount Paid", key: "amountPaid" },
-
     { label: "TDS", key: "tds" },
-
     { label: "Surcharge", key: "surcharge" },
-
     { label: "Education Cess", key: "eduCess" },
-
     { label: "Total TDS ", key: "" },
-
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
-
     { label: "TAN ", key: "tan" },
-
     { label: "Certificate Number  ", key: "certificateNumber" },
-
     { label: "Error Description", key: "errorDescription" },
-
     { label: "Warning Description", key: "warningDescription" },
-
     { label: "Short Deduction", key: "shortDeduction" },
-
     { label: "Interest On Short Deduction", key: "interestOnShortDeduction" },
     { label: "Interest On Late Payment  ", key: "interestOnLatePayment" },
     { label: "Interest On Late Deduction   ", key: "interestOnLateDeduction" },
     { label: "Status ", key: "" },
   ];
 
-  const data = [
-    {
-      id: 150118,
-      challanHeading: "Interest_24Q",
-      deducteeRefNo: 789456,
-      panRefNo: 457856,
-      pan: "ABFPL4107P",
-      name: "R.D.LAKHAN . 26056)",
-      sectionCode: "92B",
-      dateOfPayment: "2024-03-31",
-      dateOfDeduction: "2024-04-22",
-      amountPaid: 5122795,
-      tds: 123,
-      surcharge: 123,
-      eduCess: 123,
-      totalTaxDeducted: 4578,
-      totalTaxDeposited: 4578,
-      certificateNumber: 784578,
-      remarksReason: 784512,
-      fy: "2023-24",
-      quarter: "Q4",
-      branchCode: 100000,
-      accNo: 4582145,
-      challanSrNo: 3,
-      month: "MARCH",
-      custVendId: "123456789",
-      uniqueRefNo: 123444,
-      TAN: "MUMT09716A",
-      roCode: "100000",
-      errorDescription: 123,
-      warningDescription: 789,
-      shortDeduction: 123,
-      interestOnShortDeduction: 123,
-      interestOnLatePayment: 123,
-      interestOnLateDeduction: 123,
-      resolved: true,
-      comments: 789,
-      deducteeSrNo: 59,
-      tranAmt: 123,
-      additionalDetail: 789,
-      tan: "MUMT09716A",
-    },
-  ];
-
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
-    { key: "zipFile", label: "Zip File" },
-    { key: "username", label: "Username" },
-    { key: "tan", label: "Tan" },
-    { key: "fy", label: "Financial Year" },
-    { key: "quarter", label: "Quarter" },
-    { key: "form", label: "Form" },
-    { key: "date", label: "Date" },
+    { key: "addedby", label: "Added By" },
+    { key: "remark", label: "Remark" },
+    { key: "datetime", label: "Date of Remark" },
     { key: "status", label: "Status" },
+    { key: "approvedon", label: "Approved On" },
+    { key: "approvedby", label: "Approved By" },
+    { key: "action", label: "Action" },
   ];
 
-  const tableData = [
-    {
-      id: 2291353,
-      username: "directdownload",
-      logsDate: "2025-09-02",
-      quarter: "123",
-      form: "Download Certificate",
-      date: "2025-09-02",
-      status: "this is status",
-      tan: "123",
-      zipFile: "123",
-      fy: 2025,
-    },
-
-    {
-      id: 2291354,
-      username: "directdownload",
-      logsDate: "2025-09-02",
-      quarter: "12345",
-      form: "Download Certificate",
-      date: "2025-09-02",
-      status: "this is statussss",
-      tan: "12345",
-      zipFile: "12345",
-      fy: 2025,
-    },
-  ];
+  const tableData = detailListData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -151,7 +86,7 @@ const DetailForm24Q = () => {
           Details of Form 24Q Deductee
         </h1>
 
-        <DetailGrid fields={fields} data={data[0]} columns={2} />
+        <DetailGrid fields={fields} data={detailGridData} columns={2} />
 
         <div className="flex justify-end gap-4 pr-5">
           <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
@@ -165,7 +100,7 @@ const DetailForm24Q = () => {
           </button>
         </div>
         <div className="mt-5">
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTable tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
     </>

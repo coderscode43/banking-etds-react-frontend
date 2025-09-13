@@ -1,11 +1,14 @@
 import clsx from "clsx";
 import common from "@/common/common";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DynamicTableCheckBoxAction from "@/components/tables/DynamicTableCheckBoxAction";
 import { Field, Input, Label } from "@headlessui/react";
 
 const RegularReturn = () => {
   const entity = "regularReturn";
+
+  const navigate = useNavigate();
 
   const [date, setDate] = useState("");
   const [listData, setListData] = useState([]);
@@ -64,9 +67,7 @@ const RegularReturn = () => {
                 name="FY"
                 id="FY"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
               >
                 <option value="">Select Financial Year</option>
@@ -83,9 +84,7 @@ const RegularReturn = () => {
                 name="quarter"
                 id="quarter"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
               >
                 <option value="">Select Quarter</option>
@@ -102,9 +101,7 @@ const RegularReturn = () => {
                 name="form"
                 id="form"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
               >
                 <option value="">Select Form</option>
@@ -130,7 +127,12 @@ const RegularReturn = () => {
                 <i className="fa-solid fa-comment"></i>
               </button>
 
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white">
+              <button
+                className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
+                onClick={() => {
+                  navigate(`/home/add/addRegularReturn`);
+                }}
+              >
                 <i className="fa-solid fa-plus"></i>
               </button>
             </div>
@@ -189,8 +191,7 @@ const RegularReturn = () => {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   className={clsx(
-                    "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
+                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
                 />
               </div>

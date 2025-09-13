@@ -49,6 +49,7 @@ import DetailForm27QDeducteeWOT from "./pages/WOTDetail/DetailForm27QDeductee";
 import DetailRegularReturnWOT from "./pages/WOTDetail/DetailRegularReturn";
 import AddBranch from "./pages/SCAdd/AddBranch";
 import DetailBranch from "./pages/SCDetail/DetailBranch";
+import AddRegularReturn from "./pages/SCAdd/AddRegularReturn";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -108,6 +109,7 @@ const App = () => {
 
           <Route path="add">
             <Route path="addBranch" element={<AddBranch />} />
+            <Route path="addRegularReturn" element={<AddRegularReturn />} />
           </Route>
         </Route>
 

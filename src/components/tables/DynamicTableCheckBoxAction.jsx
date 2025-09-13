@@ -83,8 +83,6 @@ const DynamicTableCheckBoxAction = ({ entity, tableHead, tableData }) => {
                     key={index}
                     className={`cursor-pointer bg-white text-center ${isChecked ? "bg-blue-100" : ""}`}
                     onDoubleClick={() => {
-                      console.log("Hello");
-
                       if (entity !== "branch") {
                         navigate(
                           `/home/detail/${entity}/${data.id}/detail${
@@ -104,13 +102,15 @@ const DynamicTableCheckBoxAction = ({ entity, tableHead, tableData }) => {
                     </td>
 
                     {/* Other cells */}
-                    {tableHead.map(({ key }, colIndex) => (
+                    {tableHead.map(({ key, formatter }, colIndex) => (
                       <td
                         key={colIndex}
                         className="max-w-[70px] min-w-[100px] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
                       >
                         {key === "action" ? (
                           <i className="fa-solid fa-file-pen text-lg"></i>
+                        ) : formatter ? (
+                          formatter(data[key])
                         ) : (
                           (data[key] ?? " ")
                         )}

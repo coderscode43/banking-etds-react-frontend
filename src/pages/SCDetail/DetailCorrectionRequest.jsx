@@ -1,22 +1,49 @@
-import { useNavigate } from "react-router-dom";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import AddCorrectionResponseModal from "@/components/modals/AddCorrectionResponseModal";
+import DynamicTable from "@/components/tables/DynamicTable";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 
 const DetailCorrectionRequest = () => {
+  const entity = "correctionRequest";
+
   const navigate = useNavigate();
+  const { fy, branchCode, id } = useParams();
+
+  const [detailGridData, setDetailGridData] = useState({});
+  const [correctionTracker, setCorrectionTracker] = useState([]);
+  const [otherDetails, setOtherDetails] = useState([]);
+  const [challanDetails, setChallanDetails] = useState({});
+
+  useEffect(() => {
+    const fetchDetailListData = async () => {
+      try {
+        const response = await common.getDetailListData(
+          entity,
+          fy,
+          branchCode,
+          id
+        );
+
+        setDetailGridData(response.data.details || {});
+        setCorrectionTracker(response.data.remark || []);
+        setOtherDetails(response.data.amountDetails || []);
+        setChallanDetails(response.data.ac || {});
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+    fetchDetailListData();
+  }, [branchCode, fy, id]);
 
   const fields = [
     { label: "Ticket Number", key: "ticketNumber" },
     { label: "Financial Year", key: "fy" },
     { label: "Quarter", key: "quarter" },
-    {
-      label: "Date of Request",
-      key: "correctionRequestDate",
-      formatter: (d) =>
-        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
-    },
+    { label: "Date of Request", key: "correctionRequestDate" },
     { label: "Name of Customer", key: "name" },
     { label: "Type of Form", key: "typeOfForm" },
     { label: "Type of Correction", key: "typeOfCorrection" },
@@ -24,132 +51,22 @@ const DetailCorrectionRequest = () => {
     {
       label: "Mobile Number of who Generated Correction/Query Request",
       key: "mobileNumber",
-      // fullRow: true,
+      fullRow: true,
     },
     { label: "Response", key: "status" },
-    // {
-    //   label: "Document",
-    //   key: "fileName",
-    // },
+    { label: "Document", key: "fileName" },
   ];
 
   const fields1 = [
-    { label: "Request Created By", key: "" },
-    {
-      label: "Request Created On",
-      key: "",
-      formatter: (d) =>
-        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
-    },
+    { label: "Request Created By", key: "makerBy" },
+    { label: "Request Created On", key: "" },
     { label: "Status", key: "status" },
     { label: "Checker Approved By", key: "checkerApprovedBy" },
-    {
-      label: "Checker Approved On",
-      key: "checkerApprovedOn",
-      formatter: (d) =>
-        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
-    },
+    { label: "Checker Approved On", key: "checkerApprovedOn" },
     { label: "Tax Team Approved By", key: "taxTeamApprovedBy" },
-    {
-      label: "Tax Team Approved On",
-      key: "taxTeamApprovedOn",
-      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
-    },
+    { label: "Tax Team Approved On", key: "taxTeamApprovedOn" },
     { label: "Correction By", key: "correctionBy" },
-    {
-      label: "Correction On",
-      key: "correctionOn",
-      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
-    },
-  ];
-
-  const data = [
-    {
-      id: 2291061,
-      correctionRequestDate: "07-08-2025 16:59:17",
-      custId: 123,
-      name: "Divyanshu Singh",
-      pan: 123,
-      nameOfRequest: 123,
-      branchCode: 1223,
-      empNo: 123,
-      ticketNumber: 202508070001,
-      typeOfCorrection: "PAN Updation",
-      remark: "Test",
-      checkerApprovedBy: "tejas",
-      checkerApprovedOn: "07-08-2025 17:15:01",
-      taxTeamApprovedBy: "tejas",
-      taxTeamApprovedOn: "07-08-2025 17:15:01",
-      correctionBy: 123,
-      correctionOn: 123,
-      makerBy: "admin",
-      status: "Pending Checker Approval",
-      fy: "2024-25",
-      quarter: "Q1, Q2, Q3, Q4",
-      rejectStatus: false,
-      fileName: 123,
-      correctionStatus: false,
-      mobileNumber: "8323594479",
-      typeOfForm: "24Q-Salary",
-      tan: 123,
-      lastUpdatedOn: "02-09-2025 17:00:51",
-      reasonForExemption: 123,
-      regenarateRequest: 123,
-      newRequestTicketNo: 123,
-    },
-  ];
-
-  const tableHead = [
-    { key: "srNo", label: "Sr.No" },
-    { key: "correctionRequestId", label: "Correction Response" },
-    { key: "supportingDocName", label: "Supporting Document Name" },
-    { key: "addedBy", label: "Added By" },
-    { key: "", label: "Added On" },
-    { key: "", label: "Action" },
-  ];
-
-  const tableData = [
-    {
-      id: 2291065,
-      correctionRequestId: 2291061,
-      dateTime: "07-08-2025 17:15:01",
-      correctionRemark: "ok",
-      addedBy: "tejas",
-      branchCode: 1223,
-      supportingDocName: "file01",
-      remarkStatus: "Approved",
-    },
-
-    {
-      id: 2291065,
-      correctionRequestId: 123,
-      dateTime: "07-08-2025 17:15:01",
-      correctionRemark: "ok",
-      addedBy: "abhishek",
-      branchCode: 1223,
-      supportingDocName: "file02",
-      remarkStatus: "Approved",
-    },
-
-    {
-      id: 2291065,
-      correctionRequestId: 22910,
-      dateTime: "07-08-2025 17:15:01",
-      correctionRemark: "ok",
-      addedBy: "khushi",
-      branchCode: 1223,
-      supportingDocName: "file03",
-      remarkStatus: "Approved",
-    },
-  ];
-
-  const tableHeadOtherDetails = [
-    { key: "srNo", label: "Sr.No" },
-    { key: "correctionRequestId", label: "Correction Response" },
-    { key: "supportingDocName", label: "Supporting Document Name" },
-    { key: "addedBy", label: "Added By" },
-    { key: "", label: "Added On" },
-    { key: "", label: "Action" },
+    { label: "Correction On", key: "correctionOn" },
   ];
 
   const categories = [
@@ -157,38 +74,53 @@ const DetailCorrectionRequest = () => {
     { name: "Other Details" },
   ];
 
-  const tableDataOtherDetails = [
-    {
-      id: 2291065,
-      correctionRequestId: 2291061,
-      dateTime: "07-08-2025 17:15:01",
-      correctionRemark: "ok",
-      addedBy: "tejas",
-      branchCode: 1223,
-      supportingDocName: "file01",
-      remarkStatus: "Approved",
-    },
+  const tableHeadCorrectionTracker = [
+    { label: "Sr.No", key: "srNo" },
+    { label: "Correction Response", key: "correctionRemark" },
+    { label: "Supporting Document Name", key: "supportingDocName" },
+    { label: "Added By", key: "addedBy" },
+    { label: "Added On", key: "dateTime" },
+    { label: "Action", key: "action" },
+  ];
 
-    {
-      id: 2291065,
-      correctionRequestId: 123,
-      dateTime: "07-08-2025 17:15:01",
-      correctionRemark: "ok",
-      addedBy: "abhishek",
-      branchCode: 1223,
-      supportingDocName: "file02",
-      remarkStatus: "Approved",
-    },
+  const tableDataCorrectionTracker = correctionTracker?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
+  const tableHeadOtherDetails = [
+    { label: "Sr.No", key: "srNo" },
+    { label: "Name", key: "name" },
+    { label: "Date of Payment", key: "dateOfPayment" },
+    { label: "TDS Amount", key: "tds" },
+    { label: "Gross Amount", key: "amountPaid" },
+    { label: "Quarter", key: "quarter" },
+    { label: "PAN", key: "pan" },
+    { label: "Correct PAN", key: "correctPan" },
+    { label: "Section", key: "sectionCode" },
+    { label: "Correct Section", key: "correctSection" },
+    { label: "Amount Paid", key: "amountPaid" },
+    { label: "Correct Amount Paid", key: "correctAmountPaid" },
+    { label: "TDS", key: "tds" },
+    { label: "Correct TDS", key: "correctTds" },
+    { label: "Other Responses", key: "action" },
+  ];
+
+  const tableDataOtherDetails = otherDetails?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
+
+  const challanGrid = [
+    { label: "Challan Serial Number", key: "challanSrNo" },
+    { label: "BSR Code", key: "challanBsrCode" },
+    { label: "Challan Section", key: "challanSection" },
+    { label: "Challan Amount", key: "challanAmount" },
+    { label: "Challan Date", key: "challanDate" },
     {
-      id: 2291065,
-      correctionRequestId: 22910,
-      dateTime: "07-08-2025 17:15:01",
-      correctionRemark: "ok",
-      addedBy: "khushi",
-      branchCode: 1223,
-      supportingDocName: "file03",
-      remarkStatus: "Approved",
+      label: "Challan Supporting Document",
+      key: "challanSupportingDocument",
+      fullRow: true,
     },
   ];
 
@@ -199,9 +131,9 @@ const DetailCorrectionRequest = () => {
           Correction Details
         </h1>
 
-        <DetailGrid fields={fields} data={data[0]} columns={3} />
+        <DetailGrid fields={fields} data={detailGridData} columns={3} />
         <hr className="m-5 bg-gray-400" />
-        <DetailGrid fields={fields1} data={data[0]} columns={3} />
+        <DetailGrid fields={fields1} data={detailGridData} columns={3} />
         <div className="mb-3 flex justify-end gap-4 py-5">
           <AddCorrectionResponseModal />
           <button
@@ -230,24 +162,29 @@ const DetailCorrectionRequest = () => {
             ))}
           </TabList>
           <TabPanels className="mt-9 w-full">
-            <TabPanel
-              key={categories.name}
-              className="rounded-xl bg-gray-100 shadow-sm"
-            >
-              <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+            <TabPanel key={categories.name} className="">
+              <DynamicTableAction
+                tableHead={tableHeadCorrectionTracker}
+                tableData={tableDataCorrectionTracker}
+              />
             </TabPanel>
 
-            {
-              <TabPanel
-                key={categories.name}
-                className="rounded-xl bg-white shadow-sm"
-              >
-                <DynamicTableEdit
-                  tableHead={tableHeadOtherDetails}
-                  tableData={tableDataOtherDetails}
-                />
-              </TabPanel>
-            }
+            <TabPanel key={categories.name} className="">
+              <DynamicTable
+                tableHead={tableHeadOtherDetails}
+                tableData={tableDataOtherDetails}
+              />
+              <hr className="m-5 bg-gray-200" />
+              <h1 className="ms-2 mb-5 text-2xl font-bold text-[var(--primary-color)]">
+                Challan Details
+              </h1>
+
+              <DetailGrid
+                fields={challanGrid}
+                data={challanDetails}
+                columns={3}
+              />
+            </TabPanel>
           </TabPanels>
         </TabGroup>
       </div>

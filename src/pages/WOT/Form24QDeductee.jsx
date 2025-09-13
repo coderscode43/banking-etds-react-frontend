@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import common from "@/common/common";
 import { useParams } from "react-router-dom";
 import { Field, Input, Label } from "@headlessui/react";
-import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 
 const Form24QDeductee = () => {
   const entity = "form24QDeductee";
@@ -182,7 +182,7 @@ const Form24QDeductee = () => {
         )}
 
         <div>
-          <DynamicTableAction
+          <DynamicTableActionTotal
             entity={entity}
             tableHead={tableHead}
             tableData={tableData}

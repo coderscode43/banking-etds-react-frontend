@@ -1,82 +1,59 @@
-import { useNavigate } from "react-router-dom";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
 import AddRegularReturnResponseModal from "@/components/modals/AddRegularReturnResponseModal";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
 
 const DetailRegularReturn = () => {
+  const entity = "regularReturn";
+
   const navigate = useNavigate();
+  const { fy, branchCode, id } = useParams();
+
+  const [detailGridData, setDetailGridData] = useState({});
+  const [detailListData, setDetailListData] = useState([]);
+
+  useEffect(() => {
+    const fetchDetailListData = async () => {
+      try {
+        const response = await common.getDetailRegularReturn(entity, id);
+
+        setDetailListData(response.data.RRR || []);
+        setDetailGridData(response.data.RR || {});
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+
+    fetchDetailListData();
+  }, [branchCode, fy, id]);
 
   const fields = [
     { label: "Financial Year  ", key: "fy" },
-
     { label: "TAN", key: "tan" },
-
     { label: "Quarter", key: "quarter" },
-
     { label: "Form", key: "form" },
-
     { label: "Added On", key: "addedOn" },
-
     { label: "Added By", key: "addedBy" },
     { label: "Latest Response", key: "latestRemark" },
-
     { label: "Status", key: "status" },
-
-    { label: "Return Filing Date ", key: "returnFilingDate" },
-  ];
-
-  const data = [
-    {
-      id: 2291069,
-      fy: "2024-25",
-      tan: "MUMT08795D-HeadOffice",
-      quarter: "Q1",
-      form: "26Q-Other than Salary",
-      branchCode: "100000",
-      addedBy: "tejas",
-      addedOn: "2025-08-07T17:23:02",
-      latestRemark: "Test",
-      status: "Data added from RO",
-      returnFilingDate: "2025-08-01T00:00:00",
-    },
   ];
 
   const tableHead = [
-    {
-      key: "srNo",
-      label: "Sr.No",
-    },
-    { key: "", label: "Correction Response" },
+    { key: "srNo", label: "Sr.No" },
+    { key: "remark", label: "Correction Response" },
     { key: "remarkStatus", label: "Status" },
     { key: "supportingDocName", label: "Supporting Document Name" },
-
     { key: "addedBy", label: "Added By" },
     { key: "addedOn", label: "Added On" },
-    { key: "", label: "Action" },
+    { key: "action", label: "Action" },
   ];
-  const tableData = [
-    {
-      id: 2291074,
-      regularReturnId: 2291069,
-      addedOn: "2025-08-07T17:25:42",
-      remark: "Test",
-      addedBy: "Khushi",
-      roCode: "100000",
-      supportingDocName: "Filename",
-      remarkStatus: "Return filedddd",
-    },
 
-    {
-      id: 2291075,
-      regularReturnId: 2291069,
-      addedOn: "2025-08-07T17:25:42",
-      remark: "Test",
-      addedBy: "Tejas",
-      roCode: "100000",
-      supportingDocName: "File",
-      remarkStatus: "Return filed",
-    },
-  ];
+  const tableData = detailListData.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -85,7 +62,7 @@ const DetailRegularReturn = () => {
           Regular Return
         </h1>
 
-        <DetailGrid fields={fields} data={data[0]} columns={2} />
+        <DetailGrid fields={fields} data={detailGridData} columns={2} />
         <div className="flex justify-end gap-4 pr-5">
           <AddRegularReturnResponseModal />
           <button
@@ -96,7 +73,7 @@ const DetailRegularReturn = () => {
           </button>
         </div>
         <div className="mt-5">
-          <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+          <DynamicTableAction tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
     </>

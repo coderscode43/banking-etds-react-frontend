@@ -16,7 +16,6 @@ const CorrectionRequest = () => {
   useEffect(() => {
     const fetchListData = async () => {
       const response = await common.getWOTListData(entity, fy, branchCode);
-      console.log(response);
       setListData(response.data.entities || []);
     };
     fetchListData();

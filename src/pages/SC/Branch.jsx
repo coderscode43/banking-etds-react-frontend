@@ -97,9 +97,8 @@ const Branch = () => {
               </button>
 
               <button
-                className="z-30 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
+                className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
                 onClick={() => {
-                  console.log("clicked");
                   navigate(`/home/add/addBranch`);
                 }}
               >

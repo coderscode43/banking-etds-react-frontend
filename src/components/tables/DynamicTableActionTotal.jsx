@@ -2,6 +2,14 @@ import { useNavigate } from "react-router-dom";
 
 const DynamicTableAction = ({ entity, tableHead, tableData }) => {
   const navigate = useNavigate();
+  // Key of the column to total — adjust as needed
+  const totalKey = "amount";
+
+  // Calculate total sum for that key
+  const totalValue = tableData.reduce(
+    (sum, row) => sum + (Number(row[totalKey]) || 0),
+    0
+  );
 
   return (
     <div className="relative w-full">
@@ -68,6 +76,23 @@ const DynamicTableAction = ({ entity, tableHead, tableData }) => {
                     ))}
                   </tr>
                 ))}
+
+                {/* Total Row */}
+                {/* Total Row with 2 columns (70% and 30%) */}
+                <tr className="bg-gray-50 text-center font-semibold">
+                  <td
+                    colSpan={tableHead.length - 1}
+                    className="border-[1.5px] border-gray-300 p-2 text-center"
+                  >
+                    Total
+                  </td>
+                  <td
+                    colSpan={1}
+                    className="border-[1.5px] border-gray-300 p-2"
+                  >
+                    {totalValue}
+                  </td>
+                </tr>
               </>
             )}
           </tbody>
