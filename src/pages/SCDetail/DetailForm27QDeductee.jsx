@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import UpdateForm27QDeducteeModal from "@/components/modals/UpdateForm27QDeducteeModal";
 
-const DetailForm27Q = () => {
+const DetailForm27QDeductee = () => {
   const entity = "form27QDeductee";
 
   const navigate = useNavigate();
@@ -101,4 +101,4 @@ const DetailForm27Q = () => {
   );
 };
 
-export default DetailForm27Q;
+export default DetailForm27QDeductee;

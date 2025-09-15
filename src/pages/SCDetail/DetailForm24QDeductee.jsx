@@ -5,7 +5,7 @@ import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTable from "@/components/tables/DynamicTable";
 import UpdateForm24QDeducteeModal from "@/components/modals/UpdateForm24QDeducteeModal";
 
-const DetailForm24Q = () => {
+const DetailForm24QDeductee = () => {
   const entity = "form24QDeductee";
 
   const navigate = useNavigate();
@@ -106,4 +106,4 @@ const DetailForm24Q = () => {
   );
 };
 
-export default DetailForm24Q;
+export default DetailForm24QDeductee;

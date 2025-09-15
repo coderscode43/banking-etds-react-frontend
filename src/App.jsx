@@ -24,14 +24,14 @@ import StatementStatus from "./pages/SC/StatementStatus";
 import TotalAmount from "./pages/SC/TotalAmount";
 import UploadCertificate from "./pages/SC/UploadCertificate";
 import UserDetails from "./pages/SC/UserDetails";
-import DetailForm24Q from "./pages/SCDetail/DetailForm24Q";
-import DetailForm26Q from "./pages/SCDetail/DetailForm26Q";
+import DetailForm24QDeductee from "./pages/SCDetail/DetailForm24QDeductee";
+import DetailForm26QDeductee from "./pages/SCDetail/DetailForm26QDeductee";
 
 import PageNotFound from "./components/component/PageNotFound";
 import HomeWOTLayout from "./layouts/HomeWOTLayout";
 import DetailCorrectionRequest from "./pages/SCDetail/DetailCorrectionRequest";
-import DetailForm27EQ from "./pages/SCDetail/DetailForm27EQ";
-import DetailForm27Q from "./pages/SCDetail/DetailForm27Q";
+import DetailForm27QDeductee from "./pages/SCDetail/DetailForm27QDeductee";
+import DetailForm27EQDeductee from "./pages/SCDetail/DetailForm27EQDeductee";
 import DetailRegularReturn from "./pages/SCDetail/DetailRegularReturn";
 import CorrectionRequestWOT from "./pages/WOT/CorrectionRequest";
 import DownloadCertificate from "./pages/WOT/DownloadCertificate";
@@ -88,13 +88,22 @@ const App = () => {
 
           <Route path="detail">
             <Route path=":entity/:id/:fy/:branchCode">
-              <Route path="detailForm24QDeductee" element={<DetailForm24Q />} />
-              <Route path="detailForm26QDeductee" element={<DetailForm26Q />} />
+              <Route
+                path="detailForm24QDeductee"
+                element={<DetailForm24QDeductee />}
+              />
+              <Route
+                path="detailForm26QDeductee"
+                element={<DetailForm26QDeductee />}
+              />
               <Route
                 path="detailForm27EQDeductee"
-                element={<DetailForm27EQ />}
+                element={<DetailForm27EQDeductee />}
               />
-              <Route path="detailForm27QDeductee" element={<DetailForm27Q />} />
+              <Route
+                path="detailForm27QDeductee"
+                element={<DetailForm27QDeductee />}
+              />
               <Route
                 path="detailCorrectionRequest"
                 element={<DetailCorrectionRequest />}
