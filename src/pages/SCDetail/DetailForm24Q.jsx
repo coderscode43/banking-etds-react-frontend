@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTable from "@/components/tables/DynamicTable";
+import UpdateForm24QDeducteeModal from "@/components/modals/UpdateForm24QDeducteeModal";
 
 const DetailForm24Q = () => {
   const entity = "form24QDeductee";
@@ -89,9 +90,7 @@ const DetailForm24Q = () => {
         <DetailGrid fields={fields} data={detailGridData} columns={2} />
 
         <div className="flex justify-end gap-4 pr-5">
-          <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-            <i className="fa-solid fa-pen-to-square"></i>&nbsp; Edit
-          </button>
+          <UpdateForm24QDeducteeModal />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}

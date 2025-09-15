@@ -68,26 +68,24 @@ const AddRegularReturnResponse = () => {
                   </DialogTitle>
                   <div className="justify-center">
                     <div className="w-full">
-                      <label>
-                        Remark:<span className="text-red-600">*</span>
+                      <label className="font-semibold text-[var(--primary-color)]">
+                        Remark<span className="text-red-600">*</span>
                       </label>
                       <textarea
                         name="remark"
                         id="remark"
-                        color="15"
-                        rows="3"
-                        className="form-input"
+                        className="mt-1 block h-[50%] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       />
                     </div>
 
                     <div className="w-full">
-                      <label>
-                        Select Status:<span className="text-red-600">*</span>
+                      <label className="font-semibold text-[var(--primary-color)]">
+                        Select Status<span className="text-red-600">*</span>
                       </label>
                       <select
                         name="status"
                         id="status"
-                        className="block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       >
                         <option value="">Status</option>
                         <option value="status1">status 1</option>
@@ -97,12 +95,14 @@ const AddRegularReturnResponse = () => {
                     </div>
 
                     <div className="w-full">
-                      <label>Supporting Document:</label>
+                      <label className="font-semibold text-[var(--primary-color)]">
+                        Supporting Document
+                      </label>
                       <input
                         type="file"
                         name="supportDocument"
                         id="supportDocument"
-                        className="form-input"
+                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       />
                     </div>
 

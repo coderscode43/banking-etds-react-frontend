@@ -2,6 +2,7 @@ import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import UpdateForm27QDeducteeModal from "@/components/modals/UpdateForm27QDeducteeModal";
 
 const DetailForm27Q = () => {
   const entity = "form27QDeductee";
@@ -87,9 +88,7 @@ const DetailForm27Q = () => {
 
         <DetailGrid fields={fields} data={detailGridData} columns={2} />
         <div className="flex justify-end gap-4 pr-5">
-          <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-            <i className="fa-solid fa-pen-to-square"></i>&nbsp; Edit
-          </button>
+          <UpdateForm27QDeducteeModal />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}

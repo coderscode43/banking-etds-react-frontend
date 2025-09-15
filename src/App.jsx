@@ -50,12 +50,15 @@ import DetailRegularReturnWOT from "./pages/WOTDetail/DetailRegularReturn";
 import AddBranch from "./pages/SCAdd/AddBranch";
 import DetailBranch from "./pages/SCDetail/DetailBranch";
 import AddRegularReturn from "./pages/SCAdd/AddRegularReturn";
+import Login from "./components/auth/Login";
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="/" element={<Navigate to={"/home/homepage"} replace />} />
+        <Route path="/" element={<Navigate to={"home/homepage"} replace />} />
+
+        <Route path="login" element={<Login />} />
 
         <Route
           path="home"

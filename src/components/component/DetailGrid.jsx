@@ -50,7 +50,7 @@ export const DetailGrid = ({ fields, data, columns = 1 }) => {
 
             // Container styles and classes
             const containerCls =
-              field.containerClassName || "flex p-0 space-y-5";
+              field.containerClassName || "flex p-0 space-y-2";
 
             // Inline style for width, full row takes 100%
             const containerStyle =

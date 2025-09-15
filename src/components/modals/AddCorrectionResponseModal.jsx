@@ -68,21 +68,25 @@ const AddRegularReturnResponse = () => {
                   </DialogTitle>
                   <div className="w-full">
                     <div>
-                      <label>Responses:</label>
+                      <label className="font-semibold text-[var(--primary-color)]">
+                        Responses
+                      </label>
                       <textarea
                         name="remark"
                         id="remark"
-                        className="form-input"
+                        className="mt-1 block h-[50%] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       ></textarea>
                     </div>
 
                     <div className="w-full">
-                      <label>Supporting Document:</label>
+                      <label className="font-semibold text-[var(--primary-color)]">
+                        Supporting Document
+                      </label>
                       <input
                         type="file"
                         name="supportDocument"
                         id="supportDocument"
-                        className="form-input"
+                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       />
                     </div>
 

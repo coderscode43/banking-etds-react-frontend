@@ -1,7 +1,7 @@
 const Login = () => {
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-3">
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-3">
         <div className="h-[450px] w-[400px] flex-col justify-center rounded-xl bg-[#e0dddd] p-5">
           <div className="px-9 py-2">
             <img
@@ -39,10 +39,7 @@ const Login = () => {
                 type="password"
                 autoComplete="off"
               />
-              <button
-                className="w-90 bg-[#0f316d] text-white"
-                style={{ padding: "0.5rem 0.75rem", borderRadius: "9px" }}
-              >
+              <button className="w-full rounded-md bg-[#0f316d] py-2 text-white">
                 Sign in
               </button>
             </form>

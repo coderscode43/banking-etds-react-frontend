@@ -69,100 +69,108 @@ const EditBranchDetails = () => {
                   <div className="justify-center">
                     <div className="mb-3 flex flex-wrap gap-2">
                       <div className="w-[49%]">
-                        <label>
-                          RO Code:<span className="text-red-600">*</span>
+                        <label className="font-semibold text-[var(--primary-color)]">
+                          RO Code<span className="text-red-600">*</span>
                         </label>
                         <input
                           name="roCode"
                           id="roCode"
                           placeholder="RO Code"
-                          className="form-input focus:outline-none"
+                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                         />
                       </div>
 
                       <div className="w-[49%]">
-                        <label>Branch Code:</label>
+                        <label className="font-semibold text-[var(--primary-color)]">
+                          Branch Code
+                        </label>
                         <span className="text-red-600">*</span>
                         <input
                           name="branchCode"
                           id="branchCode"
                           placeholder="Branch Code"
-                          className="form-input focus:outline-none"
+                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                         />
                       </div>
                     </div>
 
                     <div className="mb-3 flex flex-wrap gap-2">
                       <div className="w-[49%]">
-                        <label>
-                          RO Name:<span className="text-red-600">*</span>
+                        <label className="font-semibold text-[var(--primary-color)]">
+                          RO Name<span className="text-red-600">*</span>
                         </label>
                         <input
                           name="roName"
                           id="roName"
                           placeholder="RO Name"
-                          className="form-input focus:outline-none"
+                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                         />
                       </div>
 
                       <div className="w-[49%]">
-                        <label>RO Email:</label>
+                        <label className="font-semibold text-[var(--primary-color)]">
+                          RO Email
+                        </label>
                         <span className="text-red-600">*</span>
                         <input
                           type="email"
                           name="email"
                           id="email"
                           placeholder="Email"
-                          className="form-input focus:outline-none"
+                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                         />
                       </div>
                     </div>
 
                     <div className="mb-3 flex flex-wrap gap-2">
                       <div className="w-[49%]">
-                        <label>
-                          RO Contact No:<span className="text-red-600">*</span>
+                        <label className="font-semibold text-[var(--primary-color)]">
+                          RO Contact No<span className="text-red-600">*</span>
                         </label>
                         <input
                           name="roContactNumber"
                           id="roContactNumber"
                           placeholder="RO Contact No"
-                          className="form-input focus:outline-none"
+                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                         />
                       </div>
 
                       <div className="w-[49%]">
-                        <label>RO Address:</label>
+                        <label className="font-semibold text-[var(--primary-color)]">
+                          RO Address
+                        </label>
                         <span className="text-red-600">*</span>
                         <input
                           name="roAddress"
                           id="roAddress"
                           placeholder="RO Address"
-                          className="form-input focus:outline-none"
+                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                         />
                       </div>
                     </div>
 
                     <div className="mb-3 flex flex-wrap gap-2">
                       <div className="w-[49%]">
-                        <label>
-                          RO Pin code:<span className="text-red-600">*</span>
+                        <label className="font-semibold text-[var(--primary-color)]">
+                          RO Pin code<span className="text-red-600">*</span>
                         </label>
                         <input
                           name="roPinCode"
                           id="roPinCode"
                           placeholder="RO Pin code"
-                          className="form-input focus:outline-none"
+                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                         />
                       </div>
 
                       <div className="w-[49%]">
-                        <label>RO State:</label>
+                        <label className="font-semibold text-[var(--primary-color)]">
+                          RO State
+                        </label>
                         <span className="text-red-600">*</span>
                         <select
                           name="state"
                           id="state"
-                          className="block h-[42px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                          className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                         >
                           <option value="">Select State</option>
                           <option value="state1">state 1</option>
