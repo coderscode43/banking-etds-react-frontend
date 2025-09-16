@@ -1,9 +1,8 @@
-import common from "@/common/common";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
-import { useState } from "react";
-import { useEffect } from "react";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { Field, Input, Label } from "@headlessui/react";
+import DynamicTable from "@/components/tables/DynamicTable";
 
 const DeductorDetails = () => {
   const entity = "deductorDetails";
@@ -109,7 +108,7 @@ const DeductorDetails = () => {
           </Field>
         </div>
 
-        <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        <DynamicTable tableHead={tableHead} tableData={tableData} />
       </div>
     </>
   );

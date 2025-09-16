@@ -6,6 +6,7 @@ const credentials = {
   withCredentials: true,
 };
 
+// SC Layout API's
 export const listData = async (entity) => {
   try {
     const response = await axios.get(
@@ -42,6 +43,7 @@ export const detailRegularReturn = async (entity, id) => {
   }
 };
 
+// WOT Layout API's
 export const WOTListData = async (entity, fy, branchCode) => {
   try {
     const response = await axios.get(

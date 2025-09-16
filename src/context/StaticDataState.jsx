@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import StaticDataContext from "./StaticDataContext";
+import StaticDataContext from "./staticDataContext";
 
 const INDEX_API_BASE_URL = import.meta.env.VITE_INDEX_API_BASE_URL;
 

@@ -229,6 +229,7 @@ const CorrectionRequest = () => {
         )}
         <DynamicTableAction
           entity={entity}
+          layoutType="wot"
           tableHead={tableHead}
           tableData={tableData}
         />

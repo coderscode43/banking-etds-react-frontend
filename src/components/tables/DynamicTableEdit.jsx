@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
+const FINANCIAL_YEAR = import.meta.env.VITE_FINANCIAL_YEAR;
+
 const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
   const navigate = useNavigate();
 
@@ -33,7 +35,7 @@ const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
                   colSpan={tableHead.length}
                   className="p-4 text-center text-[16px] font-semibold text-red-500"
                 >
-                  No data found
+                  No Data Found
                 </td>
               </tr>
             ) : (
@@ -47,7 +49,9 @@ const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
                       return; // Do nothing if it's the last column
                     }
                     if (entity === "branch") {
-                      navigate(`/homeWOT/${data.branchCode}/2025-26/homepage`);
+                      navigate(
+                        `/homeWOT/${data.branchCode}/${FINANCIAL_YEAR}/homepage`
+                      );
                     }
                   }}
                 >

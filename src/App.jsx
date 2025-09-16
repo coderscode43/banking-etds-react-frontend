@@ -148,30 +148,32 @@ const App = () => {
             <Route path="regularReturn" element={<RegularReturnWOT />} />
           </Route>
 
-          <Route
-            path="detailForm24QDeductee"
-            element={<DetailForm24QDeducteeWOT />}
-          />
-          <Route
-            path="detailForm26QDeductee"
-            element={<DetailForm26QDeducteeWOT />}
-          />
-          <Route
-            path="detailForm27EQDeductee"
-            element={<DetailForm27EQDeducteeWOT />}
-          />
-          <Route
-            path="detailForm27QDeductee"
-            element={<DetailForm27QDeducteeWOT />}
-          />
-          <Route
-            path="detailRegularReturn"
-            element={<DetailRegularReturnWOT />}
-          />
-          <Route
-            path="detailCorrectionRequest"
-            element={<DetailCorrectionRequestWOT />}
-          />
+          <Route path="detail/:entity/:id">
+            <Route
+              path="detailForm24QDeductee"
+              element={<DetailForm24QDeducteeWOT />}
+            />
+            <Route
+              path="detailForm26QDeductee"
+              element={<DetailForm26QDeducteeWOT />}
+            />
+            <Route
+              path="detailForm27EQDeductee"
+              element={<DetailForm27EQDeducteeWOT />}
+            />
+            <Route
+              path="detailForm27QDeductee"
+              element={<DetailForm27QDeducteeWOT />}
+            />
+            <Route
+              path="detailRegularReturn"
+              element={<DetailRegularReturnWOT />}
+            />
+            <Route
+              path="detailCorrectionRequest"
+              element={<DetailCorrectionRequestWOT />}
+            />
+          </Route>
         </Route>
 
         {/* Catch-all route for 404s */}

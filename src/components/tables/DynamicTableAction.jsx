@@ -1,6 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-const DynamicTableAction = ({ entity, tableHead, tableData, autoResize }) => {
+const DynamicTableAction = ({
+  entity,
+  layoutType,
+  tableHead,
+  tableData,
+  autoResize,
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -33,7 +39,7 @@ const DynamicTableAction = ({ entity, tableHead, tableData, autoResize }) => {
                   colSpan={tableHead.length}
                   className="p-4 text-center text-[16px] font-semibold text-red-500"
                 >
-                  No data found
+                  No Data Found
                 </td>
               </tr>
             ) : (
@@ -43,11 +49,15 @@ const DynamicTableAction = ({ entity, tableHead, tableData, autoResize }) => {
                     key={index}
                     className="cursor-pointer text-center hover:bg-gray-100"
                     onDoubleClick={() => {
-                      if (entity !== "branch") {
+                      if (layoutType === "sc") {
                         navigate(
                           `/home/detail/${entity}/${data.id}/${data.fy}/${data.branchCode}/detail${
                             entity.charAt(0).toUpperCase() + entity.slice(1)
                           }`
+                        );
+                      } else if (layoutType === "wot") {
+                        navigate(
+                          `/homeWOT/${data.branchCode}/${data.fy}/detail/${entity}/${data.id}/detail${entity.charAt(0).toUpperCase() + entity.slice(1)}`
                         );
                       }
                     }}

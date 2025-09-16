@@ -1,7 +1,9 @@
-import { DetailGrid } from "@/components/component/DetailGrid";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import DynamicTable from "@/components/tables/DynamicTable";
+import { DetailGrid } from "@/components/component/DetailGrid";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+
 const DetailCorrectionRequest = () => {
   const navigate = useNavigate();
 
@@ -159,7 +161,7 @@ const DetailCorrectionRequest = () => {
 
   return (
     <>
-      <div className="rounded-md p-4 shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
+      <div className="rounded-md border border-gray-100 p-4 shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
         <h1 className="ms-2 mb-5 text-2xl font-bold text-[var(--primary-color)]">
           Correction Details
         </h1>
@@ -177,7 +179,7 @@ const DetailCorrectionRequest = () => {
         </div>
 
         <TabGroup className="mx-2 flex w-full flex-col items-center">
-          <TabList className="flex w-full justify-around rounded-md border-gray-200 bg-gray-100 p-1 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
+          <TabList className="flex w-full justify-around rounded-md border-gray-200 bg-gray-100 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
             {categories.map(({ name }) => (
               <Tab
                 key={name}
@@ -198,13 +200,13 @@ const DetailCorrectionRequest = () => {
               key={categories.name}
               className="rounded-xl bg-gray-100 shadow-sm"
             >
-              <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+              <DynamicTableAction tableHead={tableHead} tableData={tableData} />
             </TabPanel>
             <TabPanel
               key={categories.name}
               className="rounded-xl bg-white shadow-sm"
             >
-              <DynamicTableEdit
+              <DynamicTable
                 tableHead={tableHeadOtherDetails}
                 tableData={tableDataOtherDetails}
               />

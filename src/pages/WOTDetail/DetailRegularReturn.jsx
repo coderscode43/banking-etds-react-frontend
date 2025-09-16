@@ -1,6 +1,6 @@
-import { DetailGrid } from "@/components/component/DetailGrid";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
 import { useNavigate } from "react-router-dom";
+import { DetailGrid } from "@/components/component/DetailGrid";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
 
 const DetailRegularReturn = () => {
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ const DetailRegularReturn = () => {
           </button>
         </div>
 
-        <DynamicTableEdit tableHead={tableHead} tableData={tableData} />
+        <DynamicTableAction tableHead={tableHead} tableData={tableData} />
       </div>
     </>
   );

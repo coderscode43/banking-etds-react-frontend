@@ -77,7 +77,7 @@ const DynamicTableCheckBoxAction = ({
                   colSpan={enhancedTableHead.length}
                   className="p-4 text-center text-[16px] font-semibold text-red-500"
                 >
-                  No data found
+                  No Data Found
                 </td>
               </tr>
             ) : (
