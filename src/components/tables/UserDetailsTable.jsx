@@ -3,16 +3,16 @@ const UserDetailsTable = ({ tableHead, tableData }) => {
     <div className="relative w-full">
       <div className="w-full overflow-clip rounded-md border border-gray-200">
         <table className="w-full text-[14px]">
-          <thead className="bg-[var(--secondary-color)] whitespace-nowrap text-white">
+          <thead className="bg-[var(--secondary-color)]">
             <tr className="border-[1.5px] border-[var(--secondary-color)]">
               {tableHead.map(({ label }, index) => (
                 <th
                   key={index}
-                  className={`p-2 ${
+                  className={`sticky top-[56px] bg-[var(--secondary-color)] p-2 whitespace-nowrap text-white ${
                     index === tableHead.length - 1
-                      ? "border-r-[1.5px] border-[var(--secondary-color)]"
-                      : "border-r-[1.5px] border-gray-300"
-                  }`}
+                      ? "border-[var(--secondary-color)]"
+                      : "border-gray-300"
+                  } z-0 border-r-[1.5px]`}
                 >
                   <div className="block min-w-[70px] resize-x overflow-auto">
                     {label}

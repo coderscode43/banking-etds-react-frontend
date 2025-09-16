@@ -1,16 +1,18 @@
 import common from "@/common/common";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
-import { Field, Label, Input } from "@headlessui/react";
+import { Field, Label, Input, Switch } from "@headlessui/react";
 import clsx from "clsx";
 import React, { useState } from "react";
 import { useEffect } from "react";
 
 const CorrectionRequest = () => {
   const entity = "correctionRequest";
+
   const [listData, setListData] = useState([]);
   const [date, setDate] = useState("");
   const [date1, setDate1] = useState("");
   const [showDivs, setShowDivs] = useState(false);
+  const [autoResize, setAutoResize] = useState(false);
 
   useEffect(() => {
     const fetchListData = async () => {
@@ -111,7 +113,7 @@ const CorrectionRequest = () => {
               </select>
             </div>
 
-            <div className="mt-6.5 flex gap-4">
+            <div className="mt-6.5 flex gap-2">
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>
@@ -126,6 +128,19 @@ const CorrectionRequest = () => {
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white">
                 <i className="fa-solid fa-plus"></i>
               </button>
+              <Switch
+                checked={autoResize}
+                onChange={setAutoResize}
+                className={`group relative inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors mt-2.5${
+                  autoResize ? "bg-blue-500" : "bg-gray-300"
+                }`}
+              >
+                <span
+                  className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
+                    autoResize ? "translate-x-7" : "translate-x-0"
+                  }`}
+                />
+              </Switch>
             </div>
           </Field>
         </div>
@@ -245,6 +260,7 @@ const CorrectionRequest = () => {
             entity={entity}
             tableHead={tableHead}
             tableData={tableData}
+            autoResize={autoResize}
           />
         </div>
       </div>

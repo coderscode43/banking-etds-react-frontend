@@ -3,9 +3,12 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import { Field, Input, Label } from "@headlessui/react";
 import UserDetailsTable from "@/components/tables/UserDetailsTable";
+import { useNavigate } from "react-router-dom";
 
 const UserDetails = () => {
   const entity = "userDetails";
+  const navigate = useNavigate();
+
   const [listData, setListData] = useState([]);
 
   useEffect(() => {
@@ -32,6 +35,7 @@ const UserDetails = () => {
     srNo: index + 1,
     ...data,
   }));
+
   return (
     <>
       <div className="space-y-5">
@@ -74,7 +78,7 @@ const UserDetails = () => {
               </select>
             </div>
 
-            <div className="mt-6.5 flex gap-4">
+            <div className="mt-6.5 flex gap-2">
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>
@@ -83,7 +87,10 @@ const UserDetails = () => {
                 Export to Excel
               </button>
 
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white">
+              <button
+                className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
+                onClick={() => navigate(`/home/add/addUserDetails`)}
+              >
                 <i className="fa-solid fa-plus"></i>
               </button>
             </div>

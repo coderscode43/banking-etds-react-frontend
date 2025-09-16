@@ -107,7 +107,7 @@ const StatementStatus = () => {
               </select>
             </div>
 
-            <div className="mt-6.5 flex gap-4">
+            <div className="mt-6.5 flex gap-2">
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>

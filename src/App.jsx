@@ -51,6 +51,7 @@ import AddBranch from "./pages/SCAdd/AddBranch";
 import DetailBranch from "./pages/SCDetail/DetailBranch";
 import AddRegularReturn from "./pages/SCAdd/AddRegularReturn";
 import Login from "./components/auth/Login";
+import AddUserDetails from "./pages/SCAdd/AddUserDetails";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -121,6 +122,7 @@ const App = () => {
 
           <Route path="add">
             <Route path="addBranch" element={<AddBranch />} />
+            <Route path="addUserDetails" element={<AddUserDetails />} />
             <Route path="addRegularReturn" element={<AddRegularReturn />} />
           </Route>
         </Route>

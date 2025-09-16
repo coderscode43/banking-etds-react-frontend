@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom";
 import DropdownMenu from "../component/DropdownMenu";
+import { useNavigate } from "react-router-dom";
 
 const HomeWOTTopBar = () => {
   const { fy, branchCode } = useParams();
+  const navigate = useNavigate();
 
   return (
     <div className="sticky top-0 z-10">
@@ -17,6 +19,7 @@ const HomeWOTTopBar = () => {
                 className="h-10 object-contain"
                 src="/images/TOS-TRANSPARENT.png"
                 alt="TOS Logo"
+                onClick={() => navigate(`/home/homepage`)}
               />
             </div>
           </div>

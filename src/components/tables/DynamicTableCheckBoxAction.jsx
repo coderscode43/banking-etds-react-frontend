@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const DynamicTableCheckBoxAction = ({ entity, tableHead, tableData }) => {
+const DynamicTableCheckBoxAction = ({
+  entity,
+  tableHead,
+  tableData,
+  autoResize,
+}) => {
   const navigate = useNavigate();
 
   const [selectedRows, setSelectedRows] = useState([]);
@@ -46,16 +51,16 @@ const DynamicTableCheckBoxAction = ({ entity, tableHead, tableData }) => {
     <div className="relative w-full">
       <div className="w-full overflow-clip rounded-md">
         <table className="w-full text-[14px]">
-          <thead className="bg-[var(--secondary-color)] whitespace-nowrap text-white">
+          <thead className="bg-[var(--secondary-color)]">
             <tr className="border-[1.5px] border-[var(--secondary-color)]">
               {enhancedTableHead.map(({ label }, index) => (
                 <th
                   key={index}
-                  className={`p-2 ${
+                  className={`sticky top-[56px] bg-[var(--secondary-color)] p-2 whitespace-nowrap text-white ${
                     index === enhancedTableHead.length - 1
-                      ? "border-r-[1.5px] border-[var(--secondary-color)]"
-                      : "border-r-[1.5px] border-gray-300"
-                  }`}
+                      ? "border-[var(--secondary-color)]"
+                      : "border-gray-300"
+                  } z-0 border-r-[1.5px]`}
                 >
                   <div className="block min-w-[70px] resize-x overflow-auto">
                     {label}
@@ -105,7 +110,7 @@ const DynamicTableCheckBoxAction = ({ entity, tableHead, tableData }) => {
                     {tableHead.map(({ key, formatter }, colIndex) => (
                       <td
                         key={colIndex}
-                        className="max-w-[70px] min-w-[100px] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
+                        className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${autoResize ? "w-auto" : "max-w-[60px] min-w-[70px] overflow-hidden"}`}
                       >
                         {key === "action" ? (
                           <i className="fa-solid fa-file-pen text-lg"></i>

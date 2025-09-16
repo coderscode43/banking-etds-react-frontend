@@ -3,7 +3,7 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DynamicTableCheckBoxAction from "@/components/tables/DynamicTableCheckBoxAction";
-import { Field, Input, Label } from "@headlessui/react";
+import { Field, Input, Label, Switch } from "@headlessui/react";
 
 const RegularReturn = () => {
   const entity = "regularReturn";
@@ -13,6 +13,7 @@ const RegularReturn = () => {
   const [date, setDate] = useState("");
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+  const [autoResize, setAutoResize] = useState(false);
 
   useEffect(() => {
     const fetchListData = async () => {
@@ -58,7 +59,7 @@ const RegularReturn = () => {
           Regular Return
         </h1>
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <Field className="flex flex-wrap gap-2">
             <div className="w-full md:w-1/4">
               <Label className="font-semibold text-[var(--primary-color)]">
                 Financial Year
@@ -111,7 +112,7 @@ const RegularReturn = () => {
               </select>
             </div>
 
-            <div className="mt-6.5 flex gap-4">
+            <div className="mt-6.5 flex gap-2">
               <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>
@@ -135,6 +136,19 @@ const RegularReturn = () => {
               >
                 <i className="fa-solid fa-plus"></i>
               </button>
+              <Switch
+                checked={autoResize}
+                onChange={setAutoResize}
+                className={`group relative mt-2.5 inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors ${
+                  autoResize ? "bg-blue-500" : "bg-gray-300"
+                }`}
+              >
+                <span
+                  className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
+                    autoResize ? "translate-x-7" : "translate-x-0"
+                  }`}
+                />
+              </Switch>
             </div>
           </Field>
         </div>
@@ -208,6 +222,7 @@ const RegularReturn = () => {
             entity={entity}
             tableHead={tableHead}
             tableData={tableData}
+            autoResize={autoResize}
           />
         </div>
       </div>

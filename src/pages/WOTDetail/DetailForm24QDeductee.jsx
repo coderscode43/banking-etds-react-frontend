@@ -95,7 +95,7 @@ const DetailForm24QDeductee = () => {
 
         <DetailGrid fields={fields} data={tableData[0]} columns={2} />
 
-        <div className="flex justify-end gap-4 pr-5">
+        <div className="mt-5 flex justify-end gap-4 pr-5">
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}
