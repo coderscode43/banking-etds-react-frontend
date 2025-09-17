@@ -3,13 +3,14 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import { Field, Input, Label, Switch } from "@headlessui/react";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
+import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
 
 const Form24QDeductee = () => {
   const entity = "form24QDeductee";
-
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [autoResize, setAutoResize] = useState(false);
+  const [checkedItems, setCheckedItems] = useState(new Set());
 
   useEffect(() => {
     const fetchListData = async () => {
@@ -37,6 +38,32 @@ const Form24QDeductee = () => {
     { label: "Section Code", key: "sectionCode" },
     { label: "TAN", key: "TAN" },
     { label: "Action", key: "action" },
+  ];
+
+  const extraColumns = [
+    { label: "Date of Payment", key: "dateOfPayment" },
+    { label: "Date of Deduction", key: "dateOfDeduction" },
+    { label: "Unique Ref Number", key: "uniqueRefNo" },
+    { label: "Amount paid", key: "amountPaid" },
+    { label: "Account Number", key: "accNo" },
+    { label: "TDS", key: "tds" },
+    { label: "surcharge", key: "surcharge" },
+    { label: "education cess", key: "education cess" },
+    { label: "Total Tax Deducted", key: "totalTaxDeducted" },
+    { label: "Total Tax Deposited", key: "totalTaxDeposited" },
+    { label: "Certificate No", key: "certificateNumber" },
+  ];
+
+  const filteredExtraColumns = extraColumns.filter((col) =>
+    checkedItems.has(col.key)
+  );
+
+  const insertIndex = Math.max(tableHead.length - 1, 0);
+
+  const combinedTableHead = [
+    ...tableHead.slice(0, insertIndex),
+    ...filteredExtraColumns,
+    ...tableHead.slice(insertIndex),
   ];
 
   const tableData = listData?.map((data, index) => ({
@@ -114,10 +141,11 @@ const Form24QDeductee = () => {
               >
                 <i className="fa-solid fa-filter"></i>
               </button>
-
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#024dec] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-table"></i>
-              </button>
+              <FilterButtonDropdown
+                extraColumns={extraColumns}
+                checkedItems={checkedItems}
+                setCheckedItems={setCheckedItems}
+              />
               <Switch
                 checked={autoResize}
                 onChange={setAutoResize}
@@ -252,7 +280,7 @@ const Form24QDeductee = () => {
         <div>
           <DynamicTableActionTotal
             entity={entity}
-            tableHead={tableHead}
+            tableHead={combinedTableHead}
             tableData={tableData}
             autoResize={autoResize}
           />
