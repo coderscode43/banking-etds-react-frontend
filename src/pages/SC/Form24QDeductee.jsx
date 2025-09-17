@@ -1,14 +1,21 @@
 import clsx from "clsx";
 import common from "@/common/common";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Field, Input, Label, Switch } from "@headlessui/react";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
 
 const Form24QDeductee = () => {
   const entity = "form24QDeductee";
+
+  const { params } = useParams();
+
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+  const [gotoPage, setGotoPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
   const [autoResize, setAutoResize] = useState(false);
   const [checkedItems, setCheckedItems] = useState(new Set());
 
@@ -16,6 +23,9 @@ const Form24QDeductee = () => {
     const fetchListData = async () => {
       try {
         const response = await common.getListData(entity);
+        const count = common.getCountData();
+        const pages = Math.ceil(count / 100);
+        setTotalPages(pages);
         setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
@@ -24,6 +34,23 @@ const Form24QDeductee = () => {
 
     fetchListData();
   }, []);
+
+  const handlePagination = async (pageNo) => {
+    setGotoPage(pageNo);
+    setCurrentPage(pageNo);
+    // setSrNo((pageNo - 1) * 100 + 1);
+
+    try {
+      if (params !== undefined) {
+        await common.getSearchPagination(entity, pageNo, params);
+      } else {
+        await common.getPagination(entity, pageNo);
+      }
+      setListData(common.getEntityList);
+    } catch (err) {
+      console.error("Error while loading next page:", err);
+    }
+  };
 
   // Table Details
   const tableHead = [
@@ -67,7 +94,7 @@ const Form24QDeductee = () => {
   ];
 
   const tableData = listData?.map((data, index) => ({
-    srNo: index + 1,
+    srNo: (currentPage - 1) * 100 + (index + 1),
     ...data,
   }));
 
@@ -286,6 +313,58 @@ const Form24QDeductee = () => {
           />
         </div>
       </div>
+
+      {/* //pagination Logic */}
+      {listData.length > 0 && (
+        <div className="mt-6 text-center">
+          {
+            <>
+              <button
+                className="mx-2 rounded bg-blue-600 px-4 py-1 text-white"
+                hidden={currentPage === 1}
+                onClick={() => handlePagination(currentPage - 1)}
+              >
+                Previous
+              </button>
+
+              <span>
+                Displaying page <strong>{currentPage}</strong> of{" "}
+                <strong>{totalPages}</strong>
+              </span>
+
+              <button
+                className="mx-2 rounded bg-blue-600 px-4 py-1 text-white"
+                hidden={currentPage === totalPages}
+                onClick={() => handlePagination(currentPage + 1)}
+              >
+                Next
+              </button>
+              {totalPages > 1 && (
+                <div className="mt-2">
+                  <span>Go to</span> &nbsp;
+                  <input
+                    type="number"
+                    min={1}
+                    max={totalPages}
+                    value={gotoPage}
+                    onChange={(e) => setGotoPage(Number(e.target.value))}
+                    className="w-20 border p-1 text-center"
+                  />
+                  &nbsp;
+                  <button
+                    className="ml-2 rounded bg-green-600 px-3 py-1 text-white"
+                    hidden={gotoPage < 1 || gotoPage > totalPages}
+                    onClick={() => handlePagination(gotoPage)}
+                  >
+                    Go
+                  </button>
+                </div>
+              )}
+            </>
+          }
+        </div>
+      )}
+      {/* //Pagination Logic Ends */}
     </>
   );
 };
