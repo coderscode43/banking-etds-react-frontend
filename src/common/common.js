@@ -3,8 +3,6 @@ import {
   detailRegularReturn,
   listData,
   WOTListData,
-  getCount,
-  getEntity,
   fetchEntities,
   fetchSearchEntities,
 } from "@/service/apiService";
@@ -15,14 +13,6 @@ const common = {
 
   getListData: async (entity) => {
     return await listData(entity);
-  },
-
-  getCountData: function () {
-    return getCount();
-  },
-
-  getEntityList: function () {
-    return getEntity();
   },
 
   getDetailListData: async (entity, fy, branchCode, id) => {
@@ -38,11 +28,11 @@ const common = {
   },
 
   getPagination: async (entity, pageNo) => {
-    await fetchEntities(entity, pageNo - 1);
+    return await fetchEntities(entity, pageNo - 1);
   },
 
   getSearchPagination: async (entity, pageNo, searchParams) => {
-    await fetchSearchEntities(entity, pageNo - 1, searchParams);
+    return await fetchSearchEntities(entity, pageNo - 1, searchParams);
   },
 };
 

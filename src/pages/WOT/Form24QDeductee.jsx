@@ -184,6 +184,7 @@ const Form24QDeductee = () => {
         <div>
           <DynamicTableActionTotal
             entity={entity}
+            layoutType={"wot"}
             tableHead={tableHead}
             tableData={tableData}
           />

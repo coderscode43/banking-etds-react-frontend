@@ -23,7 +23,7 @@ const Form24QDeductee = () => {
     const fetchListData = async () => {
       try {
         const response = await common.getListData(entity);
-        const count = common.getCountData();
+        const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
         setListData(response.data.entities || []);
@@ -38,15 +38,19 @@ const Form24QDeductee = () => {
   const handlePagination = async (pageNo) => {
     setGotoPage(pageNo);
     setCurrentPage(pageNo);
-    // setSrNo((pageNo - 1) * 100 + 1);
 
     try {
       if (params !== undefined) {
-        await common.getSearchPagination(entity, pageNo, params);
+        const response = await common.getSearchPagination(
+          entity,
+          pageNo,
+          params
+        );
+        setListData(response.data.entities || []);
       } else {
-        await common.getPagination(entity, pageNo);
+        const response = await common.getPagination(entity, pageNo);
+        setListData(response.data.entities || []);
       }
-      setListData(common.getEntityList);
     } catch (err) {
       console.error("Error while loading next page:", err);
     }
@@ -307,6 +311,7 @@ const Form24QDeductee = () => {
         <div>
           <DynamicTableActionTotal
             entity={entity}
+            layoutType="sc"
             tableHead={combinedTableHead}
             tableData={tableData}
             autoResize={autoResize}
@@ -314,57 +319,57 @@ const Form24QDeductee = () => {
         </div>
       </div>
 
-      {/* //pagination Logic */}
+      {/* Pagination */}
       {listData.length > 0 && (
-        <div className="mt-6 text-center">
-          {
-            <>
+        <div className="my-5">
+          <>
+            <div className="flex items-center justify-center gap-5">
               <button
-                className="mx-2 rounded bg-blue-600 px-4 py-1 text-white"
-                hidden={currentPage === 1}
+                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
+                disabled={currentPage === 1}
                 onClick={() => handlePagination(currentPage - 1)}
               >
                 Previous
               </button>
-
-              <span>
-                Displaying page <strong>{currentPage}</strong> of{" "}
-                <strong>{totalPages}</strong>
-              </span>
-
+              <div className="flex items-center justify-center">
+                <h5>
+                  Displaying page{" "}
+                  <span className="font-semibold">{currentPage}</span> of{" "}
+                  <span className="font-semibold">{totalPages}</span>
+                </h5>
+              </div>
               <button
-                className="mx-2 rounded bg-blue-600 px-4 py-1 text-white"
-                hidden={currentPage === totalPages}
+                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
+                disabled={currentPage === totalPages}
                 onClick={() => handlePagination(currentPage + 1)}
               >
                 Next
               </button>
-              {totalPages > 1 && (
-                <div className="mt-2">
-                  <span>Go to</span> &nbsp;
-                  <input
-                    type="number"
-                    min={1}
-                    max={totalPages}
-                    value={gotoPage}
-                    onChange={(e) => setGotoPage(Number(e.target.value))}
-                    className="w-20 border p-1 text-center"
-                  />
-                  &nbsp;
-                  <button
-                    className="ml-2 rounded bg-green-600 px-3 py-1 text-white"
-                    hidden={gotoPage < 1 || gotoPage > totalPages}
-                    onClick={() => handlePagination(gotoPage)}
-                  >
-                    Go
-                  </button>
-                </div>
-              )}
-            </>
-          }
+            </div>
+
+            {totalPages > 1 && (
+              <div className="mt-5 flex items-center justify-center gap-3">
+                <span>Go to</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={totalPages}
+                  value={gotoPage}
+                  onChange={(e) => setGotoPage(Number(e.target.value))}
+                  className="w-20 rounded-md border border-gray-400 p-0.5 text-center"
+                />
+                <button
+                  className="ml-2 cursor-pointer rounded-md bg-green-700 px-4 py-1 text-white disabled:bg-gray-400 disabled:opacity-50"
+                  disabled={gotoPage < 1 || gotoPage > totalPages}
+                  onClick={() => handlePagination(gotoPage)}
+                >
+                  Go
+                </button>
+              </div>
+            )}
+          </>
         </div>
       )}
-      {/* //Pagination Logic Ends */}
     </>
   );
 };

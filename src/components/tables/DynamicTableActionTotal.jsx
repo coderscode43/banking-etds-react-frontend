@@ -1,6 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { TooltipWrapper } from "../component/Tooltip";
 
-const DynamicTableAction = ({ entity, tableHead, tableData, autoResize }) => {
+const DynamicTableAction = ({
+  entity,
+  layoutType,
+  tableHead,
+  tableData,
+  autoResize,
+}) => {
   const { fy } = useParams();
   const navigate = useNavigate();
 
@@ -53,11 +60,19 @@ const DynamicTableAction = ({ entity, tableHead, tableData, autoResize }) => {
                     key={index}
                     className="cursor-pointer text-center hover:bg-gray-100"
                     onDoubleClick={() => {
-                      navigate(
-                        `/homeWOT/${data.branchCode}/${fy}/detail/${entity}/${data.id}/detail${
-                          entity.charAt(0).toUpperCase() + entity.slice(1)
-                        }`
-                      );
+                      if (layoutType === "sc") {
+                        navigate(
+                          `/home/detail/${entity}/${data.id}/${data.fy}/${data.branchCode}/detail${
+                            entity.charAt(0).toUpperCase() + entity.slice(1)
+                          }`
+                        );
+                      } else if (layoutType === "wot") {
+                        navigate(
+                          `/homeWOT/${data.branchCode}/${fy}/detail/${entity}/${data.id}/detail${
+                            entity.charAt(0).toUpperCase() + entity.slice(1)
+                          }`
+                        );
+                      }
                     }}
                   >
                     {tableHead.map(({ key, formatter }, colIndex) => (
@@ -66,7 +81,9 @@ const DynamicTableAction = ({ entity, tableHead, tableData, autoResize }) => {
                         className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${autoResize ? "w-auto" : "max-w-[60px] min-w-[70px] overflow-hidden"}`}
                       >
                         {key === "action" ? (
-                          <i className="fa-solid fa-file-pen text-lg"></i>
+                          <TooltipWrapper tooltipText="Action">
+                            <i className="fa-solid fa-file-pen text-lg"></i>
+                          </TooltipWrapper>
                         ) : formatter ? (
                           formatter(data[key])
                         ) : (

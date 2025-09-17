@@ -62,7 +62,7 @@ export default function FilterButtonDropdown({
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute z-50 mt-1 max-h-60 w-62 overflow-x-hidden overflow-y-auto rounded-md border border-gray-200 bg-white p-1 text-sm text-gray-900 shadow-lg"
+          className="custom-scrollbar absolute z-50 mt-1 max-h-[310px] w-62 overflow-x-hidden overflow-y-auto rounded-md border border-gray-200 bg-white p-1 text-sm text-gray-900 shadow-lg"
           style={{ top: "100%", right: 0 }} // place it right below the button
         >
           {/* Check All */}

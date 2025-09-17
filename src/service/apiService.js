@@ -2,47 +2,6 @@ import axios from "axios";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-let count = 0;
-let entityList = [];
-
-export function getCount() {
-  return count;
-}
-
-export function getEntity() {
-  return entityList;
-}
-
-//Pagination Function
-export async function fetchEntities(entity, pageNo) {
-  try {
-    const response = await axios.get(
-      `${API_BASE_URL}${entity}/list/get/${pageNo}/100`,
-      { withCredentials: true }
-    );
-    count = response.data.count || 0;
-    entityList = response.data.entities || ([] && response.data);
-    return response;
-  } catch (error) {
-    console.error("Error in fetchEntities:", error);
-    throw error;
-  }
-}
-
-export async function fetchSearchEntities(entity, pageNo, searchParams) {
-  try {
-    const response = await axios.get(
-      `${API_BASE_URL}${entity}/search/get/${pageNo}/100/${searchParams}`,
-      { withCredentials: true }
-    );
-    count = response.data.count || 0;
-    entityList = response.data.entities || ([] && response.data);
-  } catch (error) {
-    console.error("Error in fetchSearchEntities:", error);
-    throw error;
-  }
-}
-
 const credentials = {
   withCredentials: true,
 };
@@ -54,7 +13,6 @@ export const listData = async (entity) => {
       `${API_BASE_URL}${entity}/list/count/`,
       credentials
     );
-    count = response.data.count || 0;
     return response;
   } catch (error) {
     console.error(error);
@@ -95,5 +53,30 @@ export const WOTListData = async (entity, fy, branchCode) => {
     return response;
   } catch (error) {
     console.error(error);
+  }
+};
+
+// Pagination Functionality
+export const fetchEntities = async (entity, pageNo) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}${entity}/list/get/${pageNo}/100`,
+      { withCredentials: true }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error in fetching entities:", error);
+  }
+};
+
+export const fetchSearchEntities = async (entity, pageNo, searchParams) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}${entity}/search/get/${pageNo}/100/${searchParams}`,
+      { withCredentials: true }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error in fetching search entities:", error);
   }
 };

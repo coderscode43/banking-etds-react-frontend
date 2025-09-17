@@ -35,9 +35,46 @@ body {
   scrollbar-width: none;
 }
 
-/* For IE, Edge Legacy */
-.custom-scrollbar {
+/* Hide scrollbar for Internet Explorer and Edge Legacy */
+.hide-scrollbar {
   -ms-overflow-style: none;
+}
+
+/* For Chrome, Safari, and Edge */
+.custom-scrollbar::-webkit-scrollbar {
+  /* Width of the scrollbar */
+  width: 12px;
+  /* Height of the scrollbar for horizontal scrolling */
+  height: 12px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  /* Color of the scrollbar handle */
+  background-color: #888;
+  /* Round the corners of the scrollbar handle */
+  border-radius: 10px;
+  /* Optional: adds a border around the thumb */
+  border: 3px solid #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  /* Darker thumb color when hovered */
+  background-color: #555;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  /* Track (background of the scrollbar) */
+  background-color: #f1f1f1;
+  /* Round the corners of the track */
+  border-radius: 10px;
+}
+
+/* For Firefox */
+.custom-scrollbar {
+  /* 'thin', 'auto', or 'none' */
+  scrollbar-width: thin;
+  /* Thumb and track colors */
+  scrollbar-color: #888 #f1f1f1;
 }
 
 .aishadow {
