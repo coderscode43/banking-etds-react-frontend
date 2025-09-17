@@ -8,7 +8,7 @@ const credentials = {
   withCredentials: true,
 };
 
-const StaticDataState = ({ children }) => {
+const StaticDataProvider = ({ children }) => {
   const [staticData, setStaticData] = useState({});
 
   useEffect(() => {
@@ -18,7 +18,6 @@ const StaticDataState = ({ children }) => {
         credentials
       );
       setStaticData(response.data || {});
-      return response;
     };
     getStaticData();
   }, []);
@@ -30,4 +29,4 @@ const StaticDataState = ({ children }) => {
   );
 };
 
-export default StaticDataState;
+export default StaticDataProvider;

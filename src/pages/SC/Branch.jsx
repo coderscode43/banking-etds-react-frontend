@@ -1,14 +1,17 @@
 import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState } from "react";
-import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
-import { Field, Input, Label } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Field, Input, Label } from "@headlessui/react";
+import staticDataContext from "@/context/staticDataContext";
+import { TooltipWrapper } from "@/components/component/Tooltip";
+import DynamicTableEdit from "@/components/tables/DynamicTableEdit";
 
 const Branch = () => {
   const entity = "branch";
 
   const navigate = useNavigate();
+  const { State } = useContext(staticDataContext);
 
   const [listData, setListData] = useState([]);
 
@@ -85,29 +88,41 @@ const Branch = () => {
                 )}
               >
                 <option value="">Select State</option>
-                <option value="state1">State 1</option>
-                <option value="state2">State 2</option>
-                <option value="state3">State 3</option>
+                {State &&
+                  State.length > 0 &&
+                  State.map((state, index) => {
+                    return (
+                      <option key={index} value={state}>
+                        {state}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
 
             <div className="mt-6.5 flex gap-2">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
+              <TooltipWrapper tooltipText="Search">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </TooltipWrapper>
 
-              <button
-                className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
-                onClick={() => {
-                  navigate(`/home/add/addBranch`);
-                }}
-              >
-                <i className="fa-solid fa-plus"></i>
-              </button>
+              <TooltipWrapper tooltipText="Add RO">
+                <button
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
+                  onClick={() => {
+                    navigate(`/home/add/addBranch`);
+                  }}
+                >
+                  <i className="fa-solid fa-plus"></i>
+                </button>
+              </TooltipWrapper>
 
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                Export to Excel
-              </button>
+              <TooltipWrapper tooltipText="Export to Excel">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                  Export to Excel
+                </button>
+              </TooltipWrapper>
             </div>
           </Field>
         </div>
