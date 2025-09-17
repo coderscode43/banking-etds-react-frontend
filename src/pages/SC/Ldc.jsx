@@ -3,6 +3,7 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import DynamicTable from "@/components/tables/DynamicTable";
 import { Field, Input, Label, Switch } from "@headlessui/react";
+import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const Ldc = () => {
   const entity = "ldc";
@@ -105,29 +106,34 @@ const Ldc = () => {
             </div>
 
             <div className="mt-6.5 flex gap-2">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-
-              <button
-                onClick={() => setShowDivs((prev) => !prev)}
-                className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
-              >
-                <i className="fa-solid fa-filter"></i>
-              </button>
-              <Switch
-                checked={autoResize}
-                onChange={setAutoResize}
-                className={`group relative mt-2.5 inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors ${
-                  autoResize ? "bg-blue-500" : "bg-gray-300"
-                }`}
-              >
-                <span
-                  className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                    autoResize ? "translate-x-7" : "translate-x-0"
+              <TooltipWrapper tooltipText="Search">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Advance Search">
+                <button
+                  onClick={() => setShowDivs((prev) => !prev)}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
+                >
+                  <i className="fa-solid fa-filter"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Auto-Resize">
+                <Switch
+                  checked={autoResize}
+                  onChange={setAutoResize}
+                  className={`group relative mt-2.5 inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors ${
+                    autoResize ? "bg-blue-500" : "bg-gray-300"
                   }`}
-                />
-              </Switch>
+                >
+                  <span
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
+                      autoResize ? "translate-x-7" : "translate-x-0"
+                    }`}
+                  />
+                </Switch>
+              </TooltipWrapper>
             </div>
           </Field>
         </div>
@@ -233,9 +239,11 @@ const Ldc = () => {
                 />
               </div>
               <div>
-                <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                  Export to Excel
-                </button>
+                <TooltipWrapper tooltipText="Export to Excel">
+                  <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                    Export to Excel
+                  </button>
+                </TooltipWrapper>
               </div>
             </Field>
           </div>

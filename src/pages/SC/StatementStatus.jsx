@@ -3,6 +3,7 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import DynamicTable from "@/components/tables/DynamicTable";
 import { Field, Input, Label } from "@headlessui/react";
+import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const StatementStatus = () => {
   const entity = "statementStatus";
@@ -108,16 +109,19 @@ const StatementStatus = () => {
             </div>
 
             <div className="mt-6.5 flex gap-2">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-
-              <button
-                onClick={() => setShowDivs((prev) => !prev)}
-                className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
-              >
-                <i className="fa-solid fa-filter"></i>
-              </button>
+              <TooltipWrapper tooltipText="Search">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Advance Search">
+                <button
+                  onClick={() => setShowDivs((prev) => !prev)}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
+                >
+                  <i className="fa-solid fa-filter"></i>
+                </button>
+              </TooltipWrapper>
             </div>
           </Field>
         </div>
@@ -176,9 +180,11 @@ const StatementStatus = () => {
                 </select>
               </div>
               <div>
-                <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                  Export to Excel
-                </button>
+                <TooltipWrapper tooltipText="Export to Excel">
+                  <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                    Export to Excel
+                  </button>
+                </TooltipWrapper>
               </div>
             </Field>
           </div>

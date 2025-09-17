@@ -3,9 +3,15 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import { Field, Input, Label } from "@headlessui/react";
 import DynamicTable from "@/components/tables/DynamicTable";
+import { TooltipWrapper } from "@/components/component/Tooltip";
+import { useContext } from "react";
+import staticDataContext from "@/context/staticDataContext";
 
 const DeductorDetails = () => {
   const entity = "deductorDetails";
+
+  const { State, Tan } = useContext(staticDataContext);
+
   const [listData, setListData] = useState([]);
 
   useEffect(() => {
@@ -57,9 +63,15 @@ const DeductorDetails = () => {
                 )}
               >
                 <option value="">Select TAN</option>
-                <option value="tan1">TAN 1</option>
-                <option value="tan2">TAN 2</option>
-                <option value="tan3">TAN 3</option>
+                {Tan &&
+                  Tan.length > 0 &&
+                  Tan.map((Tan, index) => {
+                    return (
+                      <option key={index} value={Tan}>
+                        {Tan}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
             <div className="w-full md:w-1/4">
@@ -76,9 +88,15 @@ const DeductorDetails = () => {
                 )}
               >
                 <option value="">Select State</option>
-                <option value="state1">State 1</option>
-                <option value="state2">State 2</option>
-                <option value="state3">State 3</option>
+                {State &&
+                  State.length > 0 &&
+                  State.map((state, index) => {
+                    return (
+                      <option key={index} value={state}>
+                        {state}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
             <div className="w-full md:w-1/4">
@@ -97,13 +115,16 @@ const DeductorDetails = () => {
             </div>
 
             <div className="mt-6.5 flex gap-2">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                Export to Excel
-              </button>
+              <TooltipWrapper tooltipText="Search">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText={"Export To Excel Button"}>
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                  Export to Excel
+                </button>
+              </TooltipWrapper>
             </div>
           </Field>
         </div>

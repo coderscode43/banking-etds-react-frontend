@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Field, Input, Label } from "@headlessui/react";
 import UserDetailsTable from "@/components/tables/UserDetailsTable";
 import { useNavigate } from "react-router-dom";
+import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const UserDetails = () => {
   const entity = "userDetails";
@@ -79,20 +80,24 @@ const UserDetails = () => {
             </div>
 
             <div className="mt-6.5 flex gap-2">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                Export to Excel
-              </button>
-
-              <button
-                className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
-                onClick={() => navigate(`/home/add/addUserDetails`)}
-              >
-                <i className="fa-solid fa-plus"></i>
-              </button>
+              <TooltipWrapper tooltipText="Search ">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Export to Excel">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                  Export to Excel
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Add User Detail">
+                <button
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
+                  onClick={() => navigate(`/home/add/addUserDetails`)}
+                >
+                  <i className="fa-solid fa-plus"></i>
+                </button>
+              </TooltipWrapper>
             </div>
           </Field>
         </div>

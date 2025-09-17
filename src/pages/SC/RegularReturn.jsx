@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DynamicTableCheckBoxAction from "@/components/tables/DynamicTableCheckBoxAction";
 import { Field, Input, Label, Switch } from "@headlessui/react";
+import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const RegularReturn = () => {
   const entity = "regularReturn";
@@ -113,42 +114,49 @@ const RegularReturn = () => {
             </div>
 
             <div className="mt-6.5 flex gap-2">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-
-              <button
-                onClick={() => setShowDivs((prev) => !prev)}
-                className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
-              >
-                <i className="fa-solid fa-filter"></i>
-              </button>
-
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-comment"></i>
-              </button>
-
-              <button
-                className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
-                onClick={() => {
-                  navigate(`/home/add/addRegularReturn`);
-                }}
-              >
-                <i className="fa-solid fa-plus"></i>
-              </button>
-              <Switch
-                checked={autoResize}
-                onChange={setAutoResize}
-                className={`group relative mt-2.5 inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors ${
-                  autoResize ? "bg-blue-500" : "bg-gray-300"
-                }`}
-              >
-                <span
-                  className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                    autoResize ? "translate-x-7" : "translate-x-0"
+              <TooltipWrapper tooltipText="Search">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Advance Search">
+                <button
+                  onClick={() => setShowDivs((prev) => !prev)}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
+                >
+                  <i className="fa-solid fa-filter"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Message">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-comment"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Add">
+                <button
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
+                  onClick={() => {
+                    navigate(`/home/add/addRegularReturn`);
+                  }}
+                >
+                  <i className="fa-solid fa-plus"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="AutoResize">
+                <Switch
+                  checked={autoResize}
+                  onChange={setAutoResize}
+                  className={`group relative mt-2.5 inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors ${
+                    autoResize ? "bg-blue-500" : "bg-gray-300"
                   }`}
-                />
-              </Switch>
+                >
+                  <span
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
+                      autoResize ? "translate-x-7" : "translate-x-0"
+                    }`}
+                  />
+                </Switch>
+              </TooltipWrapper>
             </div>
           </Field>
         </div>

@@ -3,6 +3,7 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import { Field, Label } from "@headlessui/react";
 import DynamicTable from "@/components/tables/DynamicTable";
+import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const UploadCertificate = () => {
   const entity = "uploadCertificate";
@@ -111,17 +112,21 @@ const UploadCertificate = () => {
             </div>
 
             <div className="mt-6.5 flex gap-2">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#f5325c] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-upload"></i>
-              </button>
-
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                Export to Excel
-              </button>
+              <TooltipWrapper tooltipText="Search">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Upload Button">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#f5325c] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-upload"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Export to Excel">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                  Export to Excel
+                </button>
+              </TooltipWrapper>
             </div>
           </Field>
         </div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Field, Input, Label } from "@headlessui/react";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const CorrectionRequest = () => {
   const entity = "correctionRequest";
@@ -94,9 +95,7 @@ const CorrectionRequest = () => {
                 name="quarter"
                 id="quarter"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
               >
                 {" "}
@@ -108,20 +107,24 @@ const CorrectionRequest = () => {
             </div>
 
             <div className="mt-6.5 flex gap-2">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-
-              <button
-                onClick={() => setShowDivs((prev) => !prev)}
-                className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
-              >
-                <i className="fa-solid fa-filter"></i>
-              </button>
-
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-plus"></i>
-              </button>
+              <TooltipWrapper tooltipText="Search">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Advance Search">
+                <button
+                  onClick={() => setShowDivs((prev) => !prev)}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
+                >
+                  <i className="fa-solid fa-filter"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Add Correction Request">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-plus"></i>
+                </button>
+              </TooltipWrapper>
             </div>
           </Field>
         </div>
@@ -219,10 +222,12 @@ const CorrectionRequest = () => {
                   )}
                 />
               </div>
-              <div className="mt-6.5">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                  Export to Excel
-                </button>
+              <div>
+                <TooltipWrapper tooltipText="Export to Excel">
+                  <button className="mt-6.5 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                    Export to Excel
+                  </button>
+                </TooltipWrapper>
               </div>
             </Field>
           </div>

@@ -3,7 +3,9 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
-import { Field, Input, Label } from "@headlessui/react";
+import { Field, Input, Label, Switch } from "@headlessui/react";
+import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
+import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const Form27EQDeductee = () => {
   const entity = "form27EQDeductee";
@@ -12,6 +14,8 @@ const Form27EQDeductee = () => {
 
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+  const [autoResize, setAutoResize] = useState(false);
+  const [checkedItems, setCheckedItems] = useState(new Set());
 
   useEffect(() => {
     const fetchListData = async () => {
@@ -34,6 +38,49 @@ const Form27EQDeductee = () => {
     { label: "Section Code", key: "sectionCode" },
     { label: "TAN", key: "tan" },
     { label: "Action", key: "action" },
+  ];
+
+  const extraColumns = [
+    { label: "Date of Payment", key: "dateOfPayment" },
+    { label: "Date of Deduction", key: "dateOfDeduction" },
+    { label: "Unique Ref Number", key: "uniqueRefNo" },
+    { label: "Amount Paid", key: "amountPaid" },
+    { label: "Account Number", key: "accNo" },
+    { label: "TDS", key: "tds" },
+    { label: "Surcharge", key: "surcharge" },
+    { label: "Education Cess", key: "eduCess" },
+    { label: "Total Tax Deducted", key: "totalTaxDeducted" },
+    { label: "Total Tax Deposited", key: "totalTaxDeposited" },
+    { label: "Certificate No", key: "certificateNumber" },
+    { label: "Remarks Reason", key: "remarksReason" },
+    { label: "Deductee Code", key: "deducteeCode" },
+    { label: "Rate at which Tax Deducted", key: "rateAtWhichTaxCollected" },
+    { label: "Cash Withdrawl (194N)", key: "cashWithdrawal194N" },
+    {
+      label: "Cash Withdrawl 194N(20L to 1cr)",
+      key: "cashWithdrawal194N20Lto1Cr",
+    },
+    { label: "Cash Withdrawl 194N(>1cr)", key: "cashWithdrawal194N1Cr" },
+    { label: "Error Description", key: "errorDescription" },
+    { label: "Warning Description", key: "warningDescription" },
+    { label: "Short Deduction", key: "shortDeduction" },
+    { label: "Interest on Short Deduction", key: "interestOnShortDeduction" },
+    { label: "Interest on Late Payment", key: "interestOnLatePayment" },
+    { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
+    { label: "Comments", key: "comments" },
+    { label: "Status", key: "resolved" }, // ✅ Consider mapping boolean to "Pending"/"Resolved"
+  ];
+
+  const filteredExtraColumns = extraColumns.filter((col) =>
+    checkedItems.has(col.key)
+  );
+
+  const insertIndex = Math.max(tableHead.length - 1, 0);
+
+  const combinedTableHead = [
+    ...tableHead.slice(0, insertIndex),
+    ...filteredExtraColumns,
+    ...tableHead.slice(insertIndex),
   ];
 
   const tableData = listData?.map((data, index) => ({
@@ -97,20 +144,39 @@ const Form27EQDeductee = () => {
               />
             </div>
             <div className="mt-6.5 flex gap-2">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-
-              <button
-                onClick={() => setShowDivs((prev) => !prev)}
-                className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
-              >
-                <i className="fa-solid fa-filter"></i>
-              </button>
-
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#024dec] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-table"></i>
-              </button>
+              <TooltipWrapper tooltipText="Search">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Advance Search">
+                <button
+                  onClick={() => setShowDivs((prev) => !prev)}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
+                >
+                  <i className="fa-solid fa-filter"></i>
+                </button>
+              </TooltipWrapper>
+              <FilterButtonDropdown
+                extraColumns={extraColumns}
+                checkedItems={checkedItems}
+                setCheckedItems={setCheckedItems}
+              />
+              <TooltipWrapper tooltipText="Auto-Resize">
+                <Switch
+                  checked={autoResize}
+                  onChange={setAutoResize}
+                  className={`group relative mt-2.5 inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors ${
+                    autoResize ? "bg-blue-500" : "bg-gray-300"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
+                      autoResize ? "translate-x-7" : "translate-x-0"
+                    }`}
+                  />
+                </Switch>
+              </TooltipWrapper>
             </div>
           </Field>
         </div>
@@ -165,21 +231,23 @@ const Form27EQDeductee = () => {
                   <option value="section2">Section 2</option>
                 </select>
               </div>
-              <div className="mt-6.5">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                  Export to Excel
-                </button>
+              <div>
+                <TooltipWrapper tooltipText="Export to Excel">
+                  <button className="mt-6.5 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                    Export to Excel
+                  </button>
+                </TooltipWrapper>
               </div>
             </Field>
           </div>
         )}
-        <div>
-          <DynamicTableActionTotal
-            entity={entity}
-            tableHead={tableHead}
-            tableData={tableData}
-          />
-        </div>
+
+        <DynamicTableActionTotal
+          entity={entity}
+          tableHead={combinedTableHead}
+          tableData={tableData}
+          autoResize={autoResize}
+        />
       </div>
     </>
   );

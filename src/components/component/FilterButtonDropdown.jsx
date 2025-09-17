@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { TooltipWrapper } from "./Tooltip";
 
 export default function FilterButtonDropdown({
   extraColumns,
@@ -10,9 +11,7 @@ export default function FilterButtonDropdown({
   const dropdownRef = useRef(null);
 
   // Toggle dropdown visibility
-  const toggleDropdown = () => {
-    setIsOpen((prev) => !prev);
-  };
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -29,13 +28,12 @@ export default function FilterButtonDropdown({
 
   // Toggle all checkboxes
   const allChecked = checkedItems.size === extraColumns.length;
+  const allKeys = extraColumns.map((col) => col.key);
 
   const toggleAll = () => {
-    if (allChecked) {
-      setCheckedItems(new Set());
-    } else {
-      setCheckedItems(new Set(extraColumns));
-    }
+    setCheckedItems((prev) =>
+      prev.size === allKeys.length ? new Set() : new Set(allKeys)
+    );
   };
 
   // Toggle a single checkbox
@@ -52,12 +50,14 @@ export default function FilterButtonDropdown({
   return (
     <div className="relative inline-block">
       {/* Make this relative and inline-block */}
-      <button
-        className="h-[38px] cursor-pointer rounded-sm bg-[#024dec] px-3 text-2xl font-black text-white"
-        onClick={toggleDropdown}
-      >
-        <i className="fa-solid fa-table"></i>
-      </button>
+      <TooltipWrapper tooltipText="Filter Column ">
+        <button
+          className="h-[38px] cursor-pointer rounded-sm bg-[#024dec] px-3 text-2xl font-black text-white"
+          onClick={toggleDropdown}
+        >
+          <i className="fa-solid fa-table"></i>
+        </button>
+      </TooltipWrapper>
       {/* Dropdown */}
       {isOpen && (
         <div
@@ -91,6 +91,7 @@ export default function FilterButtonDropdown({
             >
               <input
                 type="checkbox"
+                onChange={() => toggleItem(column.key)}
                 checked={checkedItems.has(column.key)}
                 className="cursor-pointer"
                 id={`checkbox-${column.key}`}

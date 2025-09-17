@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import { Field, Input, Label } from "@headlessui/react";
+import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
+import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const Form26QDeductee = () => {
   const entity = "form26QDeductee";
@@ -12,6 +14,7 @@ const Form26QDeductee = () => {
 
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+  const [checkedItems, setCheckedItems] = useState(new Set());
 
   useEffect(() => {
     const fetchListData = async () => {
@@ -36,6 +39,48 @@ const Form26QDeductee = () => {
     { label: "Action", key: "action" },
   ];
 
+  const extraColumns = [
+    { label: "Date of Payment", key: "dateOfPayment" },
+    { label: "Date of Deduction", key: "dateOfDeduction" },
+    { label: "Unique Ref Number", key: "uniqueRefNo" },
+    { label: "Amount Paid", key: "amountPaid" },
+    { label: "Account Number", key: "accNo" },
+    { label: "TDS", key: "tds" },
+    { label: "Surcharge", key: "surcharge" },
+    { label: "Education Cess", key: "eduCess" },
+    { label: "Total Tax Deducted", key: "totalTaxDeducted" },
+    { label: "Total Tax Deposited", key: "totalTaxDeposited" },
+    { label: "Certificate No", key: "certificateNumber" },
+    { label: "Remarks Reason", key: "remarksReason" },
+    { label: "Deductee Code", key: "deducteeCode" },
+    { label: "Rate at which Tax Deducted", key: "rateAtWhichTaxCollected" },
+    { label: "Cash Withdrawl (194N)", key: "cashWithdrawal194N" },
+    {
+      label: "Cash Withdrawl 194N(20L to 1cr)",
+      key: "cashWithdrawal194N20Lto1Cr",
+    },
+    { label: "Cash Withdrawl 194N(>1cr)", key: "cashWithdrawal194N1Cr" },
+    { label: "Error Description", key: "errorDescription" },
+    { label: "Warning Description", key: "warningDescription" },
+    { label: "Short Deduction", key: "shortDeduction" },
+    { label: "Interest on Short Deduction", key: "interestOnShortDeduction" },
+    { label: "Interest on Late Payment", key: "interestOnLatePayment" },
+    { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
+    { label: "Comments", key: "comments" },
+    { label: "Status", key: "resolved" }, // ✅ Consider mapping boolean to "Pending"/"Resolved"
+  ];
+
+  const filteredExtraColumns = extraColumns.filter((col) =>
+    checkedItems.has(col.key)
+  );
+
+  const insertIndex = Math.max(tableHead.length - 1, 0);
+
+  const combinedTableHead = [
+    ...tableHead.slice(0, insertIndex),
+    ...filteredExtraColumns,
+    ...tableHead.slice(insertIndex),
+  ];
   const tableData = listData?.map((data, index) => ({
     srNo: index + 1,
     ...data,
@@ -69,7 +114,6 @@ const Form26QDeductee = () => {
                 <option value="qtr4">Quarter 4</option>
               </select>
             </div>
-
             <div className="w-full md:w-1/4">
               <Label className="font-semibold text-[var(--primary-color)]">
                 Branch Code
@@ -99,20 +143,24 @@ const Form26QDeductee = () => {
               />
             </div>
             <div className="mt-6.5 flex gap-2">
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-
-              <button
-                onClick={() => setShowDivs((prev) => !prev)}
-                className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
-              >
-                <i className="fa-solid fa-filter"></i>
-              </button>
-
-              <button className="h-[38px] cursor-pointer rounded-sm bg-[#024dec] px-3 text-2xl font-black text-white">
-                <i className="fa-solid fa-table"></i>
-              </button>
+              <TooltipWrapper tooltipText="Search">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </TooltipWrapper>
+              <TooltipWrapper tooltipText="Advance Search">
+                <button
+                  onClick={() => setShowDivs((prev) => !prev)}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#ffa500] px-3 text-2xl font-black text-white"
+                >
+                  <i className="fa-solid fa-filter"></i>
+                </button>
+              </TooltipWrapper>
+              <FilterButtonDropdown
+                extraColumns={extraColumns}
+                checkedItems={checkedItems}
+                setCheckedItems={setCheckedItems}
+              />
             </div>
           </Field>
         </div>
@@ -167,10 +215,12 @@ const Form26QDeductee = () => {
                   <option value="section2">Section 2</option>
                 </select>
               </div>
-              <div className="mt-6.5">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                  Export to Excel
-                </button>
+              <div>
+                <TooltipWrapper tooltipText="Export to Excel">
+                  <button className="mt-6.5 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                    Export to Excel
+                  </button>
+                </TooltipWrapper>
               </div>
             </Field>
           </div>
@@ -178,7 +228,7 @@ const Form26QDeductee = () => {
         <div>
           <DynamicTableActionTotal
             entity={entity}
-            tableHead={tableHead}
+            tableHead={combinedTableHead}
             tableData={tableData}
           />
         </div>
