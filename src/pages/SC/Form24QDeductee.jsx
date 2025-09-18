@@ -41,17 +41,13 @@ const Form24QDeductee = () => {
     setCurrentPage(pageNo);
 
     try {
+      let response;
       if (params !== undefined) {
-        const response = await common.getSearchPagination(
-          entity,
-          pageNo,
-          params
-        );
-        setListData(response.data.entities || []);
+        response = await common.getSearchPagination(entity, pageNo, params);
       } else {
-        const response = await common.getPagination(entity, pageNo);
-        setListData(response.data.entities || []);
+        response = await common.getPagination(entity, pageNo);
       }
+      setListData(response.data.entities || []);
     } catch (err) {
       console.error("Error while loading next page:", err);
     }
