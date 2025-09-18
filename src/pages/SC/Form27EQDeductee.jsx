@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Field, Input, Label, Switch } from "@headlessui/react";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
-import StickyScrollBar from "@/components/component/StickyScrollBar";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const Form27EQDeductee = () => {

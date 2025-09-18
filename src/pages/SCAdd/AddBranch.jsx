@@ -152,7 +152,7 @@ const AddBranch = () => {
   return (
     <>
       <div className="space-y-5 rounded-md p-4 text-[var(--primary-color)] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
-        <h1 className="text-2xl font-bold">App Branch</h1>
+        <h1 className="text-2xl font-bold">Add Branch</h1>
         <form onSubmit={handleSubmit} noValidate>
           {/* RO Code */}
           <div className="flex flex-col md:flex-row md:space-x-6">

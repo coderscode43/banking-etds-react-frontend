@@ -1,11 +1,41 @@
-import { useNavigate } from "react-router-dom";
+import common from "@/common/common";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import DynamicTable from "@/components/tables/DynamicTable";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 
 const DetailCorrectionRequest = () => {
+  const entity = "correctionRequest";
+
   const navigate = useNavigate();
+  const { fy, branchCode, id } = useParams();
+
+  const [detailGridData, setDetailGridData] = useState([]);
+  const [challanDetails, setChallanDetails] = useState([]);
+  const [correctionTracker, setCorrectionTracker] = useState([]);
+  const [otherDetails, setOtherDetails] = useState([]);
+
+  useEffect(() => {
+    const fetchDetailListData = async () => {
+      try {
+        const response = await common.getDetailListData(
+          entity,
+          fy,
+          branchCode,
+          id
+        );
+        setDetailGridData(response.data.details || {});
+        setChallanDetails(response.data.details || {});
+        setCorrectionTracker(response.data.remark || []);
+        setOtherDetails(response.data.amountDetails || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+    fetchDetailListData();
+  }, [branchCode, fy, id]);
 
   const fields = [
     { label: "Ticket Number", key: "ticketNumber" },
@@ -31,7 +61,7 @@ const DetailCorrectionRequest = () => {
   ];
 
   const fields1 = [
-    { label: "Request Created By", key: "" },
+    { label: "Request Created By", key: "makerBy" },
     {
       label: "Request Created On",
       key: "fy",
@@ -61,43 +91,7 @@ const DetailCorrectionRequest = () => {
     },
   ];
 
-  const data = [
-    {
-      id: 2290445,
-      correctionRequestDate: "06-03-2025 14:57:32",
-      custId: null,
-      name: "test",
-      pan: null,
-      nameOfRequest: null,
-      branchCode: 100000,
-      empNo: null,
-      ticketNumber: 202503060003,
-      typeOfCorrection: "PAN Updation",
-      remark: "tEST",
-      checkerApprovedBy: null,
-      checkerApprovedOn: null,
-      taxTeamApprovedBy: null,
-      taxTeamApprovedOn: null,
-      correctionBy: null,
-      correctionOn: null,
-      makerBy: "admin",
-      status: "Pending Checker Approval",
-      fy: "2024-25",
-      quarter: "Q1",
-      rejectStatus: false,
-      fileName: "GSTR1Summary.xlsx^",
-      correctionStatus: false,
-      mobileNumber: "9987442365",
-      typeOfForm: "24Q-Salary",
-      tan: null,
-      lastUpdatedOn: "06-03-2025 14:57:32",
-      reasonForExemption: null,
-      regenarateRequest: null,
-      newRequestTicketNo: null,
-    },
-  ];
-
-  const tableHead = [
+  const tableHeadCorrectionTracker = [
     { key: "srNo", label: "Sr.No" },
     { key: "correctionRemark", label: "Correction Response" },
     { key: "supportingDocName", label: "Supporting Document Name" },
@@ -106,18 +100,10 @@ const DetailCorrectionRequest = () => {
     { key: "remarkStatus", label: "Action" },
   ];
 
-  const tableData = [
-    {
-      id: 2290711,
-      correctionRequestId: 2290361,
-      dateTime: "03-06-2025 17:15:13",
-      correctionRemark: "Tst",
-      addedBy: "admin",
-      branchCode: 100000,
-      supportingDocName: "AAEPD9007G_2024-25_1.pdf",
-      remarkStatus: "Resolved",
-    },
-  ];
+  const tableDataCorrectionTracker = correctionTracker?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   const tableHeadOtherDetails = [
     { key: "srNo", label: "Sr.No" },
@@ -132,32 +118,14 @@ const DetailCorrectionRequest = () => {
   ];
 
   const categories = [
-    {
-      name: "Correction Tracker",
-    },
-    {
-      name: "Other Details",
-    },
+    { name: "Correction Tracker" },
+    { name: "Other Details" },
   ];
 
-  const tableDataOtherDetails = [
-    {
-      id: 2290364,
-      correctionRequestId: 2290361,
-      dateOfPayment: "05-08-2024",
-      amountPaid: 72170,
-      correctAmountPaid: null,
-      tds: 14434,
-      correctTds: null,
-      pan: "AAAPA1234A",
-      correctPan: "AAAAC0641A",
-      sectionCode: "94A",
-      correctSection: null,
-      correctRemark: null,
-      quarter: "Q2",
-      name: "Sample",
-    },
-  ];
+  const tableDataOtherDetails = otherDetails?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -166,9 +134,9 @@ const DetailCorrectionRequest = () => {
           Correction Details
         </h1>
 
-        <DetailGrid fields={fields} data={data[0]} columns={3} />
+        <DetailGrid fields={fields} data={detailGridData} columns={3} />
         <hr className="m-5 bg-gray-400" />
-        <DetailGrid fields={fields1} data={data[0]} columns={3} />
+        <DetailGrid fields={fields1} data={challanDetails} columns={3} />
         <div className="mb-3 flex justify-end gap-4 py-5">
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
@@ -200,7 +168,10 @@ const DetailCorrectionRequest = () => {
               key={categories.name}
               className="rounded-xl bg-gray-100 shadow-sm"
             >
-              <DynamicTableAction tableHead={tableHead} tableData={tableData} />
+              <DynamicTableAction
+                tableHead={tableHeadCorrectionTracker}
+                tableData={tableDataCorrectionTracker}
+              />
             </TabPanel>
             <TabPanel
               key={categories.name}

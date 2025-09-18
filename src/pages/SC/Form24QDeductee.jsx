@@ -316,15 +316,13 @@ const Form24QDeductee = () => {
           </div>
         )}
 
-        <div>
-          <DynamicTableActionTotal
-            entity={entity}
-            layoutType="sc"
-            tableHead={combinedTableHead}
-            tableData={tableData}
-            autoResize={autoResize}
-          />
-        </div>
+        <DynamicTableActionTotal
+          entity={entity}
+          layoutType="sc"
+          tableHead={combinedTableHead}
+          tableData={tableData}
+          autoResize={autoResize}
+        />
       </div>
 
       {/* Pagination */}

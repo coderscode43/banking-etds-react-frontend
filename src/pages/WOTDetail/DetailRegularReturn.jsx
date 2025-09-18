@@ -1,9 +1,36 @@
-import { useNavigate } from "react-router-dom";
+import common from "@/common/common";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import AddRegularReturnResponsesWOTModal from "@/components/modals/AddRegularReturnResponsesWOTModal";
 
 const DetailRegularReturn = () => {
+  const entity = "regularReturn";
+  
   const navigate = useNavigate();
+  const { fy, branchCode, id } = useParams();
+
+  const [detailGridData, setDetailGridData] = useState({});
+  const [detailListData, setDetailListData] = useState([]);
+
+  useEffect(() => {
+    const fetchDetailGridData = async () => {
+      try {
+        const response = await common.getDetailListData(
+          entity,
+          fy,
+          branchCode,
+          id
+        );
+        setDetailGridData(response.data.details || {});
+        setDetailListData(response.data.remarks || []);
+      } catch (error) {
+        console.log("Error fetching list data:", error);
+      }
+    };
+    fetchDetailGridData();
+  }, [fy, branchCode, id]);
 
   const fields = [
     { label: "Financial Year", key: "fy" },
@@ -19,50 +46,31 @@ const DetailRegularReturn = () => {
 
     { label: "Latest Response", key: "latestRemark" },
     { label: "Status", key: "status" },
-  ];
-
-  const data = [
     {
-      id: 2290637,
-      fy: "2024-25",
-      tan: "MUMT08795D-HeadOffice",
-      quarter: "Q2",
-      form: "27Q-Other than Salary~NRI",
-      branchCode: "100000",
-      addedBy: "admin",
-      addedOn: "2025-05-02T12:34:05",
-      latestRemark: "This is the latestRemark",
-      status: "Request for data from RO",
-      returnFilingDate: null,
+      label: "Return Filing Date",
+      key: "returnFilingDate",
+      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
     },
   ];
 
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
-    { key: "ipaddrs", label: "Zip File" },
-    { key: "username", label: "Username" },
-    { key: "tan", label: "Tan" },
-    { key: "fy", label: "Financial Year" },
-    { key: "quarter", label: "Quarter" },
-    { key: "form", label: "Form" },
-    { key: "date", label: "Date" },
-    { key: "status", label: "Status" },
+    { key: "remark", label: "Correction Response" },
+    { key: "remarkStatus", label: "Status" },
+    { key: "supportingDocName", label: "Supporting Document Name" },
+    { key: "addedBy", label: "Added By" },
+    {
+      key: "addedOn",
+      label: "Added On",
+      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
+    },
+    { key: "action", label: "Action" },
   ];
 
-  const tableData = [
-    {
-      id: 2291353,
-      username: "directdownload",
-      logsDate: "2025-09-02",
-      quarter: "Q65",
-      form: "Download Certificate",
-      date: "2025-09-02",
-      status: "this is status",
-      tan: "skjhdfjkh",
-      zipFile: "skjhdfjkh",
-      fy: null,
-    },
-  ];
+  const tableData = detailListData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -71,12 +79,10 @@ const DetailRegularReturn = () => {
           Regular Return
         </h1>
 
-        <DetailGrid fields={fields} data={data[0]} columns={2} />
+        <DetailGrid fields={fields} data={detailGridData} columns={2} />
 
-        <div className="mb-3 flex justify-end gap-4 pr-5">
-          <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-            <i className="fa-solid fa-plus mr-2"></i> <span>Add Response</span>
-          </button>
+        <div className="mt-5 mb-5 flex justify-end gap-4 pr-5">
+          <AddRegularReturnResponsesWOTModal />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}
@@ -85,7 +91,11 @@ const DetailRegularReturn = () => {
           </button>
         </div>
 
-        <DynamicTableAction tableHead={tableHead} tableData={tableData} />
+        <DynamicTableAction
+          entity={entity}
+          tableHead={tableHead}
+          tableData={tableData}
+        />
       </div>
     </>
   );

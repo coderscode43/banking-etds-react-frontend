@@ -52,6 +52,8 @@ import DetailBranch from "./pages/SCDetail/DetailBranch";
 import AddRegularReturn from "./pages/SCAdd/AddRegularReturn";
 import Login from "./components/auth/Login";
 import AddUserDetails from "./pages/SCAdd/AddUserDetails";
+import AddCorrectionRequest from "./pages/SCAdd/AddCorrectionRequest";
+import AddCorrectionRequestWOT from "./pages/WOTAdd/AddCorrectionRequestWOT";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -124,6 +126,10 @@ const App = () => {
             <Route path="addBranch" element={<AddBranch />} />
             <Route path="addUserDetails" element={<AddUserDetails />} />
             <Route path="addRegularReturn" element={<AddRegularReturn />} />
+            <Route
+              path="addCorrectionRequest"
+              element={<AddCorrectionRequest />}
+            />
           </Route>
         </Route>
 
@@ -172,6 +178,13 @@ const App = () => {
             <Route
               path="detailCorrectionRequest"
               element={<DetailCorrectionRequestWOT />}
+            />
+          </Route>
+
+          <Route path="add">
+            <Route
+              path="addCorrectionRequest"
+              element={<AddCorrectionRequestWOT />}
             />
           </Route>
         </Route>

@@ -1,8 +1,33 @@
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import { useNavigate } from "react-router-dom";
 
 const DetailForm26QDeductee = () => {
+  const entity = "form26QDeductee";
+
   const navigate = useNavigate();
+  const { fy, branchCode, id } = useParams();
+
+  const [detailGridData, setDetailGridData] = useState([]);
+
+  useEffect(() => {
+    const fetchDetailGridData = async () => {
+      try {
+        const response = await common.getDetailListData(
+          entity,
+          fy,
+          branchCode,
+          id
+        );
+        setDetailGridData(response.data.deductee || []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchDetailGridData();
+  }, [fy, branchCode, id]);
+
   const fields = [
     { label: "Quarter", key: "quarter" },
     { label: "Month", key: "month" },
@@ -13,6 +38,9 @@ const DetailForm26QDeductee = () => {
     { label: "Account No", key: "accNo" },
     { label: "Challan Heading", key: "challanHeading" },
     { label: "Section Code", key: "sectionCode" },
+    { label: "Deductee Code", key: "deducteeCode" },
+    { label: "Name of Deductee", key: "name" },
+
     {
       label: "Date of Payment",
       key: "dateOfPayment",
@@ -25,6 +53,12 @@ const DetailForm26QDeductee = () => {
     { label: "Total TDS", key: "tds" },
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
     { label: "Tan", key: "tan" },
+    {
+      label: " Cash Withdrawl 194N(20L to 1cr)",
+      key: "cashWithdrawal194N20Lto1Cr",
+    },
+    { label: "Cash Withdrawl (194N)", key: "cashWithdrawal194N" },
+    { label: " Cash Withdrawl 194N(>1cr)", key: "cashWithdrawal194N1Cr" },
     { label: "Certificate Number", key: "certificateNumber" },
     { label: "Error Description", key: "errorDescription" },
     { label: "Warning Description", key: "warningDescription" },
@@ -32,50 +66,11 @@ const DetailForm26QDeductee = () => {
     { label: "Interest on Short Deduction", key: "interestOnShortDeduction" },
     { label: "Interest on Late Payment", key: "interestOnLatePayment" },
     { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
-    { label: "Status", key: "comments" },
-  ];
-
-  const data = [
     {
-      id: 150116,
-      challanHeading: "Interest_24Q",
-      deducteeRefNo: 3562,
-      panRefNo: 658,
-      pan: "CGFPG6220H",
-      name: "HARSHALI GUPTA",
-      sectionCode: "92B",
-      dateOfPayment: "2024-03-31",
-      dateOfDeduction: "2024-03-31",
-      amountPaid: 122610.0,
-      tds: 6953.0,
-      surcharge: 36500.0,
-      eduCess: 260.0,
-      totalTaxDeducted: 65200.0,
-      totalTaxDeposited: 95300.0,
-      certificateNumber: 236,
-      remarksReason: 953,
-      fy: "2023-24",
-      quarter: "Q4",
-      branchCode: 100000,
-      accNo: 231,
-      challanSrNo: 3,
-      month: "MARCH",
-      custVendId: "123456789",
-      uniqueRefNo: 6977,
-      TAN: "MUMT09716A",
-      roCode: "100000",
-      errorDescription: "this is an error Description",
-      warningDescription: "warning Description",
-      shortDeduction: 600.0,
-      interestOnShortDeduction: 500.0,
-      interestOnLatePayment: 430.0,
-      interestOnLateDeduction: 850.0,
-      resolved: false,
-      comments: "This is comment from professional",
-      deducteeSrNo: 57,
-      tranAmt: 65030,
-      additionalDetail: "Additional Detail",
-      tan: "MUMT09716A",
+      label: "Status",
+      key: "resolved",
+      formatter: (value) =>
+        value === true || value === "true" ? "Resolved" : "Not Resolved",
     },
   ];
 
@@ -86,7 +81,7 @@ const DetailForm26QDeductee = () => {
           Details Form 26Q Deductee
         </h1>
 
-        <DetailGrid fields={fields} data={data[0]} columns={2} />
+        <DetailGrid fields={fields} data={detailGridData} columns={2} />
 
         <div className="mt-5 flex justify-end gap-4 pr-5">
           <button

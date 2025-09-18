@@ -1,8 +1,33 @@
+import common from "@/common/common";
+import { useState, useEffect } from "react";
 import { DetailGrid } from "@/components/component/DetailGrid";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const DetailForm27EQDeductee = () => {
+  const entity = "form27EQDeductee";
+
   const navigate = useNavigate();
+  const { fy, branchCode, id } = useParams();
+  
+  const [detailGridData, setDetailGridData] = useState({});
+
+  useEffect(() => {
+    const fetchDetailGridData = async () => {
+      try {
+        const response = await common.getDetailListData(
+          entity,
+          fy,
+          branchCode,
+          id
+        );
+        setDetailGridData(response.data.deductee || {});
+      } catch (error) {
+        console.log("Error fetching list data:", error);
+      }
+    };
+    fetchDetailGridData();
+  }, [fy, branchCode, id]);
 
   const fields = [
     { label: "Quarter", key: "quarter" },
@@ -13,6 +38,10 @@ const DetailForm27EQDeductee = () => {
     { label: "Tan", key: "tan" },
     { label: "Unique Ref No", key: "uniqueRefNo" },
     { label: "Account No", key: "accNo" },
+    { label: "Party Code", key: "" },
+    { label: "PAN of the Party", key: "pan" },
+    { label: "Party reference no", key: "deducteeRefNo" },
+    { label: "Name of the Party", key: "name" },
     { label: "Challan Heading", key: "challanHeading" },
     { label: "Section Code", key: "sectionCode" },
     {
@@ -21,11 +50,33 @@ const DetailForm27EQDeductee = () => {
       formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
     },
     { label: "Amount Paid", key: "amountPaid" },
+    { label: "Date of Received/Debited", key: "dateOfDeduction" },
     { label: "TDS", key: "tds" },
     { label: "Surcharge", key: "surcharge" },
     { label: "Education Cess", key: "eduCess" },
     { label: "Total TDS", key: "tds" },
+    { label: "Total Tax Collected", key: "totalTaxCollected" },
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
+    { label: "Date of Collected", key: "dateofCollected" },
+    { label: "Total Value of Purchase", key: "totalValueofPurchase" },
+    { label: "Rate at which Tax Collected", key: "rateatwhichTaxCollected" },
+    { label: "Reason for Non Collection", key: "remarksReason" },
+    { label: "Section / Collection Code", key: "sectionCode" },
+    { label: "Deductee is Non-Resident", key: "deducteeisNonResident" },
+    { label: "Permanent Establishment", key: "permanentEstablishment" },
+    {
+      label: "Reason For NonCollection F or G",
+      key: "reasonForNonCollectionForG",
+    },
+    {
+      label:
+        "if Answer to 681A is Yes Then Date Of Payment Of TDS To Central Government",
+      key: "ifAnswerto681AisyesthenDateofpaymentofTDStoCentralGovernment",
+    },
+    {
+      label: "if Answer to 681A is Yes Then Challan Number",
+      key: "ifAnswerTo681AisyesthenChallanNumber",
+    },
     { label: "Certificate Number", key: "certificateNumber" },
     { label: "Error Description", key: "errorDescription" },
     { label: "Warning Description", key: "warningDescription" },
@@ -33,50 +84,11 @@ const DetailForm27EQDeductee = () => {
     { label: "Interest on Short Deduction", key: "interestOnShortDeduction" },
     { label: "Interest on Late Payment", key: "interestOnLatePayment" },
     { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
-    { label: "Status", key: "comments" },
-  ];
-
-  const data = [
     {
-      id: 150116,
-      challanHeading: "Interest_24Q",
-      deducteeRefNo: 3562,
-      panRefNo: 658,
-      pan: "CGFPG6220H",
-      name: "HARSHALI GUPTA",
-      sectionCode: "92B",
-      dateOfPayment: "2024-03-31",
-      dateOfDeduction: "2024-03-31",
-      amountPaid: 122610.0,
-      tds: 6953.0,
-      surcharge: 36500.0,
-      eduCess: 260.0,
-      totalTaxDeducted: 65200.0,
-      totalTaxDeposited: 95300.0,
-      certificateNumber: 236,
-      remarksReason: 953,
-      fy: "2023-24",
-      quarter: "Q4",
-      branchCode: 100000,
-      accNo: 231,
-      challanSrNo: 3,
-      month: "MARCH",
-      custVendId: "123456789",
-      uniqueRefNo: 6977,
-      TAN: "MUMT09716A",
-      roCode: "100000",
-      errorDescription: "this is an error Description",
-      warningDescription: "warning Description",
-      shortDeduction: 600.0,
-      interestOnShortDeduction: 500.0,
-      interestOnLatePayment: 430.0,
-      interestOnLateDeduction: 850.0,
-      resolved: false,
-      comments: "This is comment from professional",
-      deducteeSrNo: 57,
-      tranAmt: 65030,
-      additionalDetail: "Additional Detail",
-      tan: "MUMT09716A",
+      label: "Status",
+      key: "resolved",
+      formatter: (value) =>
+        value === true || value === "true" ? "Resolved" : "Not Resolved",
     },
   ];
 
@@ -87,7 +99,7 @@ const DetailForm27EQDeductee = () => {
           Details Form 27EQ Deductee
         </h1>
 
-        <DetailGrid fields={fields} data={data[0]} columns={2} />
+        <DetailGrid fields={fields} data={detailGridData} columns={2} />
 
         <div className="mt-5 flex justify-end gap-4 pr-5">
           <button

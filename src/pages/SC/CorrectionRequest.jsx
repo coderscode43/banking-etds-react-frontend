@@ -1,13 +1,15 @@
+import clsx from "clsx";
 import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
-import { Field, Label, Input, Switch } from "@headlessui/react";
-import clsx from "clsx";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import { Field, Input, Label, Switch } from "@headlessui/react";
 
 const CorrectionRequest = () => {
   const entity = "correctionRequest";
+
+  const navigate = useNavigate();
 
   const [listData, setListData] = useState([]);
   const [date, setDate] = useState("");
@@ -129,7 +131,12 @@ const CorrectionRequest = () => {
                 </button>
               </TooltipWrapper>
               <TooltipWrapper tooltipText="Add Correction Request">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white">
+                <button
+                  onClick={() => {
+                    navigate(`/home/add/addCorrectionRequest`);
+                  }}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
+                >
                   <i className="fa-solid fa-plus"></i>
                 </button>
               </TooltipWrapper>

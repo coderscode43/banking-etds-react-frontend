@@ -1,8 +1,33 @@
+import common from "@/common/common";
+import { useEffect, useState } from "react";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const DetailForm24QDeductee = () => {
+  const entity = "form24QDeductee";
+  
   const navigate = useNavigate();
+  const { fy, branchCode, id } = useParams();
+
+  const [detailGridData, setDetailGridData] = useState({});
+
+  useEffect(() => {
+    const fetchDetailGridData = async () => {
+      try {
+        const response = await common.getDetailListData(
+          entity,
+          fy,
+          branchCode,
+          id
+        );
+        setDetailGridData(response.data.deductee || {});
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
+    };
+    fetchDetailGridData();
+  }, [fy, branchCode, id]);
+
   const fields = [
     { label: "Quarter", key: "quarter" },
     { label: "Month", key: "month" },
@@ -39,50 +64,11 @@ const DetailForm24QDeductee = () => {
     { label: "Interest on Short Deduction", key: "interestOnShortDeduction" },
     { label: "Interest on Late Payment", key: "interestOnLatePayment" },
     { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
-    { label: "Status", key: "comments" },
-  ];
-
-  const tableData = [
     {
-      id: 150118,
-      challanHeading: "Interest_24Q",
-      deducteeRefNo: null,
-      panRefNo: "965823569425",
-      pan: "ABFPL4107P",
-      name: "R.D.LAKHAN . 26056)",
-      sectionCode: "92B",
-      dateOfPayment: "2024-03-31",
-      dateOfDeduction: "2024-04-22",
-      amountPaid: 5122795.0,
-      tds: 4530.0,
-      surcharge: 9650.0,
-      eduCess: 3650.0,
-      totalTaxDeducted: 2536.0,
-      totalTaxDeposited: 4256.0,
-      certificateNumber: "658",
-      remarksReason: "this is the reason for Remark",
-      fy: "2023-24",
-      quarter: "Q4",
-      branchCode: 100000,
-      accNo: "380001025002463",
-      challanSrNo: 3,
-      month: "MARCH",
-      custVendId: "123456789",
-      uniqueRefNo: "658",
-      TAN: "MUMT09716A",
-      roCode: "100000",
-      errorDescription: "this is error Description",
-      warningDescription: "this is warning Description",
-      shortDeduction: 6953.0,
-      interestOnShortDeduction: 5263.0,
-      interestOnLatePayment: 5246.0,
-      interestOnLateDeduction: 9874.0,
-      resolved: true,
-      comments: "This is comments",
-      deducteeSrNo: 59,
-      tranAmt: 25836,
-      additionalDetail: null,
-      tan: "MUMT09716A",
+      label: "Status",
+      key: "resolved",
+      formatter: (value) =>
+        value === true || value === "true" ? "Resolved" : "Not Resolved",
     },
   ];
 
@@ -93,7 +79,7 @@ const DetailForm24QDeductee = () => {
           Details Form 24Q Deductee
         </h1>
 
-        <DetailGrid fields={fields} data={tableData[0]} columns={2} />
+        <DetailGrid fields={fields} data={detailGridData} columns={2} />
 
         <div className="mt-5 flex justify-end gap-4 pr-5">
           <button

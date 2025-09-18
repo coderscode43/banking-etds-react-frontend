@@ -2,7 +2,7 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import DynamicTable from "@/components/tables/DynamicTable";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import UpdateForm24QDeducteeModal from "@/components/modals/UpdateForm24QDeducteeModal";
 
 const DetailForm24QDeductee = () => {
@@ -99,7 +99,7 @@ const DetailForm24QDeductee = () => {
           </button>
         </div>
         <div className="mt-5">
-          <DynamicTable tableHead={tableHead} tableData={tableData} />
+          <DynamicTableAction tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
     </>
