@@ -1,19 +1,32 @@
-import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState } from "react";
-import DynamicTable from "@/components/tables/DynamicTable";
-import { Field, Input, Label } from "@headlessui/react";
 import { TooltipWrapper } from "@/components/component/Tooltip";
+import DynamicTable from "@/components/tables/DynamicTable";
+import staticDataContext from "@/context/staticDataContext";
+import { Field, Input, Label } from "@headlessui/react";
+import clsx from "clsx";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const StatementStatus = () => {
   const entity = "statementStatus";
+
+  const { params } = useParams();
+  const { Quarter, Tan, financialYear, typeOfForm } =
+    useContext(staticDataContext);
+
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+  const [gotoPage, setGotoPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
         const response = await common.getListData(entity);
+        const count = response.data.count || 0;
+        const pages = Math.ceil(count / 100);
+        setTotalPages(pages);
         setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
@@ -35,10 +48,28 @@ const StatementStatus = () => {
     { label: "RT", key: "rt" },
   ];
 
+  // Table Data
   const tableData = listData?.map((data, index) => ({
-    srNo: index + 1,
+    srNo: (currentPage - 1) * 100 + (index + 1),
     ...data,
   }));
+
+  const handlePagination = async (pageNo) => {
+    setGotoPage(pageNo);
+    setCurrentPage(pageNo);
+
+    try {
+      let response;
+      if (params !== undefined) {
+        response = await common.getSearchPagination(entity, pageNo, params);
+      } else {
+        response = await common.getPagination(entity, pageNo);
+      }
+      setListData(response.data.entities || []);
+    } catch (err) {
+      console.error("Error while loading next page:", err);
+    }
+  };
 
   return (
     <>
@@ -63,8 +94,15 @@ const StatementStatus = () => {
                 )}
               >
                 <option value="">Select TAN</option>
-                <option value="tan1">TAN 1</option>
-                <option value="tan2">TAN 2</option>
+                {Tan &&
+                  Tan.length > 0 &&
+                  Tan.map((tan, index) => {
+                    return (
+                      <option key={index} value={tan}>
+                        {tan}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
 
@@ -82,10 +120,15 @@ const StatementStatus = () => {
                 )}
               >
                 <option value="">Select Quarter</option>
-                <option value="qtr1">Quarter 1</option>
-                <option value="qtr2">Quarter 2</option>
-                <option value="qtr3">Quarter 3</option>
-                <option value="qtr4">Quarter 4</option>
+                {Quarter &&
+                  Quarter.length > 0 &&
+                  Quarter.map((quarter, index) => {
+                    return (
+                      <option key={index} value={quarter}>
+                        {quarter}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
 
@@ -103,8 +146,15 @@ const StatementStatus = () => {
                 )}
               >
                 <option value="">Select Financial Year</option>
-                <option value="25-26">2025-2026</option>
-                <option value="24-25">2024-2025</option>
+                {financialYear &&
+                  financialYear.length > 0 &&
+                  financialYear.map((fy, index) => {
+                    return (
+                      <option key={index} value={fy}>
+                        {fy}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
 
@@ -173,10 +223,15 @@ const StatementStatus = () => {
                   )}
                 >
                   <option value="">Form</option>
-                  <option value="24q">24Q</option>
-                  <option value="26q">26Q</option>
-                  <option value="27q">27Q</option>
-                  <option value="27eq">27EQ</option>
+                  {typeOfForm &&
+                    typeOfForm.length > 0 &&
+                    typeOfForm.map((form, index) => {
+                      return (
+                        <option key={index} value={form}>
+                          {form}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <div>
@@ -194,6 +249,58 @@ const StatementStatus = () => {
           <DynamicTable tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
+
+      {/* Pagination */}
+      {listData.length > 0 && (
+        <div className="my-5">
+          <>
+            <div className="flex items-center justify-center gap-5">
+              <button
+                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
+                disabled={currentPage === 1}
+                onClick={() => handlePagination(currentPage - 1)}
+              >
+                Previous
+              </button>
+              <div className="flex items-center justify-center">
+                <h5>
+                  Displaying page{" "}
+                  <span className="font-semibold">{currentPage}</span> of{" "}
+                  <span className="font-semibold">{totalPages}</span>
+                </h5>
+              </div>
+              <button
+                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
+                disabled={currentPage === totalPages}
+                onClick={() => handlePagination(currentPage + 1)}
+              >
+                Next
+              </button>
+            </div>
+
+            {totalPages > 1 && (
+              <div className="mt-5 flex items-center justify-center gap-3">
+                <span>Go to</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={totalPages}
+                  value={gotoPage}
+                  onChange={(e) => setGotoPage(Number(e.target.value))}
+                  className="w-20 rounded-md border border-gray-400 p-0.5 text-center"
+                />
+                <button
+                  className="ml-2 cursor-pointer rounded-md bg-green-700 px-4 py-1 text-white disabled:bg-gray-400 disabled:opacity-50"
+                  disabled={gotoPage < 1 || gotoPage > totalPages}
+                  onClick={() => handlePagination(gotoPage)}
+                >
+                  Go
+                </button>
+              </div>
+            )}
+          </>
+        </div>
+      )}
     </>
   );
 };

@@ -1,10 +1,13 @@
-import clsx from "clsx";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import staticDataContext from "@/context/staticDataContext";
 import { Field, Label } from "@headlessui/react";
+import clsx from "clsx";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddRegularReturn = () => {
   const navigate = useNavigate();
+  const { Quarter, Tan, Form, financialYear } = useContext(staticDataContext);
+
   return (
     <>
       <div className="rounded-md p-4 shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
@@ -27,9 +30,15 @@ const AddRegularReturn = () => {
                   )}
                 >
                   <option value="">Select Financial Year</option>
-                  <option value="2025-26">2025-26</option>
-                  <option value="2024-25">2024-25</option>
-                  <option value="2023-24">2023-24</option>
+                  {financialYear &&
+                    financialYear.length > 0 &&
+                    financialYear.map((fy, index) => {
+                      return (
+                        <option key={index} value={fy}>
+                          {fy}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <div className="w-full md:w-1/2">
@@ -44,8 +53,15 @@ const AddRegularReturn = () => {
                   )}
                 >
                   <option value="">Select TAN</option>
-                  <option value="tan1">TAN 1</option>
-                  <option value="tan2">TAN 2</option>
+                  {Tan &&
+                    Tan.length > 0 &&
+                    Tan.map((tan, index) => {
+                      return (
+                        <option key={index} value={tan}>
+                          {tan}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
             </div>
@@ -62,9 +78,15 @@ const AddRegularReturn = () => {
                   )}
                 >
                   <option value="">Select Quarter</option>
-                  <option value="Q1">Q1</option>
-                  <option value="Q2">Q2</option>
-                  <option value="Q3">Q3</option>
+                  {Quarter &&
+                    Quarter.length > 0 &&
+                    Quarter.map((quarter, index) => {
+                      return (
+                        <option key={index} value={quarter}>
+                          {quarter}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <div className="w-full md:w-1/2">
@@ -80,9 +102,15 @@ const AddRegularReturn = () => {
                 >
                   {" "}
                   <option value="">Select Form</option>
-                  <option value="Form1">Form 1</option>
-                  <option value="Form2">Form 2</option>
-                  <option value="Form3">Form 3</option>
+                  {Form &&
+                    Form.length > 0 &&
+                    Form.map((form, index) => {
+                      return (
+                        <option key={index} value={form}>
+                          {form}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
             </div>

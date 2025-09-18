@@ -31,8 +31,8 @@ const AddUserDetails = () => {
                   Type Of User <span className="text-red-600">*</span>
                 </Label>
                 <select
-                  name="tan"
-                  id="tan"
+                  name="user"
+                  id="user"
                   className={clsx(
                     "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}

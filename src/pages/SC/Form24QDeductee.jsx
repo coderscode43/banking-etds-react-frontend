@@ -1,16 +1,18 @@
 import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import staticDataContext from "@/context/staticDataContext";
 import { Field, Input, Label, Switch } from "@headlessui/react";
-import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
-import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
 import { TooltipWrapper } from "@/components/component/Tooltip";
+import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
+import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 
 const Form24QDeductee = () => {
   const entity = "form24QDeductee";
 
   const { params } = useParams();
+  const { Quarter, Tan, Section } = useContext(staticDataContext);
 
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
@@ -122,10 +124,15 @@ const Form24QDeductee = () => {
                 )}
               >
                 <option value="">Select Quarter</option>
-                <option value="qtr1">Quarter 1</option>
-                <option value="qtr2">Quarter 2</option>
-                <option value="qtr3">Quarter 3</option>
-                <option value="qtr4">Quarter 4</option>
+                {Quarter &&
+                  Quarter.length > 0 &&
+                  Quarter.map((quarter, index) => {
+                    return (
+                      <option key={index} value={quarter}>
+                        {quarter}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
 
@@ -213,8 +220,15 @@ const Form24QDeductee = () => {
                   )}
                 >
                   <option value="">Select TAN</option>
-                  <option value="tan1">TAN 1</option>
-                  <option value="tan2">TAN 2</option>
+                  {Tan &&
+                    Tan.length > 0 &&
+                    Tan.map((tan, index) => {
+                      return (
+                        <option key={index} value={tan}>
+                          {tan}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
 
@@ -278,8 +292,15 @@ const Form24QDeductee = () => {
                   )}
                 >
                   <option value="">Select Section</option>
-                  <option value="section 1">Section 1</option>
-                  <option value="section 2">Section 2</option>
+                  {Section &&
+                    Section.length > 0 &&
+                    Section.map((Section, index) => {
+                      return (
+                        <option key={index} value={Section}>
+                          {Section}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
 

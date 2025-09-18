@@ -1,11 +1,14 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import staticDataContext from "@/context/staticDataContext";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddCorrectionRequest = () => {
   const [showDoc, setShowDoc] = useState(false);
 
   const navigate = useNavigate();
+  const { financialYear, Form } = useContext(staticDataContext);
+
   const categories = [
     { name: "Add Correction Request" },
     { name: "Add Correction Amount Details" },
@@ -45,8 +48,15 @@ const AddCorrectionRequest = () => {
                       className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                     >
                       <option value="">Select Financial Year</option>
-                      <option value="25-26">2025-26</option>
-                      <option value="24-25">2024-25</option>
+                      {financialYear &&
+                        financialYear.length > 0 &&
+                        financialYear.map((fy, index) => {
+                          return (
+                            <option key={index} value={fy}>
+                              {fy}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
 
@@ -165,8 +175,15 @@ const AddCorrectionRequest = () => {
                       className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                     >
                       <option value="">Select Form</option>
-                      <option value="form1">Form 01</option>
-                      <option value="form2">Form 02</option>
+                      {Form &&
+                        Form.length > 0 &&
+                        Form.map((form, index) => {
+                          return (
+                            <option key={index} value={form}>
+                              {form}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
 

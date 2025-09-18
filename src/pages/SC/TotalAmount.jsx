@@ -1,20 +1,32 @@
-import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState } from "react";
-import { Field, Input, Label, Switch } from "@headlessui/react";
-import DynamicTable from "@/components/tables/DynamicTable";
 import { TooltipWrapper } from "@/components/component/Tooltip";
+import DynamicTable from "@/components/tables/DynamicTable";
+import staticDataContext from "@/context/staticDataContext";
+import { Field, Input, Label, Switch } from "@headlessui/react";
+import clsx from "clsx";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const TotalAmount = () => {
   const entity = "totalAmount";
+
+  const { params } = useParams();
+  const { financialYear, Month, Section } = useContext(staticDataContext);
+
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [autoResize, setAutoResize] = useState(false);
+  const [gotoPage, setGotoPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
         const response = await common.getListData(entity);
+        const count = response.data.count || 0;
+        const pages = Math.ceil(count / 100);
+        setTotalPages(pages);
         setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
@@ -41,10 +53,28 @@ const TotalAmount = () => {
     { label: "Source", key: "source" },
   ];
 
+  // Table Data
   const tableData = listData?.map((data, index) => ({
-    srNo: index + 1,
+    srNo: (currentPage - 1) * 100 + (index + 1),
     ...data,
   }));
+
+  const handlePagination = async (pageNo) => {
+    setGotoPage(pageNo);
+    setCurrentPage(pageNo);
+
+    try {
+      let response;
+      if (params !== undefined) {
+        response = await common.getSearchPagination(entity, pageNo, params);
+      } else {
+        response = await common.getPagination(entity, pageNo);
+      }
+      setListData(response.data.entities || []);
+    } catch (err) {
+      console.error("Error while loading next page:", err);
+    }
+  };
 
   return (
     <>
@@ -150,18 +180,15 @@ const TotalAmount = () => {
                   )}
                 >
                   <option value="">Select Month</option>
-                  <option value="jan">January</option>
-                  <option value="feb">February</option>
-                  <option value="march">March</option>
-                  <option value="april">April</option>
-                  <option value="may">May</option>
-                  <option value="june">June</option>
-                  <option value="july">July</option>
-                  <option value="aug">August</option>
-                  <option value="sep">September</option>
-                  <option value="october">October</option>
-                  <option value="november">November</option>
-                  <option value="december">December</option>
+                  {Month &&
+                    Month.length > 0 &&
+                    Month.map((month, index) => {
+                      return (
+                        <option key={index} value={month}>
+                          {month}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
 
@@ -179,8 +206,15 @@ const TotalAmount = () => {
                   )}
                 >
                   <option value="">Select Financial Year</option>
-                  <option value="24-25">2024-2025</option>
-                  <option value="23-24">2023-2024</option>
+                  {financialYear &&
+                    financialYear.length > 0 &&
+                    financialYear.map((fy, index) => {
+                      return (
+                        <option key={index} value={fy}>
+                          {fy}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
 
@@ -198,8 +232,15 @@ const TotalAmount = () => {
                   )}
                 >
                   <option value="">Select Section</option>
-                  <option value="section1">Section 1</option>
-                  <option value="section2">Section 2</option>
+                  {Section &&
+                    Section.length > 0 &&
+                    Section.map((Section, index) => {
+                      return (
+                        <option key={index} value={Section}>
+                          {Section}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
 
@@ -285,6 +326,58 @@ const TotalAmount = () => {
           />
         </div>
       </div>
+
+      {/* Pagination */}
+      {listData.length > 0 && (
+        <div className="my-5">
+          <>
+            <div className="flex items-center justify-center gap-5">
+              <button
+                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
+                disabled={currentPage === 1}
+                onClick={() => handlePagination(currentPage - 1)}
+              >
+                Previous
+              </button>
+              <div className="flex items-center justify-center">
+                <h5>
+                  Displaying page{" "}
+                  <span className="font-semibold">{currentPage}</span> of{" "}
+                  <span className="font-semibold">{totalPages}</span>
+                </h5>
+              </div>
+              <button
+                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
+                disabled={currentPage === totalPages}
+                onClick={() => handlePagination(currentPage + 1)}
+              >
+                Next
+              </button>
+            </div>
+
+            {totalPages > 1 && (
+              <div className="mt-5 flex items-center justify-center gap-3">
+                <span>Go to</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={totalPages}
+                  value={gotoPage}
+                  onChange={(e) => setGotoPage(Number(e.target.value))}
+                  className="w-20 rounded-md border border-gray-400 p-0.5 text-center"
+                />
+                <button
+                  className="ml-2 cursor-pointer rounded-md bg-green-700 px-4 py-1 text-white disabled:bg-gray-400 disabled:opacity-50"
+                  disabled={gotoPage < 1 || gotoPage > totalPages}
+                  onClick={() => handlePagination(gotoPage)}
+                >
+                  Go
+                </button>
+              </div>
+            )}
+          </>
+        </div>
+      )}
     </>
   );
 };

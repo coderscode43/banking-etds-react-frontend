@@ -1,21 +1,33 @@
 import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState } from "react";
-import DynamicTable from "@/components/tables/DynamicTable";
+import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { Field, Input, Label } from "@headlessui/react";
+import DynamicTable from "@/components/tables/DynamicTable";
+import staticDataContext from "@/context/staticDataContext";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const Challan = () => {
   const entity = "challan";
+
+  const { params } = useParams();
+  const { Tan } = useContext(staticDataContext);
+
   const [date, setDate] = useState("");
   const [newDate, newSetDate] = useState("");
   const [showDivs, setShowDivs] = useState(false);
   const [listData, setListData] = useState([]);
+  const [gotoPage, setGotoPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
         const response = await common.getListData(entity);
+        const count = response.data.count || 0;
+        const pages = Math.ceil(count / 100);
+        setTotalPages(pages);
         setListData(response.data.entities);
       } catch (error) {
         console.error("Error fetching list data:", error);
@@ -37,10 +49,27 @@ const Challan = () => {
   ];
 
   // Table Data
-  const tableData = listData.map((data, index) => ({
-    srNo: index + 1,
+  const tableData = listData?.map((data, index) => ({
+    srNo: (currentPage - 1) * 100 + (index + 1),
     ...data,
   }));
+
+  const handlePagination = async (pageNo) => {
+    setGotoPage(pageNo);
+    setCurrentPage(pageNo);
+
+    try {
+      let response;
+      if (params !== undefined) {
+        response = await common.getSearchPagination(entity, pageNo, params);
+      } else {
+        response = await common.getPagination(entity, pageNo);
+      }
+      setListData(response.data.entities || []);
+    } catch (err) {
+      console.error("Error while loading next page:", err);
+    }
+  };
 
   return (
     <>
@@ -80,8 +109,15 @@ const Challan = () => {
                 )}
               >
                 <option value="">Select TAN</option>
-                <option value="tan1">TAN 1</option>
-                <option value="tan2">TAN 2</option>
+                {Tan &&
+                  Tan.length > 0 &&
+                  Tan.map((tan, index) => {
+                    return (
+                      <option key={index} value={tan}>
+                        {tan}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
 
@@ -188,6 +224,58 @@ const Challan = () => {
           <DynamicTable tableHead={tableHead} tableData={tableData} />
         </div>
       </div>
+
+      {/* Pagination */}
+      {listData.length > 0 && (
+        <div className="my-5">
+          <>
+            <div className="flex items-center justify-center gap-5">
+              <button
+                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
+                disabled={currentPage === 1}
+                onClick={() => handlePagination(currentPage - 1)}
+              >
+                Previous
+              </button>
+              <div className="flex items-center justify-center">
+                <h5>
+                  Displaying page{" "}
+                  <span className="font-semibold">{currentPage}</span> of{" "}
+                  <span className="font-semibold">{totalPages}</span>
+                </h5>
+              </div>
+              <button
+                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
+                disabled={currentPage === totalPages}
+                onClick={() => handlePagination(currentPage + 1)}
+              >
+                Next
+              </button>
+            </div>
+
+            {totalPages > 1 && (
+              <div className="mt-5 flex items-center justify-center gap-3">
+                <span>Go to</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={totalPages}
+                  value={gotoPage}
+                  onChange={(e) => setGotoPage(Number(e.target.value))}
+                  className="w-20 rounded-md border border-gray-400 p-0.5 text-center"
+                />
+                <button
+                  className="ml-2 cursor-pointer rounded-md bg-green-700 px-4 py-1 text-white disabled:bg-gray-400 disabled:opacity-50"
+                  disabled={gotoPage < 1 || gotoPage > totalPages}
+                  onClick={() => handlePagination(gotoPage)}
+                >
+                  Go
+                </button>
+              </div>
+            )}
+          </>
+        </div>
+      )}
     </>
   );
 };

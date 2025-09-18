@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const navItems = [
   {
@@ -107,8 +107,6 @@ const navItems = [
 ];
 
 const HomeSCSidebar = () => {
-  const navigate = useNavigate();
-
   return (
     <>
       <div className="fixed top-14 z-10 h-screen">
@@ -122,11 +120,11 @@ const HomeSCSidebar = () => {
               {navItems.map(({ id, label, page, iconClass, textIcon }) => {
                 return (
                   <li key={id}>
-                    <div
-                      onClick={() => {
-                        navigate(`/home/list/${page}`);
-                      }}
-                      className="flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100"
+                    <NavLink
+                      to={`/home/list/${page}`}
+                      className={({ isActive }) =>
+                        `flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100 ${isActive ? "bg-blue-100 font-medium text-blue-500" : ""}`
+                      }
                     >
                       <div
                         className="w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 ease-in-out group-hover:ml-2 group-hover:w-auto group-hover:opacity-100"
@@ -138,14 +136,16 @@ const HomeSCSidebar = () => {
                       </div>
                       <div>
                         {iconClass ? (
-                          <i className={`${iconClass} text-center`}></i>
+                          <i
+                            className={`${iconClass} w-[26px] text-center`}
+                          ></i>
                         ) : (
                           <span className="text-center text-sm font-semibold">
                             {textIcon}
                           </span>
                         )}
                       </div>
-                    </div>
+                    </NavLink>
                   </li>
                 );
               })}

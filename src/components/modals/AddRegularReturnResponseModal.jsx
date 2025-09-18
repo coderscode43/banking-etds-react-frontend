@@ -87,10 +87,9 @@ const AddRegularReturnResponse = () => {
                         id="status"
                         className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       >
-                        <option value="">Status</option>
-                        <option value="status1">status 1</option>
-                        <option value="status2">status 2</option>
-                        <option value="status3">status 3</option>
+                        <option value="">Select Status</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Pending">Pending</option>
                       </select>
                     </div>
 
