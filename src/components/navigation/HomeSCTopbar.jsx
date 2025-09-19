@@ -1,19 +1,23 @@
+import { useNavigate } from "react-router-dom";
 import DropdownMenu from "../component/DropdownMenu";
 
-const HomeSCTopBar = () => {
+const HomeSCTopBar = ({ handleSideBar }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="sticky top-0 z-10">
       <header className="border-b-2 border-gray-300 bg-white">
         <div className="mx-10 flex h-14 items-center justify-between">
           <div className="flex items-center gap-10">
-            <button type="button">
+            <button onClick={handleSideBar}>
               <i className="fa-solid fa-bars cursor-pointer text-gray-400"></i>
             </button>
             <div>
               <img
-                className="h-10 object-contain"
+                className="h-10 cursor-pointer object-contain"
                 src="/images/TOS-TRANSPARENT.png"
                 alt="TOS Logo"
+                onClick={() => navigate(`homepage`)}
               />
             </div>
           </div>

@@ -1,13 +1,20 @@
 import HomeSCSidebar from "@/components/navigation/HomeSCSidebar";
 import HomeSCTopBar from "@/components/navigation/HomeSCTopBar";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 const HomeSClayout = () => {
+  const [sideBarOpen, setSideBarOpen] = useState(false);
+
+  const handleSideBar = () => setSideBarOpen((prev) => !prev);
+
   return (
     <>
-      <HomeSCTopBar />
-      <HomeSCSidebar />
-      <main className="mx-10 my-5 ms-[104px]">
+      <HomeSCTopBar handleSideBar={handleSideBar} />
+      <HomeSCSidebar sideBarOpen={sideBarOpen} />
+      <main
+        className={`${sideBarOpen ? "mx-5 my-5 ml-[260px]" : "mx-10 my-5 ml-[104px]"}`}
+      >
         <Outlet />
       </main>
     </>
