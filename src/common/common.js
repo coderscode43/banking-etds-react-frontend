@@ -3,14 +3,11 @@ import {
   detailRegularReturn,
   listData,
   WOTListData,
-  fetchEntities,
-  fetchSearchEntities,
+  paginationListData,
+  paginationWithSearchListData,
 } from "@/service/apiService";
 
 const common = {
-  currentPage: 1,
-  srNo: 1,
-
   getListData: async (entity) => {
     return await listData(entity);
   },
@@ -28,11 +25,41 @@ const common = {
   },
 
   getPagination: async (entity, pageNo) => {
-    return await fetchEntities(entity, pageNo - 1);
+    return await paginationListData(entity, pageNo - 1);
   },
 
-  getSearchPagination: async (entity, pageNo, searchParams) => {
-    return await fetchSearchEntities(entity, pageNo - 1, searchParams);
+  getPaginationWithSearch: async (entity, pageNo, searchParams) => {
+    return await paginationWithSearchListData(entity, pageNo - 1, searchParams);
+  },
+
+  handleSearchInputChange: (e, setSearchParams) => {
+    const { name, value } = e.target;
+    setSearchParams((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  },
+
+  getRefinedSearchParams: (searchParams) => {
+    const refinedSearchParams = (obj) =>
+      Object.fromEntries(
+        Object.entries(obj).filter((entry) => {
+          const value = entry[1];
+          return value !== "" && value !== null && value !== undefined;
+        })
+      );
+
+    return JSON.stringify(refinedSearchParams(searchParams));
+  },
+
+  getSearchListData: async (entity, pageNo, searchParams) => {
+    const response = await paginationWithSearchListData(
+      entity,
+      pageNo,
+      searchParams
+    );
+
+    return response;
   },
 };
 

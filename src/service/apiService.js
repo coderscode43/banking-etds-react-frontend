@@ -57,7 +57,7 @@ export const WOTListData = async (entity, fy, branchCode) => {
 };
 
 // Pagination Functionality
-export const fetchEntities = async (entity, pageNo) => {
+export const paginationListData = async (entity, pageNo) => {
   try {
     const response = await axios.get(
       `${API_BASE_URL}${entity}/list/get/${pageNo}/100`,
@@ -69,7 +69,11 @@ export const fetchEntities = async (entity, pageNo) => {
   }
 };
 
-export const fetchSearchEntities = async (entity, pageNo, searchParams) => {
+export const paginationWithSearchListData = async (
+  entity,
+  pageNo,
+  searchParams
+) => {
   try {
     const response = await axios.get(
       `${API_BASE_URL}${entity}/search/get/${pageNo}/100/${searchParams}`,

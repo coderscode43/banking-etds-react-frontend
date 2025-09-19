@@ -19,7 +19,7 @@ const Pagination = ({
     try {
       let response;
       if (params !== undefined) {
-        response = await common.getSearchPagination(entity, pageNo, params);
+        response = await common.getPaginationWithSearch(entity, pageNo, params);
       } else {
         response = await common.getPagination(entity, pageNo);
       }
