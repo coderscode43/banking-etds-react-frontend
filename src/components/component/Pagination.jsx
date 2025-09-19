@@ -24,6 +24,7 @@ const Pagination = ({
         response = await common.getPagination(entity, pageNo);
       }
       setListData(response.data.entities || []);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       console.error("Error while loading next page:", err);
     }

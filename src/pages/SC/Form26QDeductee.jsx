@@ -1,17 +1,17 @@
 import clsx from "clsx";
 import common from "@/common/common";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import staticDataContext from "@/context/staticDataContext";
 import { Field, Input, Label, Switch } from "@headlessui/react";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
+import Pagination from "@/components/component/Pagination";
+import SwitchButton from "@/components/component/SwitchButton";
 
 const Form26QDeductee = () => {
   const entity = "form26QDeductee";
 
-  const { params } = useParams();
   const { Quarter, Tan, Section } = useContext(staticDataContext);
 
   const [gotoPage, setGotoPage] = useState(1);
@@ -102,23 +102,6 @@ const Form26QDeductee = () => {
     ...data,
   }));
 
-  const handlePagination = async (pageNo) => {
-    setGotoPage(pageNo);
-    setCurrentPage(pageNo);
-
-    try {
-      let response;
-      if (params !== undefined) {
-        response = await common.getSearchPagination(entity, pageNo, params);
-      } else {
-        response = await common.getPagination(entity, pageNo);
-      }
-      setListData(response.data.entities || []);
-    } catch (err) {
-      console.error("Error while loading next page:", err);
-    }
-  };
-
   return (
     <>
       <div className="space-y-5">
@@ -202,151 +185,140 @@ const Form26QDeductee = () => {
                 checkedItems={checkedItems}
                 setCheckedItems={setCheckedItems}
               />
-              <TooltipWrapper tooltipText="Auto-Resize">
-                <Switch
-                  checked={autoResize}
-                  onChange={setAutoResize}
-                  className={`group relative mt-2.5 inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors ${
-                    autoResize ? "bg-blue-500" : "bg-gray-300"
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                      autoResize ? "translate-x-7" : "translate-x-0"
-                    }`}
-                  />
-                </Switch>
-              </TooltipWrapper>
+              <SwitchButton
+                autoResize={autoResize}
+                setAutoResize={setAutoResize}
+              />
             </div>
           </Field>
         </div>
 
         {showDivs && (
           <div>
-            <Field className="flex flex-wrap gap-3">
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  TAN
-                </Label>
-                <select
-                  name="tan"
-                  id="tan"
-                  className={clsx(
+          <Field className="flex flex-wrap gap-3">
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                TAN
+              </Label>
+              <select
+                name="tan"
+                id="tan"
+                className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-none",
                     "h-[38px]"
-                  )}
-                >
-                  <option value="">Select TAN</option>
-                  {Tan &&
-                    Tan.length > 0 &&
-                    Tan.map((tan, index) => {
-                      return (
-                        <option key={index} value={tan}>
-                          {tan}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
+                )}
+              >
+                <option value="">Select TAN</option>
+                {Tan &&
+                  Tan.length > 0 &&
+                  Tan.map((tan, index) => {
+                    return (
+                      <option key={index} value={tan}>
+                        {tan}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  PAN
-                </Label>
-                <Input
-                  name="pan"
-                  id="pan"
-                  placeholder="PAN"
-                  className={clsx(
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                PAN
+              </Label>
+              <Input
+                name="pan"
+                id="pan"
+                placeholder="PAN"
+                className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-none"
-                  )}
-                />
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Challan Heading
-                </Label>
-                <Input
-                  name="challanHeading"
-                  id="challanHeading"
-                  placeholder="Challan Heading"
-                  className={clsx(
+                )}
+              />
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Challan Heading
+              </Label>
+              <Input
+                name="challanHeading"
+                id="challanHeading"
+                placeholder="Challan Heading"
+                className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-none"
-                  )}
-                />
-              </div>
-              <br />
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  RO Code
-                </Label>
-                <Input
-                  name="roCode"
-                  id="roCode"
-                  placeholder="RO Code"
-                  className={clsx(
+                )}
+              />
+            </div>
+            <br />
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                RO Code
+              </Label>
+              <Input
+                name="roCode"
+                id="roCode"
+                placeholder="RO Code"
+                className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-none"
-                  )}
-                />
-              </div>
+                )}
+              />
+            </div>
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Section Code
-                </Label>
-                <select
-                  name="sectionCode"
-                  id="sectionCode"
-                  className={clsx(
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Section Code
+              </Label>
+              <select
+                name="sectionCode"
+                id="sectionCode"
+                className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-none",
                     "h-[38px]"
-                  )}
-                >
-                  <option value="">Select Section</option>
-                  {Section &&
-                    Section.length > 0 &&
-                    Section.map((Section, index) => {
-                      return (
-                        <option key={index} value={Section}>
-                          {Section}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
+                )}
+              >
+                <option value="">Select Section</option>
+                {Section &&
+                  Section.length > 0 &&
+                  Section.map((Section, index) => {
+                    return (
+                      <option key={index} value={Section}>
+                        {Section}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Status
-                </Label>
-                <select
-                  name="selectStatus"
-                  id="selectStatus"
-                  className={clsx(
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Status
+              </Label>
+              <select
+                name="selectStatus"
+                id="selectStatus"
+                className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-none",
                     "h-[38px]"
-                  )}
-                >
-                  <option value="">Select Status</option>
-                  <option value="resolved">Resolved</option>
-                  <option value="pending">Pending</option>
-                </select>
-              </div>
-              <div>
-                <TooltipWrapper tooltipText="Export to Excel">
-                  <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                    Export to Excel
-                  </button>
-                </TooltipWrapper>
-              </div>
-            </Field>
-          </div>
+                )}
+              >
+                <option value="">Select Status</option>
+                <option value="resolved">Resolved</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+            <div>
+              <TooltipWrapper tooltipText="Export to Excel">
+                <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
+                  Export to Excel
+                </button>
+              </TooltipWrapper>
+            </div>
+          </Field>
+        </div>
         )}
 
         <div>
@@ -361,54 +333,15 @@ const Form26QDeductee = () => {
       </div>
       {/* Pagination */}
       {listData.length > 0 && (
-        <div className="my-5">
-          <>
-            <div className="flex items-center justify-center gap-5">
-              <button
-                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
-                disabled={currentPage === 1}
-                onClick={() => handlePagination(currentPage - 1)}
-              >
-                Previous
-              </button>
-              <div className="flex items-center justify-center">
-                <h5>
-                  Displaying page{" "}
-                  <span className="font-semibold">{currentPage}</span> of{" "}
-                  <span className="font-semibold">{totalPages}</span>
-                </h5>
-              </div>
-              <button
-                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
-                disabled={currentPage === totalPages}
-                onClick={() => handlePagination(currentPage + 1)}
-              >
-                Next
-              </button>
-            </div>
-
-            {totalPages > 1 && (
-              <div className="mt-5 flex items-center justify-center gap-3">
-                <span>Go to</span>
-                <input
-                  type="number"
-                  min={1}
-                  max={totalPages}
-                  value={gotoPage}
-                  onChange={(e) => setGotoPage(Number(e.target.value))}
-                  className="w-20 rounded-md border border-gray-400 p-0.5 text-center"
-                />
-                <button
-                  className="ml-2 cursor-pointer rounded-md bg-green-700 px-4 py-1 text-white disabled:bg-gray-400 disabled:opacity-50"
-                  disabled={gotoPage < 1 || gotoPage > totalPages}
-                  onClick={() => handlePagination(gotoPage)}
-                >
-                  Go
-                </button>
-              </div>
-            )}
-          </>
-        </div>
+        <Pagination
+          entity={entity}
+          setListData={setListData}
+          totalPages={totalPages}
+          gotoPage={gotoPage}
+          setGotoPage={setGotoPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       )}
     </>
   );

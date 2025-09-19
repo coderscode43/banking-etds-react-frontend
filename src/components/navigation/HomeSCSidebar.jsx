@@ -137,7 +137,7 @@ const HomeSCSidebar = ({ sideBarOpen }) => {
                       <div>
                         {iconClass ? (
                           <i
-                            className={`${iconClass} w-[34px] text-center`}
+                            className={`${iconClass} w-[26px] text-center`}
                           ></i>
                         ) : (
                           <span className="text-center text-sm font-semibold">

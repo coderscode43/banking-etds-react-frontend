@@ -1,17 +1,17 @@
 import common from "@/common/common";
 import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
+import Pagination from "@/components/component/Pagination";
+import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import staticDataContext from "@/context/staticDataContext";
 import { Field, Input, Label, Switch } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 const Form27EQDeductee = () => {
   const entity = "form27EQDeductee";
 
-  const { params } = useParams();
   const { Quarter, Tan, Section } = useContext(staticDataContext);
 
   const [gotoPage, setGotoPage] = useState(1);
@@ -101,23 +101,6 @@ const Form27EQDeductee = () => {
     ...data,
   }));
 
-  const handlePagination = async (pageNo) => {
-    setGotoPage(pageNo);
-    setCurrentPage(pageNo);
-
-    try {
-      let response;
-      if (params !== undefined) {
-        response = await common.getSearchPagination(entity, pageNo, params);
-      } else {
-        response = await common.getPagination(entity, pageNo);
-      }
-      setListData(response.data.entities || []);
-    } catch (err) {
-      console.error("Error while loading next page:", err);
-    }
-  };
-
   return (
     <>
       <div className="space-y-5">
@@ -201,21 +184,10 @@ const Form27EQDeductee = () => {
                 checkedItems={checkedItems}
                 setCheckedItems={setCheckedItems}
               />
-              <TooltipWrapper tooltipText="Auto-Resize">
-                <Switch
-                  checked={autoResize}
-                  onChange={setAutoResize}
-                  className={`group relative mt-2.5 inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors ${
-                    autoResize ? "bg-blue-500" : "bg-gray-300"
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                      autoResize ? "translate-x-7" : "translate-x-0"
-                    }`}
-                  />
-                </Switch>
-              </TooltipWrapper>
+              <SwitchButton
+                autoResize={autoResize}
+                setAutoResize={setAutoResize}
+              />
             </div>
           </Field>
         </div>
@@ -361,54 +333,15 @@ const Form27EQDeductee = () => {
 
       {/* Pagination */}
       {listData.length > 0 && (
-        <div className="my-5">
-          <>
-            <div className="flex items-center justify-center gap-5">
-              <button
-                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
-                disabled={currentPage === 1}
-                onClick={() => handlePagination(currentPage - 1)}
-              >
-                Previous
-              </button>
-              <div className="flex items-center justify-center">
-                <h5>
-                  Displaying page{" "}
-                  <span className="font-semibold">{currentPage}</span> of{" "}
-                  <span className="font-semibold">{totalPages}</span>
-                </h5>
-              </div>
-              <button
-                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
-                disabled={currentPage === totalPages}
-                onClick={() => handlePagination(currentPage + 1)}
-              >
-                Next
-              </button>
-            </div>
-
-            {totalPages > 1 && (
-              <div className="mt-5 flex items-center justify-center gap-3">
-                <span>Go to</span>
-                <input
-                  type="number"
-                  min={1}
-                  max={totalPages}
-                  value={gotoPage}
-                  onChange={(e) => setGotoPage(Number(e.target.value))}
-                  className="w-20 rounded-md border border-gray-400 p-0.5 text-center"
-                />
-                <button
-                  className="ml-2 cursor-pointer rounded-md bg-green-700 px-4 py-1 text-white disabled:bg-gray-400 disabled:opacity-50"
-                  disabled={gotoPage < 1 || gotoPage > totalPages}
-                  onClick={() => handlePagination(gotoPage)}
-                >
-                  Go
-                </button>
-              </div>
-            )}
-          </>
-        </div>
+        <Pagination
+          entity={entity}
+          setListData={setListData}
+          totalPages={totalPages}
+          gotoPage={gotoPage}
+          setGotoPage={setGotoPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       )}
     </>
   );
