@@ -318,6 +318,7 @@ const CorrectionRequest = () => {
         <div>
           <DynamicTableAction
             entity={entity}
+            layoutType={"sc"}
             tableHead={tableHead}
             tableData={tableData}
             autoResize={autoResize}

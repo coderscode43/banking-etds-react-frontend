@@ -1,26 +1,39 @@
 import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import staticDataContext from "@/context/staticDataContext";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import { Field, Input, Label, Switch } from "@headlessui/react";
 import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
 import { TooltipWrapper } from "@/components/component/Tooltip";
+import Pagination from "@/components/component/Pagination";
 
 const Form27EQDeductee = () => {
   const entity = "form27EQDeductee";
 
   const { fy, branchCode } = useParams();
+  const { Quarter, Tan, Section } = useContext(staticDataContext);
 
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+  const [gotoPage, setGotoPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
   const [autoResize, setAutoResize] = useState(false);
   const [checkedItems, setCheckedItems] = useState(new Set());
 
   useEffect(() => {
     const fetchListData = async () => {
-      const response = await common.getWOTListData(entity, fy, branchCode);
-      setListData(response.data.entities || []);
+      try {
+        const response = await common.getWOTListData(entity, fy, branchCode);
+        const count = response.data.count || 0;
+        const pages = Math.ceil(count / 100);
+        setTotalPages(pages);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
     };
     fetchListData();
   }, [fy, branchCode]);
@@ -84,7 +97,7 @@ const Form27EQDeductee = () => {
   ];
 
   const tableData = listData?.map((data, index) => ({
-    srNo: index + 1,
+    srNo: (currentPage - 1) * 100 + (index + 1),
     ...data,
   }));
 
@@ -108,10 +121,15 @@ const Form27EQDeductee = () => {
                 )}
               >
                 <option value="">Select Quarter</option>
-                <option value="qtr1">Quarter 1</option>
-                <option value="qtr2">Quarter 2</option>
-                <option value="qtr3">Quarter 3</option>
-                <option value="qtr4">Quarter 4</option>
+                {Quarter &&
+                  Quarter.length > 0 &&
+                  Quarter.map((quarter, index) => {
+                    return (
+                      <option key={index} value={quarter}>
+                        {quarter}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
 
@@ -197,8 +215,15 @@ const Form27EQDeductee = () => {
                   )}
                 >
                   <option value="">Select TAN</option>
-                  <option value="tan1">TAN 1</option>
-                  <option value="tan2">TAN 2</option>
+                  {Tan &&
+                    Tan.length > 0 &&
+                    Tan.map((tan, index) => {
+                      return (
+                        <option key={index} value={tan}>
+                          {tan}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <div className="w-full md:w-1/4">
@@ -227,8 +252,15 @@ const Form27EQDeductee = () => {
                   )}
                 >
                   <option value="">Select Section</option>
-                  <option value="section1">Section 1</option>
-                  <option value="section2">Section 2</option>
+                  {Section &&
+                    Section.length > 0 &&
+                    Section.map((section, index) => {
+                      return (
+                        <option key={index} value={section}>
+                          {section}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <div>
@@ -244,11 +276,25 @@ const Form27EQDeductee = () => {
 
         <DynamicTableActionTotal
           entity={entity}
+          layoutType={"wot"}
           tableHead={combinedTableHead}
           tableData={tableData}
           autoResize={autoResize}
         />
       </div>
+
+      {/* Pagination */}
+      {listData.length > 0 && (
+        <Pagination
+          entity={entity}
+          setListData={setListData}
+          totalPages={totalPages}
+          gotoPage={gotoPage}
+          setGotoPage={setGotoPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
     </>
   );
 };

@@ -8,6 +8,7 @@ import {
   TabPanels,
 } from "@headlessui/react";
 import clsx from "clsx";
+import DownloadCertificateModal from "@/components/modals/DownloadCertificateModal";
 
 const categories = [
   {
@@ -59,7 +60,7 @@ const DownloadCertificate = () => {
                   <h3 className="text-xl">(Form 16A/16/27D)</h3>
                 </div>
 
-                <form className="flex flex-wrap gap-3">
+                <form className="flex w-full flex-wrap items-center-safe justify-center gap-3">
                   {/* Type of Report */}
                   <div className="mb-3 w-full">
                     <label className="font-semibold text-[var(--primary-color)]">
@@ -168,14 +169,7 @@ const DownloadCertificate = () => {
                   )}
 
                   {/* Submit Button */}
-                  <div className="flex justify-center">
-                    <button
-                      type="submit"
-                      className="rounded-md bg-green-500 p-2 text-center text-white"
-                    >
-                      <i className="fa-solid fa-download"></i> Download
-                    </button>
-                  </div>
+                  <DownloadCertificateModal />
                 </form>
               </div>
             </TabPanel>

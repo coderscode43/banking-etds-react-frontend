@@ -1,4 +1,5 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const navItems = [
   {
@@ -38,7 +39,7 @@ const navItems = [
   },
   {
     id: "correctionRequest",
-    label: "Correction/Query Request",
+    label: "Correction Request",
     page: "correctionRequest",
     iconClass: "fa-solid fa-clipboard-user",
     type: "listWOT",
@@ -60,14 +61,13 @@ const navItems = [
   {
     id: "back",
     label: "Back",
-    page: "back",
+    page: "homepage",
     iconClass: "fa-solid fa-reply-all",
     type: "back",
   },
 ];
 
 const HomeWOTSidebar = () => {
-  const navigate = useNavigate();
   const { branchCode, fy } = useParams();
 
   return (
@@ -84,15 +84,17 @@ const HomeWOTSidebar = () => {
                 ({ id, label, page, iconClass, textIcon, type }) => {
                   return (
                     <li key={id}>
-                      <div
-                        onClick={() => {
-                          navigate(
-                            type === "wot"
-                              ? `/homeWOT/${branchCode}/${fy}/${page}`
-                              : `/homeWOT/${branchCode}/${fy}/list/${page}`
-                          );
-                        }}
-                        className="flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100"
+                      <NavLink
+                        to={
+                          type === "wot"
+                            ? `/homeWOT/${branchCode}/${fy}/${page}`
+                            : type === "listWOT"
+                              ? `/homeWOT/${branchCode}/${fy}/list/${page}`
+                              : `/home/${page}`
+                        }
+                        className={({ isActive }) =>
+                          `flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100 ${isActive ? "bg-blue-100 font-medium text-blue-500" : ""}`
+                        }
                       >
                         <div
                           className="w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 ease-in-out group-hover:ml-2 group-hover:w-auto group-hover:opacity-100"
@@ -104,14 +106,16 @@ const HomeWOTSidebar = () => {
                         </div>
                         <div>
                           {iconClass ? (
-                            <i className={`${iconClass} text-center`}></i>
+                            <i
+                              className={`${iconClass} w-[26px] text-center`}
+                            ></i>
                           ) : (
                             <span className="text-center text-sm font-semibold">
                               {textIcon}
                             </span>
                           )}
                         </div>
-                      </div>
+                      </NavLink>
                     </li>
                   );
                 }

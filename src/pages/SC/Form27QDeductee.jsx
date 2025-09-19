@@ -352,6 +352,7 @@ const Form27QDeductee = () => {
         <div>
           <DynamicTableActionTotal
             entity={entity}
+            layoutType={"sc"}
             tableHead={combinedTableHead}
             tableData={tableData}
             autoResize={autoResize}

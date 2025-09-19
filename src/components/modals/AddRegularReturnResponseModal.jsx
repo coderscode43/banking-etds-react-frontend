@@ -59,14 +59,14 @@ const AddRegularReturnResponse = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <DialogPanel className="relative w-full max-w-md transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
                   <DialogTitle
                     as="h2"
-                    className="mb-5 text-lg leading-6 font-medium text-gray-900"
+                    className="mb-5 bg-[#eaf0f9] p-[4%] text-lg leading-6 font-medium text-gray-900"
                   >
                     Add Regular Return Response
                   </DialogTitle>
-                  <div className="justify-center">
+                  <div className="justify-center px-5">
                     <div className="w-full">
                       <label className="font-semibold text-[var(--primary-color)]">
                         Remark<span className="text-red-600">*</span>
@@ -78,7 +78,7 @@ const AddRegularReturnResponse = () => {
                       />
                     </div>
 
-                    <div className="w-full">
+                    <div className="mt-3 w-full">
                       <label className="font-semibold text-[var(--primary-color)]">
                         Select Status<span className="text-red-600">*</span>
                       </label>
@@ -93,7 +93,7 @@ const AddRegularReturnResponse = () => {
                       </select>
                     </div>
 
-                    <div className="w-full">
+                    <div className="mt-3 w-full">
                       <label className="font-semibold text-[var(--primary-color)]">
                         Supporting Document
                       </label>
@@ -106,14 +106,14 @@ const AddRegularReturnResponse = () => {
                     </div>
 
                     <div
-                      className="absolute top-7 right-10 cursor-pointer"
+                      className="absolute top-4 right-3 cursor-pointer"
                       onClick={closeModal}
                     >
                       <i className="fa-solid fa-x"></i>
                     </div>
                   </div>
 
-                  <div className="mt-5 flex justify-end">
+                  <div className="mt-5 flex justify-end bg-[#eaf0f9] p-[3%]">
                     <button className="mr-2.5 cursor-pointer rounded-md bg-[#1761fd] p-2 px-4 font-semibold text-white">
                       Add
                     </button>

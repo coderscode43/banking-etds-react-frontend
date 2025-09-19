@@ -1,23 +1,37 @@
 import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import staticDataContext from "@/context/staticDataContext";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import { Field, Input, Label } from "@headlessui/react";
 import { TooltipWrapper } from "@/components/component/Tooltip";
+import Pagination from "@/components/component/Pagination";
 
 const RegularReturn = () => {
   const entity = "regularReturn";
 
   const { fy, branchCode } = useParams();
+  const { Quarter, status, Form, financialYear } =
+    useContext(staticDataContext);
 
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+  const [gotoPage, setGotoPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchListData = async () => {
-      const response = await common.getWOTListData(entity, fy, branchCode);
-      setListData(response.data.entities || []);
+      try {
+        const response = await common.getWOTListData(entity, fy, branchCode);
+        const count = response.data.count || 0;
+        const pages = Math.ceil(count / 100);
+        setTotalPages(pages);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        ("Error fetching list data:", error);
+      }
     };
     fetchListData();
   }, [fy, branchCode]);
@@ -37,7 +51,7 @@ const RegularReturn = () => {
   ];
 
   const tableData = listData?.map((data, index) => ({
-    srNo: index + 1,
+    srNo: (currentPage - 1) * 100 + index + 1,
     ...data,
   }));
 
@@ -62,9 +76,15 @@ const RegularReturn = () => {
                 )}
               >
                 <option value="">Select Financial Year</option>
-                <option value="2025-26">2025-26</option>
-                <option value="2024-25">2024-25</option>
-                <option value="2023-24">2023-24</option>
+                {financialYear &&
+                  financialYear.length > 0 &&
+                  financialYear.map((FY, index) => {
+                    return (
+                      <option key={index} value={FY}>
+                        {FY}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
             <div className="w-full md:w-1/4">
@@ -79,9 +99,15 @@ const RegularReturn = () => {
                 )}
               >
                 <option value="">Select Quarter</option>
-                <option value="Q1">Q1</option>
-                <option value="Q2">Q2</option>
-                <option value="Q3">Q3</option>
+                {Quarter &&
+                  Quarter.length > 0 &&
+                  Quarter.map((quarter, index) => {
+                    return (
+                      <option key={index} value={quarter}>
+                        {quarter}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
             <div className="w-full md:w-1/4">
@@ -96,9 +122,15 @@ const RegularReturn = () => {
                 )}
               >
                 <option value="">Select Form</option>
-                <option value="Form1">Form 1</option>
-                <option value="Form2">Form 2</option>
-                <option value="Form3">Form 3</option>
+                {Form &&
+                  Form.length > 0 &&
+                  Form.map((Form, index) => {
+                    return (
+                      <option key={index} value={Form}>
+                        {Form}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
             <div className="mt-6.5 flex gap-2">
@@ -134,9 +166,15 @@ const RegularReturn = () => {
                   )}
                 >
                   <option value="">Select Status</option>
-                  <option value="status1">Status 1</option>
-                  <option value="status2">Status 2</option>
-                  <option value="status3">Status 3</option>
+                  {status &&
+                    status.length > 0 &&
+                    status.map((status, index) => {
+                      return (
+                        <option key={index} value={status}>
+                          {status}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <div className="w-full md:w-1/4">
@@ -165,11 +203,24 @@ const RegularReturn = () => {
         )}
         <DynamicTableAction
           entity={entity}
-          layoutType="wot"
+          layoutType={"wot"}
           tableHead={tableHead}
           tableData={tableData}
         />
       </div>
+
+      {/* Pagination */}
+      {listData.length > 0 && (
+        <Pagination
+          entity={entity}
+          setListData={setListData}
+          totalPages={totalPages}
+          gotoPage={gotoPage}
+          setGotoPage={setGotoPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
     </>
   );
 };

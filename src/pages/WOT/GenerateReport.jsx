@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import clsx from "clsx";
+import MISGenerateReportModal from "@/components/modals/MISGenerateReportModal";
 
 const GenerateReport = () => {
   const [formData, setFormData] = useState({
@@ -217,12 +218,13 @@ const GenerateReport = () => {
 
           {/* Submit Button */}
           <div className="flex justify-center">
-            <button
+            {/* <button
               type="submit"
               className="rounded-md bg-green-500 p-2 text-center text-white"
             >
               <i className="fa-solid fa-download"></i> Download
-            </button>
+            </button> */}
+            <MISGenerateReportModal />
           </div>
         </form>
       </div>

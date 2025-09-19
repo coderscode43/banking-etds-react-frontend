@@ -1,24 +1,38 @@
 import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import staticDataContext from "@/context/staticDataContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { Field, Input, Label } from "@headlessui/react";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import { TooltipWrapper } from "@/components/component/Tooltip";
+import Pagination from "@/components/component/Pagination";
 
 const CorrectionRequest = () => {
   const entity = "correctionRequest";
 
   const navigate = useNavigate();
   const { fy, branchCode } = useParams();
+  const { Quarter, status, typeOfCorrection, financialYear } =
+    useContext(staticDataContext);
 
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+  const [gotoPage, setGotoPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchListData = async () => {
-      const response = await common.getWOTListData(entity, fy, branchCode);
-      setListData(response.data.entities || []);
+      try {
+        const response = await common.getWOTListData(entity, fy, branchCode);
+        const count = response.data.count || 0;
+        const pages = Math.ceil(count / 100);
+        setTotalPages(pages);
+        setListData(response.data.entities || []);
+      } catch (error) {
+        console.error("Error fetching list data:", error);
+      }
     };
     fetchListData();
   }, [fy, branchCode]);
@@ -38,7 +52,7 @@ const CorrectionRequest = () => {
   ];
 
   const tableData = listData?.map((data, index) => ({
-    srNo: index + 1,
+    srNo: (currentPage - 1) * 100 + index + 1,
     ...data,
   }));
 
@@ -64,9 +78,15 @@ const CorrectionRequest = () => {
                 )}
               >
                 <option value="">Select Status</option>
-                <option value="status1">Status 1</option>
-                <option value="status2">Status 2</option>
-                <option value="status3">Status 3</option>
+                {status &&
+                  status.length > 0 &&
+                  status.map((status, index) => {
+                    return (
+                      <option key={index} value={status}>
+                        {status}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
             <div className="w-full md:w-1/4">
@@ -81,11 +101,16 @@ const CorrectionRequest = () => {
                   "h-[38px] focus:outline-none"
                 )}
               >
-                {" "}
                 <option value="">Select Financial Year</option>
-                <option value="2025-26">2025-26</option>
-                <option value="2024-25">2024-25</option>
-                <option value="2023-24">2023-24</option>
+                {financialYear &&
+                  financialYear.length > 0 &&
+                  financialYear.map((FY, index) => {
+                    return (
+                      <option key={index} value={FY}>
+                        {FY}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
             <div className="w-full md:w-1/4">
@@ -99,11 +124,16 @@ const CorrectionRequest = () => {
                   "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
               >
-                {" "}
                 <option value="">Select Quarter</option>
-                <option value="Q1">Q1</option>
-                <option value="Q2">Q2</option>
-                <option value="Q3">Q3</option>
+                {Quarter &&
+                  Quarter.length > 0 &&
+                  Quarter.map((quarter, index) => {
+                    return (
+                      <option key={index} value={quarter}>
+                        {quarter}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
 
@@ -123,13 +153,13 @@ const CorrectionRequest = () => {
               </TooltipWrapper>
               <TooltipWrapper tooltipText="Add Correction Request">
                 <button
-                onClick={() => {
-                  navigate(
-                    `/homeWOT/${branchCode}/${fy}/add/addCorrectionRequest`
-                  );
-                }}
-                className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
-              >
+                  onClick={() => {
+                    navigate(
+                      `/homeWOT/${branchCode}/${fy}/add/addCorrectionRequest`
+                    );
+                  }}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"
+                >
                   <i className="fa-solid fa-plus"></i>
                 </button>
               </TooltipWrapper>
@@ -193,11 +223,16 @@ const CorrectionRequest = () => {
                     "h-[38px] focus:outline-none"
                   )}
                 >
-                  {" "}
                   <option value="">Select Correction Type</option>
-                  <option value="CorrectionType1">Correction Type 1</option>
-                  <option value="CorrectionType2">Correction Type 2</option>
-                  <option value="CorrectionType3">Correction Type 3</option>
+                  {typeOfCorrection &&
+                    typeOfCorrection.length > 0 &&
+                    typeOfCorrection.map((correction, index) => {
+                      return (
+                        <option key={index} value={correction}>
+                          {correction}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <div className="w-full md:w-1/4">
@@ -247,6 +282,19 @@ const CorrectionRequest = () => {
           tableData={tableData}
         />
       </div>
+
+      {/* Pagination */}
+      {listData.length > 0 && (
+        <Pagination
+          entity={entity}
+          setListData={setListData}
+          totalPages={totalPages}
+          gotoPage={gotoPage}
+          setGotoPage={setGotoPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
     </>
   );
 };
