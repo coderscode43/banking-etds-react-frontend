@@ -331,7 +331,7 @@ const AddCorrectionRequest = () => {
                 </button>
 
                 <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-                  Next <i class="fa-solid fa-chevron-right"></i>&nbsp;
+                  Next <i className="fa-solid fa-chevron-right"></i>&nbsp;
                 </button>
               </div>
             </TabPanel>
@@ -370,7 +370,7 @@ const AddCorrectionRequest = () => {
                       />
 
                       <button className="mt-1 ml-3 h-[40px] cursor-pointer rounded-sm bg-red-600 px-4 py-2 font-semibold text-white">
-                        <i class="fa-solid fa-x"></i>
+                        <i className="fa-solid fa-x"></i>
                       </button>
                     </span>
                   )}
@@ -389,7 +389,7 @@ const AddCorrectionRequest = () => {
                 </button>
 
                 <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-                  Next <i class="fa-solid fa-chevron-right"></i>&nbsp;
+                  Next <i className="fa-solid fa-chevron-right"></i>&nbsp;
                 </button>
               </div>
             </TabPanel>

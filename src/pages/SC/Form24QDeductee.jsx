@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import common from "@/common/common";
-import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
+import Pagination from "@/components/component/Pagination";
 import staticDataContext from "@/context/staticDataContext";
 import { Field, Input, Label, Switch } from "@headlessui/react";
 import { TooltipWrapper } from "@/components/component/Tooltip";
@@ -11,7 +11,6 @@ import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal
 const Form24QDeductee = () => {
   const entity = "form24QDeductee";
 
-  const { params } = useParams();
   const { Quarter, Tan, Section } = useContext(staticDataContext);
 
   const [listData, setListData] = useState([]);
@@ -37,23 +36,6 @@ const Form24QDeductee = () => {
 
     fetchListData();
   }, []);
-
-  const handlePagination = async (pageNo) => {
-    setGotoPage(pageNo);
-    setCurrentPage(pageNo);
-
-    try {
-      let response;
-      if (params !== undefined) {
-        response = await common.getSearchPagination(entity, pageNo, params);
-      } else {
-        response = await common.getPagination(entity, pageNo);
-      }
-      setListData(response.data.entities || []);
-    } catch (err) {
-      console.error("Error while loading next page:", err);
-    }
-  };
 
   // Table Details
   const tableHead = [
@@ -344,54 +326,15 @@ const Form24QDeductee = () => {
 
       {/* Pagination */}
       {listData.length > 0 && (
-        <div className="my-5">
-          <>
-            <div className="flex items-center justify-center gap-5">
-              <button
-                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
-                disabled={currentPage === 1}
-                onClick={() => handlePagination(currentPage - 1)}
-              >
-                Previous
-              </button>
-              <div className="flex items-center justify-center">
-                <h5>
-                  Displaying page{" "}
-                  <span className="font-semibold">{currentPage}</span> of{" "}
-                  <span className="font-semibold">{totalPages}</span>
-                </h5>
-              </div>
-              <button
-                className="cursor-pointer rounded-md bg-[#024dec] px-3 py-1 text-white disabled:bg-gray-400"
-                disabled={currentPage === totalPages}
-                onClick={() => handlePagination(currentPage + 1)}
-              >
-                Next
-              </button>
-            </div>
-
-            {totalPages > 1 && (
-              <div className="mt-5 flex items-center justify-center gap-3">
-                <span>Go to</span>
-                <input
-                  type="number"
-                  min={1}
-                  max={totalPages}
-                  value={gotoPage}
-                  onChange={(e) => setGotoPage(Number(e.target.value))}
-                  className="w-20 rounded-md border border-gray-400 p-0.5 text-center"
-                />
-                <button
-                  className="ml-2 cursor-pointer rounded-md bg-green-700 px-4 py-1 text-white disabled:bg-gray-400 disabled:opacity-50"
-                  disabled={gotoPage < 1 || gotoPage > totalPages}
-                  onClick={() => handlePagination(gotoPage)}
-                >
-                  Go
-                </button>
-              </div>
-            )}
-          </>
-        </div>
+        <Pagination
+          entity={entity}
+          setListData={setListData}
+          totalPages={totalPages}
+          gotoPage={gotoPage}
+          setGotoPage={setGotoPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       )}
     </>
   );

@@ -61,7 +61,7 @@ export const fetchEntities = async (entity, pageNo) => {
   try {
     const response = await axios.get(
       `${API_BASE_URL}${entity}/list/get/${pageNo}/100`,
-      { withCredentials: true }
+      credentials
     );
     return response;
   } catch (error) {
@@ -73,7 +73,7 @@ export const fetchSearchEntities = async (entity, pageNo, searchParams) => {
   try {
     const response = await axios.get(
       `${API_BASE_URL}${entity}/search/get/${pageNo}/100/${searchParams}`,
-      { withCredentials: true }
+      credentials
     );
     return response;
   } catch (error) {
