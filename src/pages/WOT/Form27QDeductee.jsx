@@ -8,6 +8,7 @@ import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal
 import { Field, Input, Label, Switch } from "@headlessui/react";
 import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
 import { TooltipWrapper } from "@/components/component/Tooltip";
+import SwitchButton from "@/components/component/SwitchButton";
 
 const Form27QDeductee = () => {
   const entity = "form27QDeductee";

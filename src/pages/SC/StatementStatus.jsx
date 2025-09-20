@@ -160,7 +160,7 @@ const StatementStatus = () => {
 
         {showDivs && (
           <div>
-            <Field className="flex flex-wrap gap-3">
+            <Field className="flex flex-wrap items-end gap-3">
               <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   Status
@@ -218,8 +218,8 @@ const StatementStatus = () => {
               </div>
               <div>
                 <TooltipWrapper tooltipText="Export to Excel">
-                  <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                    Export to Excel
+                  <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                    <i className="fa-solid fa-file-excel"></i>
                   </button>
                 </TooltipWrapper>
               </div>

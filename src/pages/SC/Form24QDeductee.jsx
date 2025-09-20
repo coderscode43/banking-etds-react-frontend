@@ -94,7 +94,10 @@ const Form24QDeductee = () => {
         <div>
           <Field className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <Label
+                htmlFor="quarter"
+                className="font-semibold text-[var(--primary-color)]"
+              >
                 Quarter
               </Label>
               <select
@@ -120,7 +123,10 @@ const Form24QDeductee = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <Label
+                htmlFor="branchCode"
+                className="font-semibold text-[var(--primary-color)]"
+              >
                 Branch Code
               </Label>
               <Input
@@ -134,7 +140,10 @@ const Form24QDeductee = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <Label
+                htmlFor="name"
+                className="font-semibold text-[var(--primary-color)]"
+              >
                 Name
               </Label>
               <Input
@@ -177,7 +186,7 @@ const Form24QDeductee = () => {
 
         {showDivs && (
           <div>
-            <Field className="flex flex-wrap gap-3">
+            <Field className="flex flex-wrap items-end gap-3">
               <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   TAN
@@ -296,8 +305,8 @@ const Form24QDeductee = () => {
               </div>
               <div>
                 <TooltipWrapper tooltipText="Export to Excel">
-                  <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                    Export to Excel
+                  <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                    <i className="fa-solid fa-file-excel"></i>
                   </button>
                 </TooltipWrapper>
               </div>

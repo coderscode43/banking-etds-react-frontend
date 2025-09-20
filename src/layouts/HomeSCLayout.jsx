@@ -13,7 +13,7 @@ const HomeSClayout = () => {
       <HomeSCTopBar handleSideBar={handleSideBar} />
       <HomeSCSidebar sideBarOpen={sideBarOpen} />
       <main
-        className={`${sideBarOpen ? "mx-5 my-5 ml-[260px]" : "mx-10 my-5 ml-[104px]"}`}
+        className={`transition-all duration-300 ease-in-out ${sideBarOpen ? "mx-5 my-5 ml-[260px]" : "mx-10 my-5 ml-[104px]"}`}
       >
         <Outlet />
       </main>

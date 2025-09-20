@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import DropdownMenu from "../component/DropdownMenu";
 import { useNavigate } from "react-router-dom";
+import { TooltipWrapper } from "../component/Tooltip";
 
 const HomeWOTTopBar = ({ handleSideBar }) => {
   const { fy, branchCode } = useParams();
@@ -31,9 +32,15 @@ const HomeWOTTopBar = ({ handleSideBar }) => {
           </div>
           <div className="flex items-center justify-center gap-5">
             <div>
-              <button className="cursor-pointer rounded-md bg-[#12a4ed] px-2 py-1.5 text-sm text-white">
-                Refresh
-              </button>
+              <TooltipWrapper tooltipText={"Refresh"}>
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="cursor-pointer rounded-md bg-[#12a4ed] px-2 py-1.5 text-sm text-white"
+                >
+                  Refresh
+                </button>
+              </TooltipWrapper>
             </div>
             <div>
               <DropdownMenu />
