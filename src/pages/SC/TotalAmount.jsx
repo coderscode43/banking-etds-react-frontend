@@ -113,7 +113,7 @@ const TotalAmount = () => {
               />
             </div>
 
-            <div className="mt-6.5 flex gap-2">
+            <div className="flex items-end gap-2">
               <TooltipWrapper tooltipText="Search">
                 <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
                   <i className="fa-solid fa-magnifying-glass"></i>
@@ -135,160 +135,163 @@ const TotalAmount = () => {
           </Field>
         </div>
 
-        {showDivs && (
-          <div>
-            <Field className="flex flex-wrap items-end gap-3">
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Month
-                </Label>
-                <select
-                  name="month"
-                  id="month"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none",
-                    "h-[38px]"
-                  )}
-                >
-                  <option value="">Select Month</option>
-                  {Month &&
-                    Month.length > 0 &&
-                    Month.map((month, index) => {
-                      return (
-                        <option key={index} value={month}>
-                          {month}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
+        <div
+          className={clsx(
+            "overflow-hidden transition-all duration-500 ease-in-out",
+            showDivs ? "max-h-[250px]" : "max-h-0"
+          )}
+        >
+          <Field className="flex flex-wrap items-end gap-3">
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Month
+              </Label>
+              <select
+                name="month"
+                id="month"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none",
+                  "h-[38px]"
+                )}
+              >
+                <option value="">Select Month</option>
+                {Month &&
+                  Month.length > 0 &&
+                  Month.map((month, index) => {
+                    return (
+                      <option key={index} value={month}>
+                        {month}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Financial Year
-                </Label>
-                <select
-                  name="fy"
-                  id="fy"
-                  className={clsx(
-                    "mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none",
-                    "h-[38px]"
-                  )}
-                >
-                  <option value="">Select Financial Year</option>
-                  {financialYear &&
-                    financialYear.length > 0 &&
-                    financialYear.map((fy, index) => {
-                      return (
-                        <option key={index} value={fy}>
-                          {fy}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Financial Year
+              </Label>
+              <select
+                name="fy"
+                id="fy"
+                className={clsx(
+                  "mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none",
+                  "h-[38px]"
+                )}
+              >
+                <option value="">Select Financial Year</option>
+                {financialYear &&
+                  financialYear.length > 0 &&
+                  financialYear.map((fy, index) => {
+                    return (
+                      <option key={index} value={fy}>
+                        {fy}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Section
-                </Label>
-                <select
-                  name="section"
-                  id="section"
-                  className={clsx(
-                    "mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none",
-                    "h-[38px]"
-                  )}
-                >
-                  <option value="">Select Section</option>
-                  {Section &&
-                    Section.length > 0 &&
-                    Section.map((Section, index) => {
-                      return (
-                        <option key={index} value={Section}>
-                          {Section}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Section
+              </Label>
+              <select
+                name="section"
+                id="section"
+                className={clsx(
+                  "mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none",
+                  "h-[38px]"
+                )}
+              >
+                <option value="">Select Section</option>
+                {Section &&
+                  Section.length > 0 &&
+                  Section.map((Section, index) => {
+                    return (
+                      <option key={index} value={Section}>
+                        {Section}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
 
-              <br />
+            <br />
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  System Amount
-                </Label>
-                <Input
-                  name="systemAmount"
-                  id="systemAmount"
-                  placeholder="System Amount"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
-                  )}
-                />
-              </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                System Amount
+              </Label>
+              <Input
+                name="systemAmount"
+                id="systemAmount"
+                placeholder="System Amount"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
+                )}
+              />
+            </div>
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Traces Amount
-                </Label>
-                <Input
-                  name="tracesAmount"
-                  id="tracesAmount"
-                  placeholder="Traces Amount"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
-                  )}
-                />
-              </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Traces Amount
+              </Label>
+              <Input
+                name="tracesAmount"
+                id="tracesAmount"
+                placeholder="Traces Amount"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
+                )}
+              />
+            </div>
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  System Tax Amount
-                </Label>
-                <Input
-                  name="systemTaxAmount"
-                  id="systemTaxAmount"
-                  placeholder="System Tax Amount"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
-                  )}
-                />
-              </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                System Tax Amount
+              </Label>
+              <Input
+                name="systemTaxAmount"
+                id="systemTaxAmount"
+                placeholder="System Tax Amount"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
+                )}
+              />
+            </div>
 
-              <br />
+            <br />
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Traces Tax Amount
-                </Label>
-                <Input
-                  name="tracesTaxAmount"
-                  id="tracesTaxAmount"
-                  placeholder="Traces Tax Amount"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
-                  )}
-                />
-              </div>
-              <div>
-                <TooltipWrapper tooltipText="Export to Excel">
-                  <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
-                    <i className="fa-solid fa-file-excel"></i>
-                  </button>
-                </TooltipWrapper>
-              </div>
-            </Field>
-          </div>
-        )}
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Traces Tax Amount
+              </Label>
+              <Input
+                name="tracesTaxAmount"
+                id="tracesTaxAmount"
+                placeholder="Traces Tax Amount"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
+                )}
+              />
+            </div>
+            <div>
+              <TooltipWrapper tooltipText="Export to Excel">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                  <i className="fa-solid fa-file-excel"></i>
+                </button>
+              </TooltipWrapper>
+            </div>
+          </Field>
+        </div>
 
         <div>
           <DynamicTable

@@ -166,7 +166,7 @@ const Form26QDeductee = () => {
               />
             </div>
 
-            <div className="mt-6.5 flex gap-2">
+            <div className="flex items-end gap-2">
               <TooltipWrapper tooltipText="Search">
                 <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
                   <i className="fa-solid fa-magnifying-glass"></i>
@@ -193,9 +193,13 @@ const Form26QDeductee = () => {
           </Field>
         </div>
 
-        {showDivs && (
-          <div>
-          <Field className="flex flex-wrap gap-3">
+        <div
+          className={clsx(
+            "overflow-hidden transition-all duration-500 ease-in-out",
+            showDivs ? "max-h-[150px]" : "max-h-0"
+          )}
+        >
+          <Field className="flex flex-wrap items-end gap-3">
             <div className="w-full md:w-1/4">
               <Label className="font-semibold text-[var(--primary-color)]">
                 TAN
@@ -204,9 +208,9 @@ const Form26QDeductee = () => {
                 name="tan"
                 id="tan"
                 className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none",
-                    "h-[38px]"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none",
+                  "h-[38px]"
                 )}
               >
                 <option value="">Select TAN</option>
@@ -231,8 +235,8 @@ const Form26QDeductee = () => {
                 id="pan"
                 placeholder="PAN"
                 className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -245,8 +249,8 @@ const Form26QDeductee = () => {
                 id="challanHeading"
                 placeholder="Challan Heading"
                 className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -260,8 +264,8 @@ const Form26QDeductee = () => {
                 id="roCode"
                 placeholder="RO Code"
                 className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
                 )}
               />
             </div>
@@ -274,9 +278,9 @@ const Form26QDeductee = () => {
                 name="sectionCode"
                 id="sectionCode"
                 className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none",
-                    "h-[38px]"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none",
+                  "h-[38px]"
                 )}
               >
                 <option value="">Select Section</option>
@@ -300,9 +304,9 @@ const Form26QDeductee = () => {
                 name="selectStatus"
                 id="selectStatus"
                 className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none",
-                    "h-[38px]"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none",
+                  "h-[38px]"
                 )}
               >
                 <option value="">Select Status</option>
@@ -312,14 +316,13 @@ const Form26QDeductee = () => {
             </div>
             <div>
               <TooltipWrapper tooltipText="Export to Excel">
-                <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                  Export to Excel
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                  <i className="fa-solid fa-file-excel"></i>
                 </button>
               </TooltipWrapper>
             </div>
           </Field>
         </div>
-        )}
 
         <div>
           <DynamicTableActionTotal

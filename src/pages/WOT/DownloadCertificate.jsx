@@ -29,7 +29,7 @@ const DownloadCertificate = () => {
   const formData = "";
   return (
     <>
-      <div className="">
+      <div>
         <TabGroup className="flex w-full flex-col items-center">
           <TabList className="flex w-[73.5%] justify-between rounded-md border-gray-200 bg-gray-100">
             {categories.map(({ name }) => (

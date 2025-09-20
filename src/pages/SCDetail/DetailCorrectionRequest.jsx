@@ -162,14 +162,14 @@ const DetailCorrectionRequest = () => {
             ))}
           </TabList>
           <TabPanels className="mt-9 w-full">
-            <TabPanel key={categories.name} className="">
+            <TabPanel key={categories.name}>
               <DynamicTableAction
                 tableHead={tableHeadCorrectionTracker}
                 tableData={tableDataCorrectionTracker}
               />
             </TabPanel>
 
-            <TabPanel key={categories.name} className="">
+            <TabPanel key={categories.name}>
               <DynamicTable
                 tableHead={tableHeadOtherDetails}
                 tableData={tableDataOtherDetails}

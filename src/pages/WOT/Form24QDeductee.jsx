@@ -183,7 +183,7 @@ const Form24QDeductee = () => {
                 checkedItems={checkedItems}
                 setCheckedItems={setCheckedItems}
               />
-               <SwitchButton
+              <SwitchButton
                 autoResize={autoResize}
                 setAutoResize={setAutoResize}
               />
@@ -192,7 +192,7 @@ const Form24QDeductee = () => {
         </div>
         {showDivs && (
           <div>
-            <Field className="flex gap-3">
+            <Field className="flex items-end gap-3">
               <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   TAN
@@ -260,8 +260,8 @@ const Form24QDeductee = () => {
 
               <div>
                 <TooltipWrapper tooltipText="Export to Excel">
-                  <button className="mt-6.5 h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-2 text-white">
-                    Export to Excel
+                  <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                    <i className="fa-solid fa-file-excel"></i>
                   </button>
                 </TooltipWrapper>
               </div>

@@ -142,7 +142,7 @@ const RegularReturn = () => {
               </select>
             </div>
 
-            <div className="mt-6.5 flex gap-2">
+            <div className="flex items-end gap-2">
               <TooltipWrapper tooltipText="Search">
                 <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
                   <i className="fa-solid fa-magnifying-glass"></i>
@@ -190,77 +190,83 @@ const RegularReturn = () => {
           </Field>
         </div>
 
-        {showDivs && (
-          <div>
-            <Field className="flex flex-wrap gap-3">
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  TAN
-                </Label>
-                <select
-                  name="tan"
-                  id="tan"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none",
-                    "h-[38px]"
-                  )}
-                >
-                  <option value="">Select TAN</option>
-                  {Tan &&
-                    Tan.length > 0 &&
-                    Tan.map((tan, index) => {
-                      return (
-                        <option key={index} value={tan}>
-                          {tan}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
+        <div
+          className={clsx(
+            "overflow-hidden transition-all duration-500 ease-in-out",
+            showDivs ? "max-h-[150px]" : "max-h-0"
+          )}
+        >
+          <Field className="flex flex-wrap items-end gap-3">
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                TAN
+              </Label>
+              <select
+                name="tan"
+                id="tan"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none",
+                  "h-[38px]"
+                )}
+              >
+                <option value="">Select TAN</option>
+                {Tan &&
+                  Tan.length > 0 &&
+                  Tan.map((tan, index) => {
+                    return (
+                      <option key={index} value={tan}>
+                        {tan}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Status
-                </Label>
-                <select
-                  name="status"
-                  id="status"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none",
-                    "h-[38px]"
-                  )}
-                >
-                  <option value="">Select Status</option>
-                  <option value="status1">Status 1</option>
-                  <option value="status2">Status 2</option>
-                </select>
-              </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Status
+              </Label>
+              <select
+                name="status"
+                id="status"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none",
+                  "h-[38px]"
+                )}
+              >
+                <option value="">Select Status</option>
+                <option value="status1">Status 1</option>
+                <option value="status2">Status 2</option>
+              </select>
+            </div>
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Added On Date
-                </Label>
-                <Input
-                  type="date"
-                  id="addedondate"
-                  name="addedondate"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className={clsx(
-                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                />
-              </div>
-              <div>
-                <button className="mt-7 h-[38px] cursor-pointer rounded-sm bg-[#f5325c] px-3 text-2xl font-black text-white">
-                  <i className="fa-solid fa-upload"></i>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Added On Date
+              </Label>
+              <Input
+                type="date"
+                id="addedondate"
+                name="addedondate"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className={clsx(
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+              />
+            </div>
+            <div>
+              <TooltipWrapper tooltipText="Export to Excel">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                  <i className="fa-solid fa-file-excel"></i>
                 </button>
-              </div>
-            </Field>
-          </div>
-        )}
+              </TooltipWrapper>
+            </div>
+          </Field>
+        </div>
+
         <div>
           <DynamicTableCheckBoxAction
             entity={entity}

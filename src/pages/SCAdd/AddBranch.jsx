@@ -1,53 +1,15 @@
+import staticDataContext from "@/context/staticDataContext";
 import { Input, Textarea } from "@headlessui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddBranch = () => {
   const navigate = useNavigate();
 
+  const { State } = useContext(staticDataContext);
+
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
-
-  const states = [
-    "Andaman and Nicobar islands-1",
-    "Andhra Pradesh-2",
-    "Arunachal Pradesh-3",
-    "Assam-4",
-    "Bihar-5",
-    "Chandigarh-6",
-    "Dadra Nagar and Haveli-7",
-    "Daman and Diu-8",
-    "Delhi-9",
-    "Goa-10",
-    "Gujarat-11",
-    "Haryana-12",
-    "Himachal Pradesh-13",
-    "Jammu and Kashmir-14",
-    "Karnataka-15",
-    "Kerala-16",
-    "Lakshadweep-17",
-    "Madhya Pradesh-18",
-    "Maharashtra-19",
-    "Manipur-20",
-    "meghalaya-21",
-    "Mizoram-22",
-    "Nagaland-23",
-    "Orissa-24",
-    "Pondicherry-25",
-    "Punjab-26",
-    "Rajasthan-27",
-    "Sikkim-28",
-    "Tamil Nadu-29",
-    "Tripura-30",
-    "Uttar Pradesh-31",
-    "West Bengal-32",
-    "Chattisgarh-33",
-    "Uttaranchal-34",
-    "Jharkhand-35",
-    "Telangana-36",
-    "Ladakh-37",
-    "Foreign-99",
-  ];
 
   const [formData, setFormData] = useState({
     roCode: "",
@@ -151,9 +113,9 @@ const AddBranch = () => {
 
   return (
     <>
-      <div className="space-y-5 rounded-md p-4 text-[var(--primary-color)] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
+      <div className="space-y-5 rounded-md border border-gray-100 p-4 text-[var(--primary-color)] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
         <h1 className="text-2xl font-bold">Add Branch</h1>
-        <form onSubmit={handleSubmit} noValidate>
+        <form className="space-y-3" onSubmit={handleSubmit} noValidate>
           {/* RO Code */}
           <div className="flex flex-col md:flex-row md:space-x-6">
             <div className="mb-4 flex-1 md:mb-0">
@@ -345,7 +307,7 @@ const AddBranch = () => {
                 <option value="" disabled>
                   Select State
                 </option>
-                {states.map((state) => (
+                {State?.map((state) => (
                   <option key={state} value={state}>
                     {state}
                   </option>

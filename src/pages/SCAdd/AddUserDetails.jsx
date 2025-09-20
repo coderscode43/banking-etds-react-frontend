@@ -10,7 +10,7 @@ const AddUserDetails = () => {
       <div className="space-y-5 rounded-md p-4 text-[var(--primary-color)] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
         <h1 className="text-2xl font-bold">Add User Details</h1>
         <div className="mt-4">
-          <Field className="">
+          <Field>
             <div className="mb-3 flex gap-3">
               <div className="w-full md:w-1/2">
                 <Label className="font-semibold text-[var(--primary-color)]">

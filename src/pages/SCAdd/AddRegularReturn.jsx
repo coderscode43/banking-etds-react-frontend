@@ -16,7 +16,7 @@ const AddRegularReturn = () => {
         </h1>
 
         <div className="mt-4">
-          <Field className="">
+          <Field>
             <div className="mb-3 flex gap-3">
               <div className="w-full md:w-1/2">
                 <Label className="font-semibold text-[var(--primary-color)]">

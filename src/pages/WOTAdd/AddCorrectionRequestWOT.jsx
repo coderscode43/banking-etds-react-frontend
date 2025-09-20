@@ -319,7 +319,7 @@ const AddCorrectionRequestWOT = () => {
               </div>
             </TabPanel>
 
-            <TabPanel key={categories.name} className="">
+            <TabPanel key={categories.name}>
               <div className="flex flex-wrap gap-3">
                 <div className="flex w-full items-center">
                   <label className="w-[30%] font-semibold text-[var(--primary-color)]">

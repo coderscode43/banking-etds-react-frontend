@@ -124,7 +124,7 @@ const Ldc = () => {
               />
             </div>
 
-            <div className="mt-6.5 flex gap-2">
+            <div className="flex items-end gap-2">
               <TooltipWrapper tooltipText="Search">
                 <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
                   <i className="fa-solid fa-magnifying-glass"></i>
@@ -146,128 +146,131 @@ const Ldc = () => {
           </Field>
         </div>
 
-        {showDivs && (
-          <div>
-            <Field className="flex flex-wrap items-end gap-3">
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  TAN
-                </Label>
-                <select
-                  name="tan"
-                  id="tan"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none",
-                    "h-[38px]"
-                  )}
-                >
-                  <option value="">Select TAN</option>
-                  {Tan &&
-                    Tan.length > 0 &&
-                    Tan.map((tan, index) => {
-                      return (
-                        <option key={index} value={tan}>
-                          {tan}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Section Code
-                </Label>
-                <select
-                  name="sectionCode"
-                  id="sectionCode"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none",
-                    "h-[38px]"
-                  )}
-                >
-                  <option value="">Select Section Code</option>
-                  {Section &&
-                    Section.length > 0 &&
-                    Section.map((Section, index) => {
-                      return (
-                        <option key={index} value={Section}>
-                          {Section}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  LDC Rate
-                </Label>
-                <Input
-                  name="ldcRate"
-                  id="ldcRate"
-                  placeholder="LDC Rate"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
-                  )}
-                />
-              </div>
+        <div
+          className={clsx(
+            "overflow-hidden transition-all duration-500 ease-in-out",
+            showDivs ? "max-h-[150px]" : "max-h-0"
+          )}
+        >
+          <Field className="flex flex-wrap items-end gap-3">
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                TAN
+              </Label>
+              <select
+                name="tan"
+                id="tan"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none",
+                  "h-[38px]"
+                )}
+              >
+                <option value="">Select TAN</option>
+                {Tan &&
+                  Tan.length > 0 &&
+                  Tan.map((tan, index) => {
+                    return (
+                      <option key={index} value={tan}>
+                        {tan}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Section Code
+              </Label>
+              <select
+                name="sectionCode"
+                id="sectionCode"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none",
+                  "h-[38px]"
+                )}
+              >
+                <option value="">Select Section Code</option>
+                {Section &&
+                  Section.length > 0 &&
+                  Section.map((Section, index) => {
+                    return (
+                      <option key={index} value={Section}>
+                        {Section}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                LDC Rate
+              </Label>
+              <Input
+                name="ldcRate"
+                id="ldcRate"
+                placeholder="LDC Rate"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
+                )}
+              />
+            </div>
 
-              <br />
+            <br />
 
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  LDC Number
-                </Label>
-                <Input
-                  name="ldcNumber"
-                  id="ldcNumber"
-                  placeholder="LDC Number"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
-                  )}
-                />
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Amount Consumed
-                </Label>
-                <Input
-                  name="amountConsumed"
-                  id="amountConsumed"
-                  placeholder="Amount Consumed"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
-                  )}
-                />
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Nature of Payment
-                </Label>
-                <Input
-                  name="natureofPayment"
-                  id="natureofPayment"
-                  placeholder="Nature of Payment "
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
-                  )}
-                />
-              </div>
-              <div>
-                <TooltipWrapper tooltipText="Export to Excel">
-                  <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
-                    <i className="fa-solid fa-file-excel"></i>
-                  </button>
-                </TooltipWrapper>
-              </div>
-            </Field>
-          </div>
-        )}
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                LDC Number
+              </Label>
+              <Input
+                name="ldcNumber"
+                id="ldcNumber"
+                placeholder="LDC Number"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
+                )}
+              />
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Amount Consumed
+              </Label>
+              <Input
+                name="amountConsumed"
+                id="amountConsumed"
+                placeholder="Amount Consumed"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
+                )}
+              />
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Nature of Payment
+              </Label>
+              <Input
+                name="natureofPayment"
+                id="natureofPayment"
+                placeholder="Nature of Payment "
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
+                )}
+              />
+            </div>
+            <div>
+              <TooltipWrapper tooltipText="Export to Excel">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                  <i className="fa-solid fa-file-excel"></i>
+                </button>
+              </TooltipWrapper>
+            </div>
+          </Field>
+        </div>
 
         <div>
           <DynamicTable
