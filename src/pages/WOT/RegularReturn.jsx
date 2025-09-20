@@ -7,11 +7,13 @@ import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import { Field, Input, Label } from "@headlessui/react";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import Pagination from "@/components/component/Pagination";
+import { useNavigate } from "react-router-dom";
 
 const RegularReturn = () => {
   const entity = "regularReturn";
 
-  const { fy, branchCode } = useParams();
+  const navigate = useNavigate();
+  const { fy, branchCode, params } = useParams();
   const { Quarter, status, Form, financialYear } =
     useContext(staticDataContext);
 
@@ -20,21 +22,48 @@ const RegularReturn = () => {
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useState({
+    addedOn: "",
+    status: "",
+    fy: "",
+    quarter: "",
+    form: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getWOTListData(entity, fy, branchCode);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getWOTSearchListData(
+            entity,
+            fy,
+            branchCode,
+            pageNo,
+            params
+          );
+          setSearchParams({
+            addedOn: "",
+            status: "",
+            fy: "",
+            quarter: "",
+            form: "",
+          });
+        } else {
+          response = await common.getWOTListData(entity, fy, branchCode);
+        }
+        setListData(response.data.entities || []);
+
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities || []);
       } catch (error) {
-        ("Error fetching list data:", error);
+        console.error("Error fetching list data:", error);
       }
     };
     fetchListData();
-  }, [fy, branchCode]);
+  }, [fy, branchCode, params]);
 
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
@@ -55,6 +84,12 @@ const RegularReturn = () => {
     ...data,
   }));
 
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(
+      `/homeWOT/${branchCode}/${fy}/listSearch/${entity}/${refinedParams}`
+    );
+  };
   return (
     <>
       <div className="space-y-5">
@@ -69,11 +104,15 @@ const RegularReturn = () => {
                 Financial Year
               </Label>
               <select
-                name="FY"
-                id="FY"
+                name="fy"
+                id="fy"
                 className={clsx(
                   "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.fy}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Financial Year</option>
                 {financialYear &&
@@ -97,6 +136,10 @@ const RegularReturn = () => {
                 className={clsx(
                   "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.quarter}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Quarter</option>
                 {Quarter &&
@@ -120,6 +163,10 @@ const RegularReturn = () => {
                 className={clsx(
                   "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.form}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Form</option>
                 {Form &&
@@ -135,7 +182,10 @@ const RegularReturn = () => {
             </div>
             <div className="mt-6.5 flex gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                  onClick={handleSearch}
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
@@ -164,6 +214,10 @@ const RegularReturn = () => {
                   className={clsx(
                     "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.status}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 >
                   <option value="">Select Status</option>
                   {status &&
@@ -182,13 +236,16 @@ const RegularReturn = () => {
                   Added On Date
                 </Label>
                 <Input
-                  placeholder="addedDate"
-                  name="addedDate"
-                  id="addedDate"
+                  name="addedOn"
+                  id="addedOn"
                   type="date"
                   className={clsx(
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.addedOn}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 />
               </div>
               <div>

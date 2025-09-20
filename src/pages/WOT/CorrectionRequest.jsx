@@ -12,7 +12,7 @@ const CorrectionRequest = () => {
   const entity = "correctionRequest";
 
   const navigate = useNavigate();
-  const { fy, branchCode } = useParams();
+  const { fy, branchCode, params } = useParams();
   const { Quarter, status, typeOfCorrection, financialYear } =
     useContext(staticDataContext);
 
@@ -21,21 +21,56 @@ const CorrectionRequest = () => {
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useState({
+    status: "",
+    fy: "",
+    quarter: "",
+    ticketNumber: "",
+    name: "",
+    pan: "",
+    typeOfCorrection: "",
+    toDate: "",
+    fromDate: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getWOTListData(entity, fy, branchCode);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getWOTSearchListData(
+            entity,
+            fy,
+            branchCode,
+            pageNo,
+            params
+          );
+          setSearchParams({
+            status: "",
+            fy: "",
+            quarter: "",
+            ticketNumber: "",
+            name: "",
+            pan: "",
+            typeOfCorrection: "",
+            toDate: "",
+            fromDate: "",
+          });
+        } else {
+          response = await common.getWOTListData(entity, fy, branchCode);
+        }
+        setListData(response.data.entities || []);
+
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
     };
     fetchListData();
-  }, [fy, branchCode]);
+  }, [fy, branchCode, params]);
 
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
@@ -56,6 +91,13 @@ const CorrectionRequest = () => {
     ...data,
   }));
 
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(
+      `/homeWOT/${branchCode}/${fy}/listSearch/${entity}/${refinedParams}`
+    );
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -73,9 +115,12 @@ const CorrectionRequest = () => {
                 name="status"
                 id="status"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "h-[38px] focus:outline-none"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.status}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Status</option>
                 {status &&
@@ -97,9 +142,12 @@ const CorrectionRequest = () => {
                 name="fy"
                 id="fy"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "h-[38px] focus:outline-none"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.fy}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Financial Year</option>
                 {financialYear &&
@@ -123,6 +171,10 @@ const CorrectionRequest = () => {
                 className={clsx(
                   "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.quarter}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Quarter</option>
                 {Quarter &&
@@ -139,7 +191,10 @@ const CorrectionRequest = () => {
 
             <div className="mt-6.5 flex gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                  onClick={handleSearch}
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
@@ -174,13 +229,16 @@ const CorrectionRequest = () => {
                   Ticket Number
                 </Label>
                 <Input
-                  id="ticketNo"
-                  name="ticketNo"
+                  id="ticketNumber"
+                  name="ticketNumber"
                   placeholder="Ticket Number"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.ticketNumber}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 />
               </div>
               <div className="w-full md:w-1/4">
@@ -188,13 +246,16 @@ const CorrectionRequest = () => {
                   Name of Customer
                 </Label>
                 <Input
-                  id="customer"
-                  name="customer"
+                  id="name"
+                  name="name"
                   placeholder="Name of Customer"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.name}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 />
               </div>
               <div className="w-full md:w-1/4">
@@ -209,6 +270,10 @@ const CorrectionRequest = () => {
                     "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-none"
                   )}
+                  value={searchParams.pan}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 />
               </div>
               <div className="w-full md:w-1/4">
@@ -216,12 +281,15 @@ const CorrectionRequest = () => {
                   Type of Correction
                 </Label>
                 <select
-                  name="correctionType"
-                  id="correctionType"
+                  name="typeOfCorrection"
+                  id="typeOfCorrection"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "h-[38px] focus:outline-none"
+                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.typeOfCorrection}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 >
                   <option value="">Select Correction Type</option>
                   {typeOfCorrection &&
@@ -241,13 +309,16 @@ const CorrectionRequest = () => {
                 </Label>
                 <Input
                   placeholder="fromRequestDate"
-                  name="fromRequestDate"
-                  id="fromRequestDate"
+                  name="fromDate"
+                  id="fromDate"
                   type="date"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.fromDate}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 />
               </div>
               <div className="w-full md:w-1/4">
@@ -256,13 +327,16 @@ const CorrectionRequest = () => {
                 </Label>
                 <Input
                   placeholder="toRequestDate"
-                  name="toRequestDate"
-                  id="toRequestDate"
+                  name="toDate"
+                  id="toDate"
                   type="date"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.toDate}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 />
               </div>
               <div>

@@ -9,11 +9,13 @@ import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import Pagination from "@/components/component/Pagination";
 import SwitchButton from "@/components/component/SwitchButton";
+import { useNavigate } from "react-router-dom";
 
 const Form24QDeductee = () => {
   const entity = "form24QDeductee";
 
-  const { fy, branchCode } = useParams();
+  const navigate = useNavigate();
+  const { fy, branchCode, params } = useParams();
   const { Quarter, Tan, Section } = useContext(staticDataContext);
 
   const [listData, setListData] = useState([]);
@@ -23,21 +25,50 @@ const Form24QDeductee = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [autoResize, setAutoResize] = useState(false);
   const [checkedItems, setCheckedItems] = useState(new Set());
+  const [searchParams, setSearchParams] = useState({
+    quarter: "",
+    pan: "",
+    name: "",
+    challanHeading: "",
+    TAN: "",
+    sectionCode: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getWOTListData(entity, fy, branchCode);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getWOTSearchListData(
+            entity,
+            fy,
+            branchCode,
+            pageNo,
+            params
+          );
+          setSearchParams({
+            quarter: "",
+            pan: "",
+            name: "",
+            challanHeading: "",
+            TAN: "",
+            sectionCode: "",
+          });
+        } else {
+          response = await common.getWOTListData(entity, fy, branchCode);
+        }
+        setListData(response.data.entities || []);
+
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
     };
     fetchListData();
-  }, [fy, branchCode]);
+  }, [fy, branchCode, params]);
 
   // Table Details
   const tableHead = [
@@ -101,6 +132,13 @@ const Form24QDeductee = () => {
     ...data,
   }));
 
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(
+      `/homeWOT/${branchCode}/${fy}/listSearch/${entity}/${refinedParams}`
+    );
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -118,10 +156,12 @@ const Form24QDeductee = () => {
                 name="quarter"
                 id="quarter"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.quarter}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Quarter</option>
                 {Quarter &&
@@ -138,16 +178,19 @@ const Form24QDeductee = () => {
 
             <div className="w-full md:w-1/4">
               <Label className="font-semibold text-[var(--primary-color)]">
-                Branch Code
+                PAN
               </Label>
               <Input
-                placeholder="Branch Code"
-                id="roCode"
-                name="roCode"
+                placeholder="Pan"
+                id="pan"
+                name="pan"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.pan}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div className="w-full md:w-1/4">
@@ -157,16 +200,23 @@ const Form24QDeductee = () => {
               <Input
                 placeholder="Name"
                 id="name"
+                name="name"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.name}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
             <div className="mt-6.5 flex gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                  onClick={handleSearch}
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
@@ -198,13 +248,15 @@ const Form24QDeductee = () => {
                   TAN
                 </Label>
                 <select
-                  name="tan"
-                  id="tan"
+                  name="TAN"
+                  id="TAN"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                    "h-[38px]"
+                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.TAN}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 >
                   <option value="">Select TAN</option>
                   {Tan &&
@@ -218,20 +270,23 @@ const Form24QDeductee = () => {
                     })}
                 </select>
               </div>
-
               <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   Challan Heading
                 </Label>
                 <Input
                   placeholder="Challan Heading"
+                  id="challanHeading"
+                  name="challanHeading"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none"
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.challanHeading}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 />
               </div>
-
               <div className="w-full md:w-1/4">
                 <Label className="font-semibold text-[var(--primary-color)]">
                   Section Code
@@ -240,10 +295,12 @@ const Form24QDeductee = () => {
                   name="sectionCode"
                   id="sectionCode"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-2 focus:outline-offset-2 focus:outline-blue-500 focus:outline-none",
-                    "h-[38px]"
+                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.sectionCode}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 >
                   <option value="">Select Section</option>
                   {Section &&
@@ -257,7 +314,6 @@ const Form24QDeductee = () => {
                     })}
                 </select>
               </div>
-
               <div>
                 <TooltipWrapper tooltipText="Export to Excel">
                   <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">

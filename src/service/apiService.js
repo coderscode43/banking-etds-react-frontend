@@ -84,3 +84,21 @@ export const paginationWithSearchListData = async (
     console.error("Error in fetching search entities:", error);
   }
 };
+
+export const WOTSearchListData = async (
+  entity,
+  fy,
+  branchCode,
+  pageNo,
+  searchParams
+) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}${entity}/search/${fy}/${branchCode}/${pageNo}/100/${searchParams}`,
+      credentials
+    );
+    return response;
+  } catch (error) {
+    console.error("Error in fetching search entities:", error);
+  }
+};

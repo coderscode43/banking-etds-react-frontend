@@ -5,6 +5,7 @@ import {
   WOTListData,
   paginationListData,
   paginationWithSearchListData,
+  WOTSearchListData,
 } from "@/service/apiService";
 
 const common = {
@@ -59,6 +60,23 @@ const common = {
       searchParams
     );
 
+    return response;
+  },
+
+  getWOTSearchListData: async (
+    entity,
+    fy,
+    branchCode,
+    pageNo,
+    searchParams
+  ) => {
+    const response = await WOTSearchListData(
+      entity,
+      fy,
+      branchCode,
+      pageNo,
+      searchParams
+    );
     return response;
   },
 };

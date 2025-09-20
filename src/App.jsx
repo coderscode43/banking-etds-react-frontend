@@ -55,6 +55,7 @@ import AddUserDetails from "./pages/SCAdd/AddUserDetails";
 import AddCorrectionRequest from "./pages/SCAdd/AddCorrectionRequest";
 import AddCorrectionRequestWOT from "./pages/WOTAdd/AddCorrectionRequestWOT";
 import DynamicPage from "./common/DynamicPage";
+import DynamicPageWOT from "./common/DynamicPageWOT";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -143,6 +144,10 @@ const App = () => {
           <Route path="homepage" element={<Homepage />} />
           <Route path="downloadCertificate" element={<DownloadCertificate />} />
           <Route path="generateReport" element={<GenerateReport />} />
+          <Route
+            path="listSearch/:entity/:params"
+            element={<DynamicPageWOT />}
+          />
 
           <Route path="list">
             <Route path="form24QDeductee" element={<Form24QDeducteeWOT />} />
