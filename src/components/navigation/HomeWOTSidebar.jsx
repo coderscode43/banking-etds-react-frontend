@@ -67,14 +67,14 @@ const navItems = [
   },
 ];
 
-const HomeWOTSidebar = () => {
+const HomeWOTSidebar = ({ sideBarOpen }) => {
   const { branchCode, fy } = useParams();
 
   return (
     <>
       <div className="fixed top-14 z-10 h-screen">
         <nav
-          className="group transition-width flex h-full w-16 flex-col overflow-hidden rounded-r-md border border-t-2 border-l-0 border-gray-300 bg-white p-2.5 text-gray-500 duration-300 ease-in-out hover:w-60"
+          className={`${sideBarOpen ? "w-60" : "w-16"} group transition-width flex h-full w-16 flex-col overflow-hidden rounded-r-md border border-t-2 border-l-0 border-gray-300 bg-white p-2.5 text-gray-500 duration-300 ease-in-out hover:w-60`}
           style={{ transitionProperty: "width" }}
         >
           {/* Scrollable nav items */}
@@ -97,7 +97,7 @@ const HomeWOTSidebar = () => {
                         }
                       >
                         <div
-                          className="w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 ease-in-out group-hover:ml-2 group-hover:w-auto group-hover:opacity-100"
+                          className={`w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 ease-in-out group-hover:ml-2 group-hover:w-auto group-hover:opacity-100 ${sideBarOpen ? "ml-2 w-auto opacity-100" : " "}`}
                           style={{
                             transitionProperty: "opacity, width, margin-left",
                           }}
