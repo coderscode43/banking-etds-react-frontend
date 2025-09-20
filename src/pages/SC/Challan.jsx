@@ -6,35 +6,61 @@ import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import Pagination from "@/components/component/Pagination";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Challan = () => {
   const entity = "challan";
 
+  const navigate = useNavigate();
+  const { params } = useParams();
   const { Tan } = useContext(staticDataContext);
 
-  const [date, setDate] = useState("");
-  const [newDate, newSetDate] = useState("");
   const [showDivs, setShowDivs] = useState(false);
   const [listData, setListData] = useState([]);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useState({
+    AMOUNT_OF_CLALLAN: "",
+    CIN: "",
+    TAN: "",
+    CHALLAN_MISMATCH: "",
+    dateOfDeposition: "",
+    asOnDate: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getListData(entity);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getSearchListData(entity, pageNo, params);
+          setSearchParams({
+            AMOUNT_OF_CLALLAN: "",
+            CIN: "",
+            TAN: "",
+            CHALLAN_MISMATCH: "",
+            dateOfDeposition: "",
+            asOnDate: "",
+          });
+        } else {
+          response = await common.getListData(entity);
+        }
+
+        setListData(response.data.entities || []);
+
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
     };
 
     fetchListData();
-  }, []);
+  }, [params]);
 
   // Table Details
   const tableHead = [
@@ -53,6 +79,11 @@ const Challan = () => {
     ...data,
   }));
 
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(`/home/listSearch/${entity}/${refinedParams}`);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -67,13 +98,16 @@ const Challan = () => {
                 CIN
               </Label>
               <Input
-                name="cin"
-                id="cin"
+                name="CIN"
+                id="CIN"
                 placeholder="CIN"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.CIN}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
@@ -82,13 +116,15 @@ const Challan = () => {
                 TAN
               </Label>
               <select
-                name="tan"
-                id="tan"
+                name="TAN"
+                id="TAN"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.TAN}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select TAN</option>
                 {Tan &&
@@ -108,13 +144,15 @@ const Challan = () => {
                 Challan Mismatch
               </Label>
               <select
-                name="challanMismatch"
-                id="challanMismatch"
+                name="CHALLAN_MISMATCH"
+                id="CHALLAN_MISMATCH"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.CHALLAN_MISMATCH}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Option</option>
                 <option value="true">True</option>
@@ -124,7 +162,10 @@ const Challan = () => {
 
             <div className="mt-6.5 flex gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                  onClick={handleSearch}
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
@@ -148,13 +189,16 @@ const Challan = () => {
                   Amount of challan
                 </Label>
                 <Input
-                  name="amountofchallan"
-                  id="amountofchallan"
+                  name="AMOUNT_OF_CLALLAN"
+                  id="AMOUNT_OF_CLALLAN"
                   placeholder="Amount of challan"
                   className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
+                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.AMOUNT_OF_CLALLAN}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 />
               </div>
 
@@ -164,14 +208,15 @@ const Challan = () => {
                 </Label>
                 <Input
                   type="date"
-                  id="dateofdeposition"
-                  name="dateofdeposition"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  id="dateOfDeposition"
+                  name="dateOfDeposition"
                   className={clsx(
-                    "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
+                    "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
+                  value={searchParams.dateOfDeposition}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 />
               </div>
 
@@ -183,12 +228,14 @@ const Challan = () => {
                   type="date"
                   id="asOnDate"
                   name="asOnDate"
-                  value={newDate}
-                  onChange={(e) => newSetDate(e.target.value)}
                   className={clsx(
                     "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
                     "focus:outline-none"
                   )}
+                  value={searchParams.asOnDate}
+                  onChange={(e) =>
+                    common.handleSearchInputChange(e, setSearchParams)
+                  }
                 />
               </div>
               <div>

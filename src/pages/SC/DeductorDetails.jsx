@@ -6,32 +6,53 @@ import staticDataContext from "@/context/staticDataContext";
 import DynamicTable from "@/components/tables/DynamicTable";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import Pagination from "@/components/component/Pagination";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const DeductorDetails = () => {
   const entity = "deductorDetails";
 
+  const navigate = useNavigate();
+  const { params } = useParams();
   const { State, Tan } = useContext(staticDataContext);
 
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [listData, setListData] = useState([]);
+  const [searchParams, setSearchParams] = useState({
+    TAN: "",
+    STATE: "",
+    CITY: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getListData(entity);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getSearchListData(entity, pageNo, params);
+          setSearchParams({
+            TAN: "",
+            STATE: "",
+            CITY: "",
+          });
+        } else {
+          response = await common.getListData(entity);
+        }
+        setListData(response.data.entities || []);
+
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
     };
 
     fetchListData();
-  }, []);
+  }, [params]);
 
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
@@ -46,6 +67,11 @@ const DeductorDetails = () => {
     ...data,
   }));
 
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(`/home/listSearch/${entity}/${refinedParams}`);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -59,15 +85,16 @@ const DeductorDetails = () => {
               <Label className="font-semibold text-[var(--primary-color)]">
                 Tan
               </Label>
-
               <select
-                name="tan"
-                id="tan"
+                name="TAN"
+                id="TAN"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.TAN}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select TAN</option>
                 {Tan &&
@@ -86,13 +113,15 @@ const DeductorDetails = () => {
                 State
               </Label>
               <select
-                name="state"
-                id="state"
+                name="STATE"
+                id="STATE"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.STATE}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select State</option>
                 {State &&
@@ -111,19 +140,25 @@ const DeductorDetails = () => {
                 City
               </Label>
               <Input
-                name="city"
-                id="city"
+                id="CITY"
+                name="CITY"
                 placeholder="City"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none"
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.CITY}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
             <div className="mt-6.5 flex gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                  onClick={handleSearch}
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>

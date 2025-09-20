@@ -77,14 +77,6 @@ body {
   scrollbar-color: #888 #f1f1f1;
 }
 
-.aishadow {
-  box-shadow:
-    inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
-    inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
-    0px 0px 0px 4px rgba(255, 255, 255, 0.2),
-    0px 0px 20px 0px #9917ff;
-}
-
 .errorImage{
   filter: drop-shadow(0px 100px 0 #fb2c36);
   transform: translateY(-100px);
