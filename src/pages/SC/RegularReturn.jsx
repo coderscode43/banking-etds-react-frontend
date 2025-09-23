@@ -6,38 +6,61 @@ import staticDataContext from "@/context/staticDataContext";
 import { Field, Input, Label, Switch } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const RegularReturn = () => {
   const entity = "regularReturn";
 
+  const { params } = useParams();
   const navigate = useNavigate();
-  const { Quarter, Tan, typeOfForm, financialYear } =
+  const { Quarter, Tan, typeOfForm, status, financialYear } =
     useContext(staticDataContext);
 
-  const [date, setDate] = useState("");
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [autoResize, setAutoResize] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useState({
+    fy: "",
+    quarter: "",
+    form: "",
+    tan: "",
+    status: "",
+    addedOn: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getListData(entity);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getSearchListData(entity, pageNo, params);
+          setSearchParams({
+            fy: "",
+            quarter: "",
+            form: "",
+            tan: "",
+            status: "",
+            addedOn: "",
+          });
+        } else {
+          response = await common.getListData(entity);
+        }
+
+        setListData(response.data.entities || []);
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
     };
 
     fetchListData();
-  }, []);
+  }, [params]);
 
   const tableHead = [
     { label: "Sr.No.", key: "srNo" },
@@ -64,6 +87,11 @@ const RegularReturn = () => {
     ...data,
   }));
 
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(`/home/listSearch/${entity}/${refinedParams}`);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -77,11 +105,15 @@ const RegularReturn = () => {
                 Financial Year
               </Label>
               <select
-                name="FY"
-                id="FY"
+                name="fy"
+                id="fy"
                 className={clsx(
                   "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.fy}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Financial Year</option>
                 {financialYear &&
@@ -105,6 +137,10 @@ const RegularReturn = () => {
                 className={clsx(
                   "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.quarter}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Quarter</option>
                 {Quarter &&
@@ -128,6 +164,10 @@ const RegularReturn = () => {
                 className={clsx(
                   "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.form}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Form</option>
                 {typeOfForm &&
@@ -144,7 +184,10 @@ const RegularReturn = () => {
 
             <div className="flex items-end gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  onClick={handleSearch}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
@@ -209,6 +252,10 @@ const RegularReturn = () => {
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.tan}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select TAN</option>
                 {Tan &&
@@ -235,10 +282,21 @@ const RegularReturn = () => {
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.status}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Status</option>
-                <option value="status1">Status 1</option>
-                <option value="status2">Status 2</option>
+                {status &&
+                  status.length > 0 &&
+                  status.map((status, index) => {
+                    return (
+                      <option key={index} value={status}>
+                        {status}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
 
@@ -248,13 +306,15 @@ const RegularReturn = () => {
               </Label>
               <Input
                 type="date"
-                id="addedondate"
-                name="addedondate"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                id="addedOn"
+                name="addedOn"
                 className={clsx(
                   "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.addedOn}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div>

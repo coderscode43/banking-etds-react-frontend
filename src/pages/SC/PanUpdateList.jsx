@@ -6,10 +6,13 @@ import staticDataContext from "@/context/staticDataContext";
 import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PanUpdateList = () => {
   const entity = "panUpdateList";
-
+  
+  const { params } = useParams();
+  const navigate = useNavigate();
   const { financialYear, Month } = useContext(staticDataContext);
 
   const [gotoPage, setGotoPage] = useState(1);
@@ -17,23 +20,45 @@ const PanUpdateList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showDivs, setShowDivs] = useState(false);
   const [listData, setListData] = useState([]);
+  const [searchParams, setSearchParams] = useState({
+    challanHeading: "",
+    custVendId: "",
+    previousPAN: "",
+    newPAN: "",
+    fy: "",
+    month: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getListData(entity);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getSearchListData(entity, pageNo, params);
+          setSearchParams({
+            challanHeading: "",
+            custVendId: "",
+            previousPAN: "",
+            newPAN: "",
+            fy: "",
+            month: "",
+          });
+        } else {
+          response = await common.getListData(entity);
+        }
+
+        setListData(response.data.entities || []);
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
     };
 
     fetchListData();
-  }, []);
-
+  }, [params]);
   // Table Details
   const tableHead = [
     { label: "Sr.No.", key: "srNo" },
@@ -51,6 +76,11 @@ const PanUpdateList = () => {
     srNo: (currentPage - 1) * 100 + (index + 1),
     ...data,
   }));
+
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(`/home/listSearch/${entity}/${refinedParams}`);
+  };
 
   return (
     <>
@@ -73,6 +103,10 @@ const PanUpdateList = () => {
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.challanHeading}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
@@ -81,13 +115,17 @@ const PanUpdateList = () => {
                 Customer/Vendor ID
               </Label>
               <Input
-                name="custVendID"
-                id="custVendID"
+                name="custVendId"
+                id="custVendId"
                 placeholder="Customer/Vendor ID"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.custVendId}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
@@ -103,12 +141,19 @@ const PanUpdateList = () => {
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.previousPAN}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
             <div className="flex items-end gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  onClick={handleSearch}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
@@ -143,6 +188,10 @@ const PanUpdateList = () => {
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.newPAN}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
@@ -158,6 +207,10 @@ const PanUpdateList = () => {
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.fy}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Financial Year</option>
                 {financialYear &&
@@ -184,6 +237,10 @@ const PanUpdateList = () => {
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.month}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Month</option>
                 {Month &&

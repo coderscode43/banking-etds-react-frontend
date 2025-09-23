@@ -5,33 +5,56 @@ import DynamicTable from "@/components/tables/DynamicTable";
 import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Logs = () => {
   const entity = "logs";
 
-  const [date, setDate] = useState("");
-  const [date1, setDate1] = useState("");
+  const { params } = useParams();
+  const navigate = useNavigate();
+
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useState({
+    username: "",
+    entity: "",
+    ipaddrs: "",
+    fromDate: "",
+    toDate: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getListData(entity);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getSearchListData(entity, pageNo, params);
+          setSearchParams({
+            username: "",
+            entity: "",
+            ipAddress: "",
+            fromDate: "",
+            toDate: "",
+          });
+        } else {
+          response = await common.getListData(entity);
+        }
+
+        setListData(response.data.entities || []);
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
     };
 
     fetchListData();
-  }, []);
+  }, [params]);
 
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
@@ -48,11 +71,15 @@ const Logs = () => {
     ...data,
   }));
 
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(`/home/listSearch/${entity}/${refinedParams}`);
+  };
+
   return (
     <>
       <div className="space-y-5">
         <h1 className="text-2xl font-bold text-[var(--primary-color)]">Logs</h1>
-
         <div>
           <Field className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
@@ -60,13 +87,17 @@ const Logs = () => {
                 User Name
               </Label>
               <Input
-                name="userName"
-                id="userName"
+                name="username"
+                id="username"
                 placeholder="Name"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.username}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div className="w-full md:w-1/4">
@@ -81,6 +112,10 @@ const Logs = () => {
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.entity}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div className="w-full md:w-1/4">
@@ -88,18 +123,25 @@ const Logs = () => {
                 IP-Address
               </Label>
               <Input
-                name="ipAddress"
-                id="ipAddress"
+                name="ipaddrs"
+                id="ipaddrs"
                 placeholder="IP-Address"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.ipaddrs}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div className="flex items-end gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  onClick={handleSearch}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
@@ -130,12 +172,14 @@ const Logs = () => {
                 type="date"
                 id="fromDate"
                 name="fromDate"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
                 className={clsx(
                   "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.fromDate}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
@@ -147,12 +191,14 @@ const Logs = () => {
                 type="date"
                 id="toDate"
                 name="toDate"
-                value={date1}
-                onChange={(e) => setDate1(e.target.value)}
                 className={clsx(
                   "mt-1 w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.toDate}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div>

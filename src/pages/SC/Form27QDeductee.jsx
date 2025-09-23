@@ -5,13 +5,16 @@ import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import staticDataContext from "@/context/staticDataContext";
-import { Field, Input, Label, Switch } from "@headlessui/react";
+import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Form27QDeductee = () => {
   const entity = "form27QDeductee";
-
+  
+  const { params } = useParams();
+  const navigate = useNavigate();
   const { Quarter, Tan, Section } = useContext(staticDataContext);
 
   const [showDivs, setShowDivs] = useState(false);
@@ -21,22 +24,51 @@ const Form27QDeductee = () => {
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useState({
+    quarter: "",
+    branchCode: "",
+    name: "",
+    TAN: "",
+    pan: "",
+    challanHeading: "",
+    roCode: "",
+    sectionCode: "",
+    resolved: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getListData(entity);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getSearchListData(entity, pageNo, params);
+          setSearchParams({
+            quarter: "",
+            branchCode: "",
+            name: "",
+            TAN: "",
+            pan: "",
+            challanHeading: "",
+            roCode: "",
+            sectionCode: "",
+            resolved: "",
+          });
+        } else {
+          response = await common.getListData(entity);
+        }
+
+        setListData(response.data.entities || []);
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
     };
 
     fetchListData();
-  }, []);
+  }, [params]);
 
   // Table Details
   const tableHead = [
@@ -102,6 +134,11 @@ const Form27QDeductee = () => {
     ...data,
   }));
 
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(`/home/listSearch/${entity}/${refinedParams}`);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -123,6 +160,10 @@ const Form27QDeductee = () => {
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.quarter}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Quarter</option>
                 {Quarter &&
@@ -149,6 +190,10 @@ const Form27QDeductee = () => {
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.branchCode}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div className="w-full md:w-1/4">
@@ -163,12 +208,19 @@ const Form27QDeductee = () => {
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.name}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
             <div className="flex items-end gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  onClick={handleSearch}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
@@ -205,13 +257,17 @@ const Form27QDeductee = () => {
                 TAN
               </Label>
               <select
-                name="tan"
-                id="tan"
+                name="TAN"
+                id="TAN"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.TAN}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select TAN</option>
                 {Tan &&
@@ -238,6 +294,10 @@ const Form27QDeductee = () => {
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.pan}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div className="w-full md:w-1/4">
@@ -252,6 +312,10 @@ const Form27QDeductee = () => {
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.challanHeading}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <br />
@@ -267,6 +331,10 @@ const Form27QDeductee = () => {
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.roCode}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
@@ -282,6 +350,10 @@ const Form27QDeductee = () => {
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.sectionCode}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Section</option>
                 {Section &&
@@ -301,13 +373,17 @@ const Form27QDeductee = () => {
                 Status
               </Label>
               <select
-                name="status"
-                id="status"
+                name="resolved"
+                id="resolved"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.resolved}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Status</option>
                 <option value="resolved">Resolved</option>

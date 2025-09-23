@@ -6,34 +6,59 @@ import staticDataContext from "@/context/staticDataContext";
 import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const StatementStatus = () => {
   const entity = "statementStatus";
 
-  const { Quarter, Tan, financialYear, typeOfForm } =
-    useContext(staticDataContext);
+  const { params } = useParams();
+  const navigate = useNavigate();
+  const { Quarter, Tan, financialYear, Form } = useContext(staticDataContext);
 
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useState({
+    TAN: "",
+    QUARTER: "",
+    FY: "",
+    STATUS: "",
+    RT: "",
+    FORM: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getListData(entity);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getSearchListData(entity, pageNo, params);
+          setSearchParams({
+            TAN: "",
+            QUARTER: "",
+            FY: "",
+            STATUS: "",
+            RT: "",
+            FORM: "",
+          });
+        } else {
+          response = await common.getListData(entity);
+        }
+
+        setListData(response.data.entities || []);
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
     };
 
     fetchListData();
-  }, []);
+  }, [params]);
 
   // Table Details
   const tableHead = [
@@ -53,6 +78,11 @@ const StatementStatus = () => {
     ...data,
   }));
 
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(`/home/listSearch/${entity}/${refinedParams}`);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -67,13 +97,17 @@ const StatementStatus = () => {
                 TAN
               </Label>
               <select
-                name="tan"
-                id="tan"
+                name="TAN"
+                id="TAN"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.TAN}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select TAN</option>
                 {Tan &&
@@ -93,13 +127,17 @@ const StatementStatus = () => {
                 Quarter
               </Label>
               <select
-                name="quarter"
-                id="quarter"
+                name="QUARTER"
+                id="QUARTER"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.QUARTER}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Quarter</option>
                 {Quarter &&
@@ -119,13 +157,17 @@ const StatementStatus = () => {
                 Financial Year
               </Label>
               <select
-                name="fy"
-                id="fy"
+                name="FY"
+                id="FY"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.FY}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Financial Year</option>
                 {financialYear &&
@@ -142,7 +184,10 @@ const StatementStatus = () => {
 
             <div className="flex items-end gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  onClick={handleSearch}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
@@ -170,13 +215,17 @@ const StatementStatus = () => {
                 Status
               </Label>
               <Input
-                name="status"
-                id="status"
+                name="STATUS"
+                id="STATUS"
                 placeholder="Status"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.STATUS}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
@@ -185,13 +234,17 @@ const StatementStatus = () => {
                 RT
               </Label>
               <Input
-                name="rt"
-                id="rt"
+                name="RT"
+                id="RT"
                 placeholder="RT"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.RT}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
@@ -200,21 +253,25 @@ const StatementStatus = () => {
                 Form
               </Label>
               <select
-                name="form"
-                id="form"
+                name="FORM"
+                id="FORM"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none",
                   "h-[38px]"
                 )}
+                value={searchParams.FORM}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Form</option>
-                {typeOfForm &&
-                  typeOfForm.length > 0 &&
-                  typeOfForm.map((form, index) => {
+                {Form &&
+                  Form.length > 0 &&
+                  Form.map((FORM, index) => {
                     return (
-                      <option key={index} value={form}>
-                        {form}
+                      <option key={index} value={FORM}>
+                        {FORM}
                       </option>
                     );
                   })}

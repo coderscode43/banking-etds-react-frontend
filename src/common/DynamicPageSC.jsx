@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
-import AllPages from "./AllPages";
+import AllPagesSC from "./AllPagesSC";
 
-const DynamicPage = () => {
+const DynamicPageSC = () => {
   const { entity, searchParams } = useParams();
-  const PageComponent = AllPages[entity];
+  const PageComponent = AllPagesSC[entity];
   const decodedData = searchParams
     ? JSON.parse(decodeURIComponent(searchParams))
     : null;
@@ -12,4 +12,4 @@ const DynamicPage = () => {
   return <PageComponent data={decodedData} />;
 };
 
-export default DynamicPage;
+export default DynamicPageSC;

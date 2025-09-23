@@ -54,7 +54,7 @@ import Login from "./components/auth/Login";
 import AddUserDetails from "./pages/SCAdd/AddUserDetails";
 import AddCorrectionRequest from "./pages/SCAdd/AddCorrectionRequest";
 import AddCorrectionRequestWOT from "./pages/WOTAdd/AddCorrectionRequestWOT";
-import DynamicPage from "./common/DynamicPage";
+import DynamicPageSC from "./common/DynamicPageSC";
 import DynamicPageWOT from "./common/DynamicPageWOT";
 
 const App = () => {
@@ -71,7 +71,10 @@ const App = () => {
           errorElement={<ErrorPage />}
         >
           <Route path="homepage" element={<Homepage />} />
-          <Route path="listSearch/:entity/:params" element={<DynamicPage />} />
+          <Route
+            path="listSearch/:entity/:params"
+            element={<DynamicPageSC />}
+          />
 
           <Route path="list">
             <Route path="branch" element={<Branch />} />
