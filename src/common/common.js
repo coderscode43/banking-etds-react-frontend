@@ -45,10 +45,21 @@ const common = {
   getRefinedSearchParams: (searchParams) => {
     const refinedSearchParams = (obj) =>
       Object.fromEntries(
-        Object.entries(obj).filter((entry) => {
-          const value = entry[1];
-          return value !== "" && value !== null && value !== undefined;
-        })
+        Object.entries(obj)
+          .filter(
+            (entry) =>
+              entry[1] !== "" && entry[1] !== null && entry[1] !== undefined
+          )
+          .map(([key, value]) => {
+            // If value matches YYYY-MM-DD format, convert to ISO string
+            if (
+              typeof value === "string" &&
+              /^\d{4}-\d{2}-\d{2}$/.test(value)
+            ) {
+              return [key, new Date(value).toISOString()];
+            }
+            return [key, value];
+          })
       );
 
     return JSON.stringify(refinedSearchParams(searchParams));
