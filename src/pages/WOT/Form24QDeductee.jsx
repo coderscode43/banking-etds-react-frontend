@@ -240,90 +240,94 @@ const Form24QDeductee = () => {
             </div>
           </Field>
         </div>
-        {showDivs && (
-          <div>
-            <Field className="flex items-end gap-3">
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  TAN
-                </Label>
-                <select
-                  name="TAN"
-                  id="TAN"
-                  className={clsx(
-                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                  value={searchParams.TAN}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                >
-                  <option value="">Select TAN</option>
-                  {Tan &&
-                    Tan.length > 0 &&
-                    Tan.map((tan, index) => {
-                      return (
-                        <option key={index} value={tan}>
-                          {tan}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Challan Heading
-                </Label>
-                <Input
-                  placeholder="Challan Heading"
-                  id="challanHeading"
-                  name="challanHeading"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                  value={searchParams.challanHeading}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                />
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Section Code
-                </Label>
-                <select
-                  name="sectionCode"
-                  id="sectionCode"
-                  className={clsx(
-                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                  value={searchParams.sectionCode}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                >
-                  <option value="">Select Section</option>
-                  {Section &&
-                    Section.length > 0 &&
-                    Section.map((section, index) => {
-                      return (
-                        <option key={index} value={section}>
-                          {section}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-              <div>
-                <TooltipWrapper tooltipText="Export to Excel">
-                  <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
-                    <i className="fa-solid fa-file-excel"></i>
-                  </button>
-                </TooltipWrapper>
-              </div>
-            </Field>
-          </div>
-        )}
+
+        <div
+          className={clsx(
+            "overflow-hidden transition-all duration-500 ease-in-out",
+            showDivs ? "max-h-[150px]" : "max-h-0"
+          )}
+        >
+          <Field className="flex items-end gap-3">
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                TAN
+              </Label>
+              <select
+                name="TAN"
+                id="TAN"
+                className={clsx(
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+                value={searchParams.TAN}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              >
+                <option value="">Select TAN</option>
+                {Tan &&
+                  Tan.length > 0 &&
+                  Tan.map((tan, index) => {
+                    return (
+                      <option key={index} value={tan}>
+                        {tan}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Challan Heading
+              </Label>
+              <Input
+                placeholder="Challan Heading"
+                id="challanHeading"
+                name="challanHeading"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+                value={searchParams.challanHeading}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              />
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Section Code
+              </Label>
+              <select
+                name="sectionCode"
+                id="sectionCode"
+                className={clsx(
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+                value={searchParams.sectionCode}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              >
+                <option value="">Select Section</option>
+                {Section &&
+                  Section.length > 0 &&
+                  Section.map((section, index) => {
+                    return (
+                      <option key={index} value={section}>
+                        {section}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <div>
+              <TooltipWrapper tooltipText="Export to Excel">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                  <i className="fa-solid fa-file-excel"></i>
+                </button>
+              </TooltipWrapper>
+            </div>
+          </Field>
+        </div>
 
         <div>
           <DynamicTableActionTotal

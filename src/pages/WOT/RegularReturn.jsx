@@ -201,63 +201,66 @@ const RegularReturn = () => {
           </Field>
         </div>
 
-        {showDivs && (
-          <div>
-            <Field className="flex flex-wrap items-end gap-3">
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Status
-                </Label>
-                <select
-                  name="status"
-                  id="status"
-                  className={clsx(
-                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                  value={searchParams.status}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                >
-                  <option value="">Select Status</option>
-                  {status &&
-                    status.length > 0 &&
-                    status.map((status, index) => {
-                      return (
-                        <option key={index} value={status}>
-                          {status}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Added On Date
-                </Label>
-                <Input
-                  name="addedOn"
-                  id="addedOn"
-                  type="date"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                  value={searchParams.addedOn}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                />
-              </div>
-              <div>
-                <TooltipWrapper tooltipText="Export to Excel">
-                  <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
-                    <i className="fa-solid fa-file-excel"></i>
-                  </button>
-                </TooltipWrapper>
-              </div>
-            </Field>
-          </div>
-        )}
+        <div
+          className={clsx(
+            "overflow-hidden transition-all duration-500 ease-in-out",
+            showDivs ? "max-h-[150px]" : "max-h-0"
+          )}
+        >
+          <Field className="flex flex-wrap items-end gap-3">
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Status
+              </Label>
+              <select
+                name="status"
+                id="status"
+                className={clsx(
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+                value={searchParams.status}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              >
+                <option value="">Select Status</option>
+                {status &&
+                  status.length > 0 &&
+                  status.map((status, index) => {
+                    return (
+                      <option key={index} value={status}>
+                        {status}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Added On Date
+              </Label>
+              <Input
+                name="addedOn"
+                id="addedOn"
+                type="date"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+                value={searchParams.addedOn}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              />
+            </div>
+            <div>
+              <TooltipWrapper tooltipText="Export to Excel">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                  <i className="fa-solid fa-file-excel"></i>
+                </button>
+              </TooltipWrapper>
+            </div>
+          </Field>
+        </div>
         <DynamicTableAction
           entity={entity}
           layoutType={"wot"}

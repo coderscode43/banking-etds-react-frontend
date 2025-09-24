@@ -221,134 +221,139 @@ const CorrectionRequest = () => {
             </div>
           </Field>
         </div>
-        {showDivs && (
-          <div>
-            <Field className="flex flex-wrap items-end gap-3">
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Ticket Number
-                </Label>
-                <Input
-                  id="ticketNumber"
-                  name="ticketNumber"
-                  placeholder="Ticket Number"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                  value={searchParams.ticketNumber}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                />
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Name of Customer
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  placeholder="Name of Customer"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                  value={searchParams.name}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                />
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  PAN of Customer
-                </Label>
-                <Input
-                  id="pan"
-                  name="pan"
-                  placeholder="Pan number"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                    "focus:outline-none"
-                  )}
-                  value={searchParams.pan}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                />
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  Type of Correction
-                </Label>
-                <select
-                  name="typeOfCorrection"
-                  id="typeOfCorrection"
-                  className={clsx(
-                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                  value={searchParams.typeOfCorrection}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                >
-                  <option value="">Select Correction Type</option>
-                  {typeOfCorrection &&
-                    typeOfCorrection.length > 0 &&
-                    typeOfCorrection.map((correction, index) => {
-                      return (
-                        <option key={index} value={correction}>
-                          {correction}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  From Date Of Request
-                </Label>
-                <Input
-                  placeholder="fromRequestDate"
-                  name="fromDate"
-                  id="fromDate"
-                  type="date"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                  value={searchParams.fromDate}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                />
-              </div>
-              <div className="w-full md:w-1/4">
-                <Label className="font-semibold text-[var(--primary-color)]">
-                  To Date Of Request
-                </Label>
-                <Input
-                  placeholder="toRequestDate"
-                  name="toDate"
-                  id="toDate"
-                  type="date"
-                  className={clsx(
-                    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                  )}
-                  value={searchParams.toDate}
-                  onChange={(e) =>
-                    common.handleSearchInputChange(e, setSearchParams)
-                  }
-                />
-              </div>
-              <div>
-                <TooltipWrapper tooltipText="Export to Excel">
-                  <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
-                    <i className="fa-solid fa-file-excel"></i>
-                  </button>
-                </TooltipWrapper>
-              </div>
-            </Field>
-          </div>
-        )}
+
+        <div
+          className={clsx(
+            "overflow-hidden transition-all duration-500 ease-in-out",
+            showDivs ? "max-h-[150px]" : "max-h-0"
+          )}
+        >
+          <Field className="flex flex-wrap items-end gap-3">
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Ticket Number
+              </Label>
+              <Input
+                id="ticketNumber"
+                name="ticketNumber"
+                placeholder="Ticket Number"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+                value={searchParams.ticketNumber}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              />
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Name of Customer
+              </Label>
+              <Input
+                id="name"
+                name="name"
+                placeholder="Name of Customer"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+                value={searchParams.name}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              />
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                PAN of Customer
+              </Label>
+              <Input
+                id="pan"
+                name="pan"
+                placeholder="Pan number"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
+                  "focus:outline-none"
+                )}
+                value={searchParams.pan}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              />
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                Type of Correction
+              </Label>
+              <select
+                name="typeOfCorrection"
+                id="typeOfCorrection"
+                className={clsx(
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+                value={searchParams.typeOfCorrection}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              >
+                <option value="">Select Correction Type</option>
+                {typeOfCorrection &&
+                  typeOfCorrection.length > 0 &&
+                  typeOfCorrection.map((correction, index) => {
+                    return (
+                      <option key={index} value={correction}>
+                        {correction}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                From Date Of Request
+              </Label>
+              <Input
+                placeholder="fromRequestDate"
+                name="fromDate"
+                id="fromDate"
+                type="date"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+                value={searchParams.fromDate}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              />
+            </div>
+            <div className="w-full md:w-1/4">
+              <Label className="font-semibold text-[var(--primary-color)]">
+                To Date Of Request
+              </Label>
+              <Input
+                placeholder="toRequestDate"
+                name="toDate"
+                id="toDate"
+                type="date"
+                className={clsx(
+                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                )}
+                value={searchParams.toDate}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
+              />
+            </div>
+            <div>
+              <TooltipWrapper tooltipText="Export to Excel">
+                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                  <i className="fa-solid fa-file-excel"></i>
+                </button>
+              </TooltipWrapper>
+            </div>
+          </Field>
+        </div>
+
         <DynamicTableAction
           entity={entity}
           layoutType="wot"
