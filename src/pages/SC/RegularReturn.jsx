@@ -1,9 +1,12 @@
 import common from "@/common/common";
 import Pagination from "@/components/component/Pagination";
+import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
+import BulkResponseReminder from "@/components/modals/BulkResponseReminder";
+import ErrorModal from "@/components/modals/ErrorModal";
 import DynamicTableCheckBoxAction from "@/components/tables/DynamicTableCheckBoxAction";
 import staticDataContext from "@/context/staticDataContext";
-import { Field, Input, Label, Switch } from "@headlessui/react";
+import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,6 +25,11 @@ const RegularReturn = () => {
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRowsData, setSelectedRowsData] = useState([]);
+  const [bulkResponseModal, setBulkResponseModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [searchParams, setSearchParams] = useState({
     fy: "",
     quarter: "",
@@ -90,6 +98,13 @@ const RegularReturn = () => {
   const handleSearch = async () => {
     const refinedParams = common.getRefinedSearchParams(searchParams);
     navigate(`/home/listSearch/${entity}/${refinedParams}`);
+  };
+
+  const handleBulkResponse = () => setBulkResponseModal(true);
+
+  const handleErrorModal = () => {
+    setErrorMessage("Please select row to add Bulk Remark/Reminder.");
+    setErrorModal(true);
   };
 
   return (
@@ -199,8 +214,15 @@ const RegularReturn = () => {
                   <i className="fa-solid fa-filter"></i>
                 </button>
               </TooltipWrapper>
-              <TooltipWrapper tooltipText="Message">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+              <TooltipWrapper tooltipText="Bulk Response/Reminder Button">
+                <button
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                  onClick={
+                    selectedRows.length === 0
+                      ? handleErrorModal
+                      : handleBulkResponse
+                  }
+                >
                   <i className="fa-solid fa-comment"></i>
                 </button>
               </TooltipWrapper>
@@ -214,21 +236,10 @@ const RegularReturn = () => {
                   <i className="fa-solid fa-plus"></i>
                 </button>
               </TooltipWrapper>
-              <TooltipWrapper tooltipText="AutoResize">
-                <Switch
-                  checked={autoResize}
-                  onChange={setAutoResize}
-                  className={`group relative mt-2.5 inline-flex h-7 w-14 items-center rounded-full p-1 transition-colors ${
-                    autoResize ? "bg-blue-500" : "bg-gray-300"
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                      autoResize ? "translate-x-7" : "translate-x-0"
-                    }`}
-                  />
-                </Switch>
-              </TooltipWrapper>
+              <SwitchButton
+                autoResize={autoResize}
+                setAutoResize={setAutoResize}
+              />
             </div>
           </Field>
         </div>
@@ -326,16 +337,16 @@ const RegularReturn = () => {
             </div>
           </Field>
         </div>
-
-        <div>
-          <DynamicTableCheckBoxAction
-            entity={entity}
-            layoutType={"sc"}
-            tableHead={tableHead}
-            tableData={tableData}
-            autoResize={autoResize}
-          />
-        </div>
+        <DynamicTableCheckBoxAction
+          entity={entity}
+          layoutType={"sc"}
+          tableHead={tableHead}
+          tableData={tableData}
+          autoResize={autoResize}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
+          setSelectedRowsData={setSelectedRowsData}
+        />
       </div>
 
       {/* Pagination */}
@@ -350,6 +361,17 @@ const RegularReturn = () => {
           setCurrentPage={setCurrentPage}
         />
       )}
+      <ErrorModal
+        setErrorModal={setErrorModal}
+        errorModal={errorModal}
+        errorMessage={errorMessage}
+      />
+      <BulkResponseReminder
+        bulkResponseModal={bulkResponseModal}
+        setBulkResponseModal={setBulkResponseModal}
+        selectedRows={selectedRows}
+        selectedRowsData={selectedRowsData}
+      />
     </>
   );
 };

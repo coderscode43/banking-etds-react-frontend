@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const DynamicTableCheckBoxAction = ({
@@ -6,10 +5,11 @@ const DynamicTableCheckBoxAction = ({
   tableHead,
   tableData,
   autoResize,
+  selectedRows,
+  setSelectedRows,
+  setSelectedRowsData,
 }) => {
   const navigate = useNavigate();
-
-  const [selectedRows, setSelectedRows] = useState([]);
 
   const isAllSelected =
     tableData.length > 0 && selectedRows.length === tableData.length;
@@ -24,12 +24,16 @@ const DynamicTableCheckBoxAction = ({
   };
 
   // Toggle individual row
-  const handleSelectRow = (index) => {
+  const handleSelectRow = (index, data) => {
     setSelectedRows((prevSelected) =>
       prevSelected.includes(index)
         ? prevSelected.filter((i) => i !== index)
         : [...prevSelected, index]
     );
+    setSelectedRowsData((prev) => ({
+      ...prev,
+      data,
+    }));
   };
 
   // Inject a checkbox into table head
@@ -102,7 +106,7 @@ const DynamicTableCheckBoxAction = ({
                       <input
                         type="checkbox"
                         checked={isChecked}
-                        onChange={() => handleSelectRow(index)}
+                        onChange={() => handleSelectRow(index, data)}
                       />
                     </td>
 

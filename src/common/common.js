@@ -1,4 +1,5 @@
 import {
+  addBulkRemark,
   detailListData,
   detailRegularReturn,
   listData,
@@ -78,6 +79,15 @@ const common = {
       searchParams
     );
     return response;
+  },
+
+  getAddBulk: async (entity, formdata) => {
+    try {
+      const response = await addBulkRemark(entity, formdata);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 

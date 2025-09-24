@@ -102,3 +102,17 @@ export const WOTSearchListData = async (
     console.error("Error in fetching search entities:", error);
   }
 };
+
+// http://localhost:8080/apiregularReturnRemark/addBulkRemark
+export const addBulkRemark = async (entity, formData) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}${entity}/addBulkRemark`,
+      formData,
+      credentials
+    );
+    return response;
+  } catch (error) {
+    console.error("Error Fetching the excel", error);
+  }
+};
