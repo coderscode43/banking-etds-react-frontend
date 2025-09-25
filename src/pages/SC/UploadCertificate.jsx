@@ -1,6 +1,8 @@
 import common from "@/common/common";
 import Pagination from "@/components/component/Pagination";
 import { TooltipWrapper } from "@/components/component/Tooltip";
+import GenerateZipFiles from "@/components/modals/GenerateZipFiles";
+import UploadCertificateModal from "@/components/modals/UploadCertificateModal";
 import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
 import { Field, Label } from "@headlessui/react";
@@ -84,9 +86,10 @@ const UploadCertificate = () => {
             Upload Certificate
           </h1>
           <div>
-            <button className="h-[38px] cursor-pointer rounded-sm bg-[#dc143c] px-2 text-white">
+            <GenerateZipFiles />
+            {/* <button className="h-[38px] cursor-pointer rounded-sm bg-[#dc143c] px-2 text-white">
               Generate Zip Files
-            </button>
+            </button> */}
           </div>
         </div>
         <div>
@@ -188,11 +191,12 @@ const UploadCertificate = () => {
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
-              <TooltipWrapper tooltipText="Upload Button">
+              {/* <TooltipWrapper tooltipText="Upload Button">
                 <button className="h-[38px] cursor-pointer rounded-sm bg-[#f5325c] px-3 text-2xl font-black text-white">
                   <i className="fa-solid fa-upload"></i>
                 </button>
-              </TooltipWrapper>
+              </TooltipWrapper> */}
+              <UploadCertificateModal />
               <TooltipWrapper tooltipText="Export to Excel">
                 <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
                   <i className="fa-solid fa-file-excel"></i>

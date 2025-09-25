@@ -1,3 +1,4 @@
+import staticDataContext from "@/context/staticDataContext";
 import {
   Dialog,
   DialogPanel,
@@ -5,25 +6,18 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import React, { useState } from "react";
-import { Fragment } from "react";
+import { Fragment, useContext, useState } from "react";
 
 const AddRegularReturnResponse = () => {
   let [isOpen, setIsOpen] = useState(false);
+  const { regularReturnStatus } = useContext(staticDataContext);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
   return (
     <>
       <div className="flex items-center justify-center">
         <button
           type="button"
-          onClick={openModal}
+          onClick={() => setIsOpen(true)}
           className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white"
         >
           <i className="fa-solid fa-plus"></i>&nbsp; Add Response
@@ -34,7 +28,7 @@ const AddRegularReturnResponse = () => {
         <Dialog
           as="div"
           className="relative z-10 rounded-md"
-          onClose={closeModal}
+          onClose={() => setIsOpen(false)}
         >
           <TransitionChild
             as={Fragment}
@@ -88,8 +82,15 @@ const AddRegularReturnResponse = () => {
                         className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       >
                         <option value="">Select Status</option>
-                        <option value="Resolved">Resolved</option>
-                        <option value="Pending">Pending</option>
+                        {regularReturnStatus &&
+                          regularReturnStatus.length > 0 &&
+                          regularReturnStatus.map((status, index) => {
+                            return (
+                              <option key={index} value={status}>
+                                {status}
+                              </option>
+                            );
+                          })}
                       </select>
                     </div>
 
@@ -107,7 +108,7 @@ const AddRegularReturnResponse = () => {
 
                     <div
                       className="absolute top-4 right-3 cursor-pointer"
-                      onClick={closeModal}
+                      onClick={() => setIsOpen(false)}
                     >
                       <i className="fa-solid fa-x"></i>
                     </div>
@@ -119,7 +120,7 @@ const AddRegularReturnResponse = () => {
                     </button>
 
                     <button
-                      onClick={closeModal}
+                      onClick={() => setIsOpen(false)}
                       className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
                     >
                       No

@@ -39,7 +39,7 @@ const AddUserDetails = () => {
                 >
                   <option value="">Select Type Of User</option>
                   <option value="admin">Admin</option>
-                  <option value="superAdmin">Super Admin</option>
+                  <option value="Super Admin">Super Admin</option>
                 </select>
               </div>
             </div>

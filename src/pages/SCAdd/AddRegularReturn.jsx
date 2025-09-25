@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 const AddRegularReturn = () => {
   const navigate = useNavigate();
-  const { Quarter, Tan, Form, financialYear } = useContext(staticDataContext);
+  const { Quarter, Tan, typeOfForm, financialYear } =
+    useContext(staticDataContext);
 
   return (
     <>
@@ -100,11 +101,11 @@ const AddRegularReturn = () => {
                     "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
                 >
-                  {" "}
+                 
                   <option value="">Select Form</option>
-                  {Form &&
-                    Form.length > 0 &&
-                    Form.map((form, index) => {
+                  {typeOfForm &&
+                    typeOfForm.length > 0 &&
+                    typeOfForm.map((form, index) => {
                       return (
                         <option key={index} value={form}>
                           {form}

@@ -1,14 +1,17 @@
 import Branch from "@/pages/SC/Branch";
 import Challan from "@/pages/SC/Challan";
+import CorrectionRequest from "@/pages/SC/CorrectionRequest";
 import DeductorDetails from "@/pages/SC/DeductorDetails";
 import Form24QDeductee from "@/pages/SC/Form24QDeductee";
 import Form26QDeductee from "@/pages/SC/Form26QDeductee";
 import Form27EQDeductee from "@/pages/SC/Form27EQDeductee";
 import Form27QDeductee from "@/pages/SC/Form27QDeductee";
+import Ldc from "@/pages/SC/Ldc";
 import Logs from "@/pages/SC/Logs";
 import PanUpdateList from "@/pages/SC/PanUpdateList";
 import RegularReturn from "@/pages/SC/RegularReturn";
 import StatementStatus from "@/pages/SC/StatementStatus";
+import TotalAmount from "@/pages/SC/TotalAmount";
 import UploadCertificate from "@/pages/SC/UploadCertificate";
 import UserDetails from "@/pages/SC/UserDetails";
 
@@ -26,6 +29,9 @@ const AllPagesSC = {
   panUpdateList: PanUpdateList,
   statementStatus: StatementStatus,
   regularReturn: RegularReturn,
+  correctionRequest: CorrectionRequest,
+  ldc: Ldc,
+  totalAmount: TotalAmount,
 };
 
 export default AllPagesSC;

@@ -331,7 +331,7 @@ const AddBranch = () => {
               className="mt-7 h-[38px] cursor-pointer rounded-sm bg-red-600 px-2 text-white"
               onClick={() => navigate(-1)}
             >
-              Back
+              <i className="fa-solid fa-reply-all"></i>&nbsp; Back
             </button>
           </div>
         </form>

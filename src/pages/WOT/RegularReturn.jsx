@@ -14,7 +14,7 @@ const RegularReturn = () => {
 
   const navigate = useNavigate();
   const { fy, branchCode, params } = useParams();
-  const { Quarter, status, Form, financialYear } =
+  const { Quarter, regularReturnStatus, typeOfForm, financialYear } =
     useContext(staticDataContext);
 
   const [listData, setListData] = useState([]);
@@ -169,9 +169,9 @@ const RegularReturn = () => {
                 }
               >
                 <option value="">Select Form</option>
-                {Form &&
-                  Form.length > 0 &&
-                  Form.map((Form, index) => {
+                {typeOfForm &&
+                  typeOfForm.length > 0 &&
+                  typeOfForm.map((Form, index) => {
                     return (
                       <option key={index} value={Form}>
                         {Form}
@@ -224,9 +224,9 @@ const RegularReturn = () => {
                 }
               >
                 <option value="">Select Status</option>
-                {status &&
-                  status.length > 0 &&
-                  status.map((status, index) => {
+                {regularReturnStatus &&
+                  regularReturnStatus.length > 0 &&
+                  regularReturnStatus.map((status, index) => {
                     return (
                       <option key={index} value={status}>
                         {status}

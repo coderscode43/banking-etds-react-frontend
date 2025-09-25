@@ -6,8 +6,7 @@ import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import Pagination from "@/components/component/Pagination";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const Challan = () => {
   const entity = "challan";

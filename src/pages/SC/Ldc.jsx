@@ -4,13 +4,16 @@ import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
-import { Field, Input, Label, Switch } from "@headlessui/react";
+import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Ldc = () => {
   const entity = "ldc";
 
+  const navigate = useNavigate();
+  const { params } = useParams();
   const { Tan, financialYear, Section } = useContext(staticDataContext);
 
   const [gotoPage, setGotoPage] = useState(1);
@@ -19,22 +22,51 @@ const Ldc = () => {
   const [showDivs, setShowDivs] = useState(false);
   const [listData, setListData] = useState([]);
   const [autoResize, setAutoResize] = useState(false);
+  const [searchParams, setSearchParams] = useState({
+    FY: "",
+    PAN: "",
+    NAME: "",
+    TAN: "",
+    SECTION_CODE: "",
+    LDC_RATE: "",
+    LDC_NUMBER: "",
+    AMOUNT_CONSUMED: "",
+    NATURE_OF_PAYMENT: "",
+  });
 
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const response = await common.getListData(entity);
+        let response;
+        if (params) {
+          const pageNo = 0;
+          response = await common.getSearchListData(entity, pageNo, params);
+          setSearchParams({
+            FY: "",
+            PAN: "",
+            NAME: "",
+            TAN: "",
+            SECTION_CODE: "",
+            LDC_RATE: "",
+            LDC_NUMBER: "",
+            AMOUNT_CONSUMED: "",
+            NATURE_OF_PAYMENT: "",
+          });
+        } else {
+          response = await common.getListData(entity);
+        }
+        setListData(response.data.entities || []);
+
         const count = response.data.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
-        setListData(response.data.entities || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
     };
 
     fetchListData();
-  }, []);
+  }, [params]);
 
   const tableHead = [
     { key: "srNo", label: "Sr.No" },
@@ -61,6 +93,11 @@ const Ldc = () => {
     ...data,
   }));
 
+  const handleSearch = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    navigate(`/home/listSearch/${entity}/${refinedParams}`);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -78,18 +115,20 @@ const Ldc = () => {
                 name="FY"
                 id="FY"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.FY}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Financial Year</option>
                 {financialYear &&
                   financialYear.length > 0 &&
-                  financialYear.map((fy, index) => {
+                  financialYear.map((FY, index) => {
                     return (
-                      <option key={index} value={fy}>
-                        {fy}
+                      <option key={index} value={FY}>
+                        {FY}
                       </option>
                     );
                   })}
@@ -100,13 +139,17 @@ const Ldc = () => {
                 PAN
               </Label>
               <Input
-                name="pan"
-                id="pan"
-                placeholder="PAN"
+                name="PAN"
+                id="PAN"
+                placeholder="PAN Number"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.PAN}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div className="w-full md:w-1/4">
@@ -114,19 +157,26 @@ const Ldc = () => {
                 Name
               </Label>
               <Input
-                name="name"
-                id="name"
-                placeholder="Name"
+                name="NAME"
+                id="NAME"
+                placeholder="Name of Customer"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.NAME}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
             <div className="flex items-end gap-2">
               <TooltipWrapper tooltipText="Search">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white">
+                <button
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
+                  onClick={handleSearch}
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
@@ -158,13 +208,15 @@ const Ldc = () => {
                 TAN
               </Label>
               <select
-                name="tan"
-                id="tan"
+                name="TAN"
+                id="TAN"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.TAN}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select TAN</option>
                 {Tan &&
@@ -183,13 +235,15 @@ const Ldc = () => {
                 Section Code
               </Label>
               <select
-                name="sectionCode"
-                id="sectionCode"
+                name="SECTION_CODE"
+                id="SECTION_CODE"
                 className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
+                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
+                value={searchParams.SECTION_CODE}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               >
                 <option value="">Select Section Code</option>
                 {Section &&
@@ -208,13 +262,17 @@ const Ldc = () => {
                 LDC Rate
               </Label>
               <Input
-                name="ldcRate"
-                id="ldcRate"
+                name="LDC_RATE"
+                id="LDC_RATE"
                 placeholder="LDC Rate"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.LDC_RATE}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
 
@@ -225,13 +283,17 @@ const Ldc = () => {
                 LDC Number
               </Label>
               <Input
-                name="ldcNumber"
-                id="ldcNumber"
+                name="LDC_NUMBER"
+                id="LDC_NUMBER"
                 placeholder="LDC Number"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.LDC_NUMBER}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div className="w-full md:w-1/4">
@@ -239,13 +301,17 @@ const Ldc = () => {
                 Amount Consumed
               </Label>
               <Input
-                name="amountConsumed"
-                id="amountConsumed"
+                name="AMOUNT_CONSUMED"
+                id="AMOUNT_CONSUMED"
                 placeholder="Amount Consumed"
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.AMOUNT_CONSUMED}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div className="w-full md:w-1/4">
@@ -253,13 +319,17 @@ const Ldc = () => {
                 Nature of Payment
               </Label>
               <Input
-                name="natureofPayment"
-                id="natureofPayment"
+                name="NATURE_OF_PAYMENT"
+                id="NATURE_OF_PAYMENT"
                 placeholder="Nature of Payment "
                 className={clsx(
                   "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
                   "focus:outline-none"
                 )}
+                value={searchParams.NATURE_OF_PAYMENT}
+                onChange={(e) =>
+                  common.handleSearchInputChange(e, setSearchParams)
+                }
               />
             </div>
             <div>

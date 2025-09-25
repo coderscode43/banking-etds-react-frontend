@@ -60,14 +60,14 @@ const UpdateForm27EQDeductee = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="relative w-full max-w-6xl transform overflow-hidden rounded-md bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <DialogPanel className="relative w-full max-w-6xl transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
                   <DialogTitle
                     as="h2"
-                    className="mb-5 text-lg leading-6 font-medium text-gray-900"
+                    className="mb-5 bg-[#eaf0f9] p-[2%] text-lg leading-6 font-medium text-gray-900"
                   >
                     Update Form 27EQ Deductee
                   </DialogTitle>
-                  <div className="justify-center">
+                  <div className="justify-center px-6">
                     <Field className="mb-3 flex flex-wrap gap-3">
                       <div className="w-[32.5%]">
                         <label className="font-semibold text-[var(--primary-color)]">
@@ -525,14 +525,14 @@ const UpdateForm27EQDeductee = () => {
                     </Field>
 
                     <div
-                      className="absolute top-7 right-10 cursor-pointer"
+                      className="absolute top-6 right-10 cursor-pointer"
                       onClick={closeModal}
                     >
                       <i className="fa-solid fa-x"></i>
                     </div>
                   </div>
 
-                  <div className="mt-5 flex justify-end">
+                  <div className="mt-5 flex justify-end bg-[#eaf0f9] p-[2%]">
                     <button className="mr-2.5 cursor-pointer rounded-md bg-[#1761fd] p-2 px-4 font-semibold text-white">
                       Update
                     </button>

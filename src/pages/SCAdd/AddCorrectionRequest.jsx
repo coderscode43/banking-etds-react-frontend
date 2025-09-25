@@ -7,7 +7,7 @@ const AddCorrectionRequest = () => {
   const [showDoc, setShowDoc] = useState(false);
 
   const navigate = useNavigate();
-  const { financialYear, Form } = useContext(staticDataContext);
+  const { financialYear, typeOfForm } = useContext(staticDataContext);
 
   const categories = [
     { name: "Add Correction Request" },
@@ -175,9 +175,9 @@ const AddCorrectionRequest = () => {
                       className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                     >
                       <option value="">Select Form</option>
-                      {Form &&
-                        Form.length > 0 &&
-                        Form.map((form, index) => {
+                      {typeOfForm &&
+                        typeOfForm.length > 0 &&
+                        typeOfForm.map((form, index) => {
                           return (
                             <option key={index} value={form}>
                               {form}
@@ -389,7 +389,7 @@ const AddCorrectionRequest = () => {
                 </button>
 
                 <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-                  Next <i className="fa-solid fa-chevron-right"></i>&nbsp;
+                  <i className="fa-solid fa-chevron-left"></i>&nbsp; Previous
                 </button>
               </div>
             </TabPanel>
