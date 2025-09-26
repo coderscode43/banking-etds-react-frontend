@@ -119,7 +119,7 @@ const AddCorrectionRequest = () => {
                     <span>
                       <input type="checkbox" name="q1" id="q1" />
                       <label
-                        for="q1"
+                        htmlFor="q1"
                         className="m-1 font-semibold text-[var(--primary-color)]"
                       >
                         Q1<span className="text-red-600">*</span>
@@ -128,7 +128,7 @@ const AddCorrectionRequest = () => {
                     <span>
                       <input type="checkbox" name="q2" id="q2" />
                       <label
-                        for="q2"
+                        htmlFor="q2"
                         className="m-1 font-semibold text-[var(--primary-color)]"
                       >
                         Q2<span className="text-red-600">*</span>
@@ -137,7 +137,7 @@ const AddCorrectionRequest = () => {
                     <span>
                       <input type="checkbox" name="q3" id="q3" />
                       <label
-                        for="q3"
+                        htmlFor="q3"
                         className="m-1 font-semibold text-[var(--primary-color)]"
                       >
                         Q3<span className="text-red-600">*</span>
@@ -147,7 +147,7 @@ const AddCorrectionRequest = () => {
                     <span>
                       <input type="checkbox" name="q4" id="q4" />
                       <label
-                        for="q4"
+                        htmlFor="q4"
                         className="m-1 font-semibold text-[var(--primary-color)]"
                       >
                         Q4<span className="text-red-600">*</span>
@@ -157,7 +157,7 @@ const AddCorrectionRequest = () => {
                     <span>
                       <input type="checkbox" name="allCheck" id="allCheck" />
                       <label
-                        for="allCheck"
+                        htmlFor="allCheck"
                         className="m-1 font-semibold text-[var(--primary-color)]"
                       >
                         All Check<span className="text-red-600">*</span>
@@ -200,7 +200,7 @@ const AddCorrectionRequest = () => {
                           id="PANUpdation"
                         />
                         <label
-                          for="PANUpdation"
+                          htmlFor="PANUpdation"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           PAN Updation<span className="text-red-600">*</span>
@@ -214,7 +214,7 @@ const AddCorrectionRequest = () => {
                           id="mismatchInGrossAmount"
                         />
                         <label
-                          for="mismatchInGrossAmount"
+                          htmlFor="mismatchInGrossAmount"
                           className="m-[5px] font-semibold text-[var(--primary-color)]"
                         >
                           Mismatch In Gross Amount
@@ -229,7 +229,7 @@ const AddCorrectionRequest = () => {
                           id="mismatchInTDSAmount"
                         />
                         <label
-                          for="mismatchInTDSAmount"
+                          htmlFor="mismatchInTDSAmount"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Mismatch In TDS Amount
@@ -244,7 +244,7 @@ const AddCorrectionRequest = () => {
                           id="sectionCorrection"
                         />
                         <label
-                          for="sectionCorrection"
+                          htmlFor="sectionCorrection"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Section Correction
@@ -259,7 +259,7 @@ const AddCorrectionRequest = () => {
                           id="defaultCorrection"
                         />
                         <label
-                          for="defaultCorrection"
+                          htmlFor="defaultCorrection"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Default Correction
@@ -274,7 +274,7 @@ const AddCorrectionRequest = () => {
                           id="addEntry/Challan"
                         />
                         <label
-                          for="addEntry/Challan"
+                          htmlFor="addEntry/Challan"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Add Entry/Challan
@@ -285,7 +285,7 @@ const AddCorrectionRequest = () => {
                       <div>
                         <input type="checkbox" name="others" id="others" />
                         <label
-                          for="others"
+                          htmlFor="others"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Others
@@ -296,7 +296,7 @@ const AddCorrectionRequest = () => {
                       <div>
                         <input type="checkbox" name="exempted" id="exempted" />
                         <label
-                          for="exempted"
+                          htmlFor="exempted"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Exempted

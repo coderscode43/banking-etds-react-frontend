@@ -7,6 +7,7 @@ import {
   paginationListData,
   paginationWithSearchListData,
   WOTSearchListData,
+  generateExcel,
 } from "@/service/apiService";
 
 const common = {
@@ -46,6 +47,13 @@ const common = {
     const refinedSearchParams = (obj) =>
       Object.fromEntries(
         Object.entries(obj)
+          .map(([key, value]) => {
+            // Trim whitespace if value is a string
+            if (typeof value === "string") {
+              value = value.trim();
+            }
+            return [key, value];
+          })
           .filter(
             (entry) =>
               entry[1] !== "" && entry[1] !== null && entry[1] !== undefined
@@ -65,14 +73,25 @@ const common = {
     return JSON.stringify(refinedSearchParams(searchParams));
   },
 
-  getSearchListData: async (entity, pageNo, searchParams) => {
-    const response = await paginationWithSearchListData(
-      entity,
-      pageNo,
-      searchParams
-    );
+  // Generate Timestamp string like dd_MM_yyyy_HH_mm_ss
+  getTimeStamp: () => {
+    const now = new Date();
 
-    return response;
+    const pad = (num) => num.toString().padStart(2, "0");
+
+    const day = pad(now.getDate());
+    const month = pad(now.getMonth() + 1); // months are zero-based
+    const year = now.getFullYear();
+
+    const hours = pad(now.getHours());
+    const minutes = pad(now.getMinutes());
+    const seconds = pad(now.getSeconds());
+
+    return `${day}_${month}_${year}_${hours}_${minutes}_${seconds}`;
+  },
+
+  getSearchListData: async (entity, pageNo, searchParams) => {
+    return await paginationWithSearchListData(entity, pageNo, searchParams);
   },
 
   getWOTSearchListData: async (
@@ -82,14 +101,13 @@ const common = {
     pageNo,
     searchParams
   ) => {
-    const response = await WOTSearchListData(
+    return await WOTSearchListData(
       entity,
       fy,
       branchCode,
       pageNo,
       searchParams
     );
-    return response;
   },
 
   getAddBulk: async (entity, formdata) => {
@@ -99,6 +117,11 @@ const common = {
     } catch (error) {
       console.log(error);
     }
+  },
+
+  getGenerateExcel: async (entity, refinedParams) => {
+    const encodedParams = encodeURIComponent(refinedParams);
+    return await generateExcel(entity, encodedParams);
   },
 };
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import common from "@/common/common";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -114,5 +115,48 @@ export const addBulkRemark = async (entity, formData) => {
     return response;
   } catch (error) {
     console.error("Error Fetching the excel", error);
+  }
+};
+
+export const generateExcel = async (entity, encodedParams) => {
+  try {
+    // Axios GET with responseType 'blob' to get binary data
+    const response = await axios.get(
+      `${API_BASE_URL}${entity}/generateExcel/${encodedParams}`,
+      {
+        responseType: "blob",
+        headers: { Accept: "application/vnd.ms-excel" },
+        ...credentials,
+      }
+    );
+
+    // Create blob object from response
+    const blob = new Blob([response.data], {
+      type: "application/vnd.ms-excel",
+    });
+    const downloadUrl = window.URL.createObjectURL(blob);
+
+    // Try to extract filename from content-disposition header
+    let filename = `TDS-${common.getTimeStamp()}-${entity.charAt(0).toUpperCase() + entity.slice(1)}.xlsx`; // Filename
+    const disposition = response.headers["content-disposition"];
+    if (disposition && disposition.indexOf("filename=") !== -1) {
+      const filenameMatch = disposition.match(/filename="?([^"]+)"?/);
+      if (filenameMatch.length === 2) {
+        filename = filenameMatch[1];
+      }
+    }
+
+    // Create a temporary <a> element to trigger the download
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+
+    // Clean up DOM and revoke blob URL
+    a.remove();
+    window.URL.revokeObjectURL(downloadUrl);
+  } catch (error) {
+    console.error("Failed to download Excel:", error);
   }
 };
