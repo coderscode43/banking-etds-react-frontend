@@ -1,6 +1,7 @@
+import DownloadCertificateModal from "@/components/modals/DownloadCertificateModal";
+import staticDataContext from "@/context/staticDataContext";
 import {
   Input,
-  Label,
   Tab,
   TabGroup,
   TabList,
@@ -8,7 +9,7 @@ import {
   TabPanels,
 } from "@headlessui/react";
 import clsx from "clsx";
-import DownloadCertificateModal from "@/components/modals/DownloadCertificateModal";
+import { useContext } from "react";
 
 const categories = [
   {
@@ -27,6 +28,8 @@ const categories = [
 
 const DownloadCertificate = () => {
   const formData = "";
+  const { Quarter, Tan, typeOfCertificate, financialYear } =
+    useContext(staticDataContext);
   return (
     <>
       <div>
@@ -92,9 +95,15 @@ const DownloadCertificate = () => {
                       )}
                     >
                       <option value="">Select TAN Number</option>
-                      <option value="tanNumber1">TAN Number 1</option>
-                      <option value="tanNumber2">TAN Number 2</option>
-                      <option value="tanNumber3">TAN Number 3</option>
+                      {Tan &&
+                        Tan.length > 0 &&
+                        Tan.map((tan, index) => {
+                          return (
+                            <option key={index} value={tan}>
+                              {tan}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
 
@@ -106,17 +115,23 @@ const DownloadCertificate = () => {
                       Type of Certificate
                     </label>
                     <select
-                      name="certificateType"
-                      id="certificateType"
+                      name="typeofCertificate"
+                      id="typeofCertificate"
                       value={formData.certificateType}
                       className={clsx(
                         "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Certificate</option>
-                      <option value="certificate1">Certificate 1</option>
-                      <option value="certificate2">Certificate 2</option>
-                      <option value="certificate3">Certificate 3</option>
+                      {typeOfCertificate &&
+                        typeOfCertificate.length > 0 &&
+                        typeOfCertificate.map((certificate, index) => {
+                          return (
+                            <option key={index} value={certificate}>
+                              {certificate}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
 
@@ -129,17 +144,23 @@ const DownloadCertificate = () => {
                       Financial Year
                     </label>
                     <select
-                      name="fy"
-                      id="fy"
+                      name="financialYear"
+                      id="financialYear"
                       value={formData.fy}
                       className={clsx(
                         "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Financial Year</option>
-                      <option value="2025-26">2025-26</option>
-                      <option value="2024-25">2024-25</option>
-                      <option value="2023-24">2023-24</option>
+                      {financialYear &&
+                        financialYear.length > 0 &&
+                        financialYear.map((fy, index) => {
+                          return (
+                            <option key={index} value={fy}>
+                              {fy}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
 
@@ -161,9 +182,15 @@ const DownloadCertificate = () => {
                         )}
                       >
                         <option value="">Select Quarter</option>
-                        <option value="Q1">Q1</option>
-                        <option value="Q2">Q2</option>
-                        <option value="Q3">Q3</option>
+                        {Quarter &&
+                          Quarter.length > 0 &&
+                          Quarter.map((qtr, index) => {
+                            return (
+                              <option key={index} value={qtr}>
+                                {qtr}
+                              </option>
+                            );
+                          })}
                       </select>
                     </div>
                   )}
@@ -196,17 +223,23 @@ const DownloadCertificate = () => {
                       TAN Number
                     </label>
                     <select
-                      name="tanNumber"
-                      id="tanNumber"
+                      name="tan"
+                      id="tan"
                       value={formData.tanNumber}
                       className={clsx(
                         "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select TAN Number</option>
-                      <option value="tanNumber1">TAN Number 1</option>
-                      <option value="tanNumber2">TAN Number 2</option>
-                      <option value="tanNumber3">TAN Number 3</option>
+                      {Tan &&
+                        Tan.length > 0 &&
+                        Tan.map((tan, index) => {
+                          return (
+                            <option key={index} value={tan}>
+                              {tan}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
                   <div className="mb-3 w-full">
@@ -217,17 +250,23 @@ const DownloadCertificate = () => {
                       Type of Certificate
                     </label>
                     <select
-                      name="certificateType"
-                      id="certificateType"
+                      name="typeofCertificate"
+                      id="typeofCertificate"
                       value={formData.certificateType}
                       className={clsx(
                         "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Certificate</option>
-                      <option value="certificate1">Certificate 1</option>
-                      <option value="certificate2">Certificate 2</option>
-                      <option value="certificate3">Certificate 3</option>
+                      {typeOfCertificate &&
+                        typeOfCertificate.length > 0 &&
+                        typeOfCertificate.map((certificate, index) => {
+                          return (
+                            <option key={index} value={certificate}>
+                              {certificate}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
                   {/* Financial Year */}
@@ -242,14 +281,20 @@ const DownloadCertificate = () => {
                       className={clsx(
                         "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
                       )}
-                      name="fy"
-                      id="fy"
+                      name="financialYear"
+                      id="financialYear"
                       value={formData.fy}
                     >
                       <option value="">Select Financial Year</option>
-                      <option value="2025-26">2025-26</option>
-                      <option value="2024-25">2024-25</option>
-                      <option value="2023-24">2023-24</option>
+                      {financialYear &&
+                        financialYear.length > 0 &&
+                        financialYear.map((fy, index) => {
+                          return (
+                            <option key={index} value={fy}>
+                              {fy}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
 
@@ -269,9 +314,15 @@ const DownloadCertificate = () => {
                       )}
                     >
                       <option value="">Select Quarter</option>
-                      <option value="Q1">Q1</option>
-                      <option value="Q2">Q2</option>
-                      <option value="Q3">Q3</option>
+                      {Quarter &&
+                        Quarter.length > 0 &&
+                        Quarter.map((qtr, index) => {
+                          return (
+                            <option key={index} value={qtr}>
+                              {qtr}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
 
@@ -321,17 +372,23 @@ const DownloadCertificate = () => {
                       TAN Number
                     </label>
                     <select
-                      name="tanNumber"
-                      id="tanNumber"
+                      name="tan"
+                      id="tan"
                       value={formData.tanNumber}
                       className={clsx(
                         "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select TAN Number</option>
-                      <option value="tanNumber1">TAN Number 1</option>
-                      <option value="tanNumber2">TAN Number 2</option>
-                      <option value="tanNumber3">TAN Number 3</option>
+                      {Tan &&
+                        Tan.length > 0 &&
+                        Tan.map((tan, index) => {
+                          return (
+                            <option key={index} value={tan}>
+                              {tan}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
                   <div className="mb-3 w-full">
@@ -342,17 +399,23 @@ const DownloadCertificate = () => {
                       Type of Certificate
                     </label>
                     <select
-                      name="certificateType"
-                      id="certificateType"
+                      name="typeOfCertificate"
+                      id="typeOfCertificate"
                       value={formData.certificateType}
                       className={clsx(
                         "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Certificate</option>
-                      <option value="certificate1">Certificate 1</option>
-                      <option value="certificate2">Certificate 2</option>
-                      <option value="certificate3">Certificate 3</option>
+                      {typeOfCertificate &&
+                        typeOfCertificate.length > 0 &&
+                        typeOfCertificate.map((certificate, index) => {
+                          return (
+                            <option key={index} value={certificate}>
+                              {certificate}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
                   {/* Financial Year */}
@@ -367,14 +430,20 @@ const DownloadCertificate = () => {
                       className={clsx(
                         "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
-                      name="fy"
-                      id="fy"
+                      name="financialYear"
+                      id="financialYear"
                       value={formData.fy}
                     >
                       <option value="">Select Financial Year</option>
-                      <option value="2025-26">2025-26</option>
-                      <option value="2024-25">2024-25</option>
-                      <option value="2023-24">2023-24</option>
+                      {financialYear &&
+                        financialYear.length > 0 &&
+                        financialYear.map((fy, index) => {
+                          return (
+                            <option key={index} value={fy}>
+                              {fy}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
 
@@ -394,9 +463,15 @@ const DownloadCertificate = () => {
                       )}
                     >
                       <option value="">Select Quarter</option>
-                      <option value="Q1">Q1</option>
-                      <option value="Q2">Q2</option>
-                      <option value="Q3">Q3</option>
+                      {Quarter &&
+                        Quarter.length > 0 &&
+                        Quarter.map((qtr, index) => {
+                          return (
+                            <option key={index} value={qtr}>
+                              {qtr}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
 

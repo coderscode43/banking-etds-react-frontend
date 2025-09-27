@@ -10,7 +10,7 @@ import { TooltipWrapper } from "@/components/component/Tooltip";
 import staticDataContext from "@/context/staticDataContext";
 import { Fragment } from "react";
 
-const AddRegularReturnResponse = () => {
+const UploadCertificateModal = () => {
   let [isOpen, setIsOpen] = useState(false);
   const { Tan, typeOfCertificate, financialYear, Quarter } =
     useContext(staticDataContext);
@@ -204,4 +204,4 @@ const AddRegularReturnResponse = () => {
   );
 };
 
-export default AddRegularReturnResponse;
+export default UploadCertificateModal;

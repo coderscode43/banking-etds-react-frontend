@@ -78,6 +78,11 @@ const UploadCertificate = () => {
     navigate(`/home/listSearch/${entity}/${refinedParams}`);
   };
 
+  const handleGenerateExcel = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    await common.getGenerateExcel(entity, refinedParams);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -198,7 +203,10 @@ const UploadCertificate = () => {
               </TooltipWrapper> */}
               <UploadCertificateModal />
               <TooltipWrapper tooltipText="Export to Excel">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                <button
+                  onClick={handleGenerateExcel}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
+                >
                   <i className="fa-solid fa-file-excel"></i>
                 </button>
               </TooltipWrapper>

@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import clsx from "clsx";
+import staticDataContext from "@/context/staticDataContext";
 import MISGenerateReportModal from "@/components/modals/MISGenerateReportModal";
 
 const GenerateReport = () => {
+  const { Quarter, Tan, typeOfForm, financialYear } =
+    useContext(staticDataContext);
+
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     report: "",
     tanNumber: "",
@@ -10,7 +15,6 @@ const GenerateReport = () => {
     fy: "",
     quarter: "",
   });
-  const [errors, setErrors] = useState({});
 
   const validateField = (fieldName) => {
     let errorMsg = "";
@@ -109,8 +113,8 @@ const GenerateReport = () => {
               TAN Number
             </label>
             <select
-              name="tanNumber"
-              id="tanNumber"
+              name="TAN"
+              id="TAN"
               value={formData.tanNumber}
               onChange={handleChange}
               onBlur={() => validateField("tanNumber")}
@@ -119,9 +123,15 @@ const GenerateReport = () => {
               )}
             >
               <option value="">Select TAN Number</option>
-              <option value="tanNumber1">TAN Number 1</option>
-              <option value="tanNumber2">TAN Number 2</option>
-              <option value="tanNumber3">TAN Number 3</option>
+              {Tan &&
+                Tan.length > 0 &&
+                Tan.map((tan, index) => {
+                  return (
+                    <option key={index} value={tan}>
+                      {tan}
+                    </option>
+                  );
+                })}
             </select>
             {errors.tanNumber && (
               <p className="mt-1 text-sm text-red-500">{errors.tanNumber}</p>
@@ -138,8 +148,8 @@ const GenerateReport = () => {
                 Stream
               </label>
               <select
-                name="stream"
-                id="stream"
+                name="typeOfForm"
+                id="typeOfForm"
                 value={formData.stream}
                 onChange={handleChange}
                 onBlur={() => validateField("stream")}
@@ -148,9 +158,15 @@ const GenerateReport = () => {
                 )}
               >
                 <option value="">Select Stream</option>
-                <option value="stream1">Stream 1</option>
-                <option value="stream2">Stream 2</option>
-                <option value="stream3">Stream 3</option>
+                {typeOfForm &&
+                  typeOfForm.length > 0 &&
+                  typeOfForm.map((form, index) => {
+                    return (
+                      <option key={index} value={form}>
+                        {form}
+                      </option>
+                    );
+                  })}
               </select>
               {errors.stream && (
                 <p className="mt-1 text-sm text-red-500">{errors.stream}</p>
@@ -177,9 +193,15 @@ const GenerateReport = () => {
               )}
             >
               <option value="">Select Financial Year</option>
-              <option value="2025-26">2025-26</option>
-              <option value="2024-25">2024-25</option>
-              <option value="2023-24">2023-24</option>
+              {financialYear &&
+                financialYear.length > 0 &&
+                financialYear.map((fy, index) => {
+                  return (
+                    <option key={index} value={fy}>
+                      {fy}
+                    </option>
+                  );
+                })}
             </select>
             {errors.fy && (
               <p className="mt-1 text-sm text-red-500">{errors.fy}</p>
@@ -206,9 +228,15 @@ const GenerateReport = () => {
                 )}
               >
                 <option value="">Select Quarter</option>
-                <option value="Q1">Q1</option>
-                <option value="Q2">Q2</option>
-                <option value="Q3">Q3</option>
+                {Quarter &&
+                  Quarter.length > 0 &&
+                  Quarter.map((qtr, index) => {
+                    return (
+                      <option key={index} value={qtr}>
+                        {qtr}
+                      </option>
+                    );
+                  })}
               </select>
               {errors.quarter && (
                 <p className="mt-1 text-sm text-red-500">{errors.quarter}</p>

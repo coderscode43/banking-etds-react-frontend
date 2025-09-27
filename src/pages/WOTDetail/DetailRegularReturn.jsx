@@ -7,7 +7,7 @@ import AddRegularReturnResponsesWOTModal from "@/components/modals/AddRegularRet
 
 const DetailRegularReturn = () => {
   const entity = "regularReturn";
-  
+
   const navigate = useNavigate();
   const { fy, branchCode, id } = useParams();
 

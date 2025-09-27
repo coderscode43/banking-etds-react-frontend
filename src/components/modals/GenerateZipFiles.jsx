@@ -9,7 +9,7 @@ import React, { useState, useContext } from "react";
 import staticDataContext from "@/context/staticDataContext";
 import { Fragment } from "react";
 
-const AddRegularReturnResponse = () => {
+const GenerateZipFiles = () => {
   let [isOpen, setIsOpen] = useState(false);
   const { typeOfCertificate, financialYear, Quarter } =
     useContext(staticDataContext);
@@ -166,4 +166,4 @@ const AddRegularReturnResponse = () => {
   );
 };
 
-export default AddRegularReturnResponse;
+export default GenerateZipFiles;

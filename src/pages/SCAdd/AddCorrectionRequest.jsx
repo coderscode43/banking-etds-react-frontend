@@ -4,9 +4,10 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddCorrectionRequest = () => {
-  const [showDoc, setShowDoc] = useState(false);
-
   const navigate = useNavigate();
+
+  const [showDoc, setShowDoc] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const { financialYear, typeOfForm } = useContext(staticDataContext);
 
   const categories = [
@@ -14,10 +15,89 @@ const AddCorrectionRequest = () => {
     { name: "Add Correction Amount Details" },
   ];
 
+  const [formData, setFormData] = useState({
+    fy: "",
+    branchCode: "",
+    tanOfCust: "",
+    pan: "",
+    name: "",
+    quarter: {
+      q1: false,
+      q2: false,
+      q3: false,
+      q4: false,
+      allCheck: false,
+    },
+    typeOfForm: "",
+    correctionTypes: {
+      typeOfCorrection_0: false,
+      typeOfCorrection_1: false,
+      typeOfCorrection_2: false,
+      typeOfCorrection_3: false,
+      typeOfCorrection_4: false,
+      typeOfCorrection_5: false,
+      typeOfCorrection_6: false,
+      typeOfCorrection_7: false,
+    },
+    mobileNumber: "",
+  });
+
+  const validateFirstTabFields = () => {
+    const {
+      fy,
+      branchCode,
+      tanOfCust,
+      pan,
+      name,
+      quarter,
+      typeOfForm,
+      correctionTypes,
+      mobileNumber,
+    } = formData;
+
+    // Check if at least one quarter checkbox is checked
+    const isQuarterChecked = Object.values(quarter).some(Boolean);
+
+    // Check if at least one correction type checkbox is checked
+    const isCorrectionChecked = Object.values(correctionTypes).some(Boolean);
+
+    if (
+      !fy ||
+      !branchCode ||
+      !tanOfCust ||
+      !pan ||
+      !name ||
+      !mobileNumber ||
+      !typeOfForm ||
+      !isQuarterChecked ||
+      !isCorrectionChecked
+    ) {
+      return false; // Validation failed
+    }
+
+    return true; // Validation passed
+  };
+
   return (
     <>
       <div className="rounded-md p-4">
-        <TabGroup className="mx-2 flex w-full flex-col items-center">
+        <TabGroup
+          className="mx-2 flex w-full flex-col items-center"
+          selectedIndex={selectedIndex}
+          onChange={(index) => {
+            if (index === 0) {
+              setSelectedIndex(0);
+            } else if (index === 1) {
+              if (validateFirstTabFields()) {
+                setSelectedIndex(1);
+              } else {
+                alert(
+                  "Please complete all required fields before switching to the second tab."
+                );
+              }
+            }
+          }}
+        >
           <TabList className="flex w-full justify-around rounded-md border-gray-200 bg-gray-100 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
             {categories.map(({ name }) => (
               <Tab
@@ -45,6 +125,10 @@ const AddCorrectionRequest = () => {
                     <select
                       name="fy"
                       id="fy"
+                      value={formData.fy}
+                      onChange={(e) =>
+                        setFormData({ ...formData, fy: e.target.value })
+                      }
                       className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                     >
                       <option value="">Select Financial Year</option>
@@ -65,8 +149,12 @@ const AddCorrectionRequest = () => {
                       RO Code<span className="text-red-600">*</span>
                     </label>
                     <input
-                      name="roCode"
-                      id="roCode"
+                      name="branchCode"
+                      id="branchCode"
+                      value={formData.branchCode}
+                      onChange={(e) =>
+                        setFormData({ ...formData, branchCode: e.target.value })
+                      }
                       placeholder="RO Code"
                       className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                     />
@@ -77,8 +165,12 @@ const AddCorrectionRequest = () => {
                       TAN<span className="text-red-600">*</span>
                     </label>
                     <input
-                      name="tan"
-                      id="tan"
+                      name="tanOfCust"
+                      id="tanOfCust"
+                      value={formData.tanOfCust}
+                      onChange={(e) =>
+                        setFormData({ ...formData, tanOfCust: e.target.value })
+                      }
                       placeholder="TAN"
                       className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                     />
@@ -91,6 +183,10 @@ const AddCorrectionRequest = () => {
                     <input
                       name="pan"
                       id="pan"
+                      value={formData.pan}
+                      onChange={(e) =>
+                        setFormData({ ...formData, pan: e.target.value })
+                      }
                       placeholder="PAN"
                       className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                     />
@@ -102,8 +198,12 @@ const AddCorrectionRequest = () => {
                       <span className="text-red-600">*</span>
                     </label>
                     <input
-                      name="nameofCustomer/Vendor/Employee"
-                      id="nameofCustomer/Vendor/Employee"
+                      name="name"
+                      id="name"
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                       placeholder="Name of Customer /Vendor/Employee"
                       className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                     />
@@ -117,50 +217,120 @@ const AddCorrectionRequest = () => {
                     </label>
 
                     <span>
-                      <input type="checkbox" name="q1" id="q1" />
+                      <input
+                        type="checkbox"
+                        name="q1"
+                        id="q1"
+                        checked={formData.quarter.q1}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            quarter: {
+                              ...formData.quarter,
+                              q1: e.target.checked,
+                            },
+                          })
+                        }
+                      />
                       <label
                         htmlFor="q1"
                         className="m-1 font-semibold text-[var(--primary-color)]"
                       >
-                        Q1<span className="text-red-600">*</span>
+                        Q1
                       </label>
                     </span>
                     <span>
-                      <input type="checkbox" name="q2" id="q2" />
+                      <input
+                        type="checkbox"
+                        name="q2"
+                        id="q2"
+                        checked={formData.quarter.q2}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            quarter: {
+                              ...formData.quarter,
+                              q2: e.target.checked,
+                            },
+                          })
+                        }
+                      />
                       <label
                         htmlFor="q2"
                         className="m-1 font-semibold text-[var(--primary-color)]"
                       >
-                        Q2<span className="text-red-600">*</span>
+                        Q2
                       </label>
                     </span>
                     <span>
-                      <input type="checkbox" name="q3" id="q3" />
+                      <input
+                        type="checkbox"
+                        name="q3"
+                        id="q3"
+                        checked={formData.quarter.q3}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            quarter: {
+                              ...formData.quarter,
+                              q3: e.target.checked,
+                            },
+                          })
+                        }
+                      />
                       <label
                         htmlFor="q3"
                         className="m-1 font-semibold text-[var(--primary-color)]"
                       >
-                        Q3<span className="text-red-600">*</span>
+                        Q3
                       </label>
                     </span>
 
                     <span>
-                      <input type="checkbox" name="q4" id="q4" />
+                      <input
+                        type="checkbox"
+                        name="q4"
+                        id="q4"
+                        checked={formData.quarter.q4}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            quarter: {
+                              ...formData.quarter,
+                              q4: e.target.checked,
+                            },
+                          })
+                        }
+                      />
                       <label
                         htmlFor="q4"
                         className="m-1 font-semibold text-[var(--primary-color)]"
                       >
-                        Q4<span className="text-red-600">*</span>
+                        Q4
                       </label>
                     </span>
 
                     <span>
-                      <input type="checkbox" name="allCheck" id="allCheck" />
+                      <input
+                        type="checkbox"
+                        name="allCheck"
+                        id="allCheck"
+                        checked={formData.quarter.allCheck}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            quarter: {
+                              ...formData.quarter,
+                              allCheck: e.target.checked,
+                            },
+                          })
+                        }
+                      />
                       <label
                         htmlFor="allCheck"
                         className="m-1 font-semibold text-[var(--primary-color)]"
                       >
-                        All Check<span className="text-red-600">*</span>
+                        All Check
                       </label>
                     </span>
                   </div>
@@ -170,8 +340,12 @@ const AddCorrectionRequest = () => {
                       Form<span className="text-red-600">*</span>
                     </label>
                     <select
-                      name="form"
-                      id="form"
+                      name="typeOfForm"
+                      id="typeOfForm"
+                      value={formData.typeOfForm}
+                      onChange={(e) =>
+                        setFormData({ ...formData, typeOfForm: e.target.value })
+                      }
                       className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                     >
                       <option value="">Select Form</option>
@@ -196,111 +370,192 @@ const AddCorrectionRequest = () => {
                       <div>
                         <input
                           type="checkbox"
-                          name="PANUpdation"
-                          id="PANUpdation"
+                          name="typeOfCorrection_0"
+                          id="typeOfCorrection_0"
+                          checked={formData.correctionTypes.typeOfCorrection_0}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              correctionTypes: {
+                                ...formData.correctionTypes,
+                                typeOfCorrection_0: e.target.checked,
+                              },
+                            })
+                          }
                         />
                         <label
-                          htmlFor="PANUpdation"
+                          htmlFor="typeOfCorrection_0"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
-                          PAN Updation<span className="text-red-600">*</span>
+                          PAN Updation
                         </label>
                       </div>
 
                       <div>
                         <input
                           type="checkbox"
-                          name="mismatchInGrossAmount"
-                          id="mismatchInGrossAmount"
+                          name="typeOfCorrection_1"
+                          id="typeOfCorrection_1"
+                          checked={formData.correctionTypes.typeOfCorrection_1}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              correctionTypes: {
+                                ...formData.correctionTypes,
+                                typeOfCorrection_1: e.target.checked,
+                              },
+                            })
+                          }
                         />
                         <label
-                          htmlFor="mismatchInGrossAmount"
+                          htmlFor="typeOfCorrection_1"
                           className="m-[5px] font-semibold text-[var(--primary-color)]"
                         >
                           Mismatch In Gross Amount
-                          <span className="text-red-600">*</span>
                         </label>
                       </div>
 
                       <div>
                         <input
                           type="checkbox"
-                          name="mismatchInTDSAmount"
-                          id="mismatchInTDSAmount"
+                          name="typeOfCorrection_2"
+                          id="typeOfCorrection_2"
+                          checked={formData.correctionTypes.typeOfCorrection_2}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              correctionTypes: {
+                                ...formData.correctionTypes,
+                                typeOfCorrection_2: e.target.checked,
+                              },
+                            })
+                          }
                         />
                         <label
-                          htmlFor="mismatchInTDSAmount"
+                          htmlFor="typeOfCorrection_2"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Mismatch In TDS Amount
-                          <span className="text-red-600">*</span>
                         </label>
                       </div>
 
                       <div>
                         <input
                           type="checkbox"
-                          name="sectionCorrection"
-                          id="sectionCorrection"
+                          name="typeOfCorrection_3"
+                          id="typeOfCorrection_3"
+                          checked={formData.correctionTypes.typeOfCorrection_3}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              correctionTypes: {
+                                ...formData.correctionTypes,
+                                typeOfCorrection_3: e.target.checked,
+                              },
+                            })
+                          }
                         />
                         <label
-                          htmlFor="sectionCorrection"
+                          htmlFor="typeOfCorrection_3"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Section Correction
-                          <span className="text-red-600">*</span>
                         </label>
                       </div>
 
                       <div>
                         <input
                           type="checkbox"
-                          name="defaultCorrection"
-                          id="defaultCorrection"
+                          name="typeOfCorrection_4"
+                          id="typeOfCorrection_4"
+                          checked={formData.correctionTypes.typeOfCorrection_4}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              correctionTypes: {
+                                ...formData.correctionTypes,
+                                typeOfCorrection_4: e.target.checked,
+                              },
+                            })
+                          }
                         />
                         <label
-                          htmlFor="defaultCorrection"
+                          htmlFor="typeOfCorrection_4"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Default Correction
-                          <span className="text-red-600">*</span>
                         </label>
                       </div>
 
                       <div>
                         <input
                           type="checkbox"
-                          name="addEntry/Challan"
-                          id="addEntry/Challan"
+                          name="typeOfCorrection_5"
+                          id="typeOfCorrection_5"
+                          checked={formData.correctionTypes.typeOfCorrection_5}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              correctionTypes: {
+                                ...formData.correctionTypes,
+                                typeOfCorrection_5: e.target.checked,
+                              },
+                            })
+                          }
                         />
                         <label
-                          htmlFor="addEntry/Challan"
+                          htmlFor="typeOfCorrection_5"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Add Entry/Challan
-                          <span className="text-red-600">*</span>
                         </label>
                       </div>
 
                       <div>
-                        <input type="checkbox" name="others" id="others" />
+                        <input
+                          type="checkbox"
+                          name="typeOfCorrection_6"
+                          id="typeOfCorrection_6"
+                          checked={formData.correctionTypes.typeOfCorrection_6}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              correctionTypes: {
+                                ...formData.correctionTypes,
+                                typeOfCorrection_6: e.target.checked,
+                              },
+                            })
+                          }
+                        />
                         <label
-                          htmlFor="others"
+                          htmlFor="typeOfCorrection_6"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Others
-                          <span className="text-red-600">*</span>
                         </label>
                       </div>
 
                       <div>
-                        <input type="checkbox" name="exempted" id="exempted" />
+                        <input
+                          type="checkbox"
+                          name="typeOfCorrection_7"
+                          id="typeOfCorrection_7"
+                          checked={formData.correctionTypes.typeOfCorrection_7}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              correctionTypes: {
+                                ...formData.correctionTypes,
+                                typeOfCorrection_7: e.target.checked,
+                              },
+                            })
+                          }
+                        />
                         <label
-                          htmlFor="exempted"
+                          htmlFor="typeOfCorrection_7"
                           className="m-1 font-semibold text-[var(--primary-color)]"
                         >
                           Exempted
-                          <span className="text-red-600">*</span>
                         </label>
                       </div>
                     </div>
@@ -315,8 +570,12 @@ const AddCorrectionRequest = () => {
                     <span className="text-red-600">*</span>
                   </label>
                   <input
-                    name="mobileNumberofwhoisGenerateCorrection/QueryRequest"
-                    id="mobileNumberofwhoisGenerateCorrection/QueryRequest"
+                    name="mobileNumber"
+                    id="mobileNumber"
+                    value={formData.mobileNumber}
+                    onChange={(e) =>
+                      setFormData({ ...formData, mobileNumber: e.target.value })
+                    }
                     placeholder="Mobile Number of who is Generate Correction/Query Request"
                     className="mt-1 block w-[91%] rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   />
@@ -330,7 +589,18 @@ const AddCorrectionRequest = () => {
                   <i className="fa-solid fa-reply-all"></i>&nbsp; Back
                 </button>
 
-                <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
+                <button
+                  onClick={() => {
+                    if (validateFirstTabFields()) {
+                      setSelectedIndex(1);
+                    } else {
+                      alert(
+                        "complete all required fields before switching to the second tab."
+                      );
+                    }
+                  }}
+                  className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white"
+                >
                   Next <i className="fa-solid fa-chevron-right"></i>&nbsp;
                 </button>
               </div>
@@ -388,7 +658,10 @@ const AddCorrectionRequest = () => {
                   Add <i className="fa-solid fa-plus"></i>&nbsp;
                 </button>
 
-                <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
+                <button
+                  onClick={() => setSelectedIndex(0)}
+                  className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white"
+                >
                   <i className="fa-solid fa-chevron-left"></i>&nbsp; Previous
                 </button>
               </div>
