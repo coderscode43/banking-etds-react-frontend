@@ -2,12 +2,10 @@ import common from "@/common/common";
 import Pagination from "@/components/component/Pagination";
 import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
-import BulkResponseReminder from "@/components/modals/BulkResponseReminder";
-import ErrorModal from "@/components/modals/ErrorModal";
+import BulkResponseReminderModal from "@/components/modals/BulkResponseReminderModal";
 import DynamicTableCheckBoxAction from "@/components/tables/DynamicTableCheckBoxAction";
 import staticDataContext from "@/context/staticDataContext";
-import { Field, Input, Label } from "@headlessui/react";
-import clsx from "clsx";
+import statusContext from "@/context/statusContext";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -18,6 +16,7 @@ const RegularReturn = () => {
   const navigate = useNavigate();
   const { Quarter, Tan, typeOfForm, status, financialYear } =
     useContext(staticDataContext);
+  const { showError } = useContext(statusContext);
 
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
@@ -28,8 +27,6 @@ const RegularReturn = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedRowsData, setSelectedRowsData] = useState([]);
   const [bulkResponseModal, setBulkResponseModal] = useState(false);
-  const [errorModal, setErrorModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [searchParams, setSearchParams] = useState({
     fy: "",
     quarter: "",
@@ -100,13 +97,6 @@ const RegularReturn = () => {
     navigate(`/home/listSearch/${entity}/${refinedParams}`);
   };
 
-  const handleBulkResponse = () => setBulkResponseModal(true);
-
-  const handleErrorModal = () => {
-    setErrorMessage("Please select row to add Bulk Remark/Reminder.");
-    setErrorModal(true);
-  };
-
   const handleGenerateExcel = async () => {
     const refinedParams = common.getRefinedSearchParams(searchParams);
     await common.getGenerateExcel(entity, refinedParams);
@@ -119,17 +109,15 @@ const RegularReturn = () => {
           Regular Return
         </h1>
         <div>
-          <Field className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Financial Year
-              </Label>
+              </label>
               <select
                 name="fy"
                 id="fy"
-                className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.fy}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -148,15 +136,13 @@ const RegularReturn = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Quarter
-              </Label>
+              </label>
               <select
                 name="quarter"
                 id="quarter"
-                className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.quarter}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -175,15 +161,13 @@ const RegularReturn = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Form
-              </Label>
+              </label>
               <select
                 name="form"
                 id="form"
-                className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.form}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -222,11 +206,13 @@ const RegularReturn = () => {
               <TooltipWrapper tooltipText="Bulk Response/Reminder Button">
                 <button
                   className="h-[38px] cursor-pointer rounded-sm bg-[#03d87f] px-3 text-2xl font-black text-white"
-                  onClick={
+                  onClick={() => {
                     selectedRows.length === 0
-                      ? handleErrorModal
-                      : handleBulkResponse
-                  }
+                      ? showError(
+                          "Please select row to add Bulk Remark/Reminder"
+                        )
+                      : () => setBulkResponseModal(true);
+                  }}
                 >
                   <i className="fa-solid fa-comment"></i>
                 </button>
@@ -246,28 +232,21 @@ const RegularReturn = () => {
                 setAutoResize={setAutoResize}
               />
             </div>
-          </Field>
+          </div>
         </div>
 
         <div
-          className={clsx(
-            "overflow-hidden transition-all duration-500 ease-in-out",
-            showDivs ? "max-h-[150px]" : "max-h-0"
-          )}
+          className={`overflow-hidden transition-all duration-500 ease-in-out ${showDivs ? "max-h-[150px]" : "max-h-0"}`}
         >
-          <Field className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 TAN
-              </Label>
+              </label>
               <select
                 name="tan"
                 id="tan"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
-                )}
+                className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.tan}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -287,17 +266,13 @@ const RegularReturn = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Status
-              </Label>
+              </label>
               <select
                 name="status"
                 id="status"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
-                )}
+                className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.status}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -317,16 +292,14 @@ const RegularReturn = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Added On Date
-              </Label>
-              <Input
+              </label>
+              <input
                 type="date"
                 id="addedOn"
                 name="addedOn"
-                className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.addedOn}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -343,7 +316,7 @@ const RegularReturn = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
         <DynamicTableCheckBoxAction
           entity={entity}
@@ -369,16 +342,10 @@ const RegularReturn = () => {
           setCurrentPage={setCurrentPage}
         />
       )}
-      <ErrorModal
-        setErrorModal={setErrorModal}
-        errorModal={errorModal}
-        errorMessage={errorMessage}
-      />
-      <BulkResponseReminder
+      <BulkResponseReminderModal
         bulkResponseModal={bulkResponseModal}
         setBulkResponseModal={setBulkResponseModal}
-        selectedRows={selectedRows}
-        selectedRowsData={selectedRowsData}
+        regularReturns={selectedRowsData}
       />
     </>
   );

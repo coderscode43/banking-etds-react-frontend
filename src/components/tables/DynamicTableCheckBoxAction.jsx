@@ -30,10 +30,20 @@ const DynamicTableCheckBoxAction = ({
         ? prevSelected.filter((i) => i !== index)
         : [...prevSelected, index]
     );
-    setSelectedRowsData((prev) => ({
-      ...prev,
-      data,
-    }));
+
+    setSelectedRowsData((prevData) => {
+      const isAlreadySelected = prevData.some((row) => row.id === data.id);
+
+      if (isAlreadySelected) {
+        return prevData.filter((row) => row.id !== data.id);
+      } else {
+        if ("srNo" in data) {
+          delete data.srNo;
+          data.selected = true;
+        }
+        return [...prevData, data];
+      }
+    });
   };
 
   // Inject a checkbox into table head
@@ -53,7 +63,7 @@ const DynamicTableCheckBoxAction = ({
 
   return (
     <div className="relative w-full">
-      <div className="w-full overflow-clip rounded-md">
+      <div className="w-full overflow-clip rounded-md border border-gray-200">
         <table className="w-full text-[14px]">
           <thead className="bg-[var(--secondary-color)]">
             <tr className="border-[1.5px] border-[var(--secondary-color)]">

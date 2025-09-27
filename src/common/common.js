@@ -1,11 +1,13 @@
 import {
   addBulkRemark,
+  addRegularReturn,
   detailListData,
   detailRegularReturn,
   listData,
   WOTListData,
   paginationListData,
   paginationWithSearchListData,
+  sendReminder,
   WOTSearchListData,
   generateExcel,
 } from "@/service/apiService";
@@ -73,6 +75,14 @@ const common = {
     return JSON.stringify(refinedSearchParams(searchParams));
   },
 
+  getRefinedObject: (obj) => {
+    return Object.fromEntries(
+      Object.entries(obj).filter(
+        (item) => item[1] !== "" && item[1] !== null && item[1] !== undefined
+      )
+    );
+  },
+
   // Generate Timestamp string like dd_MM_yyyy_HH_mm_ss
   getTimeStamp: () => {
     const now = new Date();
@@ -110,18 +120,39 @@ const common = {
     );
   },
 
-  getAddBulk: async (entity, formdata) => {
-    try {
-      const response = await addBulkRemark(entity, formdata);
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
+  convertToDateObject: (dataObj) => {
+    // Returns Date in this Format: Date Sun Aug 25 2024 00:00:00 GMT+0530 (India Standard Time)
+    return Object.fromEntries(
+      Object.entries(dataObj).map(([key, value]) => {
+        // If value matches YYYY-MM-DD format, convert to actual Date object
+        if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+          const [year, month, day] = value.split("-").map(Number);
+          return [key, new Date(year, month - 1, day)];
+        }
+        return [key, value];
+      })
+    );
+  },
+
+  getAddBulk: async (entity, rowsData, formdata) => {
+    const enhancedFormData = common.convertToDateObject(
+      common.getRefinedObject(formdata)
+    );
+
+    return await addBulkRemark(entity, rowsData, enhancedFormData);
   },
 
   getGenerateExcel: async (entity, refinedParams) => {
     const encodedParams = encodeURIComponent(refinedParams);
     return await generateExcel(entity, encodedParams);
+  },
+
+  getSendReminder: async (entity, rowsData) => {
+    return await sendReminder(entity, rowsData);
+  },
+
+  getAddRegularReturn: async (entity, formdata) => {
+    return await addRegularReturn(entity, formdata);
   },
 };
 

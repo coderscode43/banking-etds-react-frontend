@@ -57,7 +57,9 @@ const DynamicTable = ({ tableHead, tableData, month, autoResize }) => {
                         {key === "CHALLAN_MISMATCH"
                           ? data[key] === "1"
                             ? "True"
-                            : "False"
+                            : data[key] === "0"
+                              ? "False"
+                              : " -- "
                           : formatter
                             ? formatter(data[key])
                             : (data[key] ?? " ")}

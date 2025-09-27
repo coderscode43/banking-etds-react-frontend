@@ -1,34 +1,35 @@
 import statusContext from "@/context/statusContext";
 import { useContext } from "react";
 
-const ErrorModal = () => {
-  const { errorModal, setErrorModal, errorMessage } = useContext(statusContext);
+const SuccessModal = () => {
+  const { successModal, setSuccessModal, successMessage } =
+    useContext(statusContext);
 
   return (
     <div
       className={`bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${
-        errorModal ? "visible opacity-100" : "invisible opacity-0"
+        successModal ? "visible opacity-100" : "invisible opacity-0"
       }`}
     >
       <div className="relative w-full max-w-[17rem] rounded-2xl bg-white px-4 pt-8 pb-6 shadow-xl transition-all">
         {/* Header with image */}
         <div className="flex flex-col items-center justify-center gap-2">
-          <i className="fa-solid fa-circle-xmark text-5xl text-red-600"></i>
-          <p className="text-2xl font-medium">Error</p>
+          <i className="fa-solid fa-circle-check text-5xl text-green-600"></i>
+          <p className="text-2xl font-medium">Success</p>
         </div>
 
         {/* Error message */}
         <div className="relative pt-3 pb-6 text-center text-black">
-          {errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)}
+          {successMessage}
         </div>
 
         {/* Footer */}
         <div className="flex w-full justify-center rounded-b-md">
           <button
             onClick={() => {
-              setErrorModal(false);
+              setSuccessModal(false);
             }}
-            className="mx-2 w-full cursor-pointer rounded-lg bg-[#d40008] py-2 font-medium text-white hover:bg-red-600"
+            className="mx-2 w-full cursor-pointer rounded-lg bg-green-600 py-2 font-medium text-white hover:bg-green-500"
           >
             OK
           </button>
@@ -38,4 +39,4 @@ const ErrorModal = () => {
   );
 };
 
-export default ErrorModal;
+export default SuccessModal;

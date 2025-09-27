@@ -104,17 +104,20 @@ export const WOTSearchListData = async (
   }
 };
 
-// http://localhost:8080/apiregularReturnRemark/addBulkRemark
-export const addBulkRemark = async (entity, formData) => {
+export const addBulkRemark = async (entity, rowsData, enhancedFormData) => {
   try {
     const response = await axios.post(
       `${API_BASE_URL}${entity}/addBulkRemark`,
-      formData,
+      {
+        ...rowsData,
+        ...enhancedFormData,
+      },
       credentials
     );
     return response;
   } catch (error) {
-    console.error("Error Fetching the excel", error);
+    console.error("Error in Bulk Response", error);
+    throw error;
   }
 };
 
@@ -158,5 +161,31 @@ export const generateExcel = async (entity, encodedParams) => {
     window.URL.revokeObjectURL(downloadUrl);
   } catch (error) {
     console.error("Failed to download Excel:", error);
+  }
+};
+
+export const sendReminder = async (entity, rowsData) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}${entity}/sendReminder`,
+      { ...rowsData },
+      credentials
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const addRegularReturn = async (entity, formdata) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}${entity}/add`,
+      { ...formdata },
+      credentials
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
   }
 };

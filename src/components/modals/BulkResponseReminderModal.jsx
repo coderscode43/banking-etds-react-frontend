@@ -1,24 +1,24 @@
 import common from "@/common/common";
 import staticDataContext from "@/context/staticDataContext";
 import { useContext, useState } from "react";
+import statusContext from "@/context/statusContext";
 
-const BulkResponseReminder = ({
+const BulkResponseReminderModal = ({
   bulkResponseModal,
   setBulkResponseModal,
-  selectedRows,
-  selectedRowsData,
+  regularReturns,
 }) => {
   const entity = "regularReturnRemark";
+
+  const { showSuccess, showError } = useContext(statusContext);
   const { regularReturnStatus } = useContext(staticDataContext);
-  console.log(selectedRowsData);
+
   const [selectedCheckBox, setSelectedCheckedBox] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [returnFilingDate, setReturnFilingDate] = useState("");
   const [responseData, setResponse] = useState("");
 
-  const closeModal = () => setBulkResponseModal(false);
-
-  console.log(selectedRows);
+  // Conditional Logic for Choosing of CheckBoxes
   const handleCheckboxChange = (checkboxId) => {
     setSelectedCheckedBox((prev) => {
       if (checkboxId === "reminder") {
@@ -43,22 +43,51 @@ const BulkResponseReminder = ({
       }
     });
   };
-  // let showError;
+
   const handleSubmit = async () => {
-    //  http://localhost:8080/apiregularReturnRemark/addBulkRemark/
+    const rowsData = {
+      regularReturns, // Array of selected rows
+    };
+
+    const formData = {
+      //Modal Data
+      Status: selectedStatus,
+      returnFilingDate: returnFilingDate,
+      remark: responseData,
+    };
+
+    let response;
     try {
-      // e.preventDefault();
-      const response = await common.getAddBulk(entity, selectedCheckBox);
-      console.log("response :", response);
-      console.log("selectedRowsData", selectedRowsData);
-      console.log("selectedCheckBox", selectedCheckBox);
-      console.log("selectedStatus", selectedStatus);
-      console.log("returnFilingDate", returnFilingDate);
-      console.log("responseData", responseData);
+      response = await common.getAddBulk(entity, rowsData, formData);
+      setBulkResponseModal(false);
+      showSuccess(response.data.successMsg);
     } catch (error) {
-      console.log(error);
+      setBulkResponseModal(false);
+
+      const errorMsg =
+        error.response?.data?.exceptionMsg ||
+        error.message ||
+        "An error occurred";
+      showError(errorMsg);
+      console.error(error);
     }
   };
+
+  const handleSendReminder = async () => {
+    const rowsData = { regularReturn: [...regularReturns] };
+
+    let response;
+    try {
+      response = await common.getSendReminder(entity, rowsData);
+      setBulkResponseModal(false);
+      showSuccess(response.data.successMsg);
+    } catch (error) {
+      setBulkResponseModal(false);
+      showError(response.data.exceptionMsg);
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <div
@@ -74,7 +103,7 @@ const BulkResponseReminder = ({
               type="button"
               className="cursor-pointer text-gray-500 hover:text-gray-700"
               aria-label="Close"
-              onClick={closeModal}
+              onClick={() => setBulkResponseModal(false)}
             >
               <i className="fa-solid fa-x" />
             </button>
@@ -84,7 +113,7 @@ const BulkResponseReminder = ({
           <div className="p-4">
             {/* Checkboxes */}
             <div className="flex flex-wrap gap-y-2">
-              {["status", "returnFilingDate", "responseData", "reminder"].map(
+              {["Status", "returnFilingDate", "responseData", "reminder"].map(
                 (item) => (
                   <label
                     key={item}
@@ -116,22 +145,22 @@ const BulkResponseReminder = ({
             <form className="flex flex-col gap-3">
               <div>
                 <label
-                  htmlFor="status"
+                  htmlFor="Status"
                   className={`mb-1 block font-semibold ${
-                    selectedCheckBox.includes("status") ? "" : "text-gray-600"
+                    selectedCheckBox.includes("Status") ? "" : "text-gray-600"
                   }`}
                 >
                   Status
                 </label>
                 <select
                   className={`form-input focus:outline-none ${
-                    selectedCheckBox.includes("status")
+                    selectedCheckBox.includes("Status")
                       ? "cursor-pointer"
                       : "cursor-not-allowed bg-gray-300 text-gray-500"
                   }`}
-                  id="status"
-                  name="status"
-                  disabled={!selectedCheckBox.includes("status")}
+                  id="Status"
+                  name="Status"
+                  disabled={!selectedCheckBox.includes("Status")}
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
                 >
@@ -209,11 +238,12 @@ const BulkResponseReminder = ({
               type="button"
               name="reminder"
               id="reminder"
-              className={`rounded-md px-4 py-2 text-white ${
+              className={`rounded-md border-amber-300 px-4 py-2 text-white ${
                 selectedCheckBox.includes("reminder")
-                  ? "cursor-pointer bg-amber-400"
-                  : "cursor-not-allowed bg-amber-300"
+                  ? "cursor-pointer bg-amber-500"
+                  : "cursor-not-allowed bg-yellow-500"
               }`}
+              onClick={handleSendReminder}
               disabled={!selectedCheckBox.includes("reminder")}
             >
               Send Reminder
@@ -221,8 +251,8 @@ const BulkResponseReminder = ({
 
             <button
               type="button"
-              className="cursor-pointer rounded-md bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
-              onClick={closeModal}
+              className="cursor-pointer rounded-md border border-gray-300 bg-gray-300 px-4 py-2 text-black hover:bg-gray-200"
+              onClick={() => setBulkResponseModal(false)}
             >
               Close
             </button>
@@ -241,4 +271,4 @@ const BulkResponseReminder = ({
   );
 };
 
-export default BulkResponseReminder;
+export default BulkResponseReminderModal;

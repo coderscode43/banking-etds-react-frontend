@@ -158,8 +158,8 @@ const Challan = () => {
                 }
               >
                 <option value="">Select Option</option>
-                <option value="true">True</option>
-                <option value="false">False</option>
+                <option value="1">True</option>
+                <option value="0">False</option>
               </select>
             </div>
 

@@ -47,7 +47,8 @@ const DynamicTableAction = ({
                 {tableData.map((data, index) => (
                   <tr
                     key={index}
-                    className="cursor-pointer text-center hover:bg-gray-100"
+                    style={{ backgroundColor: data.color || "transparent" }}
+                    className={`cursor-pointer text-center hover:bg-gray-100`}
                     onDoubleClick={() => {
                       if (layoutType === "sc") {
                         navigate(
