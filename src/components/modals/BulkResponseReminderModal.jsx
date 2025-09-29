@@ -2,6 +2,7 @@ import common from "@/common/common";
 import staticDataContext from "@/context/staticDataContext";
 import { useContext, useState } from "react";
 import statusContext from "@/context/statusContext";
+import { errorMessage } from "@/lib/utils";
 
 const BulkResponseReminderModal = ({
   bulkResponseModal,
@@ -63,13 +64,7 @@ const BulkResponseReminderModal = ({
       showSuccess(response.data.successMsg);
     } catch (error) {
       setBulkResponseModal(false);
-
-      const errorMsg =
-        error.response?.data?.exceptionMsg ||
-        error.message ||
-        "An error occurred";
-      showError(errorMsg);
-      console.error(error);
+      showError(errorMessage(error));
     }
   };
 
@@ -83,8 +78,7 @@ const BulkResponseReminderModal = ({
       showSuccess(response.data.successMsg);
     } catch (error) {
       setBulkResponseModal(false);
-      showError(response.data.exceptionMsg);
-      console.error(error);
+      showError(errorMessage(error));
     }
   };
 

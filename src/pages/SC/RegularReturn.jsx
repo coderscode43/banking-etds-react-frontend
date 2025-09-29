@@ -92,6 +92,8 @@ const RegularReturn = () => {
     ...data,
   }));
 
+  const handleBulkResponse = () => setBulkResponseModal(true);
+
   const handleSearch = async () => {
     const refinedParams = common.getRefinedSearchParams(searchParams);
     navigate(`/home/listSearch/${entity}/${refinedParams}`);
@@ -211,7 +213,7 @@ const RegularReturn = () => {
                       ? showError(
                           "Please select row to add Bulk Remark/Reminder"
                         )
-                      : () => setBulkResponseModal(true);
+                      : handleBulkResponse();
                   }}
                 >
                   <i className="fa-solid fa-comment"></i>

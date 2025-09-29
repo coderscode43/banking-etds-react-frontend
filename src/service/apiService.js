@@ -105,20 +105,15 @@ export const WOTSearchListData = async (
 };
 
 export const addBulkRemark = async (entity, rowsData, enhancedFormData) => {
-  try {
-    const response = await axios.post(
-      `${API_BASE_URL}${entity}/addBulkRemark`,
-      {
-        ...rowsData,
-        ...enhancedFormData,
-      },
-      credentials
-    );
-    return response;
-  } catch (error) {
-    console.error("Error in Bulk Response", error);
-    throw error;
-  }
+  const response = await axios.post(
+    `${API_BASE_URL}${entity}/addBulkRemark`,
+    {
+      ...rowsData,
+      ...enhancedFormData,
+    },
+    credentials
+  );
+  return response;
 };
 
 export const generateExcel = async (entity, encodedParams) => {
@@ -165,16 +160,12 @@ export const generateExcel = async (entity, encodedParams) => {
 };
 
 export const sendReminder = async (entity, rowsData) => {
-  try {
-    const response = await axios.post(
-      `${API_BASE_URL}${entity}/sendReminder`,
-      { ...rowsData },
-      credentials
-    );
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await axios.post(
+    `${API_BASE_URL}${entity}/sendReminder`,
+    { ...rowsData },
+    credentials
+  );
+  return response;
 };
 
 export const addRegularReturn = async (entity, formdata) => {
