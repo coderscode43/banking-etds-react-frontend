@@ -1,13 +1,6 @@
 import DownloadCertificateModal from "@/components/modals/DownloadCertificateModal";
 import staticDataContext from "@/context/staticDataContext";
-import {
-  Input,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  TabPanels,
-} from "@headlessui/react";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext } from "react";
 
@@ -69,7 +62,7 @@ const DownloadCertificate = () => {
                     <label className="font-semibold text-[var(--primary-color)]">
                       PAN Number
                     </label>
-                    <Input
+                    <input
                       id="pan"
                       name="pan"
                       placeholder="Enter PAN Number"
@@ -91,7 +84,7 @@ const DownloadCertificate = () => {
                       name="tan"
                       id="tan"
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
                       )}
                     >
                       <option value="">Select TAN Number</option>
@@ -148,7 +141,7 @@ const DownloadCertificate = () => {
                       id="financialYear"
                       value={formData.fy}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                        "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select Financial Year</option>
@@ -227,7 +220,7 @@ const DownloadCertificate = () => {
                       id="tan"
                       value={formData.tanNumber}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                        "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select TAN Number</option>
@@ -279,7 +272,7 @@ const DownloadCertificate = () => {
                     </label>
                     <select
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
+                        "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
                       )}
                       name="financialYear"
                       id="financialYear"
@@ -330,7 +323,7 @@ const DownloadCertificate = () => {
                     <label className="font-semibold text-[var(--primary-color)]">
                       PAN Number
                     </label>
-                    <Input
+                    <input
                       placeholder="Enter PAN Number"
                       className={clsx(
                         "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -376,7 +369,7 @@ const DownloadCertificate = () => {
                       id="tan"
                       value={formData.tanNumber}
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                        "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                     >
                       <option value="">Select TAN Number</option>
@@ -428,7 +421,7 @@ const DownloadCertificate = () => {
                     </label>
                     <select
                       className={clsx(
-                        "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                        "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       )}
                       name="financialYear"
                       id="financialYear"

@@ -2,7 +2,6 @@ import common from "@/common/common";
 import Pagination from "@/components/component/Pagination";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTable from "@/components/tables/DynamicTable";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -86,12 +85,12 @@ const Logs = () => {
       <div className="space-y-5">
         <h1 className="text-2xl font-bold text-[var(--primary-color)]">Logs</h1>
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 User Name
-              </Label>
-              <Input
+              </label>
+              <input
                 name="username"
                 id="username"
                 placeholder="Name"
@@ -106,10 +105,10 @@ const Logs = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Entity
-              </Label>
-              <Input
+              </label>
+              <input
                 name="entity"
                 id="entity"
                 placeholder="Entity"
@@ -124,10 +123,10 @@ const Logs = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 IP-Address
-              </Label>
-              <Input
+              </label>
+              <input
                 name="ipaddrs"
                 id="ipaddrs"
                 placeholder="IP-Address"
@@ -159,7 +158,7 @@ const Logs = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <div
@@ -168,12 +167,12 @@ const Logs = () => {
             showDivs ? "max-h-[150px]" : "max-h-0"
           )}
         >
-          <Field className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 From Date
-              </Label>
-              <Input
+              </label>
+              <input
                 type="date"
                 id="fromDate"
                 name="fromDate"
@@ -189,10 +188,10 @@ const Logs = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 To Date
-              </Label>
-              <Input
+              </label>
+              <input
                 type="date"
                 id="toDate"
                 name="toDate"
@@ -208,13 +207,15 @@ const Logs = () => {
             </div>
             <div>
               <TooltipWrapper tooltipText="Export to Excel">
-                <button onClick={handleGenerateExcel}
-                className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                <button
+                  onClick={handleGenerateExcel}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
+                >
                   <i className="fa-solid fa-file-excel"></i>
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <div>

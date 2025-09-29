@@ -5,14 +5,13 @@ import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import staticDataContext from "@/context/staticDataContext";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Form27QDeductee = () => {
   const entity = "form27QDeductee";
-  
+
   const { params } = useParams();
   const navigate = useNavigate();
   const { Quarter, Tan, Section } = useContext(staticDataContext);
@@ -139,6 +138,11 @@ const Form27QDeductee = () => {
     navigate(`/home/listSearch/${entity}/${refinedParams}`);
   };
 
+  const handleGenerateExcel = async () => {
+    const refinedParams = common.getRefinedSearchParams(searchParams);
+    await common.getGenerateExcel(entity, refinedParams);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -147,11 +151,11 @@ const Form27QDeductee = () => {
         </h1>
 
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Quarter
-              </Label>
+              </label>
               <select
                 name="quarter"
                 id="quarter"
@@ -179,10 +183,10 @@ const Form27QDeductee = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Branch Code
-              </Label>
-              <Input
+              </label>
+              <input
                 name="branchCode"
                 id="branchCode"
                 placeholder="Branch Code"
@@ -197,10 +201,10 @@ const Form27QDeductee = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Name
-              </Label>
-              <Input
+              </label>
+              <input
                 name="name"
                 id="name"
                 placeholder="Name"
@@ -242,7 +246,7 @@ const Form27QDeductee = () => {
                 setAutoResize={setAutoResize}
               />
             </div>
-          </Field>
+          </div>
         </div>
 
         <div
@@ -251,19 +255,17 @@ const Form27QDeductee = () => {
             showDivs ? "max-h-[150px]" : "max-h-0"
           )}
         >
-          <Field className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 TAN
-              </Label>
+              </label>
               <select
                 name="TAN"
                 id="TAN"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
-                )}
+                className={
+                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                }
                 value={searchParams.TAN}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -283,10 +285,10 @@ const Form27QDeductee = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 PAN
-              </Label>
-              <Input
+              </label>
+              <input
                 name="pan"
                 id="pan"
                 placeholder="PAN"
@@ -301,10 +303,10 @@ const Form27QDeductee = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Challan Heading
-              </Label>
-              <Input
+              </label>
+              <input
                 name="challanHeading"
                 id="challanHeading"
                 placeholder="Challan Heading"
@@ -320,10 +322,10 @@ const Form27QDeductee = () => {
             </div>
             <br />
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 RO Code
-              </Label>
-              <Input
+              </label>
+              <input
                 name="roCode"
                 id="roCode"
                 placeholder="RO Code"
@@ -339,17 +341,15 @@ const Form27QDeductee = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Section Code
-              </Label>
+              </label>
               <select
                 name="sectionCode"
                 id="sectionCode"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
-                )}
+                className={
+                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                }
                 value={searchParams.sectionCode}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -369,9 +369,9 @@ const Form27QDeductee = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Status
-              </Label>
+              </label>
               <select
                 name="resolved"
                 id="resolved"
@@ -392,12 +392,15 @@ const Form27QDeductee = () => {
             </div>
             <div>
               <TooltipWrapper tooltipText="Export to Excel">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                <button
+                  onClick={handleGenerateExcel}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
+                >
                   <i className="fa-solid fa-file-excel"></i>
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <div>

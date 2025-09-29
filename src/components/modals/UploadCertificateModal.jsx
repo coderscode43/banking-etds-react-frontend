@@ -79,7 +79,7 @@ const UploadCertificateModal = () => {
                       <select
                         name="tan"
                         id="tan"
-                        className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                        className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       >
                         <option value="">Select TAN No.</option>
                         {Tan &&
@@ -124,7 +124,7 @@ const UploadCertificateModal = () => {
                       <select
                         name="financialYear"
                         id="financialYear"
-                        className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                        className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                       >
                         <option value="">Select Financial Year</option>
                         {financialYear &&

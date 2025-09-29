@@ -4,7 +4,6 @@ import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import staticDataContext from "@/context/staticDataContext";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
-import { Field, Input, Label } from "@headlessui/react";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import Pagination from "@/components/component/Pagination";
 import { useNavigate } from "react-router-dom";
@@ -90,6 +89,17 @@ const RegularReturn = () => {
       `/homeWOT/${branchCode}/${fy}/listSearch/${entity}/${refinedParams}`
     );
   };
+
+  const handleGenerateExcel = async () => {
+    const paramsObj = {
+      branchCode: branchCode,
+      fy: fy,
+      ...searchParams,
+    };
+    const refinedParams = common.getRefinedSearchParams(paramsObj);
+    await common.getGenerateExcel(entity, refinedParams);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -98,16 +108,16 @@ const RegularReturn = () => {
         </h1>
 
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Financial Year
-              </Label>
+              </label>
               <select
                 name="fy"
                 id="fy"
                 className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
                 value={searchParams.fy}
                 onChange={(e) =>
@@ -127,9 +137,9 @@ const RegularReturn = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Quarter
-              </Label>
+              </label>
               <select
                 name="quarter"
                 id="quarter"
@@ -154,9 +164,9 @@ const RegularReturn = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Form
-              </Label>
+              </label>
               <select
                 name="form"
                 id="form"
@@ -198,7 +208,7 @@ const RegularReturn = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <div
@@ -207,11 +217,11 @@ const RegularReturn = () => {
             showDivs ? "max-h-[150px]" : "max-h-0"
           )}
         >
-          <Field className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Status
-              </Label>
+              </label>
               <select
                 name="status"
                 id="status"
@@ -236,10 +246,10 @@ const RegularReturn = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Added On Date
-              </Label>
-              <Input
+              </label>
+              <input
                 name="addedOn"
                 id="addedOn"
                 type="date"
@@ -254,12 +264,15 @@ const RegularReturn = () => {
             </div>
             <div>
               <TooltipWrapper tooltipText="Export to Excel">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                <button
+                  onClick={handleGenerateExcel}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
+                >
                   <i className="fa-solid fa-file-excel"></i>
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
         <DynamicTableAction
           entity={entity}

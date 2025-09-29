@@ -2,7 +2,6 @@ import common from "@/common/common";
 import Pagination from "@/components/component/Pagination";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import UserDetailsTable from "@/components/tables/UserDetailsTable";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -80,12 +79,12 @@ const UserDetails = () => {
         </h1>
 
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Employee ID
-              </Label>
-              <Input
+              </label>
+              <input
                 id="employeeId"
                 name="employeeId"
                 placeholder="Employee Id"
@@ -101,9 +100,9 @@ const UserDetails = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Type Of User
-              </Label>
+              </label>
               <select
                 name="typeOfUser"
                 id="typeOfUser"
@@ -148,7 +147,7 @@ const UserDetails = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <UserDetailsTable tableHead={tableHead} tableData={tableData} />

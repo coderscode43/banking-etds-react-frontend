@@ -1,5 +1,6 @@
-import React from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import LogoutModal from "@/components/modals/LogoutModal";
 
 const navItems = [
   {
@@ -101,12 +102,14 @@ const navItems = [
   {
     id: "logout",
     label: "Logout",
-    page: "logout",
+    page: "",
     iconClass: "fa-solid fa-power-off",
   },
 ];
 
 const HomeSCSidebar = ({ sideBarOpen }) => {
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+
   return (
     <>
       <div className="fixed top-14 z-10 h-screen">
@@ -121,9 +124,21 @@ const HomeSCSidebar = ({ sideBarOpen }) => {
                 return (
                   <li key={id}>
                     <NavLink
-                      to={`/home/list/${page}`}
+                      to={id === "logout" ? "" : `/home/list/${page}`}
+                      onClick={(e) => {
+                        if (id === "logout") {
+                          e.preventDefault();
+                          setIsLogoutOpen(true);
+                        }
+                      }}
                       className={({ isActive }) =>
-                        `flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100 ${isActive ? "bg-blue-100 font-medium text-blue-500" : ""}`
+                        [
+                          "flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100",
+                          // only apply active styling if not logout
+                          isActive && id !== "logout"
+                            ? "bg-blue-100 font-medium text-blue-500"
+                            : "",
+                        ].join(" ")
                       }
                     >
                       <div
@@ -153,6 +168,12 @@ const HomeSCSidebar = ({ sideBarOpen }) => {
           </div>
         </nav>
       </div>
+
+      {/* Render the modal */}
+      <LogoutModal
+        isOpen={isLogoutOpen}
+        onClose={() => setIsLogoutOpen(false)}
+      />
     </>
   );
 };

@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import staticDataContext from "@/context/staticDataContext";
 import Pagination from "@/components/component/Pagination";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
-import { Field, Input, Label } from "@headlessui/react";
 import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import SwitchButton from "@/components/component/SwitchButton";
@@ -140,6 +139,16 @@ const Form27QDeductee = () => {
     );
   };
 
+  const handleGenerateExcel = async () => {
+    const paramsObj = {
+      branchCode: branchCode,
+      fy: fy,
+      ...searchParams,
+    };
+    const refinedParams = common.getRefinedSearchParams(paramsObj);
+    await common.getGenerateExcel(entity, refinedParams);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -147,11 +156,11 @@ const Form27QDeductee = () => {
           Form 27Q Deductee Details
         </h1>
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Quarter
-              </Label>
+              </label>
               <select
                 name="quarter"
                 id="quarter"
@@ -176,10 +185,10 @@ const Form27QDeductee = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 PAN
-              </Label>
-              <Input
+              </label>
+              <input
                 placeholder="Pan"
                 id="pan"
                 name="pan"
@@ -193,10 +202,10 @@ const Form27QDeductee = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Name
-              </Label>
-              <Input
+              </label>
+              <input
                 placeholder="Name"
                 id="name"
                 name="name"
@@ -236,7 +245,7 @@ const Form27QDeductee = () => {
                 setAutoResize={setAutoResize}
               />
             </div>
-          </Field>
+          </div>
         </div>
 
         <div
@@ -245,16 +254,16 @@ const Form27QDeductee = () => {
             showDivs ? "max-h-[150px]" : "max-h-0"
           )}
         >
-          <Field className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 TAN
-              </Label>
+              </label>
               <select
                 name="TAN"
                 id="TAN"
                 className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
                 value={searchParams.TAN}
                 onChange={(e) =>
@@ -274,10 +283,10 @@ const Form27QDeductee = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Challan Heading
-              </Label>
-              <Input
+              </label>
+              <input
                 placeholder="Challan Heading"
                 id="challanHeading"
                 name="challanHeading"
@@ -291,14 +300,14 @@ const Form27QDeductee = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Section Code
-              </Label>
+              </label>
               <select
                 name="sectionCode"
                 id="sectionCode"
                 className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
                 value={searchParams.sectionCode}
                 onChange={(e) =>
@@ -319,12 +328,15 @@ const Form27QDeductee = () => {
             </div>
             <div>
               <TooltipWrapper tooltipText="Export to Excel">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                <button
+                  onClick={handleGenerateExcel}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
+                >
                   <i className="fa-solid fa-file-excel"></i>
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <DynamicTableActionTotal

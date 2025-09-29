@@ -1,5 +1,4 @@
 import staticDataContext from "@/context/staticDataContext";
-import { Input, Textarea } from "@headlessui/react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -243,7 +242,7 @@ const AddBranch = () => {
               >
                 Branch Address <span className="text-red-600">*</span>
               </label>
-              <Textarea
+              <textarea
                 id="branchAddress"
                 name="branchAddress"
                 placeholder="Address"
@@ -272,7 +271,7 @@ const AddBranch = () => {
               >
                 Branch Pincode <span className="text-red-600">*</span>
               </label>
-              <Input
+              <input
                 type="text"
                 id="branchPinCode"
                 name="branchPinCode"
@@ -300,7 +299,7 @@ const AddBranch = () => {
                 name="branchState"
                 value={formData.branchState}
                 onChange={handleChange}
-                className={`w-full rounded border px-3 py-2 focus:outline-none ${
+                className={`custom-scrollbar w-full rounded border px-3 py-2 focus:outline-none ${
                   errors.branchState ? "border-red-500" : "border-gray-300"
                 }`}
               >

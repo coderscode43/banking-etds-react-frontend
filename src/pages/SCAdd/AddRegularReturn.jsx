@@ -1,5 +1,4 @@
 import staticDataContext from "@/context/staticDataContext";
-import { Field, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,17 +16,17 @@ const AddRegularReturn = () => {
         </h1>
 
         <div className="mt-4">
-          <Field>
+          <div>
             <div className="mb-3 flex gap-3">
               <div className="w-full md:w-1/2">
-                <Label className="font-semibold text-[var(--primary-color)]">
+                <label className="font-semibold text-[var(--primary-color)]">
                   Financial Year <span className="text-red-600">*</span>
-                </Label>
+                </label>
                 <select
                   name="FY"
                   id="FY"
                   className={clsx(
-                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                    "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
                 >
                   <option value="">Select Financial Year</option>
@@ -43,14 +42,14 @@ const AddRegularReturn = () => {
                 </select>
               </div>
               <div className="w-full md:w-1/2">
-                <Label className="font-semibold text-[var(--primary-color)]">
+                <label className="font-semibold text-[var(--primary-color)]">
                   TAN <span className="text-red-600">*</span>
-                </Label>
+                </label>
                 <select
                   name="tan"
                   id="tan"
                   className={clsx(
-                    "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                    "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
                 >
                   <option value="">Select TAN</option>
@@ -68,9 +67,9 @@ const AddRegularReturn = () => {
             </div>
             <div className="flex gap-3">
               <div className="w-full md:w-1/2">
-                <Label className="font-semibold text-[var(--primary-color)]">
+                <label className="font-semibold text-[var(--primary-color)]">
                   Quarter<span className="text-red-600">*</span>
-                </Label>
+                </label>
                 <select
                   name="quarter"
                   id="quarter"
@@ -91,9 +90,9 @@ const AddRegularReturn = () => {
                 </select>
               </div>
               <div className="w-full md:w-1/2">
-                <Label className="font-semibold text-[var(--primary-color)]">
+                <label className="font-semibold text-[var(--primary-color)]">
                   Form <span className="text-red-600">*</span>
-                </Label>
+                </label>
                 <select
                   name="form"
                   id="form"
@@ -101,7 +100,6 @@ const AddRegularReturn = () => {
                     "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                   )}
                 >
-                 
                   <option value="">Select Form</option>
                   {typeOfForm &&
                     typeOfForm.length > 0 &&
@@ -115,7 +113,7 @@ const AddRegularReturn = () => {
                 </select>
               </div>
             </div>
-          </Field>
+          </div>
           <div className="mt-3 flex justify-end-safe gap-3">
             <button className="cursor-pointer rounded-md bg-green-600 p-2 px-4 font-semibold text-white">
               <i className="fa-solid fa-floppy-disk"></i>&nbsp; Save

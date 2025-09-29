@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import common from "@/common/common";
 import { useContext, useEffect, useState } from "react";
-import { Field, Input, Label } from "@headlessui/react";
 import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
 import { TooltipWrapper } from "@/components/component/Tooltip";
@@ -95,12 +94,12 @@ const Challan = () => {
           Challan Details
         </h1>
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 CIN
-              </Label>
-              <Input
+              </label>
+              <input
                 name="CIN"
                 id="CIN"
                 placeholder="CIN"
@@ -115,14 +114,14 @@ const Challan = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 TAN
-              </Label>
+              </label>
               <select
                 name="TAN"
                 id="TAN"
                 className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
                 value={searchParams.TAN}
                 onChange={(e) =>
@@ -143,9 +142,9 @@ const Challan = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Challan Mismatch
-              </Label>
+              </label>
               <select
                 name="CHALLAN_MISMATCH"
                 id="CHALLAN_MISMATCH"
@@ -181,7 +180,7 @@ const Challan = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <div
@@ -190,12 +189,12 @@ const Challan = () => {
             showDivs ? "max-h-[150px]" : "max-h-0"
           )}
         >
-          <Field className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Amount of challan
-              </Label>
-              <Input
+              </label>
+              <input
                 name="AMOUNT_OF_CLALLAN"
                 id="AMOUNT_OF_CLALLAN"
                 placeholder="Amount of challan"
@@ -211,10 +210,10 @@ const Challan = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Date of Deposition
-              </Label>
-              <Input
+              </label>
+              <input
                 type="date"
                 id="dateOfDeposition"
                 name="dateOfDeposition"
@@ -230,10 +229,10 @@ const Challan = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 As on Date
-              </Label>
-              <Input
+              </label>
+              <input
                 type="date"
                 id="asOnDate"
                 name="asOnDate"
@@ -257,7 +256,7 @@ const Challan = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <div>

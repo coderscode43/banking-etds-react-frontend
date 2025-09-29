@@ -3,7 +3,6 @@ import common from "@/common/common";
 import { useEffect, useState, useContext } from "react";
 import staticDataContext from "@/context/staticDataContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { Field, Input, Label } from "@headlessui/react";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import Pagination from "@/components/component/Pagination";
@@ -98,6 +97,16 @@ const CorrectionRequest = () => {
     );
   };
 
+  const handleGenerateExcel = async () => {
+    const paramsObj = {
+      branchCode: branchCode,
+      fy: fy,
+      ...searchParams,
+    };
+    const refinedParams = common.getRefinedSearchParams(paramsObj);
+    await common.getGenerateExcel(entity, refinedParams);
+  };
+
   return (
     <>
       <div className="space-y-5">
@@ -106,11 +115,11 @@ const CorrectionRequest = () => {
         </h1>
 
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Status
-              </Label>
+              </label>
               <select
                 name="status"
                 id="status"
@@ -135,14 +144,14 @@ const CorrectionRequest = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Financial Year
-              </Label>
+              </label>
               <select
                 name="fy"
                 id="fy"
                 className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
                 value={searchParams.fy}
                 onChange={(e) =>
@@ -162,9 +171,9 @@ const CorrectionRequest = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Quarter
-              </Label>
+              </label>
               <select
                 name="quarter"
                 id="quarter"
@@ -219,7 +228,7 @@ const CorrectionRequest = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <div
@@ -228,12 +237,12 @@ const CorrectionRequest = () => {
             showDivs ? "max-h-[150px]" : "max-h-0"
           )}
         >
-          <Field className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Ticket Number
-              </Label>
-              <Input
+              </label>
+              <input
                 id="ticketNumber"
                 name="ticketNumber"
                 placeholder="Ticket Number"
@@ -247,10 +256,10 @@ const CorrectionRequest = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Name of Customer
-              </Label>
-              <Input
+              </label>
+              <input
                 id="name"
                 name="name"
                 placeholder="Name of Customer"
@@ -264,10 +273,10 @@ const CorrectionRequest = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 PAN of Customer
-              </Label>
-              <Input
+              </label>
+              <input
                 id="pan"
                 name="pan"
                 placeholder="Pan number"
@@ -282,9 +291,9 @@ const CorrectionRequest = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Type of Correction
-              </Label>
+              </label>
               <select
                 name="typeOfCorrection"
                 id="typeOfCorrection"
@@ -309,10 +318,10 @@ const CorrectionRequest = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 From Date Of Request
-              </Label>
-              <Input
+              </label>
+              <input
                 placeholder="fromRequestDate"
                 name="fromDate"
                 id="fromDate"
@@ -327,10 +336,10 @@ const CorrectionRequest = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 To Date Of Request
-              </Label>
-              <Input
+              </label>
+              <input
                 placeholder="toRequestDate"
                 name="toDate"
                 id="toDate"
@@ -346,12 +355,15 @@ const CorrectionRequest = () => {
             </div>
             <div>
               <TooltipWrapper tooltipText="Export to Excel">
-                <button className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white">
+                <button
+                  onClick={handleGenerateExcel}
+                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
+                >
                   <i className="fa-solid fa-file-excel"></i>
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <DynamicTableAction

@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import common from "@/common/common";
-import { Field, Input, Label } from "@headlessui/react";
 import { useContext, useEffect, useState } from "react";
 import staticDataContext from "@/context/staticDataContext";
 import DynamicTable from "@/components/tables/DynamicTable";
@@ -85,16 +84,16 @@ const DeductorDetails = () => {
         </h1>
 
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Tan
-              </Label>
+              </label>
               <select
                 name="TAN"
                 id="TAN"
                 className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
                 value={searchParams.TAN}
                 onChange={(e) =>
@@ -114,14 +113,14 @@ const DeductorDetails = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 State
-              </Label>
+              </label>
               <select
                 name="STATE"
                 id="STATE"
                 className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
                 value={searchParams.STATE}
                 onChange={(e) =>
@@ -141,10 +140,10 @@ const DeductorDetails = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 City
-              </Label>
-              <Input
+              </label>
+              <input
                 id="CITY"
                 name="CITY"
                 placeholder="City"
@@ -176,7 +175,7 @@ const DeductorDetails = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <DynamicTable tableHead={tableHead} tableData={tableData} />

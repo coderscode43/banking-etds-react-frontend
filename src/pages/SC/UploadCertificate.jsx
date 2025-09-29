@@ -5,7 +5,6 @@ import GenerateZipFiles from "@/components/modals/GenerateZipFiles";
 import UploadCertificateModal from "@/components/modals/UploadCertificateModal";
 import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
-import { Field, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -98,11 +97,11 @@ const UploadCertificate = () => {
           </div>
         </div>
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Quarter
-              </Label>
+              </label>
               <select
                 name="quarter"
                 id="quarter"
@@ -129,17 +128,15 @@ const UploadCertificate = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Financial Year
-              </Label>
+              </label>
               <select
                 name="fy"
                 id="fy"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
-                )}
+                className={
+                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                }
                 value={searchParams.fy}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -158,9 +155,9 @@ const UploadCertificate = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Certificate
-              </Label>
+              </label>
               <select
                 name="form"
                 id="form"
@@ -211,7 +208,7 @@ const UploadCertificate = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <DynamicTable tableHead={tableHead} tableData={tableData} />

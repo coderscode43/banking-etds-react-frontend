@@ -4,7 +4,6 @@ import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -111,12 +110,12 @@ const TotalAmount = () => {
         </h1>
 
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Customer ID
-              </Label>
-              <Input
+              </label>
+              <input
                 name="custVendId"
                 id="custVendId"
                 placeholder="Customer ID"
@@ -132,10 +131,10 @@ const TotalAmount = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Challan Heading
-              </Label>
-              <Input
+              </label>
+              <input
                 name="challanHeading"
                 id="challanHeading"
                 placeholder="Challan Heading"
@@ -151,10 +150,10 @@ const TotalAmount = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 PAN
-              </Label>
-              <Input
+              </label>
+              <input
                 name="pan"
                 id="pan"
                 placeholder="PAN"
@@ -191,7 +190,7 @@ const TotalAmount = () => {
                 setAutoResize={setAutoResize}
               />
             </div>
-          </Field>
+          </div>
         </div>
 
         <div
@@ -200,11 +199,11 @@ const TotalAmount = () => {
             showDivs ? "max-h-[250px]" : "max-h-0"
           )}
         >
-          <Field className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Month
-              </Label>
+              </label>
               <select
                 name="month"
                 id="month"
@@ -232,17 +231,15 @@ const TotalAmount = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Financial Year
-              </Label>
+              </label>
               <select
                 name="fy"
                 id="fy"
-                className={clsx(
-                  "mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
-                )}
+                className={
+                  "custom-scrollbar mt-1 h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                }
                 value={searchParams.fy}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -262,17 +259,15 @@ const TotalAmount = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Section
-              </Label>
+              </label>
               <select
                 name="sectionCode"
                 id="sectionCode"
-                className={clsx(
-                  "mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
-                )}
+                className={
+                  "custom-scrollbar mt-1 h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                }
                 value={searchParams.sectionCode}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -294,10 +289,10 @@ const TotalAmount = () => {
             <br />
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 System Amount
-              </Label>
-              <Input
+              </label>
+              <input
                 name="totalAmountPaidRaw"
                 id="totalAmountPaidRaw"
                 placeholder="System Amount"
@@ -313,10 +308,10 @@ const TotalAmount = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Traces Amount
-              </Label>
-              <Input
+              </label>
+              <input
                 name="totalAmountPaidUpload"
                 id="totalAmountPaidUpload"
                 placeholder="Traces Amount"
@@ -332,10 +327,10 @@ const TotalAmount = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 System Tax Amount
-              </Label>
-              <Input
+              </label>
+              <input
                 name="totaltaxRaw"
                 id="totaltaxRaw"
                 placeholder="System Tax Amount"
@@ -353,10 +348,10 @@ const TotalAmount = () => {
             <br />
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Traces Tax Amount
-              </Label>
-              <Input
+              </label>
+              <input
                 name="totalTaxUploaded"
                 id="totalTaxUploaded"
                 placeholder="Traces Tax Amount"
@@ -380,7 +375,7 @@ const TotalAmount = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <div>

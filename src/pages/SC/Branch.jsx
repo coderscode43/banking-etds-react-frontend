@@ -2,7 +2,6 @@ import clsx from "clsx";
 import common from "@/common/common";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { Field, Input, Label } from "@headlessui/react";
 import Pagination from "@/components/component/Pagination";
 import staticDataContext from "@/context/staticDataContext";
 import { TooltipWrapper } from "@/components/component/Tooltip";
@@ -88,12 +87,12 @@ const Branch = () => {
         </h1>
 
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Ro Code
-              </Label>
-              <Input
+              </label>
+              <input
                 name="roCode"
                 id="roCode"
                 placeholder="RO Code"
@@ -107,10 +106,10 @@ const Branch = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 RO Name
-              </Label>
-              <Input
+              </label>
+              <input
                 name="branchName"
                 id="branchName"
                 placeholder="Name"
@@ -124,9 +123,9 @@ const Branch = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 State
-              </Label>
+              </label>
               <select
                 name="branchState"
                 id="branchState"
@@ -180,7 +179,7 @@ const Branch = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <DynamicTableEdit

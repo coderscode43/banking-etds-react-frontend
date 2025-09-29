@@ -4,7 +4,6 @@ import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import staticDataContext from "@/context/staticDataContext";
-import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -106,11 +105,11 @@ const CorrectionRequest = () => {
         </h1>
 
         <div>
-          <Field className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Status
-              </Label>
+              </label>
               <select
                 name="status"
                 id="status"
@@ -128,14 +127,14 @@ const CorrectionRequest = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Financial Year
-              </Label>
+              </label>
               <select
                 name="FY"
                 id="FY"
                 className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                  "custom-scroll mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
                 value={searchParams.FY}
                 onChange={(e) =>
@@ -155,9 +154,9 @@ const CorrectionRequest = () => {
               </select>
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Quarter
-              </Label>
+              </label>
               <select
                 name="quarter"
                 id="quarter"
@@ -214,7 +213,7 @@ const CorrectionRequest = () => {
                 setAutoResize={setAutoResize}
               />
             </div>
-          </Field>
+          </div>
         </div>
 
         <div
@@ -223,12 +222,12 @@ const CorrectionRequest = () => {
             showDivs ? "max-h-[150px]" : "max-h-0"
           )}
         >
-          <Field className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Ticket Number
-              </Label>
-              <Input
+              </label>
+              <input
                 name="ticketNumber"
                 id="ticketNumber"
                 placeholder="Ticket Number"
@@ -244,10 +243,10 @@ const CorrectionRequest = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Name of Customer
-              </Label>
-              <Input
+              </label>
+              <input
                 name="name"
                 id="name"
                 placeholder="Name of Customer"
@@ -262,10 +261,10 @@ const CorrectionRequest = () => {
               />
             </div>
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 PAN of Customer
-              </Label>
-              <Input
+              </label>
+              <input
                 name="pan"
                 id="pan"
                 placeholder="PAN Number"
@@ -283,9 +282,9 @@ const CorrectionRequest = () => {
             <br />
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 Type of Correction
-              </Label>
+              </label>
               <select
                 id="typeOfCorrection"
                 name="typeOfCorrection"
@@ -311,10 +310,10 @@ const CorrectionRequest = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 From Date Of Request
-              </Label>
-              <Input
+              </label>
+              <input
                 type="date"
                 id="fromDate"
                 name="fromDate"
@@ -329,10 +328,10 @@ const CorrectionRequest = () => {
             </div>
 
             <div className="w-full md:w-1/4">
-              <Label className="font-semibold text-[var(--primary-color)]">
+              <label className="font-semibold text-[var(--primary-color)]">
                 To Date Of Request
-              </Label>
-              <Input
+              </label>
+              <input
                 type="date"
                 id="toDate"
                 name="toDate"
@@ -356,7 +355,7 @@ const CorrectionRequest = () => {
                 </button>
               </TooltipWrapper>
             </div>
-          </Field>
+          </div>
         </div>
 
         <div>
