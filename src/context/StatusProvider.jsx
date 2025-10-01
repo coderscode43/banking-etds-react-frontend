@@ -4,11 +4,13 @@ import StatusContext from "./statusContext";
 const StatusProvider = ({ children }) => {
   const [successModal, setSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [redirectPath, setRedirectPath] = useState(null);
   const [errorModal, setErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
-  const showSuccess = (message) => {
+  
+  const showSuccess = (message, redirectPath = null) => {
     setSuccessMessage(message);
+    setRedirectPath(redirectPath);
     setSuccessModal(true);
   };
 
@@ -28,6 +30,8 @@ const StatusProvider = ({ children }) => {
         errorMessage,
         showSuccess,
         showError,
+        redirectPath, // Expose redirectPath
+        setRedirectPath, // Expose setter if needed
       }}
     >
       {children}

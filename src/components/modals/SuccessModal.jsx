@@ -1,9 +1,12 @@
 import statusContext from "@/context/statusContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SuccessModal = () => {
-  const { successModal, setSuccessModal, successMessage } =
+  const { successModal, setSuccessModal, successMessage, redirectPath } =
     useContext(statusContext);
+
+  const navigate = useNavigate();
 
   return (
     <div
@@ -28,6 +31,9 @@ const SuccessModal = () => {
           <button
             onClick={() => {
               setSuccessModal(false);
+              if (redirectPath) {
+                navigate(redirectPath);
+              }
             }}
             className="mx-2 w-full cursor-pointer rounded-lg bg-green-600 py-2 font-medium text-white hover:bg-green-500"
           >
