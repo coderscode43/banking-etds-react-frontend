@@ -1,6 +1,5 @@
 import {
   addBulkRemark,
-  addRegularReturn,
   detailListData,
   detailRegularReturn,
   listData,
@@ -10,6 +9,7 @@ import {
   sendReminder,
   WOTSearchListData,
   generateExcel,
+  submitEntity,
 } from "@/service/apiService";
 
 const common = {
@@ -151,8 +151,8 @@ const common = {
     return await sendReminder(entity, rowsData);
   },
 
-  getAddRegularReturn: async (entity, formdata) => {
-    return await addRegularReturn(entity, formdata);
+  getSubmit: async (entity, formData) => {
+    return await submitEntity(entity, formData);
   },
 };
 

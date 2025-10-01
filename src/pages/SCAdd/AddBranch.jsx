@@ -1,113 +1,141 @@
+import common from "@/common/common";
+import ErrorMessage from "@/components/component/ErrorMessage";
 import staticDataContext from "@/context/staticDataContext";
+import statusContext from "@/context/statusContext";
+import { errorMessage } from "@/lib/utils";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddBranch = () => {
+  const entity = "branch";
   const navigate = useNavigate();
 
   const { State } = useContext(staticDataContext);
+  const { showSuccess, showError } = useContext(statusContext);
 
+  const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
 
-  const [formData, setFormData] = useState({
-    roCode: "",
-    branchCode: "",
-    branchName: "",
-    branchEmail: "",
-    branchContactNo: "",
-    branchAddress: "",
-    branchPinCode: "",
-    branchState: "",
-  });
-
-  // Regex patterns for validation
-  const patterns = {
-    roCode: /^[a-zA-Z0-9][a-zA-Z0-9]+$/,
-    branchCode: /^[0-9]+$/,
-    branchName: /^[a-zA-Z0-9][a-zA-Z0-9]+$/,
-    branchEmail: /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/,
-    branchContactNo: /^[0-9]{10}$/,
-    branchPinCode: /^[0-9]{6}$/,
-  };
-
-  const validate = () => {
+  const validate = (data) => {
     const newErrors = {};
 
-    // RO Code
-    if (!formData.roCode) newErrors.roCode = "RO Code is Required.";
-    else if (!patterns.roCode.test(formData.roCode))
-      newErrors.roCode = "Enter valid RO Code.";
-    else if (formData.roCode.length > 10)
-      newErrors.roCode = "RO Code should not be greater than 10 characters.";
+    // Helper function to prettify field names
+    const prettyFieldName = (field) => {
+      return field
+        .replace(/([A-Z])/g, " $1") // add space before uppercase letters
+        .replace(/^./, (str) => str.toUpperCase()); // capitalize first letter
+    };
 
-    // Branch Code
-    if (!formData.branchCode) newErrors.branchCode = "Branch Code is Required.";
-    else if (!patterns.branchCode.test(formData.branchCode))
-      newErrors.branchCode = "Enter valid Branch Code.";
-    else if (formData.branchCode.length > 10)
-      newErrors.branchCode =
-        "Branch Code should not be greater than 10 characters.";
+    const requiredFields = [
+      "roCode",
+      "branchCode",
+      "branchName",
+      "branchEmail",
+      "branchContactNo",
+      "branchAddress",
+      "branchPinCode",
+      "branchState",
+    ];
 
-    // Branch Name
-    if (!formData.branchName) newErrors.branchName = "Branch Name is Required.";
-    else if (!patterns.branchName.test(formData.branchName))
-      newErrors.branchName = "Enter valid Branch Name.";
+    requiredFields.forEach((field) => {
+      if (!data[field] || data[field].trim() === "") {
+        newErrors[field] = `${prettyFieldName(field)} is required`;
+      }
+    });
 
-    // Branch Email
-    if (!formData.branchEmail) newErrors.branchEmail = "Email ID is Required.";
-    else if (!patterns.branchEmail.test(formData.branchEmail))
-      newErrors.branchEmail = "Email ID is invalid.";
+    // Custom validations for specific fields
+    if (data.roCode) {
+      if (data.roCode.length > 10) {
+        newErrors.roCode = "RO Code should not be greater than 10 digits";
+      } else {
+        const roCodePattern = /^[a-zA-Z0-9][a-zA-Z0-9 \\-]*$/;
+        if (!roCodePattern.test(data.roCode)) {
+          newErrors.roCode = "Enter a valid RO Code";
+        }
+      }
+    }
 
-    // Branch Contact No
-    if (!formData.branchContactNo)
-      newErrors.branchContactNo = "Branch Contact No is Required.";
-    else if (!patterns.branchContactNo.test(formData.branchContactNo))
-      newErrors.branchContactNo = "Enter Valid Branch Contact No.";
+    if (data.branchCode) {
+      if (data.branchCode.length > 10) {
+        newErrors.branchCode =
+          "Branch Code should not be greater than 10 characters";
+      } else {
+        const branchCodePattern = /^[0-9]+$/;
+        if (!branchCodePattern.test(data.branchCode)) {
+          newErrors.branchCode = "Enter valid Branch Code";
+        }
+      }
+    }
 
-    // Branch Address
-    if (!formData.branchAddress)
-      newErrors.branchAddress = "Branch Address is Required.";
-    else if (formData.branchAddress.length > 50)
+    if (
+      data.branchName &&
+      !/^[a-zA-Z0-9][a-zA-Z0-9\- ]+$/.test(data.branchName)
+    ) {
+      newErrors.branchName = "Enter valid Branch Name";
+    }
+
+    if (
+      data.branchEmail &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.branchEmail)
+    ) {
+      newErrors.branchEmail = "Email ID is invalid";
+    }
+
+    if (data.branchContactNo && !/^[0-9]{10}$/.test(data.branchContactNo)) {
+      newErrors.branchContactNo = "Enter Valid Branch Contact No";
+    }
+
+    if (data.branchAddress && data.branchAddress.length > 50) {
       newErrors.branchAddress =
-        "Branch Address should not be greater than 50 characters.";
+        "Branch Address should not be Greater than 50 characters";
+    }
 
-    // Branch Pincode
-    if (!formData.branchPinCode)
-      newErrors.branchPinCode = "Branch Pincode is Required.";
-    else if (!patterns.branchPinCode.test(formData.branchPinCode))
-      newErrors.branchPinCode = "Enter Valid Branch Pincode.";
+    if (data.branchPinCode && !/^\d{6}$/.test(data.branchPinCode)) {
+      newErrors.branchPinCode = "PinCode must be 6 digits";
+    }
 
-    // Branch State
-    if (!formData.branchState)
-      newErrors.branchState = "Branch State is Required.";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return newErrors;
   };
 
-  const handleChange = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validationErrors = validate(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
+
+    try {
+      const response = await common.getSubmit(entity, formData);
+      showSuccess(response.data.successMsg);
+    } catch (error) {
+      showError(
+        `Can not save ${error?.response?.data?.entityName}  ${errorMessage(error)}`
+      );
+      console.log(error);
+    }
+  };
+
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (!name) return;
+
+    // Update form data
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
 
-    if (submitted) {
-      validate();
-    }
-    setErrors(" ");
-  };
+    // Validate just this field inside full form context
+    const fieldError = validate({ ...formData, [name]: value })[name];
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-
-    if (validate()) {
-      // Submit form data
-      alert("Form submitted successfully!");
-    }
-    errors;
+    // Cleanly update errors: overwrite if error exists, remove key if no error
+    setErrors((prev) => {
+      const { [name]: _removed, ...rest } = prev; // remove old error for this field
+      return fieldError ? { ...rest, [name]: fieldError } : rest;
+    });
   };
 
   return (
@@ -116,7 +144,7 @@ const AddBranch = () => {
         <h1 className="text-2xl font-bold">Add Branch</h1>
         <form className="space-y-3" onSubmit={handleSubmit} noValidate>
           {/* RO Code */}
-          <div className="flex flex-col md:flex-row md:space-x-6">
+          <div className="flex flex-col md:flex-row md:space-x-10">
             <div className="mb-4 flex-1 md:mb-0">
               <label htmlFor="roCode" className="mb-1 block font-semibold">
                 RO Code <span className="text-red-600">*</span>
@@ -125,17 +153,12 @@ const AddBranch = () => {
                 type="text"
                 id="roCode"
                 name="roCode"
-                placeholder="ROCode"
-                value={formData.roCode}
-                onChange={handleChange}
-                className={`w-full rounded border px-3 py-2 focus:outline-none ${
-                  errors.roCode ? "border-red-500" : "border-gray-300"
-                }`}
-                maxLength={10}
+                placeholder="RO Code"
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                value={formData.roCode || ""}
+                onChange={handleInputChange}
               />
-              {errors.roCode && (
-                <p className="mt-1 text-sm text-red-600">{errors.roCode}</p>
-              )}
+              <ErrorMessage error={errors.roCode} />
             </div>
 
             {/* Branch Code */}
@@ -148,21 +171,16 @@ const AddBranch = () => {
                 id="branchCode"
                 name="branchCode"
                 placeholder="Branch Code"
-                value={formData.branchCode}
-                onChange={handleChange}
-                className={`w-full rounded border px-3 py-2 focus:outline-none ${
-                  errors.branchCode ? "border-red-500" : "border-gray-300"
-                }`}
-                maxLength={10}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                value={formData.branchCode || ""}
+                onChange={handleInputChange}
               />
-              {errors.branchCode && (
-                <p className="mt-1 text-sm text-red-600">{errors.branchCode}</p>
-              )}
+              <ErrorMessage error={errors.branchCode} />
             </div>
           </div>
 
           {/* Branch Name and Email */}
-          <div className="flex flex-col md:flex-row md:space-x-6">
+          <div className="flex flex-col md:flex-row md:space-x-10">
             <div className="mb-4 flex-1 md:mb-0">
               <label htmlFor="branchName" className="mb-1 block font-semibold">
                 Branch Name <span className="text-red-600">*</span>
@@ -172,15 +190,11 @@ const AddBranch = () => {
                 id="branchName"
                 name="branchName"
                 placeholder="Branch Name"
-                value={formData.branchName}
-                onChange={handleChange}
-                className={`w-full rounded border px-3 py-2 focus:outline-none ${
-                  errors.branchName ? "border-red-500" : "border-gray-300"
-                }`}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                value={formData.branchName || ""}
+                onChange={handleInputChange}
               />
-              {errors.branchName && (
-                <p className="mt-1 text-sm text-red-600">{errors.branchName}</p>
-              )}
+              <ErrorMessage error={errors.branchName} />
             </div>
 
             <div className="flex-1">
@@ -192,23 +206,16 @@ const AddBranch = () => {
                 id="branchEmail"
                 name="branchEmail"
                 placeholder="Branch Email"
-                value={formData.branchEmail}
-                onChange={handleChange}
-                className={`w-full rounded border px-3 py-2 lowercase focus:outline-none ${
-                  errors.branchEmail ? "border-red-500" : "border-gray-300"
-                }`}
-                style={{ textTransform: "lowercase" }}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                value={formData.branchEmail || ""}
+                onChange={handleInputChange}
               />
-              {errors.branchEmail && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.branchEmail}
-                </p>
-              )}
+              <ErrorMessage error={errors.branchEmail} />
             </div>
           </div>
 
           {/* Branch Contact No and Address */}
-          <div className="flex flex-col md:flex-row md:space-x-6">
+          <div className="flex flex-col md:flex-row md:space-x-10">
             <div className="mb-4 flex-1 md:mb-0">
               <label
                 htmlFor="branchContactNo"
@@ -221,18 +228,12 @@ const AddBranch = () => {
                 id="branchContactNo"
                 name="branchContactNo"
                 placeholder="Branch Contact No"
-                value={formData.branchContactNo}
-                onChange={handleChange}
-                className={`w-full rounded border px-3 py-2 focus:outline-none ${
-                  errors.branchContactNo ? "border-red-500" : "border-gray-300"
-                }`}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 maxLength={10}
+                value={formData.branchContactNo || ""}
+                onChange={handleInputChange}
               />
-              {errors.branchContactNo && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.branchContactNo}
-                </p>
-              )}
+              <ErrorMessage error={errors.branchContactNo} />
             </div>
 
             <div className="flex-1">
@@ -246,24 +247,18 @@ const AddBranch = () => {
                 id="branchAddress"
                 name="branchAddress"
                 placeholder="Address"
-                value={formData.branchAddress}
-                onChange={handleChange}
                 maxLength={100}
-                className={`w-full resize-none rounded border px-3 py-2 focus:outline-none ${
-                  errors.branchAddress ? "border-red-500" : "border-gray-300"
-                }`}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 rows={3}
+                value={formData.branchAddress || ""}
+                onChange={handleInputChange}
               />
-              {errors.branchAddress && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.branchAddress}
-                </p>
-              )}
+              <ErrorMessage error={errors.branchAddress} />
             </div>
           </div>
 
           {/* Branch Pincode and State */}
-          <div className="flex flex-col md:flex-row md:space-x-6">
+          <div className="flex flex-col md:flex-row md:space-x-10">
             <div className="mb-4 flex-1 md:mb-0">
               <label
                 htmlFor="branchPinCode"
@@ -276,18 +271,11 @@ const AddBranch = () => {
                 id="branchPinCode"
                 name="branchPinCode"
                 placeholder="Branch Pincode"
-                value={formData.branchPinCode}
-                onChange={handleChange}
-                className={`w-full rounded border px-3 py-2 focus:outline-none ${
-                  errors.branchPinCode ? "border-red-500" : "border-gray-300"
-                }`}
-                maxLength={6}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                value={formData.branchPinCode || ""}
+                onChange={handleInputChange}
               />
-              {errors.branchPinCode && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.branchPinCode}
-                </p>
-              )}
+              <ErrorMessage error={errors.branchPinCode} />
             </div>
 
             <div className="flex-1">
@@ -297,36 +285,29 @@ const AddBranch = () => {
               <select
                 id="branchState"
                 name="branchState"
-                value={formData.branchState}
-                onChange={handleChange}
-                className={`custom-scrollbar w-full rounded border px-3 py-2 focus:outline-none ${
-                  errors.branchState ? "border-red-500" : "border-gray-300"
-                }`}
+                className="custom-scrollbar mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                value={formData.branchState || ""}
+                onChange={handleInputChange}
               >
-                <option value="" disabled>
-                  Select State
-                </option>
+                <option value="">Select State</option>
                 {State?.map((state) => (
                   <option key={state} value={state}>
                     {state}
                   </option>
                 ))}
               </select>
-              {errors.branchState && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.branchState}
-                </p>
-              )}
+              <ErrorMessage error={errors.branchState} />
             </div>
           </div>
           <div className="flex justify-end-safe gap-3">
             <button
+              type="submit"
               className="mt-7 h-[38px] cursor-pointer rounded-sm bg-green-600 px-2 text-white"
-              onClick={handleSubmit}
             >
               Submit
             </button>
             <button
+              type="button"
               className="mt-7 h-[38px] cursor-pointer rounded-sm bg-red-600 px-2 text-white"
               onClick={() => navigate(-1)}
             >

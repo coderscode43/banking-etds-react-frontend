@@ -168,15 +168,11 @@ export const sendReminder = async (entity, rowsData) => {
   return response;
 };
 
-export const addRegularReturn = async (entity, formdata) => {
-  try {
-    const response = await axios.post(
-      `${API_BASE_URL}${entity}/add`,
-      { ...formdata },
-      credentials
-    );
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
+export const submitEntity = async (entity, formdata) => {
+  const response = await axios.post(
+    `${API_BASE_URL}${entity}/add`,
+    { ...formdata },
+    credentials
+  );
+  return response;
 };

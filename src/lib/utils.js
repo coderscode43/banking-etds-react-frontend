@@ -6,5 +6,10 @@ export function cn(...inputs) {
 }
 
 export const errorMessage = (error, fallback = "An error occurred") => {
-  return error?.response?.data?.exceptionMsg || error?.message || fallback;
+  return (
+    error?.response?.data?.exceptionMsg ||
+    error?.response?.data?.message ||
+    error?.message ||
+    fallback
+  );
 };

@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import common from "@/common/common";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -96,9 +95,7 @@ const Branch = () => {
                 name="roCode"
                 id="roCode"
                 placeholder="RO Code"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.roCode}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -113,9 +110,7 @@ const Branch = () => {
                 name="branchName"
                 id="branchName"
                 placeholder="Name"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.branchName}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -129,9 +124,7 @@ const Branch = () => {
               <select
                 name="branchState"
                 id="branchState"
-                className={clsx(
-                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
                 }
