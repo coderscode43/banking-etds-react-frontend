@@ -1,9 +1,11 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useState } from "react";
-import LogoutModal from "../modals/LogoutModal";
+import DynamicModal from "@/components/modals/DynamicModal";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 const DropdownMenu = () => {
-  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <>
@@ -33,7 +35,7 @@ const DropdownMenu = () => {
           <MenuItem>
             <button
               className="group flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-1.5 data-focus:bg-gray-100"
-              onClick={() => setIsLogoutOpen(true)}
+              onClick={() => setIsModalOpen(true)}
             >
               <img
                 className="h-6 w-6"
@@ -46,11 +48,15 @@ const DropdownMenu = () => {
         </MenuItems>
       </Menu>
 
-      {/* Render the modal */}
-      <LogoutModal
-        isOpen={isLogoutOpen}
-        onClose={() => setIsLogoutOpen(false)}
-      />
+      {/* Render the modal only when open */}
+      {isModalOpen && (
+        <DynamicModal
+          title="Are you sure?"
+          description="Do you want to logout !!!"
+          isModalOpen={() => setIsModalOpen(true)}
+          closeModal={closeModal}
+        />
+      )}
     </>
   );
 };

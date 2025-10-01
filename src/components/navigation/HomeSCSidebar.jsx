@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import LogoutModal from "@/components/modals/LogoutModal";
+import DynamicModal from "@/components/modals/DynamicModal";
 
 const navItems = [
   {
@@ -108,7 +108,9 @@ const navItems = [
 ];
 
 const HomeSCSidebar = ({ sideBarOpen }) => {
-  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <>
@@ -128,7 +130,7 @@ const HomeSCSidebar = ({ sideBarOpen }) => {
                       onClick={(e) => {
                         if (id === "logout") {
                           e.preventDefault();
-                          setIsLogoutOpen(true);
+                          setIsModalOpen(true);
                         }
                       }}
                       className={({ isActive }) =>
@@ -169,11 +171,15 @@ const HomeSCSidebar = ({ sideBarOpen }) => {
         </nav>
       </div>
 
-      {/* Render the modal */}
-      <LogoutModal
-        isOpen={isLogoutOpen}
-        onClose={() => setIsLogoutOpen(false)}
-      />
+      {/* Render the modal only when open */}
+      {isModalOpen && (
+        <DynamicModal
+          title="Are you sure?"
+          description="Do you want to logout !!!"
+          isModalOpen={() => setIsModalOpen(true)}
+          closeModal={closeModal}
+        />
+      )}
     </>
   );
 };
