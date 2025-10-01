@@ -6,7 +6,7 @@ export default function GenerateAIModal({ isOpen, onClose }) {
       open={isOpen}
       as="div"
       className="relative z-10 focus:outline-none"
-      onClose={onClose}
+      onClose={() => {}}
     >
       {/* Overlay with light semi-transparent background */}
       <div className="fixed inset-0 bg-black/10" />

@@ -35,7 +35,7 @@ const UpdateForm26QDeductee = () => {
         <Dialog
           as="div"
           className="relative z-10 rounded-md"
-          onClose={closeModal}
+          onClose={() => {}}
         >
           <TransitionChild
             as={Fragment}

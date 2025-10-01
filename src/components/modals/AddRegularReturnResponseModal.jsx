@@ -28,7 +28,7 @@ const AddRegularReturnResponse = () => {
         <Dialog
           as="div"
           className="relative z-10 rounded-md"
-          onClose={() => setIsOpen(false)}
+          onClose={() => {}}
         >
           <TransitionChild
             as={Fragment}
