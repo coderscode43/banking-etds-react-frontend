@@ -66,7 +66,8 @@ const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
                             navigate(
                               `/home/detail/${entity}/${data.id}/detail${
                                 entity.charAt(0).toUpperCase() + entity.slice(1)
-                              }`
+                              }`,
+                              { state: { rowID: data.id } }
                             );
                           }}
                           className="fa-solid fa-pen-to-square text-lg"

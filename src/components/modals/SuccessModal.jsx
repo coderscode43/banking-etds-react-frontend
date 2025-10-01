@@ -33,6 +33,8 @@ const SuccessModal = () => {
               setSuccessModal(false);
               if (redirectPath) {
                 navigate(redirectPath);
+              } else {
+                window.location.reload();
               }
             }}
             className="mx-2 w-full cursor-pointer rounded-lg bg-green-600 py-2 font-medium text-white hover:bg-green-500"

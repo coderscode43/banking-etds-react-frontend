@@ -17,7 +17,7 @@ const DetailRegularReturn = () => {
   useEffect(() => {
     const fetchDetailListData = async () => {
       try {
-        const response = await common.getDetailRegularReturn(entity, id);
+        const response = await common.getDetailListDataSC(entity, id);
 
         setDetailListData(response.data.RRR || []);
         setDetailGridData(response.data.RR || {});

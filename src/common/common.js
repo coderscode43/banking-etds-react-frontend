@@ -1,7 +1,6 @@
 import {
   addBulkRemark,
   detailListData,
-  detailRegularReturn,
   listData,
   WOTListData,
   paginationListData,
@@ -10,6 +9,8 @@ import {
   WOTSearchListData,
   generateExcel,
   submitEntity,
+  updateEntity,
+  detailListDataSC,
 } from "@/service/apiService";
 
 const common = {
@@ -21,8 +22,8 @@ const common = {
     return await detailListData(entity, fy, branchCode, id);
   },
 
-  getDetailRegularReturn: async (entity, id) => {
-    return await detailRegularReturn(entity, id);
+  getDetailListDataSC: async (entity, id) => {
+    return await detailListDataSC(entity, id);
   },
 
   getWOTListData: async (entity, fy, branchCode) => {
@@ -153,6 +154,10 @@ const common = {
 
   getSubmit: async (entity, formData) => {
     return await submitEntity(entity, formData);
+  },
+
+  getUpdateData: async (entity, formData) => {
+    return await updateEntity(entity, formData);
   },
 };
 

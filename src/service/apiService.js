@@ -32,7 +32,7 @@ export const detailListData = async (entity, fy, branchCode, id) => {
   }
 };
 
-export const detailRegularReturn = async (entity, id) => {
+export const detailListDataSC = async (entity, id) => {
   try {
     const response = await axios.get(
       `${API_BASE_URL}${entity}/detail/${id}`,
@@ -168,10 +168,19 @@ export const sendReminder = async (entity, rowsData) => {
   return response;
 };
 
-export const submitEntity = async (entity, formdata) => {
+export const submitEntity = async (entity, formData) => {
   const response = await axios.post(
     `${API_BASE_URL}${entity}/add`,
-    { ...formdata },
+    { ...formData },
+    credentials
+  );
+  return response;
+};
+
+export const updateEntity = async (entity, formData) => {
+  const response = await axios.put(
+    `${API_BASE_URL}${entity}/update`,
+    { ...formData },
     credentials
   );
   return response;

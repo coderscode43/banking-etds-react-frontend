@@ -1,9 +1,30 @@
-import { useNavigate } from "react-router-dom";
+import common from "@/common/common";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import EditBranchDetails from "@/components/modals/EditBranchDetailsModal";
+import EditBranchDetailsModal from "@/components/modals/EditBranchDetailsModal";
 
 const DetailBranch = () => {
+  const entity = "branch";
+
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const { rowID } = location.state || {};
+
+  const [detailData, setDetailData] = useState({});
+
+  useEffect(() => {
+    try {
+      const fetchDetailData = async () => {
+        const response = await common.getDetailListDataSC(entity, rowID);
+        setDetailData(response.data);
+      };
+      fetchDetailData();
+    } catch (error) {
+      console.error("Error fetching detail data:", error);
+    }
+  }, [rowID]);
 
   const fields = [
     { label: "RO Code", key: "roCode" },
@@ -16,34 +37,18 @@ const DetailBranch = () => {
     { label: "RO State", key: "branchState" },
   ];
 
-  const data = [
-    {
-      id: 2285929,
-      roCode: "100",
-      branchCode: 1000,
-      branchName: "tset",
-      branchEmail: "tset@gmail.com",
-      branchContactNo: "9874561230",
-      branchAddress: "kkkk",
-      branchPinCode: "400091",
-      branchState: "Maharashtra-19",
-      tan: 123,
-    },
-  ];
+  const data = [detailData];
 
   return (
     <>
-      <div className="rounded-md p-4 shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
+      <div className="rounded-md border-gray-100 p-4 shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
         <h1 className="ms-2 mb-5 text-2xl font-bold text-[var(--primary-color)]">
           RO Details
         </h1>
 
         <DetailGrid fields={fields} data={data[0]} columns={2} />
         <div className="mt-3 flex justify-end gap-4 pr-5">
-          {/* <button className="cursor-pointer rounded-md bg-blue-600 p-2 px-4 font-semibold text-white">
-            <i className="fa-solid fa-pen-to-square"></i>&nbsp; Edit
-          </button> */}
-          <EditBranchDetails />
+          <EditBranchDetailsModal data={detailData} entity={entity} />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}
