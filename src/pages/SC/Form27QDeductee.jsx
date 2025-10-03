@@ -78,7 +78,7 @@ const Form27QDeductee = () => {
     { label: "Branch Code", key: "branchCode" },
     { label: "Challan Heading", key: "challanHeading" },
     { label: "PAN", key: "pan" },
-    { label: "Name", key: "tan" },
+    { label: "Name", key: "name" },
     { label: "Section Code", key: "sectionCode" },
     { label: "TAN", key: "tan" },
     { label: "Action", key: "action" },
@@ -159,11 +159,7 @@ const Form27QDeductee = () => {
               <select
                 name="quarter"
                 id="quarter"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
-                )}
+                className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.quarter}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -190,10 +186,7 @@ const Form27QDeductee = () => {
                 name="branchCode"
                 id="branchCode"
                 placeholder="Branch Code"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none"
-                )}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.branchCode}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -208,10 +201,7 @@ const Form27QDeductee = () => {
                 name="name"
                 id="name"
                 placeholder="Name"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none"
-                )}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.name}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -263,9 +253,7 @@ const Form27QDeductee = () => {
               <select
                 name="TAN"
                 id="TAN"
-                className={
-                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                }
+                className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.TAN}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -292,10 +280,7 @@ const Form27QDeductee = () => {
                 name="pan"
                 id="pan"
                 placeholder="PAN"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none"
-                )}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.pan}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -310,10 +295,7 @@ const Form27QDeductee = () => {
                 name="challanHeading"
                 id="challanHeading"
                 placeholder="Challan Heading"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none"
-                )}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.challanHeading}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -329,10 +311,7 @@ const Form27QDeductee = () => {
                 name="roCode"
                 id="roCode"
                 placeholder="RO Code"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none"
-                )}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.roCode}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -347,9 +326,7 @@ const Form27QDeductee = () => {
               <select
                 name="sectionCode"
                 id="sectionCode"
-                className={
-                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                }
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.sectionCode}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -375,11 +352,7 @@ const Form27QDeductee = () => {
               <select
                 name="resolved"
                 id="resolved"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900",
-                  "focus:outline-none",
-                  "h-[38px]"
-                )}
+                className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.resolved}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)

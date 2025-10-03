@@ -64,9 +64,9 @@ const DetailRegularReturn = () => {
 
         <DetailGrid fields={fields} data={detailGridData} columns={2} />
         <div className="mt-5 flex justify-end gap-4 pr-5">
-          <AddRegularReturnResponseModal />
+          <AddRegularReturnResponseModal regularReturnId={id} />
           <button
-            className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
+            className="cursor-pointer rounded-md bg-red-600 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back

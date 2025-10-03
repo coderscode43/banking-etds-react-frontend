@@ -66,14 +66,14 @@ export const DetailGrid = ({ fields, data, columns = 1 }) => {
             const labelCls =
               field.labelClassName ||
               (isFull
-                ? "md:w-4/12 px-2 font-semibold text-[var(--primary-color)] text-sm flex items-center"
-                : "w-1/2 px-2 font-semibold text-[var(--primary-color)] text-sm flex items-center");
+                ? "md:w-4/12 px-2 font-semibold text-[var(--primary-color)] text-sm flex items-start"
+                : "w-1/2 px-2 font-semibold text-[var(--primary-color)] text-sm flex items-start");
 
             const valueCls =
               field.valueClassName ||
               (isFull
-                ? "md:w-8/12 px-2 text-[var(--secondary-color)] text-sm flex items-center fontSize-[16px]"
-                : "w-1/2 px-2 text-[var(--secondary-color)] text-sm flex items-center");
+                ? "md:w-8/12 px-2 text-[var(--secondary-color)] text-sm flex items-start fontSize-[16px]"
+                : "w-1/2 px-2 text-[var(--secondary-color)] text-sm flex items-start");
 
             return (
               <div

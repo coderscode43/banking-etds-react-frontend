@@ -198,3 +198,17 @@ export const deleteUserDetails = async (entity, employeeId) => {
     console.error(error);
   }
 };
+
+export const submitWithFile = async (entity, formDataObj) => {
+  const response = await axios.post(
+    `${API_BASE_URL}${entity}/addWithFile`,
+    formDataObj,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      ...credentials,
+    }
+  );
+  return response;
+};

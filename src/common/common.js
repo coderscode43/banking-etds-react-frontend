@@ -12,6 +12,7 @@ import {
   deleteUserDetails,
   updateEntity,
   detailListDataSC,
+  submitWithFile,
 } from "@/service/apiService";
 
 const common = {
@@ -163,6 +164,10 @@ const common = {
 
   getDeleteUserDetails: async (entity, employeeId) => {
     return await deleteUserDetails(entity, employeeId);
+  },
+
+  getSubmitWithFile: async (entity, formDataObj) => {
+    return await submitWithFile(entity, formDataObj);
   },
 };
 
