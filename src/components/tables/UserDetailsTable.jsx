@@ -1,64 +1,110 @@
-const UserDetailsTable = ({ tableHead, tableData }) => {
-  return (
-    <div className="relative w-full">
-      <div className="w-full overflow-clip rounded-md border border-gray-200">
-        <table className="w-full text-[14px]">
-          <thead className="bg-[var(--secondary-color)]">
-            <tr className="border-[1.5px] border-[var(--secondary-color)]">
-              {tableHead.map(({ label }, index) => (
-                <th
-                  key={index}
-                  className={`sticky top-[56px] bg-[var(--secondary-color)] p-2 whitespace-nowrap text-white ${
-                    index === tableHead.length - 1
-                      ? "border-[var(--secondary-color)]"
-                      : "border-gray-300"
-                  } z-0 border-r-[1.5px]`}
-                >
-                  <div className="block min-w-[70px] resize-x overflow-auto">
-                    {label}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
+import common from "@/common/common";
+import { useState, useContext } from "react";
+import DynamicModal from "../modals/DynamicModal";
+import statusContext from "@/context/statusContext";
+import { errorMessage } from "@/lib/utils";
 
-          <tbody>
-            {tableData.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={tableHead.length}
-                  className="p-4 text-center text-[16px] font-semibold text-red-500"
-                >
-                  No Data Found
-                </td>
-              </tr>
-            ) : (
-              <>
-                {tableData.map((data, index) => (
-                  <tr
+const UserDetailsTable = ({ tableHead, tableData, entity }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [employeeID, setEmployeeID] = useState("");
+  const { showSuccess, showError } = useContext(statusContext);
+
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleDelete = async (employeeId) => {
+    try {
+      const response = await common.getDeleteUserDetails(entity, employeeId);
+      setIsModalOpen(false);
+      showSuccess(response.data.successMsg);
+      window.location.reload();
+    } catch (error) {
+      showError(
+        `Can not save ${error?.response?.data?.entityName}  ${errorMessage(error)}`
+      );
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <div className="relative w-full">
+        <div className="w-full overflow-clip rounded-md border border-gray-200">
+          <table className="w-full text-[14px]">
+            <thead className="bg-[var(--secondary-color)]">
+              <tr className="border-[1.5px] border-[var(--secondary-color)]">
+                {tableHead.map(({ label }, index) => (
+                  <th
                     key={index}
-                    className="cursor-pointer text-center hover:bg-gray-100"
+                    className={`sticky top-[56px] bg-[var(--secondary-color)] p-2 whitespace-nowrap text-white ${
+                      index === tableHead.length - 1
+                        ? "border-[var(--secondary-color)]"
+                        : "border-gray-300"
+                    } z-0 border-r-[1.5px]`}
                   >
-                    {tableHead.map(({ key }, colIndex) => (
-                      <td
-                        key={colIndex}
-                        className="max-w-[70px] min-w-[100px] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
-                      >
-                        {key === "action" ? (
-                          <i className="fa-solid fa-trash text-md rounded-sm bg-blue-600 px-3.5 py-[13px] text-white"></i>
-                        ) : (
-                          (data[key] ?? " ")
-                        )}
-                      </td>
-                    ))}
-                  </tr>
+                    <div className="block min-w-[70px] resize-x overflow-auto">
+                      {label}
+                    </div>
+                  </th>
                 ))}
-              </>
-            )}
-          </tbody>
-        </table>
+              </tr>
+            </thead>
+
+            <tbody>
+              {tableData.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={tableHead.length}
+                    className="p-4 text-center text-[16px] font-semibold text-red-500"
+                  >
+                    No Data Found
+                  </td>
+                </tr>
+              ) : (
+                <>
+                  {tableData.map((data, index) => (
+                    <tr
+                      key={index}
+                      className="cursor-pointer text-center hover:bg-gray-100"
+                    >
+                      {tableHead.map(({ key }, colIndex) => (
+                        <td
+                          key={colIndex}
+                          className="max-w-[70px] min-w-[100px] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
+                        >
+                          {key === "action" ? (
+                            <i
+                              onClick={() => {
+                                setEmployeeID(data.employeeId);
+                                setIsModalOpen(true);
+                              }}
+                              className="fa-solid fa-trash text-md rounded-sm bg-blue-600 px-3.5 py-[13px] text-white"
+                            ></i>
+                          ) : (
+                            (data[key] ?? " ")
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+
+      {/* Render the modal only when open */}
+      {isModalOpen && (
+        <DynamicModal
+          title="Are you sure?"
+          description="Do you really want to delete these User?"
+          type="delete"
+          isModalOpen={() => setIsModalOpen(true)}
+          closeModal={closeModal}
+          handler={() => handleDelete(employeeID)}
+        />
+      )}
+    </>
   );
 };
 

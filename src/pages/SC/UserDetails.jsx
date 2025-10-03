@@ -150,7 +150,11 @@ const UserDetails = () => {
           </div>
         </div>
 
-        <UserDetailsTable tableHead={tableHead} tableData={tableData} />
+        <UserDetailsTable
+          entity={entity}
+          tableHead={tableHead}
+          tableData={tableData}
+        />
       </div>
 
       {/* Pagination */}

@@ -185,3 +185,16 @@ export const updateEntity = async (entity, formData) => {
   );
   return response;
 };
+
+export const deleteUserDetails = async (entity, employeeId) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}${entity}/delete/${employeeId}`,
+      {},
+      credentials
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};

@@ -9,6 +9,7 @@ import {
   WOTSearchListData,
   generateExcel,
   submitEntity,
+  deleteUserDetails,
   updateEntity,
   detailListDataSC,
 } from "@/service/apiService";
@@ -158,6 +159,10 @@ const common = {
 
   getUpdateData: async (entity, formData) => {
     return await updateEntity(entity, formData);
+  },
+
+  getDeleteUserDetails: async (entity, employeeId) => {
+    return await deleteUserDetails(entity, employeeId);
   },
 };
 
