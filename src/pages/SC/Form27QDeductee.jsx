@@ -1,5 +1,6 @@
 import common from "@/common/common";
 import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
+import GenerateExcelButton from "@/components/component/GenerateExcelButton";
 import Pagination from "@/components/component/Pagination";
 import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
@@ -57,8 +58,8 @@ const Form27QDeductee = () => {
           response = await common.getListData(entity);
         }
 
-        setListData(response.data.entities || []);
-        const count = response.data.count || 0;
+        setListData(response?.data?.entities || []);
+        const count = response?.data?.count || 0;
         const pages = Math.ceil(count / 100);
         setTotalPages(pages);
       } catch (error) {
@@ -136,11 +137,6 @@ const Form27QDeductee = () => {
   const handleSearch = async () => {
     const refinedParams = common.getRefinedSearchParams(searchParams);
     navigate(`/home/listSearch/${entity}/${refinedParams}`);
-  };
-
-  const handleGenerateExcel = async () => {
-    const refinedParams = common.getRefinedSearchParams(searchParams);
-    await common.getGenerateExcel(entity, refinedParams);
   };
 
   return (
@@ -364,14 +360,12 @@ const Form27QDeductee = () => {
               </select>
             </div>
             <div>
-              <TooltipWrapper tooltipText="Export to Excel">
-                <button
-                  onClick={handleGenerateExcel}
-                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
-                >
-                  <i className="fa-solid fa-file-excel"></i>
-                </button>
-              </TooltipWrapper>
+              <GenerateExcelButton
+                entity={entity}
+                params={params}
+                searchParams={searchParams}
+                layoutType={"sc"}
+              />
             </div>
           </div>
         </div>

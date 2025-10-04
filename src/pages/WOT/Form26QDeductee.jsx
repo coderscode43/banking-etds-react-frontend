@@ -8,6 +8,7 @@ import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import Pagination from "@/components/component/Pagination";
 import { useNavigate } from "react-router-dom";
+import GenerateExcelButton from "@/components/component/GenerateExcelButton";
 
 const Form26QDeductee = () => {
   const entity = "form26QDeductee";
@@ -135,16 +136,6 @@ const Form26QDeductee = () => {
     navigate(
       `/homeWOT/${branchCode}/${fy}/listSearch/${entity}/${refinedParams}`
     );
-  };
-
-  const handleGenerateExcel = async () => {
-    const paramsObj = {
-      branchCode: branchCode,
-      fy: fy,
-      ...searchParams,
-    };
-    const refinedParams = common.getRefinedSearchParams(paramsObj);
-    await common.getGenerateExcel(entity, refinedParams);
   };
 
   return (
@@ -321,14 +312,13 @@ const Form26QDeductee = () => {
               </select>
             </div>
             <div>
-              <TooltipWrapper tooltipText="Export to Excel">
-                <button
-                  onClick={handleGenerateExcel}
-                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
-                >
-                  <i className="fa-solid fa-file-excel"></i>
-                </button>
-              </TooltipWrapper>
+              <GenerateExcelButton
+                entity={entity}
+                params={params}
+                branchCode={branchCode}
+                fy={fy}
+                layoutType="wot"
+              />
             </div>
           </div>
         </div>

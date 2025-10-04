@@ -1,4 +1,5 @@
 import common from "@/common/common";
+import GenerateExcelButton from "@/components/component/GenerateExcelButton";
 import Pagination from "@/components/component/Pagination";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import GenerateZipFiles from "@/components/modals/GenerateZipFiles";
@@ -75,11 +76,6 @@ const UploadCertificate = () => {
   const handleSearch = async () => {
     const refinedParams = common.getRefinedSearchParams(searchParams);
     navigate(`/home/listSearch/${entity}/${refinedParams}`);
-  };
-
-  const handleGenerateExcel = async () => {
-    const refinedParams = common.getRefinedSearchParams(searchParams);
-    await common.getGenerateExcel(entity, refinedParams);
   };
 
   return (
@@ -199,14 +195,12 @@ const UploadCertificate = () => {
                 </button>
               </TooltipWrapper> */}
               <UploadCertificateModal />
-              <TooltipWrapper tooltipText="Export to Excel">
-                <button
-                  onClick={handleGenerateExcel}
-                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
-                >
-                  <i className="fa-solid fa-file-excel"></i>
-                </button>
-              </TooltipWrapper>
+              <GenerateExcelButton
+                entity={entity}
+                params={params}
+                searchParams={searchParams}
+                layoutType={"sc"}
+              />
             </div>
           </div>
         </div>

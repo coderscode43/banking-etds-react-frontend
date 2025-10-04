@@ -19,7 +19,9 @@ const ErrorModal = () => {
 
         {/* Error message */}
         <div className="relative pt-3 pb-6 text-center text-black">
-          {errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)}
+          {typeof errorMessage !== "object"
+            ? errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)
+            : errorMessage}
         </div>
 
         {/* Footer */}

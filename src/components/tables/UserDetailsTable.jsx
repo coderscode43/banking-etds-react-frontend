@@ -16,7 +16,6 @@ const UserDetailsTable = ({ tableHead, tableData, entity }) => {
       const response = await common.getDeleteUserDetails(entity, employeeId);
       setIsModalOpen(false);
       showSuccess(response.data.successMsg);
-      window.location.reload();
     } catch (error) {
       showError(
         `Can not save ${error?.response?.data?.entityName}  ${errorMessage(error)}`
@@ -97,7 +96,7 @@ const UserDetailsTable = ({ tableHead, tableData, entity }) => {
       {isModalOpen && (
         <DynamicModal
           title="Are you sure?"
-          description="Do you really want to delete these User?"
+          description="Do you really want to delete this User?"
           type="delete"
           isModalOpen={() => setIsModalOpen(true)}
           closeModal={closeModal}

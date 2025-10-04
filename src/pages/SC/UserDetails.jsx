@@ -1,4 +1,5 @@
 import common from "@/common/common";
+import GenerateExcelButton from "@/components/component/GenerateExcelButton";
 import Pagination from "@/components/component/Pagination";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import UserDetailsTable from "@/components/tables/UserDetailsTable";
@@ -66,11 +67,6 @@ const UserDetails = () => {
     navigate(`/home/listSearch/${entity}/${refinedParams}`);
   };
 
-  const handleGenerateExcel = async () => {
-    const refinedParams = common.getRefinedSearchParams(searchParams);
-    await common.getGenerateExcel(entity, refinedParams);
-  };
-
   return (
     <>
       <div className="space-y-5">
@@ -130,14 +126,12 @@ const UserDetails = () => {
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </TooltipWrapper>
-              <TooltipWrapper tooltipText="Export to Excel">
-                <button
-                  onClick={handleGenerateExcel}
-                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
-                >
-                  <i className="fa-solid fa-file-excel"></i>
-                </button>
-              </TooltipWrapper>
+              <GenerateExcelButton
+                entity={entity}
+                params={params}
+                searchParams={searchParams}
+                layoutType={"sc"}
+              />
               <TooltipWrapper tooltipText="Add User Detail">
                 <button
                   className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl font-black text-white"

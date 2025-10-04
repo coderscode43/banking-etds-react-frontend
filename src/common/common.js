@@ -86,23 +86,6 @@ const common = {
     );
   },
 
-  // Generate Timestamp string like dd_MM_yyyy_HH_mm_ss
-  getTimeStamp: () => {
-    const now = new Date();
-
-    const pad = (num) => num.toString().padStart(2, "0");
-
-    const day = pad(now.getDate());
-    const month = pad(now.getMonth() + 1); // months are zero-based
-    const year = now.getFullYear();
-
-    const hours = pad(now.getHours());
-    const minutes = pad(now.getMinutes());
-    const seconds = pad(now.getSeconds());
-
-    return `${day}_${month}_${year}_${hours}_${minutes}_${seconds}`;
-  },
-
   getSearchListData: async (entity, pageNo, searchParams) => {
     return await paginationWithSearchListData(entity, pageNo, searchParams);
   },

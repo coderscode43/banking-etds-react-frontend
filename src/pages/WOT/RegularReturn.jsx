@@ -7,6 +7,7 @@ import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import Pagination from "@/components/component/Pagination";
 import { useNavigate } from "react-router-dom";
+import GenerateExcelButton from "@/components/component/GenerateExcelButton";
 
 const RegularReturn = () => {
   const entity = "regularReturn";
@@ -88,16 +89,6 @@ const RegularReturn = () => {
     navigate(
       `/homeWOT/${branchCode}/${fy}/listSearch/${entity}/${refinedParams}`
     );
-  };
-
-  const handleGenerateExcel = async () => {
-    const paramsObj = {
-      branchCode: branchCode,
-      fy: fy,
-      ...searchParams,
-    };
-    const refinedParams = common.getRefinedSearchParams(paramsObj);
-    await common.getGenerateExcel(entity, refinedParams);
   };
 
   return (
@@ -263,14 +254,13 @@ const RegularReturn = () => {
               />
             </div>
             <div>
-              <TooltipWrapper tooltipText="Export to Excel">
-                <button
-                  onClick={handleGenerateExcel}
-                  className="h-[38px] cursor-pointer rounded-sm bg-[#1761fd] px-3 text-2xl text-white"
-                >
-                  <i className="fa-solid fa-file-excel"></i>
-                </button>
-              </TooltipWrapper>
+              <GenerateExcelButton
+                entity={entity}
+                params={params}
+                branchCode={branchCode}
+                fy={fy}
+                layoutType="wot"
+              />
             </div>
           </div>
         </div>

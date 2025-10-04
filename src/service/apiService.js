@@ -1,5 +1,4 @@
 import axios from "axios";
-import common from "@/common/common";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -117,46 +116,41 @@ export const addBulkRemark = async (entity, rowsData, enhancedFormData) => {
 };
 
 export const generateExcel = async (entity, encodedParams) => {
-  try {
-    // Axios GET with responseType 'blob' to get binary data
-    const response = await axios.get(
-      `${API_BASE_URL}${entity}/generateExcel/${encodedParams}`,
-      {
-        responseType: "blob",
-        headers: { Accept: "application/vnd.ms-excel" },
-        ...credentials,
-      }
-    );
+  const url = `${API_BASE_URL}${entity}/generateExcel/${encodedParams}`;
 
-    // Create blob object from response
-    const blob = new Blob([response.data], {
-      type: "application/vnd.ms-excel",
-    });
-    const downloadUrl = window.URL.createObjectURL(blob);
+  // Credentials should be your axios config (headers, withCredentials, etc.)
+  const res = await axios.get(url, {
+    ...(credentials || {}),
+    responseType: "blob",
+  });
 
-    // Try to extract filename from content-disposition header
-    let filename = `TDS-${common.getTimeStamp()}-${entity.charAt(0).toUpperCase() + entity.slice(1)}.xlsx`; // Filename
-    const disposition = response.headers["content-disposition"];
-    if (disposition && disposition.indexOf("filename=") !== -1) {
-      const filenameMatch = disposition.match(/filename="?([^"]+)"?/);
-      if (filenameMatch.length === 2) {
-        filename = filenameMatch[1];
-      }
-    }
-
-    // Create a temporary <a> element to trigger the download
-    const a = document.createElement("a");
-    a.href = downloadUrl;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-
-    // Clean up DOM and revoke blob URL
-    a.remove();
-    window.URL.revokeObjectURL(downloadUrl);
-  } catch (error) {
-    console.error("Failed to download Excel:", error);
+  // Try to get filename from Content-Disposition
+  let fileName = "export.xlsx";
+  const cd = res.headers["content-disposition"];
+  if (cd) {
+    const match = cd.match(/filename\*=UTF-8''([^;]+)|filename="?([^"]+)"?/i);
+    if (match) fileName = decodeURIComponent(match[1] || match[2]);
   }
+
+  const contentType = res.headers["content-type"] || "application/vnd.ms-excel";
+
+  const blob = new Blob([res.data], { type: contentType });
+
+  // IE/old Edge fallback
+  if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveOrOpenBlob(blob, fileName);
+    return;
+  }
+
+  // Trigger browser download
+  const href = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = href;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(href);
 };
 
 export const sendReminder = async (entity, rowsData) => {
@@ -188,9 +182,8 @@ export const updateEntity = async (entity, formData) => {
 
 export const deleteUserDetails = async (entity, employeeId) => {
   try {
-    const response = await axios.post(
+    const response = await axios.delete(
       `${API_BASE_URL}${entity}/delete/${employeeId}`,
-      {},
       credentials
     );
     return response;

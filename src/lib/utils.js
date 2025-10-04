@@ -9,6 +9,7 @@ export const errorMessage = (error, fallback = "An error occurred") => {
   return (
     error?.response?.data?.exceptionMsg ||
     error?.response?.data?.message ||
+    error?.response?.data?.text() ||
     error?.message ||
     fallback
   );
