@@ -21,7 +21,7 @@ const SuccessModal = () => {
           <p className="text-2xl font-medium">Success</p>
         </div>
 
-        {/* Error message */}
+        {/* Success message */}
         <div className="relative pt-3 pb-6 text-center text-black">
           {successMessage}
         </div>

@@ -116,25 +116,26 @@ export const addBulkRemark = async (entity, rowsData, enhancedFormData) => {
 };
 
 export const generateExcel = async (entity, encodedParams) => {
-  const url = `${API_BASE_URL}${entity}/generateExcel/${encodedParams}`;
-
-  // Credentials should be your axios config (headers, withCredentials, etc.)
-  const res = await axios.get(url, {
-    ...(credentials || {}),
-    responseType: "blob",
-  });
+  const response = await axios.get(
+    `${API_BASE_URL}${entity}/generateExcel/${encodedParams}`,
+    {
+      ...(credentials || {}),
+      responseType: "blob",
+    }
+  );
 
   // Try to get filename from Content-Disposition
   let fileName = "export.xlsx";
-  const cd = res.headers["content-disposition"];
+  const cd = response.headers["content-disposition"];
   if (cd) {
     const match = cd.match(/filename\*=UTF-8''([^;]+)|filename="?([^"]+)"?/i);
     if (match) fileName = decodeURIComponent(match[1] || match[2]);
   }
 
-  const contentType = res.headers["content-type"] || "application/vnd.ms-excel";
+  const contentType =
+    response.headers["content-type"] || "application/vnd.ms-excel";
 
-  const blob = new Blob([res.data], { type: contentType });
+  const blob = new Blob([response.data], { type: contentType });
 
   // IE/old Edge fallback
   if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -227,5 +228,38 @@ export const uploadCertificate = async (entity, formData) => {
       ...credentials,
     }
   );
+  return response;
+};
+
+export const downloadFile = async (entity, id) => {
+  const response = await axios.get(
+    `${API_BASE_URL}${entity}/downloadDoc/${id}`,
+    {
+      responseType: "blob",
+      headers: { Accept: "*/*" },
+      ...credentials,
+    }
+  );
+
+  // Try to get filename from Content-Disposition
+  let fileName = "export.xlsx";
+  const cd = response.headers["content-disposition"];
+  if (cd) {
+    const match = cd.match(/filename\*=UTF-8''([^;]+)|filename="?([^"]+)"?/i);
+    if (match) fileName = decodeURIComponent(match[1] || match[2]);
+  }
+
+  const blob = new Blob([response.data], {
+    type: response.headers["content-type"],
+  });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", fileName); // use filename as passed in
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(url);
+
   return response;
 };

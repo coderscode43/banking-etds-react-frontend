@@ -3,13 +3,18 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import AddRegularReturnResponseModal from "@/components/modals/AddRegularReturnResponseModal";
-import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import DynamicTableDownload from "@/components/tables/DynamicTableDownload";
+import { useContext } from "react";
+import statusContext from "@/context/statusContext";
+import { errorMessage } from "@/lib/utils";
 
 const DetailRegularReturn = () => {
   const entity = "regularReturn";
+  const page = "regularReturnRemark";
 
   const navigate = useNavigate();
   const { fy, branchCode, id } = useParams();
+  const { showError } = useContext(statusContext);
 
   const [detailGridData, setDetailGridData] = useState({});
   const [detailListData, setDetailListData] = useState([]);
@@ -46,19 +51,31 @@ const DetailRegularReturn = () => {
   ];
 
   const tableHead = [
-    { key: "srNo", label: "Sr.No" },
-    { key: "remark", label: "Correction Response" },
-    { key: "remarkStatus", label: "Status" },
-    { key: "supportingDocName", label: "Supporting Document Name" },
-    { key: "addedBy", label: "Added By" },
-    { key: "addedOn", label: "Added On" },
-    { key: "action", label: "Action" },
+    { label: "Sr.No", key: "srNo" },
+    { label: "Correction Response", key: "remark" },
+    { label: "Status", key: "remarkStatus" },
+    { label: "Supporting Document Name", key: "supportingDocName" },
+    { label: "Added By", key: "addedBy" },
+    { label: "Added On", key: "addedOn" },
+    { label: "Action", key: "download" },
   ];
 
   const tableData = detailListData.map((data, index) => ({
     srNo: index + 1,
     ...data,
   }));
+
+  const handleDownload = async (id) => {
+    try {
+      await common.getDownloadFile(page, id);
+    } catch (error) {
+      showError(
+        `Can not download.
+         ${error?.response?.data?.entityName}  
+         ${errorMessage(error)}`
+      );
+    }
+  };
 
   return (
     <>
@@ -69,16 +86,24 @@ const DetailRegularReturn = () => {
 
         <DetailGrid fields={fields} data={detailGridData} columns={2} />
         <div className="mt-5 flex justify-end gap-4 pr-5">
-          <AddRegularReturnResponseModal regularReturnId={id} />
+          <AddRegularReturnResponseModal
+            regularReturnId={id}
+            status={detailGridData.status}
+          />
           <button
-            className="cursor-pointer rounded-md bg-red-600 px-4 font-semibold text-white"
+            className="cursor-pointer rounded-md bg-red-600 px-4 py-2 font-semibold text-white"
             onClick={() => navigate(-1)}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
         </div>
         <div className="mt-5">
-          <DynamicTableAction tableHead={tableHead} tableData={tableData} />
+          <DynamicTableDownload
+            tableHead={tableHead}
+            tableData={tableData}
+            downloadKey="supportingDocName"
+            handleDownload={handleDownload}
+          />
         </div>
       </div>
     </>

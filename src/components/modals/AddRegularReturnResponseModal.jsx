@@ -5,7 +5,7 @@ import { errorMessage } from "@/lib/utils";
 import { useContext, useState } from "react";
 import ErrorMessage from "../component/ErrorMessage";
 
-const AddRegularReturnResponse = ({ regularReturnId }) => {
+const AddRegularReturnResponse = ({ regularReturnId, status }) => {
   const entity = "regularReturnRemark";
 
   const { regularReturnStatus } = useContext(staticDataContext);
@@ -13,7 +13,12 @@ const AddRegularReturnResponse = ({ regularReturnId }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [errors, setErrors] = useState({});
-  const [formData, setFormData] = useState({});
+  let [formData, setFormData] = useState({
+    remark: "",
+    remarkStatus: "",
+    returnFilingDate: "",
+    blob: "",
+  });
 
   const validate = (data) => {
     const newErrors = {};
@@ -78,6 +83,7 @@ const AddRegularReturnResponse = ({ regularReturnId }) => {
     setErrors({});
     let response;
     try {
+      formData = common.convertToDateObject(formData);
       const formDataObj = new FormData();
       if (formData.blob === null || formData.blob === undefined) {
         response = await common.getSubmit(entity, formData);
@@ -87,8 +93,15 @@ const AddRegularReturnResponse = ({ regularReturnId }) => {
         formDataObj.append("dec", JSON.stringify(formData));
         response = await common.getSubmitWithFile(entity, formDataObj);
       }
+
       setIsOpen(false);
       showSuccess(response.data.successMsg);
+      setFormData({
+        remark: "",
+        remarkStatus: "",
+        returnFilingDate: "",
+        blob: "",
+      });
     } catch (error) {
       showError(
         `Can not save ${error?.response?.data?.entityName}  ${errorMessage(error)}`
@@ -99,8 +112,8 @@ const AddRegularReturnResponse = ({ regularReturnId }) => {
 
   return (
     <>
-      {/* Trigger Button */}
-      <div className="flex items-center justify-center">
+      {/* Trigger Button - shown only if status !== 'Certificate Generated' */}
+      {status !== "Certificate Generated" && (
         <button
           type="button"
           onClick={() => setIsOpen(true)}
@@ -108,7 +121,7 @@ const AddRegularReturnResponse = ({ regularReturnId }) => {
         >
           <i className="fa-solid fa-plus"></i>&nbsp; Add Response
         </button>
-      </div>
+      )}
 
       {/* Modal */}
       <div
