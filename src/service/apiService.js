@@ -207,6 +207,20 @@ export const submitWithFile = async (entity, formDataObj) => {
   return response;
 };
 
+export const submitWithFileRegularReturn = async (entity, formDataObj) => {
+  const response = await axios.post(
+    `${API_BASE_URL}${entity}/addRegularReturnRO`,
+    formDataObj,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      ...credentials,
+    }
+  );
+  return response;
+};
+
 export const generateZipFile = async (entity, formdata) => {
   const { form, fy, quarter } = formdata;
   const response = await axios.get(

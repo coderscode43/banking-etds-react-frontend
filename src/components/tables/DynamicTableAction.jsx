@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { TooltipWrapper } from "../component/Tooltip";
 
 const DynamicTableAction = ({
   entity,
@@ -69,7 +70,9 @@ const DynamicTableAction = ({
                         className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${autoResize ? "w-auto" : "max-w-[60px] min-w-[70px] overflow-hidden"}`}
                       >
                         {key === "action" ? (
-                          <i className="fa-solid fa-file-pen text-lg"></i>
+                          <TooltipWrapper tooltipText="Detail">
+                            <i className="fa-solid fa-file-pen text-lg"></i>
+                          </TooltipWrapper>
                         ) : formatter ? (
                           formatter(data[key])
                         ) : (

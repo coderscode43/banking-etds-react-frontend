@@ -1,15 +1,19 @@
 import common from "@/common/common";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import AddRegularReturnResponsesWOTModal from "@/components/modals/AddRegularReturnResponsesWOTModal";
+import DynamicTableDownload from "@/components/tables/DynamicTableDownload";
+import statusContext from "@/context/statusContext";
+import { date, dateWithTime, errorMessage } from "@/lib/utils";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const DetailRegularReturn = () => {
   const entity = "regularReturn";
+  const page = "regularReturnRemark";
 
   const navigate = useNavigate();
   const { fy, branchCode, id } = useParams();
+  const { showError } = useContext(statusContext);
 
   const [detailGridData, setDetailGridData] = useState({});
   const [detailListData, setDetailListData] = useState([]);
@@ -37,40 +41,39 @@ const DetailRegularReturn = () => {
     { label: "Tan", key: "tan" },
     { label: "Quarter", key: "quarter" },
     { label: "Form", key: "form" },
-    {
-      label: "Added On",
-      key: "addedOn",
-      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
-    },
+    { label: "Added On", key: "addedOn", formatter: dateWithTime },
     { label: "Added By", key: "addedBy" },
-
     { label: "Latest Response", key: "latestRemark" },
     { label: "Status", key: "status" },
-    {
-      label: "Return Filing Date",
-      key: "returnFilingDate",
-      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
-    },
+    { label: "Return Filing Date", key: "returnFilingDate", formatter: date },
   ];
 
   const tableHead = [
-    { key: "srNo", label: "Sr.No" },
-    { key: "remark", label: "Correction Response" },
-    { key: "remarkStatus", label: "Status" },
-    { key: "supportingDocName", label: "Supporting Document Name" },
-    { key: "addedBy", label: "Added By" },
-    {
-      key: "addedOn",
-      label: "Added On",
-      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
-    },
-    { key: "action", label: "Action" },
+    { label: "Sr.No", key: "srNo" },
+    { label: "Correction Response", key: "remark" },
+    { label: "Status", key: "remarkStatus" },
+    { label: "Supporting Document Name", key: "supportingDocName" },
+    { label: "Added By", key: "addedBy" },
+    { label: "Added On", key: "addedOn", formatter: dateWithTime },
+    { label: "Action", key: "download" },
   ];
 
   const tableData = detailListData?.map((data, index) => ({
     srNo: index + 1,
     ...data,
   }));
+
+  const handleDownload = async (id) => {
+    try {
+      await common.getDownloadFile(page, id);
+    } catch (error) {
+      showError(
+        `Can not download.
+         ${error?.response?.data?.entityName}  
+         ${errorMessage(error)}`
+      );
+    }
+  };
 
   return (
     <>
@@ -82,7 +85,7 @@ const DetailRegularReturn = () => {
         <DetailGrid fields={fields} data={detailGridData} columns={2} />
 
         <div className="mt-5 mb-5 flex justify-end gap-4 pr-5">
-          <AddRegularReturnResponsesWOTModal />
+          <AddRegularReturnResponsesWOTModal regularReturnId={id} />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}
@@ -91,10 +94,11 @@ const DetailRegularReturn = () => {
           </button>
         </div>
 
-        <DynamicTableAction
-          entity={entity}
+        <DynamicTableDownload
           tableHead={tableHead}
           tableData={tableData}
+          downloadKey="supportingDocName"
+          handleDownload={handleDownload}
         />
       </div>
     </>

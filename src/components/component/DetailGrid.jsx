@@ -30,6 +30,10 @@ export const DetailGrid = ({ fields, data, columns = 1 }) => {
       {rows.map((row, rowIndex) => (
         <div key={rowIndex} className="flex w-full flex-wrap">
           {row.map((field, colIndex) => {
+            // ✅ Add this conditional
+            if (field.show && !field.show(data)) {
+              return null;
+            }
             // Compute display value
             let displayValue = "";
             if (field.combineKeys) {

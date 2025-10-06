@@ -3,7 +3,6 @@ import React from "react";
 const DynamicTableDownload = ({
   tableHead,
   tableData,
-  autoResize,
   downloadKey = "download",
   handleDownload,
 }) => {
@@ -51,11 +50,7 @@ const DynamicTableDownload = ({
                     {tableHead.map(({ key, formatter }, colIndex) => (
                       <td
                         key={colIndex}
-                        className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${
-                          autoResize
-                            ? "w-auto"
-                            : "max-w-[60px] min-w-[70px] overflow-hidden"
-                        }`}
+                        className="w-auto border-[1.5px] border-gray-300 p-2 text-ellipsis"
                       >
                         {key === "download" ? (
                           data[downloadKey] ? (

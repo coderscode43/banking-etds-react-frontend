@@ -1,13 +1,13 @@
-import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
-import staticDataContext from "@/context/staticDataContext";
-import DynamicTableAction from "@/components/tables/DynamicTableAction";
-import { TooltipWrapper } from "@/components/component/Tooltip";
-import Pagination from "@/components/component/Pagination";
-import { useNavigate } from "react-router-dom";
 import GenerateExcelButton from "@/components/component/GenerateExcelButton";
+import Pagination from "@/components/component/Pagination";
+import { TooltipWrapper } from "@/components/component/Tooltip";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import staticDataContext from "@/context/staticDataContext";
+import { date, dateWithTime } from "@/lib/utils";
+import clsx from "clsx";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const RegularReturn = () => {
   const entity = "regularReturn";
@@ -66,17 +66,22 @@ const RegularReturn = () => {
   }, [fy, branchCode, params]);
 
   const tableHead = [
-    { key: "srNo", label: "Sr.No" },
-    { key: "date", label: "Date" },
-    { key: "fy", label: "Financial year" },
-    { key: "tan", label: "Tan" },
-    { key: "quarter", label: "Quarter" },
-    { key: "form", label: "Form" },
-    { key: "addedBy", label: "Added by" },
-    { key: "latestRemark", label: "Latest remark" },
-    { key: "status", label: "Status" },
-    { key: "returnFiling", label: "Return filing date" },
-    { key: "action", label: "Action" },
+    { label: "Sr.No", key: "srNo" },
+    { label: "Date", key: "addedOn", formatter: dateWithTime },
+    { label: "Financial Year", key: "fy" },
+    { label: "Tan", key: "tan" },
+    { label: "Quarter", key: "quarter" },
+    { label: "Form", key: "form" },
+    { label: "Added by", key: "addedBy" },
+    { label: "Latest remark", key: "latestRemark" },
+    { label: "Status", key: "status" },
+    {
+      label: "Return filing date",
+      key: "returnFilingDate",
+      formatter: date,
+      show: (data) => !!data.returnFilingDate,
+    },
+    { label: "Action", key: "action" },
   ];
 
   const tableData = listData?.map((data, index) => ({
@@ -107,9 +112,7 @@ const RegularReturn = () => {
               <select
                 name="fy"
                 id="fy"
-                className={clsx(
-                  "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.fy}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -134,9 +137,7 @@ const RegularReturn = () => {
               <select
                 name="quarter"
                 id="quarter"
-                className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.quarter}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -161,9 +162,7 @@ const RegularReturn = () => {
               <select
                 name="form"
                 id="form"
-                className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.form}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -216,9 +215,7 @@ const RegularReturn = () => {
               <select
                 name="status"
                 id="status"
-                className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.status}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
@@ -244,9 +241,7 @@ const RegularReturn = () => {
                 name="addedOn"
                 id="addedOn"
                 type="date"
-                className={clsx(
-                  "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                )}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 value={searchParams.addedOn}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)

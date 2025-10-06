@@ -16,6 +16,7 @@ import {
   generateZipFile,
   uploadCertificate,
   downloadFile,
+  submitWithFileRegularReturn,
 } from "@/service/apiService";
 
 const common = {
@@ -154,6 +155,10 @@ const common = {
 
   getSubmitWithFile: async (entity, formDataObj) => {
     return await submitWithFile(entity, formDataObj);
+  },
+
+  getSubmitWithFileRR: async (entity, formDataObj) => {
+    return await submitWithFileRegularReturn(entity, formDataObj);
   },
 
   getGenerateZipFile: async (entity, formData) => {
