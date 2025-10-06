@@ -37,7 +37,12 @@ const DetailRegularReturn = () => {
     { label: "Added On", key: "addedOn" },
     { label: "Added By", key: "addedBy" },
     { label: "Latest Response", key: "latestRemark" },
-    { label: "Status", key: "status" },
+    {
+      label: "Status",
+      key: "resolved",
+      formatter: (value) =>
+        value === true || value === "true" ? "Resolved" : "Not Resolved",
+    },
   ];
 
   const tableHead = [

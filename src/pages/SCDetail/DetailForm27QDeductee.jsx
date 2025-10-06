@@ -76,7 +76,12 @@ const DetailForm27QDeductee = () => {
     { label: "Date of Deduction", key: "dateOfDeduction" },
     { label: "Reason for non Deduction", key: "remarksReason" },
     { label: "Reason for Non Collection", key: "remarks" },
-    { label: "Status ", key: "" },
+    {
+      label: "Status",
+      key: "resolved",
+      formatter: (value) =>
+        value === true || value === "true" ? "Resolved" : "Not Resolved",
+    },
   ];
 
   return (

@@ -71,7 +71,12 @@ const DetailForm27EQDeductee = () => {
     { label: "Interest On Short Deduction", key: "interestOnShortDeduction" },
     { label: "Interest On Late Payment", key: "interestOnLatePayment" },
     { label: "Interest On Late Deduction", key: "interestOnLateDeduction" },
-    { label: "Status ", key: "status" },
+    {
+      label: "Status",
+      key: "resolved",
+      formatter: (value) =>
+        value === true || value === "true" ? "Resolved" : "Not Resolved",
+    },
   ];
 
   return (

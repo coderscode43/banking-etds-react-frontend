@@ -61,7 +61,12 @@ const DetailForm24QDeductee = () => {
     { label: "Interest On Short Deduction", key: "interestOnShortDeduction" },
     { label: "Interest On Late Payment  ", key: "interestOnLatePayment" },
     { label: "Interest On Late Deduction   ", key: "interestOnLateDeduction" },
-    { label: "Status ", key: "" },
+    {
+      label: "Status",
+      key: "resolved",
+      formatter: (value) =>
+        value === true || value === "true" ? "Resolved" : "Not Resolved",
+    },
   ];
 
   const tableHead = [
@@ -90,7 +95,10 @@ const DetailForm24QDeductee = () => {
         <DetailGrid fields={fields} data={detailGridData} columns={2} />
 
         <div className="mt-5 flex justify-end gap-4 pr-5">
-          <UpdateForm24QDeducteeModal />
+          <UpdateForm24QDeducteeModal
+            data={detailGridData}
+            initialEntity={"deducteeremark"}
+          />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}

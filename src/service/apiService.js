@@ -205,3 +205,27 @@ export const submitWithFile = async (entity, formDataObj) => {
   );
   return response;
 };
+
+export const generateZipFile = async (entity, formdata) => {
+  const { form, fy, quarter } = formdata;
+  const response = await axios.get(
+    `${API_BASE_URL}${entity}/createBranchZip/${encodeURIComponent("ALL TAN")}/${form}/${fy}/${quarter}`,
+    { ...formdata },
+    credentials
+  );
+  return response;
+};
+
+export const uploadCertificate = async (entity, formData) => {
+  const response = await axios.post(
+    `${API_BASE_URL}${entity}/uploadZip`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      ...credentials,
+    }
+  );
+  return response;
+};
