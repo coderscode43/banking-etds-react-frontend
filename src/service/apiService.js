@@ -277,3 +277,43 @@ export const downloadFile = async (entity, id) => {
 
   return response;
 };
+
+export const generateReport = async (entity, formdata) => {
+  const tan = formdata.tanNumber || " ";
+  const typeOfForm = formdata.typeOfForm || " ";
+  const fy = formdata.fy || " ";
+  const quarter = formdata.quarter || " ";
+  const typeOfReport = formdata.typeOfReport || " ";
+
+  const response = await axios.get(
+    `${API_BASE_URL}${entity}/files/${tan}/${typeOfForm}/${fy}/${quarter}/${typeOfReport}`,
+    {
+      headers: {
+        "Content-Type": "application/zip",
+      },
+      responseType: "blob",
+    }
+  );
+
+  return response;
+};
+
+export const downloadCertificate = async (page, formdata) => {
+  const tan = formdata.tanNumber || " ";
+  const form = formdata.typeOfCertificate || " ";
+  const fy = formdata.fy || " ";
+  const quarter = formdata.quarter || " ";
+  const pan = formdata.panNumber || " ";
+
+  const response = await axios.get(
+    `${API_BASE_URL}downloadCertificate/${page}/${tan}/${form}/${fy}/${quarter}/${pan}`,
+    {
+      headers: {
+        "Content-Type": "application/zip",
+      },
+      responseType: "blob",
+    }
+  );
+
+  return response;
+};

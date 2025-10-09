@@ -7,11 +7,20 @@ const StatusProvider = ({ children }) => {
   const [redirectPath, setRedirectPath] = useState(null);
   const [errorModal, setErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  
+  const [warningModal, setWarningModal] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
+  const [warningTitle, setWarningTitle] = useState("");
+
   const showSuccess = (message, redirectPath = null) => {
     setSuccessMessage(message);
     setRedirectPath(redirectPath);
     setSuccessModal(true);
+  };
+
+  const showWarning = (title, message) => {
+    setWarningTitle(title);
+    setWarningMessage(message);
+    setWarningModal(true);
   };
 
   const showError = (message) => {
@@ -25,10 +34,18 @@ const StatusProvider = ({ children }) => {
         successModal,
         setSuccessModal,
         successMessage,
+
+        warningModal,
+        setWarningModal,
+        warningTitle,
+        warningMessage,
+
         errorModal,
         setErrorModal,
         errorMessage,
+
         showSuccess,
+        showWarning,
         showError,
         redirectPath, // Expose redirectPath
         setRedirectPath, // Expose setter if needed

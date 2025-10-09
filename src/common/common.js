@@ -17,6 +17,8 @@ import {
   uploadCertificate,
   downloadFile,
   submitWithFileRegularReturn,
+  generateReport,
+  downloadCertificate,
 } from "@/service/apiService";
 
 const common = {
@@ -171,6 +173,14 @@ const common = {
 
   getDownloadFile: async (entity, id) => {
     return await downloadFile(entity, id);
+  },
+
+  getGenerateReport: async (entity, formData) => {
+    return await generateReport(entity, formData);
+  },
+
+  getDownloadCerticate: async (page, formData) => {
+    return await downloadCertificate(page, formData);
   },
 };
 

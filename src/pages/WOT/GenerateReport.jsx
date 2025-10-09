@@ -1,262 +1,258 @@
-import React, { useState, useContext } from "react";
-import clsx from "clsx";
+import common from "@/common/common";
+import ErrorMessage from "@/components/component/ErrorMessage";
 import staticDataContext from "@/context/staticDataContext";
-import MISGenerateReportModal from "@/components/modals/MISGenerateReportModal";
+import statusContext from "@/context/statusContext";
+import { zipDownload } from "@/lib/utils";
+import { useContext, useState } from "react";
 
 const GenerateReport = () => {
+  const entity = "generateReport";
   const { Quarter, Tan, typeOfForm, financialYear } =
     useContext(staticDataContext);
+  const { showSuccess, showWarning } = useContext(statusContext);
 
   const [errors, setErrors] = useState({});
-  const [formData, setFormData] = useState({
-    report: "",
-    tanNumber: "",
-    stream: "",
-    fy: "",
-    quarter: "",
-  });
+  const [formData, setFormData] = useState({});
 
-  const validateField = (fieldName) => {
-    let errorMsg = "";
-
-    if (
-      (fieldName === "stream" || fieldName === "quarter") &&
-      formData.report === "annualReport"
-    ) {
-      // Don't validate stream or quarter if Annual Report
-      errorMsg = "";
-    } else if (!formData[fieldName]) {
-      // Normal required validation
-      errorMsg = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required.`;
+  const validate = (data) => {
+    const newErrors = {};
+    const prettyFieldName = (field) => {
+      return field
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, (str) => str.toUpperCase());
+    };
+    let requiredFields = [
+      "typeOfReport",
+      "tanNumber",
+      "fy",
+      "typeOfForm",
+      "quarter",
+    ];
+    // Remove conditionally optional fields if report type is Annual Report
+    if (data.typeOfReport === "Annual Report") {
+      requiredFields = requiredFields.filter(
+        (field) => field !== "typeOfForm" && field !== "quarter"
+      );
     }
-
-    setErrors((prev) => ({ ...prev, [fieldName]: errorMsg }));
-    return !errorMsg;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    // Update form data and clear error on change
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Fields to always validate
-    const fieldsToValidate = ["report", "tanNumber", "fy"];
-
-    // Add stream and quarter if report is NOT annualReport
-    if (formData.report !== "annualReport") {
-      fieldsToValidate.push("stream", "quarter");
-    }
-
-    let allValid = true;
-    fieldsToValidate.forEach((field) => {
-      const isValid = validateField(field);
-      if (!isValid) allValid = false;
+    // Custom validations for specific fields
+    requiredFields.forEach((field) => {
+      if (field === "fy") {
+        if (!data[field] || data[field].trim() === "") {
+          newErrors[field] = `Financial Year is required`;
+        }
+      } else if (field === "typeOfForm") {
+        if (!data[field] || data[field].trim() === "") {
+          newErrors[field] = `Stream is required`;
+        }
+      } else {
+        if (!data[field] || data[field].trim() === "") {
+          newErrors[field] = `${prettyFieldName(field)} is required`;
+        }
+      }
     });
 
-    if (allValid) {
-      alert("Form submitted!");
-      // Handle form submission logic here
+    return newErrors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validationErrors = validate(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
     }
+    setErrors({});
+    try {
+      const response = await common.getGenerateReport(entity, formData);
+      showSuccess("File Downloaded Successfully");
+      zipDownload(response);
+    } catch (error) {
+      showWarning(
+        "Certificate not available!",
+        "File not found for this TAN Number"
+      );
+      console.log(error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (!name) return;
+
+    // Update form data
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // Validate just this field inside full form context
+    const fieldError = validate({ ...formData, [name]: value })[name];
+
+    // Cleanly update errors: overwrite if error exists, remove key if no error
+    setErrors((prev) => {
+      const { [name]: _removed, ...rest } = prev; // remove old error for this field
+      return fieldError ? { ...rest, [name]: fieldError } : rest;
+    });
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="w-[60%] space-y-5 rounded-md p-3 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
-        <div className="text-center font-bold text-[var(--primary-color)]">
-          <h1 className="text-2xl leading-15">Download Reports</h1>
-          <h3 className="text-xl">
-            (Tax Audit Report/Form 27A/Acknowledgement/Annual Report)
-          </h3>
+    <>
+      <div className="flex items-center justify-center">
+        <div className="w-[60%] space-y-5 rounded-md p-3 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
+          <div className="text-center font-bold text-[var(--primary-color)]">
+            <h1 className="text-2xl leading-15">Download Reports</h1>
+            <h3 className="text-xl">
+              (Tax Audit Report/Form 27A/Acknowledgement/Annual Report)
+            </h3>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3 w-full">
+              <label
+                htmlFor="report"
+                className="font-semibold text-[var(--primary-color)]"
+              >
+                Type of Report
+              </label>
+              <select
+                name="typeOfReport"
+                id="typeOfReport"
+                value={formData.typeOfReport || ""}
+                onChange={handleInputChange}
+                className="custom-scrollbar mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+              >
+                <option value="">Select Type of Report</option>
+                <option value="Tax Audit Report">Tax Audit Report</option>
+                <option value="Annual Report">Annual Report</option>
+                <option value="Acknowledgment">Acknowledgement</option>
+              </select>
+              <ErrorMessage error={errors.typeOfReport} />
+            </div>
+            <div className="mb-3 w-full">
+              <label
+                htmlFor="tanNumber"
+                className="font-semibold text-[var(--primary-color)]"
+              >
+                TAN Number
+              </label>
+              <select
+                name="tanNumber"
+                id="tanNumber"
+                value={formData.tanNumber || ""}
+                onChange={handleInputChange}
+                className="custom-scrollbar mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+              >
+                <option value="">Select TAN Number</option>
+                {Tan &&
+                  Tan.length > 0 &&
+                  Tan.map((tanNumber, index) => {
+                    return (
+                      <option key={index} value={tanNumber}>
+                        {tanNumber}
+                      </option>
+                    );
+                  })}
+              </select>
+              <ErrorMessage error={errors.tanNumber} />
+            </div>
+            {formData.typeOfReport !== "Annual Report" && (
+              <div className="mb-3 w-full">
+                <label
+                  htmlFor="stream"
+                  className="font-semibold text-[var(--primary-color)]"
+                >
+                  Stream
+                </label>
+                <select
+                  name="typeOfForm"
+                  id="typeOfForm"
+                  value={formData.typeOfForm || ""}
+                  onChange={handleInputChange}
+                  className="custom-scrollbar mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                >
+                  <option value="">Select Stream</option>
+                  {typeOfForm &&
+                    typeOfForm.length > 0 &&
+                    typeOfForm.map((form, index) => {
+                      return (
+                        <option key={index} value={form}>
+                          {form}
+                        </option>
+                      );
+                    })}
+                </select>
+                <ErrorMessage error={errors.typeOfForm} />
+              </div>
+            )}
+            <div className="mb-3 w-full">
+              <label
+                htmlFor="fy"
+                className="font-semibold text-[var(--primary-color)]"
+              >
+                Financial Year
+              </label>
+              <select
+                name="fy"
+                id="fy"
+                value={formData.fy || ""}
+                onChange={handleInputChange}
+                className="custom-scrollbar mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+              >
+                <option value="">Select Financial Year</option>
+                {financialYear &&
+                  financialYear.length > 0 &&
+                  financialYear.map((fy, index) => {
+                    return (
+                      <option key={index} value={fy}>
+                        {fy}
+                      </option>
+                    );
+                  })}
+              </select>
+              <ErrorMessage error={errors.fy} />
+            </div>
+            {formData.typeOfReport !== "Annual Report" && (
+              <div className="mb-3 w-full">
+                <label
+                  htmlFor="quarter"
+                  className="font-semibold text-[var(--primary-color)]"
+                >
+                  Quarter
+                </label>
+                <select
+                  name="quarter"
+                  id="quarter"
+                  value={formData.quarter}
+                  onChange={handleInputChange}
+                  className="custom-scrollbar mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                >
+                  <option value="">Select Quarter</option>
+                  {Quarter &&
+                    Quarter.length > 0 &&
+                    Quarter.map((quarter, index) => {
+                      return (
+                        <option key={index} value={quarter}>
+                          {quarter}
+                        </option>
+                      );
+                    })}
+                </select>
+                <ErrorMessage error={errors.quarter} />
+              </div>
+            )}
+
+            <div className="flex justify-center">
+              <button
+                type="submit"
+                className="cursor-pointer rounded-md bg-[#00c950] p-2 px-4 font-semibold text-white"
+              >
+                <i className="fa-solid fa-plus"></i>&nbsp; Download
+              </button>
+            </div>
+          </form>
         </div>
-
-        <form onSubmit={handleSubmit}>
-          {/* Type of Report */}
-          <div className="mb-3 w-full">
-            <label
-              htmlFor="report"
-              className="font-semibold text-[var(--primary-color)]"
-            >
-              Type of Report
-            </label>
-            <select
-              name="report"
-              id="report"
-              value={formData.report}
-              onChange={handleChange}
-              onBlur={() => validateField("report")}
-              className={clsx(
-                "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
-              )}
-            >
-              <option value="">Select Type of Report</option>
-              <option value="taxAuditReport">Tax Audit Report</option>
-              <option value="annualReport">Annual Report</option>
-              <option value="acknowledgement">Acknowledgement</option>
-            </select>
-            {errors.report && (
-              <p className="mt-1 text-sm text-red-500">{errors.report}</p>
-            )}
-          </div>
-
-          {/* TAN Number */}
-          <div className="mb-3 w-full">
-            <label
-              htmlFor="tanNumber"
-              className="font-semibold text-[var(--primary-color)]"
-            >
-              TAN Number
-            </label>
-            <select
-              name="TAN"
-              id="TAN"
-              value={formData.tanNumber}
-              onChange={handleChange}
-              onBlur={() => validateField("tanNumber")}
-              className={clsx(
-                "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
-              )}
-            >
-              <option value="">Select TAN Number</option>
-              {Tan &&
-                Tan.length > 0 &&
-                Tan.map((tan, index) => {
-                  return (
-                    <option key={index} value={tan}>
-                      {tan}
-                    </option>
-                  );
-                })}
-            </select>
-            {errors.tanNumber && (
-              <p className="mt-1 text-sm text-red-500">{errors.tanNumber}</p>
-            )}
-          </div>
-
-          {/* Conditionally render Stream */}
-          {formData.report !== "annualReport" && (
-            <div className="mb-3 w-full">
-              <label
-                htmlFor="stream"
-                className="font-semibold text-[var(--primary-color)]"
-              >
-                Stream
-              </label>
-              <select
-                name="typeOfForm"
-                id="typeOfForm"
-                value={formData.stream}
-                onChange={handleChange}
-                onBlur={() => validateField("stream")}
-                className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
-                )}
-              >
-                <option value="">Select Stream</option>
-                {typeOfForm &&
-                  typeOfForm.length > 0 &&
-                  typeOfForm.map((form, index) => {
-                    return (
-                      <option key={index} value={form}>
-                        {form}
-                      </option>
-                    );
-                  })}
-              </select>
-              {errors.stream && (
-                <p className="mt-1 text-sm text-red-500">{errors.stream}</p>
-              )}
-            </div>
-          )}
-
-          {/* Financial Year */}
-          <div className="mb-3 w-full">
-            <label
-              htmlFor="fy"
-              className="font-semibold text-[var(--primary-color)]"
-            >
-              Financial Year
-            </label>
-            <select
-              name="fy"
-              id="fy"
-              value={formData.fy}
-              onChange={handleChange}
-              onBlur={() => validateField("fy")}
-              className={clsx(
-                "custom-scrollbar mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
-              )}
-            >
-              <option value="">Select Financial Year</option>
-              {financialYear &&
-                financialYear.length > 0 &&
-                financialYear.map((fy, index) => {
-                  return (
-                    <option key={index} value={fy}>
-                      {fy}
-                    </option>
-                  );
-                })}
-            </select>
-            {errors.fy && (
-              <p className="mt-1 text-sm text-red-500">{errors.fy}</p>
-            )}
-          </div>
-
-          {/* Conditionally render Quarter */}
-          {formData.report !== "annualReport" && (
-            <div className="mb-3 w-full">
-              <label
-                htmlFor="quarter"
-                className="font-semibold text-[var(--primary-color)]"
-              >
-                Quarter
-              </label>
-              <select
-                name="quarter"
-                id="quarter"
-                value={formData.quarter}
-                onChange={handleChange}
-                onBlur={() => validateField("quarter")}
-                className={clsx(
-                  "mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900"
-                )}
-              >
-                <option value="">Select Quarter</option>
-                {Quarter &&
-                  Quarter.length > 0 &&
-                  Quarter.map((qtr, index) => {
-                    return (
-                      <option key={index} value={qtr}>
-                        {qtr}
-                      </option>
-                    );
-                  })}
-              </select>
-              {errors.quarter && (
-                <p className="mt-1 text-sm text-red-500">{errors.quarter}</p>
-              )}
-            </div>
-          )}
-
-          {/* Submit Button */}
-          <div className="flex justify-center">
-            {/* <button
-              type="submit"
-              className="rounded-md bg-green-500 p-2 text-center text-white"
-            >
-              <i className="fa-solid fa-download"></i> Download
-            </button> */}
-            <MISGenerateReportModal />
-          </div>
-        </form>
       </div>
-    </div>
+    </>
   );
 };
 

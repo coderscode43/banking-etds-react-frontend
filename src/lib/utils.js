@@ -33,3 +33,29 @@ export const dateWithTime = (d) => {
 
 export const date = (d) =>
   !d ? "" : new Date(d).toLocaleDateString("en-GB").replace(/\//g, "-");
+
+// Regex for PAN: exactly 5 uppercase letters + 4 digits + 1 uppercase letter
+export const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+
+export const zipDownload = (response) => {
+  // Create a download URL from the blob
+  const url = window.URL.createObjectURL(new Blob([response.data]));
+  const link = document.createElement("a");
+  link.href = url;
+  // Optionally get filename from headers (if backend sends Content-Disposition header)
+  const disposition = response.headers["content-disposition"];
+  let fileName = "report.zip"; // default to .zip or .xlsx as per your report type
+  if (disposition && disposition.indexOf("filename=") !== -1) {
+    fileName = disposition
+      .split("filename=")[1]
+      .split(";")[0]
+      .replace(/"/g, "");
+  }
+
+  link.setAttribute("download", fileName);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  // cleanup URL
+  window.URL.revokeObjectURL(url);
+};
