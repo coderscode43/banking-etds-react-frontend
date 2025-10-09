@@ -3,6 +3,7 @@ import { DetailGrid } from "@/components/component/DetailGrid";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import UpdateForm27QDeducteeModal from "@/components/modals/UpdateForm27QDeducteeModal";
+import DynamicTableApproveReject from "@/components/tables/DynamicTableApproveReject";
 
 const DetailForm27QDeductee = () => {
   const entity = "form27QDeductee";
@@ -11,6 +12,21 @@ const DetailForm27QDeductee = () => {
   const { fy, branchCode, id } = useParams();
 
   const [detailGridData, setDetailGridData] = useState({});
+  const [detailListData, setDetailListData] = useState([]);
+
+  const statusFormatter = (value, invert = false) => {
+    const isResolved =
+      typeof value === "string"
+        ? value.toLowerCase() === "true" || value.toLowerCase() === "resolved"
+        : value === true;
+    return invert
+      ? isResolved
+        ? "Pending"
+        : "Resolved"
+      : isResolved
+        ? "Resolved"
+        : "Pending";
+  };
 
   useEffect(() => {
     const fetchDetailListData = async () => {
@@ -21,6 +37,7 @@ const DetailForm27QDeductee = () => {
           branchCode,
           id
         );
+        setDetailListData(response.data.remarks || []);
         setDetailGridData(response.data.deductee || {});
       } catch (error) {
         console.error("Error fetching list data:", error);
@@ -31,7 +48,11 @@ const DetailForm27QDeductee = () => {
 
   const fields = [
     { label: "Quarter", key: "quarter" },
-    { label: "Grossing up Indicator", key: "grossingUpIndicator" },
+    {
+      label: "Grossing up Indicator",
+      key: "grossingUpIndicator",
+      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
+    },
     { label: "Month", key: "month" },
     { label: "No of certificate under section ", key: "certificateNumber" },
     { label: "Branch Code", key: "branchCode" },
@@ -59,7 +80,11 @@ const DetailForm27QDeductee = () => {
       label: "Cash Withdrawl 194N(20L to 1cr) ",
       key: "cashWithdrawal194N20Lto1Cr",
     },
-    { label: "Date of Payment", key: "dateOfPayment" },
+    {
+      label: "Date of Payment",
+      key: "dateOfPayment",
+      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
+    },
     { label: "Cash Withdrawl 194N(>1cr)", key: "cashWithdrawal194N1Cr" },
     { label: "Paid Amount", key: "amountPaid" },
     { label: "Error Description", key: "errorDescription" },
@@ -73,16 +98,35 @@ const DetailForm27QDeductee = () => {
     { label: "Interest on Late Payment", key: "interestOnLatePayment" },
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
     { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
-    { label: "Date of Deduction", key: "dateOfDeduction" },
+    {
+      label: "Date of Deduction",
+      key: "dateOfDeduction",
+      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
+    },
     { label: "Reason for non Deduction", key: "remarksReason" },
     { label: "Reason for Non Collection", key: "remarks" },
     {
       label: "Status",
       key: "resolved",
-      formatter: (value) =>
-        value === true || value === "true" ? "Resolved" : "Not Resolved",
+      formatter: (value) => statusFormatter(value, true),
     },
   ];
+
+  const tableHead = [
+    { key: "srNo", label: "Sr.No" },
+    { key: "addedby", label: "Added By" },
+    { key: "remark", label: "Remark" },
+    { key: "datetime", label: "Date of Remark" },
+    { key: "status", label: "Status" },
+    { key: "approvedon", label: "Approved On" },
+    { key: "approvedby", label: "Approved By" },
+    { key: "action", label: "Action" },
+  ];
+
+  const tableData = detailListData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -93,13 +137,26 @@ const DetailForm27QDeductee = () => {
 
         <DetailGrid fields={fields} data={detailGridData} columns={2} />
         <div className="mt-5 flex justify-end gap-4 pr-5">
-          <UpdateForm27QDeducteeModal />
+          <UpdateForm27QDeducteeModal
+            data={detailGridData}
+            initialEntity={"deducteeremark"}
+          />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
+        </div>
+        <div className="mt-5">
+          <DynamicTableApproveReject
+            tableHead={tableHead}
+            tableData={tableData}
+            pageType={"detail"}
+            layoutType={"sc"}
+            formTitle={"27Q"}
+            entityName={"form27QDeductee"}
+          />
         </div>
       </div>
     </>
