@@ -65,7 +65,7 @@ const DynamicTable = ({ tableHead, tableData, month, autoResize }) => {
                           className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${
                             autoResize
                               ? "w-auto"
-                              : "max-w-[60px] min-w-[55px] overflow-hidden"
+                              : "max-w-[110px] min-w-[20px] overflow-hidden"
                           } `}
                         >
                           {key === "CHALLAN_MISMATCH"
