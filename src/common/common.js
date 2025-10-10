@@ -6,8 +6,6 @@ import {
   paginationListData,
   paginationWithSearchListData,
   sendReminder,
-  WOTSearchListData,
-  generateExcel,
   submitEntity,
   deleteUserDetails,
   updateEntity,
@@ -19,6 +17,8 @@ import {
   submitWithFileRegularReturn,
   generateReport,
   downloadCertificate,
+  updateDeductee,
+  rejectDeductee,
 } from "@/service/apiService";
 
 const common = {
@@ -181,6 +181,26 @@ const common = {
 
   getDownloadCerticate: async (page, formData) => {
     return await downloadCertificate(page, formData);
+  },
+
+  getUpdateDeductee: async (entity, jsonData, remarkId, deducteeId) => {
+    return await updateDeductee(entity, jsonData, remarkId, deducteeId);
+  },
+
+  getRejectDeductee: async (
+    entity,
+    jsonData,
+    remarkId,
+    deducteeId,
+    rejectRemark
+  ) => {
+    return await rejectDeductee(
+      entity,
+      jsonData,
+      remarkId,
+      deducteeId,
+      rejectRemark
+    );
   },
 };
 

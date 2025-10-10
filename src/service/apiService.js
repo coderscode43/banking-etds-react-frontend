@@ -2,17 +2,12 @@ import axios from "axios";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const credentials = {
-  withCredentials: true,
-};
+axios.defaults.withCredentials = true;
 
 // SC Layout API's
 export const listData = async (entity) => {
   try {
-    const response = await axios.get(
-      `${API_BASE_URL}${entity}/list/count/`,
-      credentials
-    );
+    const response = await axios.get(`${API_BASE_URL}${entity}/list/count/`);
     return response;
   } catch (error) {
     console.error(error);
@@ -22,8 +17,7 @@ export const listData = async (entity) => {
 export const detailListData = async (entity, fy, branchCode, id) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}${entity}/detail/${fy}/${branchCode}/${id}`,
-      credentials
+      `${API_BASE_URL}${entity}/detail/${fy}/${branchCode}/${id}`
     );
     return response;
   } catch (error) {
@@ -33,10 +27,7 @@ export const detailListData = async (entity, fy, branchCode, id) => {
 
 export const detailListDataSC = async (entity, id) => {
   try {
-    const response = await axios.get(
-      `${API_BASE_URL}${entity}/detail/${id}`,
-      credentials
-    );
+    const response = await axios.get(`${API_BASE_URL}${entity}/detail/${id}`);
     return response;
   } catch (error) {
     console.error(error);
@@ -47,8 +38,7 @@ export const detailListDataSC = async (entity, id) => {
 export const WOTListData = async (entity, fy, branchCode) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}${entity}/list/${fy}/${branchCode}/count/`,
-      credentials
+      `${API_BASE_URL}${entity}/list/${fy}/${branchCode}/count/`
     );
     return response;
   } catch (error) {
@@ -60,8 +50,7 @@ export const WOTListData = async (entity, fy, branchCode) => {
 export const paginationListData = async (entity, pageNo) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}${entity}/list/get/${pageNo}/100`,
-      credentials
+      `${API_BASE_URL}${entity}/list/get/${pageNo}/100`
     );
     return response;
   } catch (error) {
@@ -76,8 +65,7 @@ export const paginationWithSearchListData = async (
 ) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}${entity}/search/get/${pageNo}/100/${searchParams}`,
-      credentials
+      `${API_BASE_URL}${entity}/search/get/${pageNo}/100/${searchParams}`
     );
     return response;
   } catch (error) {
@@ -94,8 +82,7 @@ export const WOTSearchListData = async (
 ) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}${entity}/search/${fy}/${branchCode}/${pageNo}/100/${searchParams}`,
-      credentials
+      `${API_BASE_URL}${entity}/search/${fy}/${branchCode}/${pageNo}/100/${searchParams}`
     );
     return response;
   } catch (error) {
@@ -104,14 +91,10 @@ export const WOTSearchListData = async (
 };
 
 export const addBulkRemark = async (entity, rowsData, enhancedFormData) => {
-  const response = await axios.post(
-    `${API_BASE_URL}${entity}/addBulkRemark`,
-    {
-      ...rowsData,
-      ...enhancedFormData,
-    },
-    credentials
-  );
+  const response = await axios.post(`${API_BASE_URL}${entity}/addBulkRemark`, {
+    ...rowsData,
+    ...enhancedFormData,
+  });
   return response;
 };
 
@@ -119,7 +102,6 @@ export const generateExcel = async (entity, encodedParams) => {
   const response = await axios.get(
     `${API_BASE_URL}${entity}/generateExcel/${encodedParams}`,
     {
-      ...(credentials || {}),
       responseType: "blob",
     }
   );
@@ -155,37 +137,30 @@ export const generateExcel = async (entity, encodedParams) => {
 };
 
 export const sendReminder = async (entity, rowsData) => {
-  const response = await axios.post(
-    `${API_BASE_URL}${entity}/sendReminder`,
-    { ...rowsData },
-    credentials
-  );
+  const response = await axios.post(`${API_BASE_URL}${entity}/sendReminder`, {
+    ...rowsData,
+  });
   return response;
 };
 
 export const submitEntity = async (entity, formData) => {
-  const response = await axios.post(
-    `${API_BASE_URL}${entity}/add`,
-    { ...formData },
-    credentials
-  );
+  const response = await axios.post(`${API_BASE_URL}${entity}/add`, {
+    ...formData,
+  });
   return response;
 };
 
 export const updateEntity = async (entity, formData) => {
-  const response = await axios.put(
-    `${API_BASE_URL}${entity}/update`,
-    { ...formData },
-    credentials
-  );
+  const response = await axios.put(`${API_BASE_URL}${entity}/update`, {
+    ...formData,
+  });
   return response;
 };
 
 export const deleteUserDetails = async (entity, employeeId) => {
   try {
     const response = await axios.delete(
-      `${API_BASE_URL}${entity}/delete/${employeeId}`,
-      credentials
+      `${API_BASE_URL}${entity}/delete/${employeeId}`
     );
     return response;
   } catch (error) {
@@ -201,7 +176,6 @@ export const submitWithFile = async (entity, formDataObj) => {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      ...credentials,
     }
   );
   return response;
@@ -215,7 +189,6 @@ export const submitWithFileRegularReturn = async (entity, formDataObj) => {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      ...credentials,
     }
   );
   return response;
@@ -225,8 +198,7 @@ export const generateZipFile = async (entity, formdata) => {
   const { form, fy, quarter } = formdata;
   const response = await axios.get(
     `${API_BASE_URL}${entity}/createBranchZip/${encodeURIComponent("ALL TAN")}/${form}/${fy}/${quarter}`,
-    { ...formdata },
-    credentials
+    { ...formdata }
   );
   return response;
 };
@@ -239,7 +211,6 @@ export const uploadCertificate = async (entity, formData) => {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      ...credentials,
     }
   );
   return response;
@@ -251,7 +222,6 @@ export const downloadFile = async (entity, id) => {
     {
       responseType: "blob",
       headers: { Accept: "*/*" },
-      ...credentials,
     }
   );
 
@@ -316,4 +286,46 @@ export const downloadCertificate = async (page, formdata) => {
   );
 
   return response;
+};
+
+export const updateDeductee = async (entity, jsonData, id, deducteeId) => {
+  const response = await axios.put(
+    `${API_BASE_URL}${entity}/updateDeductee/${id}/${deducteeId}`,
+    jsonData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response;
+};
+
+export const rejectDeductee = async (
+  entity,
+  jsonData,
+  id,
+  deducteeId,
+  rejectRemark
+) => {
+  try {
+    console.log(
+      `${API_BASE_URL}${entity}/rejectDeductee/${id}/${deducteeId}/${rejectRemark}`
+    );
+    const response = await axios.put(
+      `${API_BASE_URL}${entity}/rejectDeductee/${id}/${deducteeId}/${rejectRemark}`,
+      jsonData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
