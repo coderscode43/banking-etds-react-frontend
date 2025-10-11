@@ -22,7 +22,7 @@ const SuccessModal = () => {
         </div>
 
         {/* Success message */}
-        <div className="relative pt-3 pb-6 text-center text-black">
+        <div className="relative pt-3 pb-6 text-center text-gray-600">
           {successMessage}
         </div>
 

@@ -74,3 +74,6 @@ export const statusFormatter = (value, invert = false) => {
       ? "Resolved"
       : "Pending";
 };
+
+// FY Formatter: 202223 → 2022-23
+export const fy = (f) => (f ? f.replace(/(\d{4})(\d{2})/, "$1-$2") : "");

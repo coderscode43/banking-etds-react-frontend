@@ -5,6 +5,7 @@ import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
+import { fy } from "@/lib/utils";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -78,7 +79,7 @@ const TotalAmount = () => {
     { label: "Section", key: "sectionCode" },
     { label: "Challan Heading", key: "challanHeading" },
     { label: "Month", key: "month" },
-    { label: "FY", key: "fy" },
+    { label: "FY", key: "fy", formatter: fy },
     { label: "System Amount", key: "totalAmountPaidRaw" },
     { label: "Traces Amount", key: "totalAmountPaidUpload" },
     { label: "System Amount Tax", key: "totaltaxRaw" },

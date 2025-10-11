@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import UpdateForm27QDeducteeModal from "@/components/modals/UpdateForm27QDeducteeModal";
 import DynamicTableApproveReject from "@/components/tables/DynamicTableApproveReject";
+import { date, statusFormatter } from "@/lib/utils";
 
 const DetailForm27QDeductee = () => {
   const entity = "form27QDeductee";
@@ -13,20 +14,6 @@ const DetailForm27QDeductee = () => {
 
   const [detailGridData, setDetailGridData] = useState({});
   const [detailListData, setDetailListData] = useState([]);
-
-  const statusFormatter = (value, invert = false) => {
-    const isResolved =
-      typeof value === "string"
-        ? value.toLowerCase() === "true" || value.toLowerCase() === "resolved"
-        : value === true;
-    return invert
-      ? isResolved
-        ? "Pending"
-        : "Resolved"
-      : isResolved
-        ? "Resolved"
-        : "Pending";
-  };
 
   useEffect(() => {
     const fetchDetailListData = async () => {
@@ -51,7 +38,7 @@ const DetailForm27QDeductee = () => {
     {
       label: "Grossing up Indicator",
       key: "grossingUpIndicator",
-      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
+      formatter: date,
     },
     { label: "Month", key: "month" },
     { label: "No of certificate under section ", key: "certificateNumber" },
@@ -80,11 +67,7 @@ const DetailForm27QDeductee = () => {
       label: "Cash Withdrawl 194N(20L to 1cr) ",
       key: "cashWithdrawal194N20Lto1Cr",
     },
-    {
-      label: "Date of Payment",
-      key: "dateOfPayment",
-      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
-    },
+    { label: "Date of Payment", key: "dateOfPayment", formatter: date },
     { label: "Cash Withdrawl 194N(>1cr)", key: "cashWithdrawal194N1Cr" },
     { label: "Paid Amount", key: "amountPaid" },
     { label: "Error Description", key: "errorDescription" },
@@ -98,11 +81,7 @@ const DetailForm27QDeductee = () => {
     { label: "Interest on Late Payment", key: "interestOnLatePayment" },
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
     { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
-    {
-      label: "Date of Deduction",
-      key: "dateOfDeduction",
-      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
-    },
+    { label: "Date of Deduction", key: "dateOfDeduction", formatter: date },
     { label: "Reason for non Deduction", key: "remarksReason" },
     { label: "Reason for Non Collection", key: "remarks" },
     {
@@ -116,9 +95,9 @@ const DetailForm27QDeductee = () => {
     { key: "srNo", label: "Sr.No" },
     { key: "addedby", label: "Added By" },
     { key: "remark", label: "Remark" },
-    { key: "datetime", label: "Date of Remark" },
+    { key: "datetime", label: "Date of Remark", formatter: date },
     { key: "status", label: "Status" },
-    { key: "approvedon", label: "Approved On" },
+    { key: "approvedon", label: "Approved On", formatter: date },
     { key: "approvedby", label: "Approved By" },
     { key: "action", label: "Action" },
   ];

@@ -288,9 +288,14 @@ export const downloadCertificate = async (page, formdata) => {
   return response;
 };
 
-export const updateDeductee = async (entity, jsonData, id, deducteeId) => {
+export const updateDeductee = async (
+  entity,
+  remarkId,
+  deducteeId,
+  jsonData
+) => {
   const response = await axios.put(
-    `${API_BASE_URL}${entity}/updateDeductee/${id}/${deducteeId}`,
+    `${API_BASE_URL}${entity}/updateDeductee/${remarkId}/${deducteeId}`,
     jsonData,
     {
       headers: {
@@ -304,28 +309,19 @@ export const updateDeductee = async (entity, jsonData, id, deducteeId) => {
 
 export const rejectDeductee = async (
   entity,
-  jsonData,
-  id,
+  remarkId,
   deducteeId,
-  rejectRemark
+  formData,
+  jsonData
 ) => {
-  try {
-    console.log(
-      `${API_BASE_URL}${entity}/rejectDeductee/${id}/${deducteeId}/${rejectRemark}`
-    );
-    const response = await axios.put(
-      `${API_BASE_URL}${entity}/rejectDeductee/${id}/${deducteeId}/${rejectRemark}`,
-      jsonData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log("Response:", response);
-    return response;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  const response = await axios.put(
+    `${API_BASE_URL}${entity}/rejectDeductee/${remarkId}/${deducteeId}/${formData}`,
+    jsonData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response;
 };

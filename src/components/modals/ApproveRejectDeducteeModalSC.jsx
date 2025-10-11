@@ -103,64 +103,70 @@ const ApproveRejectDeducteeModalSC = ({
   };
   return (
     <div
-      className={`fixed inset-0 z-20 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${
+      className={`bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/40 ${
         isModalOpen ? "visible opacity-100" : "invisible opacity-0"
       }`}
     >
-      <div className="relative w-full max-w-[30rem] rounded-xl bg-white p-4 shadow-xl transition-all">
-        <div className="absolute top-5 right-3 cursor-pointer">
-          <X size={22} onClick={() => closeModal()} />
-        </div>
-        <div className="flex flex-col text-left">
-          <p className="text-xl font-medium">
+      <div className="w-[28rem] rounded-md bg-white shadow-lg">
+        {/* Modal Header */}
+        <div className="flex items-start justify-between rounded-t-md bg-blue-100 px-6 py-4">
+          <p className="text-lg font-medium text-gray-800">
             Approve or Reject Form {formTitle} Deductee
           </p>
         </div>
-        <form onSubmit={handleSubmit} noValidate>
-          <div className="relative my-5 text-gray-600">
-            <label className="text-left text-lg font-semibold text-[var(--primary-color)]">
-              Action <span className="text-red-600">*</span>
-            </label>
-            <select
-              name="typeOfAction"
-              id="typeOfAction"
-              value={formData.typeOfAction || ""}
-              onChange={handleInputChange}
-              className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-            >
-              <option value="">Select type of action</option>
-              <option value="Approved">Approve</option>
-              <option value="Reject">Reject</option>
-            </select>
-            <ErrorMessage error={errors.typeOfAction} />
-          </div>
-
-          {formData.typeOfAction === "Reject" && (
-            <div className="my-5 text-gray-600">
-              <label className="text-left text-lg font-semibold text-[var(--primary-color)]">
-                Remark <span className="text-red-600">*</span>
+        {/* Modal Body */}
+        <form onSubmit={handleSubmit} noValidate className="">
+          <div className="flex flex-col gap-3 bg-white px-6 py-4">
+            <div>
+              <label
+                htmlFor="typeOfAction"
+                className="font-semibold text-[var(--primary-color)]"
+              >
+                Action <span className="text-red-600">*</span>
               </label>
-              <textarea
-                name="rejectRemark"
-                id="rejectRemark"
-                value={formData.rejectRemark || ""}
+              <select
+                name="typeOfAction"
+                id="typeOfAction"
+                value={formData.typeOfAction || ""}
                 onChange={handleInputChange}
-                className="mt-1 block h-[10%] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-              ></textarea>
-              <ErrorMessage error={errors.rejectRemark} />
+                className="custom-scrollbar mt-1 block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+              >
+                <option value="">Select type of action</option>
+                <option value="Approved">Approve</option>
+                <option value="Reject">Reject</option>
+              </select>
+              <ErrorMessage error={errors.typeOfAction} />
             </div>
-          )}
-
-          <div className="flex w-full justify-between rounded-b-md">
+            {formData.typeOfAction === "Reject" && (
+              <div>
+                <label
+                  htmlFor="rejectRemark"
+                  className="font-semibold text-[var(--primary-color)]"
+                >
+                  Remark <span className="text-red-600">*</span>
+                </label>
+                <textarea
+                  name="rejectRemark"
+                  id="rejectRemark"
+                  value={formData.rejectRemark || ""}
+                  onChange={handleInputChange}
+                  className="mt-1 block h-[10%] w-full cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                />
+                <ErrorMessage error={errors.rejectRemark} />
+              </div>
+            )}
+          </div>
+          {/* Modal Footer */}
+          <div className="flex justify-end gap-2 rounded-b-md bg-blue-100 px-6 py-4">
             <button
               type="submit"
-              className="mx-2 w-full cursor-pointer rounded-lg bg-green-600 py-2 font-medium text-white hover:bg-green-500"
+              className="cursor-pointer rounded-lg bg-green-600 px-3 py-2 font-medium text-white hover:bg-green-500"
             >
               Update
             </button>
             <button
               type="button"
-              className="mx-2 w-full cursor-pointer rounded-lg bg-[#d40008] py-2 font-medium text-white hover:bg-red-500"
+              className="cursor-pointer rounded-lg bg-[#d40008] px-3 py-2 font-medium text-white hover:bg-red-500"
               onClick={() => closeModal()}
             >
               Close

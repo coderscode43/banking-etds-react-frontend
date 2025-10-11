@@ -6,6 +6,7 @@ import GenerateZipFiles from "@/components/modals/GenerateZipFiles";
 import UploadCertificateModal from "@/components/modals/UploadCertificateModal";
 import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
+import { dateWithTime } from "@/lib/utils";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -64,7 +65,7 @@ const UploadCertificate = () => {
     { key: "fy", label: "Financial Year" },
     { key: "quarter", label: "Quarter" },
     { key: "form", label: "Form" },
-    { key: "uploadedTime", label: "Date" },
+    { key: "uploadedTime", label: "Date", formatter: dateWithTime },
     { key: "status", label: "Status" },
   ];
 

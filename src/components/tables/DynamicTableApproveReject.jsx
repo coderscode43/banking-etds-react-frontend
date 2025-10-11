@@ -1,7 +1,7 @@
-import ApproveRejectDeducteeModalSC from "@/components/modals/ApproveRejectDeducteeModalSC";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { TooltipWrapper } from "../component/Tooltip";
+import ApproveRejectDeducteeModalSC from "../modals/ApproveRejectDeducteeModalSC";
 
 const DynamicTableApproveReject = ({
   entity,
@@ -63,8 +63,8 @@ const DynamicTableApproveReject = ({
                           key={colIndex}
                           className="whitespace-wrap border-[1.5px] border-gray-300 p-2 text-ellipsis"
                         >
-                          {key === "action" ? (
-                            <TooltipWrapper tooltipText="Detail">
+                          {key === "action" && data.status === "Pending" ? (
+                            <TooltipWrapper tooltipText="Approve">
                               <i
                                 onClick={() => {
                                   setRowData(data);

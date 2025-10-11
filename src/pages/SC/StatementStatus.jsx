@@ -4,6 +4,7 @@ import Pagination from "@/components/component/Pagination";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
+import { date, fy } from "@/lib/utils";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -66,8 +67,8 @@ const StatementStatus = () => {
     { label: "TAN", key: "tan" },
     { label: "Form", key: "form" },
     { label: "Quarter", key: "quarter" },
-    { label: "AS_ON_DATE", key: "AS_ON_DATE" },
-    { label: "Financial Year", key: "fy" },
+    { label: "AS_ON_DATE", key: "AS_ON_DATE", formatter: date },
+    { label: "Financial Year", key: "fy", formatter: fy },
     { label: "Status", key: "status" },
     { label: "RT", key: "rt" },
   ];

@@ -183,23 +183,23 @@ const common = {
     return await downloadCertificate(page, formData);
   },
 
-  getUpdateDeductee: async (entity, jsonData, remarkId, deducteeId) => {
-    return await updateDeductee(entity, jsonData, remarkId, deducteeId);
+  getUpdateDeductee: async (entity, remarkId, deducteeId, jsonData) => {
+    return await updateDeductee(entity, remarkId, deducteeId, jsonData);
   },
 
   getRejectDeductee: async (
     entity,
-    jsonData,
     remarkId,
     deducteeId,
-    rejectRemark
+    formData,
+    jsonData
   ) => {
     return await rejectDeductee(
       entity,
-      jsonData,
       remarkId,
       deducteeId,
-      rejectRemark
+      formData,
+      jsonData
     );
   },
 };

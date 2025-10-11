@@ -7,6 +7,7 @@ import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTable from "@/components/tables/DynamicTable";
 import staticDataContext from "@/context/staticDataContext";
 import GenerateExcelButton from "@/components/component/GenerateExcelButton";
+import { date } from "@/lib/utils";
 
 const Challan = () => {
   const entity = "challan";
@@ -67,7 +68,11 @@ const Challan = () => {
     { label: "CIN", key: "cin" },
     { label: "TAN", key: "tan" },
     { label: "Amount of Challan", key: "AMOUNT_OF_CLALLAN" },
-    { label: "Date of Deposition", key: "DATE_OF_DEPOSITION" },
+    {
+      label: "Date of Deposition",
+      key: "DATE_OF_DEPOSITION",
+      formatter: date,
+    },
     { label: "As on Date", key: "AS_ON_DATE" },
     { label: "Challan Mismatch", key: "CHALLAN_MISMATCH" },
   ];
