@@ -14,7 +14,7 @@ export const errorMessage = (error, fallback = "An error occurred") => {
     fallback
   );
 };
-
+// DD-MM-YYYY HH:MM:SS -> 11-10-2025 14:45:30
 export const dateWithTime = (d) => {
   if (!d) return "";
   const date = new Date(d);
@@ -31,6 +31,7 @@ export const dateWithTime = (d) => {
   return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 };
 
+// 26-06-2025
 export const date = (d) =>
   !d ? "" : new Date(d).toLocaleDateString("en-GB").replace(/\//g, "-");
 
@@ -58,4 +59,18 @@ export const zipDownload = (response) => {
   link.remove();
   // cleanup URL
   window.URL.revokeObjectURL(url);
+};
+
+export const statusFormatter = (value, invert = false) => {
+  const isResolved =
+    typeof value === "string"
+      ? value.toLowerCase() === "true" || value.toLowerCase() === "resolved"
+      : value === true;
+  return invert
+    ? isResolved
+      ? "Pending"
+      : "Resolved"
+    : isResolved
+      ? "Resolved"
+      : "Pending";
 };
