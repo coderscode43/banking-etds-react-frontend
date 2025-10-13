@@ -18,7 +18,7 @@ const UploadCertificate = () => {
   const navigate = useNavigate();
   const { Quarter, financialYear, typeOfCertificate } =
     useContext(staticDataContext);
-
+  const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
@@ -51,6 +51,8 @@ const UploadCertificate = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -206,7 +208,11 @@ const UploadCertificate = () => {
           </div>
         </div>
 
-        <DynamicTable tableHead={tableHead} tableData={tableData} />
+        <DynamicTable
+          tableHead={tableHead}
+          tableData={tableData}
+          loading={loading}
+        />
       </div>
 
       {/* Pagination */}

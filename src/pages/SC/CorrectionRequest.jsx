@@ -5,6 +5,7 @@ import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import staticDataContext from "@/context/staticDataContext";
+import { dateWithTime } from "@/lib/utils";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,6 +18,7 @@ const CorrectionRequest = () => {
   const { Quarter, typeOfCorrection, financialYear } =
     useContext(staticDataContext);
 
+  const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [autoResize, setAutoResize] = useState(false);
@@ -38,6 +40,7 @@ const CorrectionRequest = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true);
         let response;
         if (params) {
           const pageNo = 0;
@@ -63,6 +66,8 @@ const CorrectionRequest = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchListData();
@@ -78,7 +83,7 @@ const CorrectionRequest = () => {
     { key: "pan", label: "Pan Of Customer" },
     { key: "typeOfCorrection", label: "Type of Correction" },
     { key: "status", label: "Status" },
-    { key: "lastUpdatedOn", label: "Last Updated On" },
+    { key: "lastUpdatedOn", label: "Last Updated On", formatter: dateWithTime },
     { key: "action", label: "Action" },
   ];
 
@@ -359,6 +364,7 @@ const CorrectionRequest = () => {
             tableHead={tableHead}
             tableData={tableData}
             autoResize={autoResize}
+            loading={loading}
           />
         </div>
       </div>

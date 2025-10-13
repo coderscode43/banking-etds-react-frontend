@@ -14,6 +14,7 @@ const Branch = () => {
   const { params } = useParams();
   const { State } = useContext(staticDataContext);
 
+  const [loading, setLoading] = useState(true);
   const [listData, setListData] = useState([]);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
@@ -27,6 +28,7 @@ const Branch = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true); // Start loading
         let response;
         if (params) {
           const pageNo = 0;
@@ -46,6 +48,8 @@ const Branch = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
     fetchListData();
@@ -173,6 +177,7 @@ const Branch = () => {
           entity={entity}
           tableHead={tableHead}
           tableData={tableData}
+          loading={loading}
         />
       </div>
 

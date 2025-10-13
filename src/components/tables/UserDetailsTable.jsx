@@ -1,10 +1,16 @@
 import common from "@/common/common";
-import { useState, useContext } from "react";
-import DynamicModal from "../modals/DynamicModal";
 import statusContext from "@/context/statusContext";
 import { errorMessage } from "@/lib/utils";
+import { useContext, useState } from "react";
+import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
+import DynamicModal from "../modals/DynamicModal";
 
-const UserDetailsTable = ({ tableHead, tableData, entity }) => {
+const UserDetailsTable = ({
+  tableHead,
+  tableData,
+  entity,
+  loading = false,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [employeeID, setEmployeeID] = useState("");
   const { showSuccess, showError } = useContext(statusContext);
@@ -23,6 +29,9 @@ const UserDetailsTable = ({ tableHead, tableData, entity }) => {
       console.log(error);
     }
   };
+
+  // Skeleton loader rows count (adjust as needed)
+  const skeletonRows = 100;
 
   return (
     <>
@@ -49,7 +58,12 @@ const UserDetailsTable = ({ tableHead, tableData, entity }) => {
             </thead>
 
             <tbody>
-              {tableData.length === 0 ? (
+              {loading ? (
+                <TableLoadingSkeleton
+                  columns={tableHead.length}
+                  rows={skeletonRows}
+                />
+              ) : tableData.length === 0 ? (
                 <tr>
                   <td
                     colSpan={tableHead.length}

@@ -1,11 +1,12 @@
 import common from "@/common/common";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import AddCorrectionResponseModal from "@/components/modals/AddCorrectionResponseModal";
 import DynamicTable from "@/components/tables/DynamicTable";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import { date, dateWithTime } from "@/lib/utils";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const DetailCorrectionRequest = () => {
   const entity = "correctionRequest";
@@ -13,6 +14,7 @@ const DetailCorrectionRequest = () => {
   const navigate = useNavigate();
   const { fy, branchCode, id } = useParams();
 
+  const [loading, setLoading] = useState(false);
   const [detailGridData, setDetailGridData] = useState({});
   const [correctionTracker, setCorrectionTracker] = useState([]);
   const [otherDetails, setOtherDetails] = useState([]);
@@ -21,6 +23,7 @@ const DetailCorrectionRequest = () => {
   useEffect(() => {
     const fetchDetailListData = async () => {
       try {
+        setLoading(true);
         const response = await common.getDetailListData(
           entity,
           fy,
@@ -34,6 +37,8 @@ const DetailCorrectionRequest = () => {
         setChallanDetails(response.data.ac || {});
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchDetailListData();
@@ -43,7 +48,11 @@ const DetailCorrectionRequest = () => {
     { label: "Ticket Number", key: "ticketNumber" },
     { label: "Financial Year", key: "fy" },
     { label: "Quarter", key: "quarter" },
-    { label: "Date of Request", key: "correctionRequestDate" },
+    {
+      label: "Date of Request",
+      key: "correctionRequestDate",
+      formatter: dateWithTime,
+    },
     { label: "Name of Customer", key: "name" },
     { label: "Type of Form", key: "typeOfForm" },
     { label: "Type of Correction", key: "typeOfCorrection" },
@@ -59,14 +68,22 @@ const DetailCorrectionRequest = () => {
 
   const fields1 = [
     { label: "Request Created By", key: "makerBy" },
-    { label: "Request Created On", key: "" },
+    { label: "Request Created On", key: "", formatter: dateWithTime },
     { label: "Status", key: "status" },
     { label: "Checker Approved By", key: "checkerApprovedBy" },
-    { label: "Checker Approved On", key: "checkerApprovedOn" },
+    {
+      label: "Checker Approved On",
+      key: "checkerApprovedOn",
+      formatter: dateWithTime,
+    },
     { label: "Tax Team Approved By", key: "taxTeamApprovedBy" },
-    { label: "Tax Team Approved On", key: "taxTeamApprovedOn" },
+    {
+      label: "Tax Team Approved On",
+      key: "taxTeamApprovedOn",
+      formatter: dateWithTime,
+    },
     { label: "Correction By", key: "correctionBy" },
-    { label: "Correction On", key: "correctionOn" },
+    { label: "Correction On", key: "correctionOn", formatter: dateWithTime },
   ];
 
   const categories = [
@@ -79,7 +96,7 @@ const DetailCorrectionRequest = () => {
     { label: "Correction Response", key: "correctionRemark" },
     { label: "Supporting Document Name", key: "supportingDocName" },
     { label: "Added By", key: "addedBy" },
-    { label: "Added On", key: "dateTime" },
+    { label: "Added On", key: "dateTime", formatter: dateWithTime },
     { label: "Action", key: "action" },
   ];
 
@@ -91,7 +108,7 @@ const DetailCorrectionRequest = () => {
   const tableHeadOtherDetails = [
     { label: "Sr.No", key: "srNo" },
     { label: "Name", key: "name" },
-    { label: "Date of Payment", key: "dateOfPayment" },
+    { label: "Date of Payment", key: "dateOfPayment", formatter: date },
     { label: "TDS Amount", key: "tds" },
     { label: "Gross Amount", key: "amountPaid" },
     { label: "Quarter", key: "quarter" },
@@ -116,7 +133,7 @@ const DetailCorrectionRequest = () => {
     { label: "BSR Code", key: "challanBsrCode" },
     { label: "Challan Section", key: "challanSection" },
     { label: "Challan Amount", key: "challanAmount" },
-    { label: "Challan Date", key: "challanDate" },
+    { label: "Challan Date", key: "challanDate", formatter: dateWithTime },
     {
       label: "Challan Supporting Document",
       key: "challanSupportingDocument",
@@ -166,6 +183,7 @@ const DetailCorrectionRequest = () => {
               <DynamicTableAction
                 tableHead={tableHeadCorrectionTracker}
                 tableData={tableDataCorrectionTracker}
+                loading={loading}
               />
             </TabPanel>
 
@@ -173,6 +191,7 @@ const DetailCorrectionRequest = () => {
               <DynamicTable
                 tableHead={tableHeadOtherDetails}
                 tableData={tableDataOtherDetails}
+                loading={loading}
               />
               <hr className="m-5 bg-gray-200" />
               <h1 className="ms-2 mb-5 text-2xl font-bold text-[var(--primary-color)]">

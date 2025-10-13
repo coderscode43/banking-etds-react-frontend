@@ -1,10 +1,20 @@
-import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
 import { useNavigate } from "react-router-dom";
+import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
+import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
+import { Tooltip } from "../component/Tooltip";
 
 const FINANCIAL_YEAR = import.meta.env.VITE_FINANCIAL_YEAR;
 
-const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
+const DynamicTableEdit = ({
+  entity,
+  tableHead,
+  tableData,
+  loading = false,
+}) => {
   const navigate = useNavigate();
+
+  // Skeleton loader rows count (adjust as needed)
+  const skeletonRows = 100;
 
   return (
     <div className="relative w-full">
@@ -42,7 +52,12 @@ const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
             </thead>
 
             <tbody>
-              {tableData.length === 0 ? (
+              {loading ? (
+                <TableLoadingSkeleton
+                  columns={tableHead.length}
+                  rows={skeletonRows}
+                />
+              ) : tableData.length === 0 ? (
                 <tr>
                   <td
                     colSpan={tableHead.length}
@@ -71,21 +86,23 @@ const DynamicTableEdit = ({ entity, tableHead, tableData }) => {
                     {tableHead.map(({ key, formatter }, colIndex) => (
                       <td
                         key={colIndex}
-                        className="max-w-[70px] min-w-[100px] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
+                        className="max-w-[110px] min-w-[20] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
                       >
-                        {key == "branchEdit" ? (
-                          <i
-                            onClick={() => {
-                              navigate(
-                                `/home/detail/${entity}/${data.id}/detail${
-                                  entity.charAt(0).toUpperCase() +
-                                  entity.slice(1)
-                                }`,
-                                { state: { rowID: data.id } }
-                              );
-                            }}
-                            className="fa-solid fa-pen-to-square text-lg"
-                          ></i>
+                        {key === "branchEdit" ? (
+                          <Tooltip value="Edit">
+                            <i
+                              onClick={() => {
+                                navigate(
+                                  `/home/detail/${entity}/${data.id}/detail${
+                                    entity.charAt(0).toUpperCase() +
+                                    entity.slice(1)
+                                  }`,
+                                  { state: { rowID: data.id } }
+                                );
+                              }}
+                              className="fa-solid fa-pen-to-square text-lg"
+                            ></i>
+                          </Tooltip>
                         ) : formatter ? (
                           formatter(data[key])
                         ) : (

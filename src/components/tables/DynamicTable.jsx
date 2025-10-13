@@ -1,6 +1,16 @@
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
+import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
 
-const DynamicTable = ({ tableHead, tableData, month, autoResize }) => {
+const DynamicTable = ({
+  tableHead,
+  tableData,
+  month,
+  autoResize,
+  loading = false,
+}) => {
+  // Skeleton loader rows count (adjust as needed)
+  const skeletonRows = 100;
+
   return (
     <div className="relative w-full">
       <div className="w-full overflow-clip rounded-md border border-gray-200">
@@ -37,7 +47,12 @@ const DynamicTable = ({ tableHead, tableData, month, autoResize }) => {
             </thead>
 
             <tbody>
-              {tableData.length === 0 ? (
+              {loading ? (
+                <TableLoadingSkeleton
+                  columns={tableHead.length}
+                  rows={skeletonRows}
+                />
+              ) : tableData.length === 0 ? (
                 <tr>
                   <td
                     colSpan={tableHead.length}

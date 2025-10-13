@@ -13,6 +13,7 @@ const UserDetails = () => {
   const { params } = useParams();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(true);
   const [listData, setListData] = useState([]);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
@@ -25,6 +26,7 @@ const UserDetails = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true);
         let response;
         if (params) {
           const pageNo = 0;
@@ -43,6 +45,8 @@ const UserDetails = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -148,6 +152,7 @@ const UserDetails = () => {
           entity={entity}
           tableHead={tableHead}
           tableData={tableData}
+          loading={loading}
         />
       </div>
 

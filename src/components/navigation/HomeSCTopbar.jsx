@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import DropdownMenu from "../component/DropdownMenu";
 import { TooltipWrapper } from "../component/Tooltip";
+import staticDataContext from "@/context/staticDataContext";
+import { useContext } from "react";
 
 const HomeSCTopBar = ({ handleSideBar }) => {
   const navigate = useNavigate();
+  const { clientDetails } = useContext(staticDataContext);
 
   return (
     <div className="sticky top-0 z-10">
@@ -24,7 +27,7 @@ const HomeSCTopBar = ({ handleSideBar }) => {
           </div>
           <div className="mr-[90px]">
             <h1 className="text-2xl font-bold text-[var(--primary-color)]">
-              R J SONI and Associates - ABCDE1234A
+              {clientDetails?.ClientName} - {clientDetails?.ClientPAN}
             </h1>
           </div>
           <div className="flex items-center justify-center gap-5">

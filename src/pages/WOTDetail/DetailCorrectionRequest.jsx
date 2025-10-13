@@ -5,6 +5,7 @@ import DynamicTable from "@/components/tables/DynamicTable";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { date, dateWithTime } from "@/lib/utils";
 
 const DetailCorrectionRequest = () => {
   const entity = "correctionRequest";
@@ -12,6 +13,7 @@ const DetailCorrectionRequest = () => {
   const navigate = useNavigate();
   const { fy, branchCode, id } = useParams();
 
+  const [loading, setLoading] = useState(false);
   const [detailGridData, setDetailGridData] = useState([]);
   const [challanDetails, setChallanDetails] = useState([]);
   const [correctionTracker, setCorrectionTracker] = useState([]);
@@ -20,6 +22,7 @@ const DetailCorrectionRequest = () => {
   useEffect(() => {
     const fetchDetailListData = async () => {
       try {
+        setLoading(true);
         const response = await common.getDetailListData(
           entity,
           fy,
@@ -32,21 +35,23 @@ const DetailCorrectionRequest = () => {
         setOtherDetails(response.data.amountDetails || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchDetailListData();
   }, [branchCode, fy, id]);
 
+  const categories = [
+    { name: "Correction Tracker" },
+    { name: "Other Details" },
+  ];
+
   const fields = [
     { label: "Ticket Number", key: "ticketNumber" },
     { label: "Financial Year", key: "fy" },
     { label: "Quarter", key: "quarter" },
-    {
-      label: "Date of Request",
-      key: "correctionRequestDate",
-      formatter: (d) =>
-        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
-    },
+    { label: "Date of Request", key: "correctionRequestDate", formatter: date },
     { label: "Name of Customer", key: "name" },
     { label: "Type of Form", key: "typeOfForm" },
     { label: "Type of Correction", key: "typeOfCorrection" },
@@ -54,7 +59,7 @@ const DetailCorrectionRequest = () => {
     {
       label: "Mobile Number of who Generated Correction/Query Request",
       key: "mobileNumber",
-      // fullRow: true,
+      fullRow: true,
     },
     { label: "Response", key: "status" },
     { label: "Document", key: "fileName" },
@@ -64,31 +69,24 @@ const DetailCorrectionRequest = () => {
     { label: "Request Created By", key: "makerBy" },
     {
       label: "Request Created On",
-      key: "fy",
-      formatter: (d) => (d ? new Date(d).toLocaleDateString("en-GB") : ""),
+      key: "correctionRequestDate",
+      formatter: dateWithTime,
     },
-    { label: "Status", key: "quarter" },
-    { label: "Checker Approved By", key: "correctionRequestDate" },
+    { label: "Status", key: "status" },
+    { label: "Checker Approved By", key: "checkerApprovedBy" },
     {
       label: "Checker Approved On",
-      key: "fy",
-      formatter: (d) =>
-        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
+      key: "checkerApprovedOn",
+      formatter: dateWithTime,
     },
-    { label: "Tax Team Approved By", key: "ticketNumber" },
+    { label: "Tax Team Approved By", key: "taxTeamApprovedBy" },
     {
       label: "Tax Team Approved On",
-      key: "fy",
-      formatter: (d) =>
-        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
+      key: "taxTeamApprovedOn",
+      formatter: dateWithTime,
     },
-    { label: "Correction By", key: "ticketNumber" },
-    {
-      label: "Correction On",
-      key: "fy",
-      formatter: (d) =>
-        d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
-    },
+    { label: "Correction By", key: "correctionBy" },
+    { label: "Correction On", key: "correctionOn", formatter: dateWithTime },
   ];
 
   const tableHeadCorrectionTracker = [
@@ -96,7 +94,7 @@ const DetailCorrectionRequest = () => {
     { key: "correctionRemark", label: "Correction Response" },
     { key: "supportingDocName", label: "Supporting Document Name" },
     { key: "addedBy", label: "Added By" },
-    { key: "dateTime", label: "Added On" },
+    { key: "dateTime", label: "Added On", formatter: dateWithTime },
     { key: "remarkStatus", label: "Action" },
   ];
 
@@ -108,7 +106,7 @@ const DetailCorrectionRequest = () => {
   const tableHeadOtherDetails = [
     { key: "srNo", label: "Sr.No" },
     { key: "name", label: "Name" },
-    { key: "dateOfPayment", label: "Date of Payment" },
+    { key: "dateOfPayment", label: "Date of Payment", formatter: date },
     { key: "tds", label: "TDS Amount" },
     { key: "amountPaid", label: "Gross Amount" },
     { key: "quarter", label: "Quarter" },
@@ -116,12 +114,6 @@ const DetailCorrectionRequest = () => {
     { key: "correctPan", label: "Correct PAN" },
     { key: "status", label: "Other Response" },
   ];
-
-  const categories = [
-    { name: "Correction Tracker" },
-    { name: "Other Details" },
-  ];
-
   const tableDataOtherDetails = otherDetails?.map((data, index) => ({
     srNo: index + 1,
     ...data,
@@ -145,7 +137,6 @@ const DetailCorrectionRequest = () => {
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
         </div>
-
         <TabGroup className="mx-2 flex w-full flex-col items-center">
           <TabList className="flex w-full justify-around rounded-md border-gray-200 bg-gray-100 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
             {categories.map(({ name }) => (
@@ -171,6 +162,7 @@ const DetailCorrectionRequest = () => {
               <DynamicTableAction
                 tableHead={tableHeadCorrectionTracker}
                 tableData={tableDataCorrectionTracker}
+                loading={loading}
               />
             </TabPanel>
             <TabPanel
@@ -180,6 +172,7 @@ const DetailCorrectionRequest = () => {
               <DynamicTable
                 tableHead={tableHeadOtherDetails}
                 tableData={tableDataOtherDetails}
+                loading={loading}
               />
             </TabPanel>
           </TabPanels>

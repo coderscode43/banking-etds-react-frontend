@@ -16,6 +16,7 @@ const CorrectionRequest = () => {
   const { Quarter, status, typeOfCorrection, financialYear } =
     useContext(staticDataContext);
 
+  const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
@@ -36,6 +37,7 @@ const CorrectionRequest = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true);
         let response;
         if (params) {
           const pageNo = 0;
@@ -67,6 +69,8 @@ const CorrectionRequest = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchListData();
@@ -361,6 +365,7 @@ const CorrectionRequest = () => {
           layoutType="wot"
           tableHead={tableHead}
           tableData={tableData}
+          loading={loading}
         />
       </div>
 

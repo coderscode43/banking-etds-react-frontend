@@ -14,7 +14,7 @@ const PanUpdateList = () => {
   const { params } = useParams();
   const navigate = useNavigate();
   const { financialYear, Month } = useContext(staticDataContext);
-
+  const [loading, setLoading] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,6 +32,7 @@ const PanUpdateList = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true);
         let response;
         if (params) {
           const pageNo = 0;
@@ -54,6 +55,8 @@ const PanUpdateList = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -262,7 +265,11 @@ const PanUpdateList = () => {
         </div>
 
         <div>
-          <DynamicTable tableHead={tableHead} tableData={tableData} />
+          <DynamicTable
+            tableHead={tableHead}
+            tableData={tableData}
+            loading={loading}
+          />
         </div>
       </div>
       {/* Pagination */}

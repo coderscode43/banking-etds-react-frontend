@@ -15,7 +15,7 @@ const StatementStatus = () => {
   const { params } = useParams();
   const navigate = useNavigate();
   const { Quarter, Tan, financialYear, Form } = useContext(staticDataContext);
-
+  const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
@@ -55,6 +55,8 @@ const StatementStatus = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -286,7 +288,11 @@ const StatementStatus = () => {
         </div>
 
         <div>
-          <DynamicTable tableHead={tableHead} tableData={tableData} />
+          <DynamicTable
+            tableHead={tableHead}
+            tableData={tableData}
+            loading={loading}
+          />
         </div>
       </div>
 

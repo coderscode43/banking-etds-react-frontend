@@ -17,6 +17,7 @@ const RegularReturn = () => {
   const { Quarter, regularReturnStatus, typeOfForm, financialYear } =
     useContext(staticDataContext);
 
+  const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
@@ -33,6 +34,7 @@ const RegularReturn = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true);
         let response;
         if (params) {
           const pageNo = 0;
@@ -60,6 +62,8 @@ const RegularReturn = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchListData();
@@ -264,6 +268,7 @@ const RegularReturn = () => {
           layoutType={"wot"}
           tableHead={tableHead}
           tableData={tableData}
+          loading={loading}
         />
       </div>
 

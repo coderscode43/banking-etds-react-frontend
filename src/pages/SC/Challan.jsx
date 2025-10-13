@@ -16,6 +16,7 @@ const Challan = () => {
   const { params } = useParams();
   const { Tan } = useContext(staticDataContext);
 
+  const [loading, setLoading] = useState(false);
   const [showDivs, setShowDivs] = useState(false);
   const [listData, setListData] = useState([]);
   const [gotoPage, setGotoPage] = useState(1);
@@ -33,6 +34,7 @@ const Challan = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true);
         let response;
         if (params) {
           const pageNo = 0;
@@ -56,6 +58,8 @@ const Challan = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -259,7 +263,11 @@ const Challan = () => {
         </div>
 
         <div>
-          <DynamicTable tableHead={tableHead} tableData={tableData} />
+          <DynamicTable
+            tableHead={tableHead}
+            tableData={tableData}
+            loading={loading}
+          />
         </div>
       </div>
 
