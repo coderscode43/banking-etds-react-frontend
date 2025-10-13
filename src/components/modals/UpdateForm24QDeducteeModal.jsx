@@ -25,9 +25,9 @@ const UpdateForm24QDeductee = ({ data }) => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-
+    const refinedFormData = common.convertToDateObject(formData);
     try {
-      const response = await common.getSubmit(entity, formData);
+      const response = await common.getSubmit(entity, refinedFormData);
       setIsOpen(false);
       showSuccess(response.data.successMsg);
     } catch (error) {
@@ -110,7 +110,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="quarter"
                             id="quarter"
                             placeholder="Quarter"
-                            value={formData?.quarter}
+                            value={formData?.quarter || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -125,7 +125,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="month"
                             id="month"
                             placeholder="Month"
-                            value={formData?.month}
+                            value={formData?.month || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -139,7 +139,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="roCode"
                             id="roCode"
                             placeholder="RO Code"
-                            value={formData?.roCode}
+                            value={formData?.roCode || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -155,7 +155,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="branchCode"
                             id="branchCode"
                             placeholder="Branch Code"
-                            value={formData?.branchCode}
+                            value={formData?.branchCode || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -170,7 +170,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="custVendId"
                             id="custVendId"
                             placeholder="Transaction Id"
-                            value={formData?.custVendId}
+                            value={formData?.custVendId || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -184,7 +184,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="uniqueRefNo"
                             id="uniqueRefNo"
                             placeholder="Unique Ref No."
-                            value={formData?.uniqueRefNo}
+                            value={formData?.uniqueRefNo || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -200,7 +200,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="acctNo"
                             id="acctNo"
                             placeholder="Account No"
-                            value={formData?.acctNo}
+                            value={formData?.acctNo || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -215,7 +215,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="challanHeading"
                             id="challanHeading"
                             placeholder="Challan Heading"
-                            value={formData?.challanHeading}
+                            value={formData?.challanHeading || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -229,7 +229,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="deducteeRefNo"
                             id="deducteeRefNo"
                             placeholder="Party Id"
-                            value={formData?.deducteeRefNo}
+                            value={formData?.deducteeRefNo || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -245,7 +245,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="panRefNo"
                             id="panRefNo"
                             placeholder="PAN Ref No"
-                            value={formData?.panRefNo}
+                            value={formData?.panRefNo || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -260,7 +260,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="pan"
                             id="pan"
                             placeholder="PAN"
-                            value={formData?.pan}
+                            value={formData?.pan || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -273,7 +273,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="sectionCode"
                             id="sectionCode"
                             placeholder="Section Code"
-                            value={formData?.sectionCode}
+                            value={formData?.sectionCode || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -287,7 +287,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             type="date"
                             name="dateOfPayment"
                             id="dateOfPayment"
-                            value={formData?.dateOfPayment}
+                            value={formData?.dateOfPayment || ""}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -301,7 +301,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             type="date"
                             name="dateOfDeduction"
                             id="dateOfDeduction"
-                            value={formData?.dateOfDeduction}
+                            value={formData?.dateOfDeduction || ""}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -311,10 +311,10 @@ const UpdateForm24QDeductee = ({ data }) => {
                             Amount Paid{" "}
                           </label>
                           <input
-                            name="amountPaid "
+                            name="amountPaid"
                             id="amountPaid"
                             placeholder="Amount Paid "
-                            value={formData?.amountPaid}
+                            value={formData?.amountPaid || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -328,7 +328,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="tds"
                             id="tds"
                             placeholder="TDS "
-                            value={formData?.tds}
+                            value={formData?.tds || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -342,7 +342,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="surcharge"
                             id="surcharge"
                             placeholder="Surcharge"
-                            value={formData?.surcharge}
+                            value={formData?.surcharge || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -354,7 +354,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                           <input
                             name="eduCess"
                             id="eduCess"
-                            value={formData?.eduCess}
+                            value={formData?.eduCess || " "}
                             onChange={handleInputChange}
                             placeholder="Education Cess"
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -369,7 +369,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="totalTaxDeducted"
                             id="totalTaxDeducted"
                             placeholder="Total TDS"
-                            value={formData?.totalTaxDeducted}
+                            value={formData?.totalTaxDeducted || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -383,7 +383,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="totalTaxDeposited"
                             id="totalTaxDeposited"
                             placeholder="Total Tax Deposited"
-                            value={formData?.totalTaxDeposited}
+                            value={formData?.totalTaxDeposited || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -396,7 +396,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="TAN"
                             id="TAN"
                             placeholder="TAN"
-                            value={formData?.TAN}
+                            value={formData?.TAN || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -411,7 +411,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="certificateNumber"
                             id="certificateNumber"
                             placeholder="Certificate Number"
-                            value={formData?.certificateNumber}
+                            value={formData?.certificateNumber || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -425,7 +425,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="errorDescription "
                             id="errorDescription"
                             placeholder="Error Description "
-                            value={formData?.errorDescription}
+                            value={formData?.errorDescription || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -439,7 +439,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="warningDescription"
                             id="warningDescription"
                             placeholder="Warning Description"
-                            value={formData?.warningDescription}
+                            value={formData?.warningDescription || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -454,7 +454,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="shortDeduction"
                             id="shortDeduction"
                             placeholder="Short Deduction"
-                            value={formData?.shortDeduction}
+                            value={formData?.shortDeduction || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -468,7 +468,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="interestOnShortDeduction"
                             id="interestOnShortDeduction"
                             placeholder="Interest On Short Deduction"
-                            value={formData?.interestOnShortDeduction}
+                            value={formData?.interestOnShortDeduction || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -481,7 +481,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="interestOnLatePayment"
                             id="interestOnLatePayment"
                             placeholder="Interest On Late Payment"
-                            value={formData?.interestOnLatePayment}
+                            value={formData?.interestOnLatePayment || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -495,7 +495,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="interestOnLateDeduction"
                             id="interestOnLateDeduction"
                             placeholder="Interest On Late Deduction"
-                            value={formData?.interestOnLateDeduction}
+                            value={formData?.interestOnLateDeduction || " "}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                           />
@@ -509,7 +509,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                             name="status"
                             id="status"
                             placeholder="Status"
-                            value={formData?.status}
+                            value={formData?.status || " "}
                             onChange={handleInputChange}
                             disabled="disabled"
                             className="mt-1 block w-full cursor-not-allowed rounded-md border border-gray-300 bg-[#f1f5fa] px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
@@ -534,6 +534,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                       </button>
 
                       <button
+                        type="button"
                         onClick={() => setIsOpen(false)}
                         className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
                       >

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
 import UpdateForm26QDeducteeModal from "@/components/modals/UpdateForm26QDeducteeModal";
+import DynamicTableApproveReject from "@/components/tables/DynamicTableApproveReject";
+import { date, dateWithTime, statusFormatter } from "@/lib/utils";
 
 const DetailForm26QDeductee = () => {
   const entity = "form26QDeductee";
@@ -11,6 +13,7 @@ const DetailForm26QDeductee = () => {
   const { fy, branchCode, id } = useParams();
 
   const [detailGridData, setDetailGridData] = useState({});
+  const [detailListData, setDetailListData] = useState([]);
 
   useEffect(() => {
     const fetchDetailListData = async () => {
@@ -22,6 +25,7 @@ const DetailForm26QDeductee = () => {
           id
         );
 
+        setDetailListData(response.data.remarks || []);
         setDetailGridData(response.data.deductee || {});
       } catch (error) {
         console.error("Error fetching list data:", error);
@@ -44,15 +48,15 @@ const DetailForm26QDeductee = () => {
     { label: "PAN of the Deductee", key: "pan" },
     { label: "Name of the Deductee", key: "name" },
     { label: "Section Code", key: "sectionCode" },
-    { label: "Date of Payment", key: "dateOfPayment" },
+    { label: "Date of Payment", key: "dateOfPayment", formatter: date },
     { label: "Amount Paid", key: "amountPaid" },
     { label: "TDS", key: "tds" },
     { label: "Surcharge", key: "surcharge" },
     { label: "Education Cess", key: "eduCess" },
     { label: "Total Tax Deducted", key: "totalTaxDeducted" },
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
-    { label: "Date of Deduction ", key: "dateOfDeduction" },
-    { label: "Rate at which Tax Deducted", key: "rate_at_which_tax_deducted" },
+    { label: "Date of Deduction ", key: "dateOfDeduction", formatter: date },
+    { label: "Rate at which Tax Deducted", key: "rateAtWhichTaxCollected" },
     { label: "Short Deduction", key: "shortDeduction" },
     { label: "Certificate Number  ", key: "certificateNumber" },
     { label: "Cash Withdrawl (194N) Description", key: "cashWithdrawal194N" },
@@ -66,8 +70,28 @@ const DetailForm26QDeductee = () => {
     { label: "Interest On Short Deduction", key: "interestOnShortDeduction" },
     { label: "Interest On Late Payment  ", key: "interestOnLatePayment" },
     { label: "Interest On Late Deduction   ", key: "interestOnLateDeduction" },
-    { label: "Status ", key: "" },
+    {
+      label: "Status",
+      key: "resolved",
+      formatter: (value) => statusFormatter(value, true),
+    },
   ];
+
+  const tableHead = [
+    { key: "srNo", label: "Sr.No" },
+    { key: "addedby", label: "Added By" },
+    { key: "remark", label: "Remark" },
+    { key: "datetime", label: "Date of Remark", formatter: dateWithTime },
+    { key: "status", label: "Status" },
+    { key: "approvedon", label: "Approved On", formatter: dateWithTime },
+    { key: "approvedby", label: "Approved By" },
+    { key: "action", label: "Action" },
+  ];
+
+  const tableData = detailListData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -78,13 +102,24 @@ const DetailForm26QDeductee = () => {
 
         <DetailGrid fields={fields} data={detailGridData} columns={2} />
         <div className="mt-5 flex justify-end gap-4 pr-5">
-          <UpdateForm26QDeducteeModal />
+          <UpdateForm26QDeducteeModal
+            data={detailGridData}
+            initialEntity={"deducteeremark"}
+          />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
+        </div>
+        <div className="mt-5">
+          <DynamicTableApproveReject
+            tableHead={tableHead}
+            tableData={tableData}
+            formTitle={"26Q"}
+            entity={entity}
+          />
         </div>
       </div>
     </>

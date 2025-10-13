@@ -83,7 +83,7 @@ const DetailForm27QDeductee = () => {
     { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
     { label: "Date of Deduction", key: "dateOfDeduction", formatter: date },
     { label: "Reason for non Deduction", key: "remarksReason" },
-    { label: "Reason for Non Collection", key: "remarks" },
+    { label: "Reason for Non Collection", key: "comments" },
     {
       label: "Status",
       key: "resolved",
@@ -131,10 +131,8 @@ const DetailForm27QDeductee = () => {
           <DynamicTableApproveReject
             tableHead={tableHead}
             tableData={tableData}
-            pageType={"detail"}
-            layoutType={"sc"}
             formTitle={"27Q"}
-            entityName={"form27QDeductee"}
+            entity={entity}
           />
         </div>
       </div>

@@ -6,6 +6,7 @@ import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import staticDataContext from "@/context/staticDataContext";
+import { date, statusFormatter } from "@/lib/utils";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -85,18 +86,33 @@ const Form24QDeductee = () => {
     { label: "Action", key: "action" },
   ];
 
+  // Extra Columns
   const extraColumns = [
-    { label: "Date of Payment", key: "dateOfPayment" },
-    { label: "Date of Deduction", key: "dateOfDeduction" },
+    { label: "Date of Payment", key: "dateOfPayment", formatter: date },
+    { label: "Date of Deduction", key: "dateOfDeduction", formatter: date },
     { label: "Unique Ref Number", key: "uniqueRefNo" },
     { label: "Amount paid", key: "amountPaid" },
     { label: "Account Number", key: "accNo" },
     { label: "TDS", key: "tds" },
     { label: "surcharge", key: "surcharge" },
-    { label: "education cess", key: "education cess" },
+    { label: "Education Cess", key: "eduCess" },
     { label: "Total Tax Deducted", key: "totalTaxDeducted" },
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
     { label: "Certificate No", key: "certificateNumber" },
+    { label: "Remarks Reason", key: "remarksReason" },
+    { label: "Pan Ref No", key: "panRefNo" },
+    { label: "Short Deduction", key: "shortDeduction" },
+    { label: "Interest On Short Deduction", key: "interestOnShortDeduction" },
+    { label: "Interest On Late Payment", key: "interestOnLatePayment" },
+    { label: "Interest On Late Deduction", key: "interestOnLateDeduction" },
+    { label: "Error Description", key: "errorDescription" },
+    { label: "Warning Description", key: "warningDescription" },
+    { label: "Comments", key: "comments" },
+    {
+      label: "Status",
+      key: "resolved",
+      formatter: (value) => statusFormatter(value, true),
+    }, 
   ];
 
   const filteredExtraColumns = extraColumns.filter((col) =>

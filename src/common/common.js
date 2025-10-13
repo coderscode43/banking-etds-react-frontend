@@ -19,6 +19,8 @@ import {
   downloadCertificate,
   updateDeductee,
   rejectDeductee,
+  WOTSearchListData,
+  generateExcel,
 } from "@/service/apiService";
 
 const common = {

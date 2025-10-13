@@ -15,8 +15,8 @@ const ApproveRejectDeducteeModalSC = ({
   rowData,
   deducteeId,
 }) => {
-  const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({});
 
   const { showSuccess, showError } = useContext(statusContext);
 
@@ -66,17 +66,25 @@ const ApproveRejectDeducteeModalSC = ({
       if (formData.typeOfAction === "Approved") {
         response = await common.getUpdateDeductee(
           entity,
-          jsonData,
           remarkId,
-          deducteeId
+          deducteeId,
+          jsonData
         );
-        showSuccess(response.data.setSuccessMsg);
         closeModal();
+        showSuccess(response.data.successMsg);
+      } else if (formData.typeOfAction === "Reject") {
+        response = await common.getRejectDeductee(
+          entity,
+          remarkId,
+          deducteeId,
+          formData.rejectRemark,
+          jsonData
+        );
+        closeModal();
+        showSuccess(response?.data?.successMsg);
       }
-      // else if (formData.typeOfAction === "Reject"){
-
-      // }
     } catch (error) {
+      closeModal();
       showError(`Can not update : ${errorMessage(error)}`);
       console.error("Error approving the request: " + error);
     }
@@ -101,6 +109,7 @@ const ApproveRejectDeducteeModalSC = ({
       return fieldError ? { ...rest, [name]: fieldError } : rest;
     });
   };
+
   return (
     <div
       className={`bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/40 ${
@@ -115,7 +124,7 @@ const ApproveRejectDeducteeModalSC = ({
           </p>
         </div>
         {/* Modal Body */}
-        <form onSubmit={handleSubmit} noValidate className="">
+        <form onSubmit={handleSubmit} noValidate>
           <div className="flex flex-col gap-3 bg-white px-6 py-4">
             <div>
               <label

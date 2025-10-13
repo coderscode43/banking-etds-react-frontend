@@ -6,6 +6,7 @@ import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import staticDataContext from "@/context/staticDataContext";
+import { date, statusFormatter } from "@/lib/utils";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -86,34 +87,38 @@ const Form27EQDeductee = () => {
   ];
 
   const extraColumns = [
-    { label: "Date of Payment", key: "dateOfPayment" },
-    { label: "Date of Deduction", key: "dateOfDeduction" },
-    { label: "Unique Ref Number", key: "uniqueRefNo" },
+    { label: "Date of Payment", key: "dateOfPayment" , formatter:date},
+    { label: "Date of Deduction", key: "dateOfDeduction" , formatter:date},
     { label: "Amount Paid", key: "amountPaid" },
+    { label: "Unique Ref No", key: "uniqueRefNo" },
     { label: "Account Number", key: "accNo" },
     { label: "TDS", key: "tds" },
     { label: "Surcharge", key: "surcharge" },
     { label: "Education Cess", key: "eduCess" },
     { label: "Total Tax Deducted", key: "totalTaxDeducted" },
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
-    { label: "Certificate No", key: "certificateNumber" },
+    { label: "Certificate No", key: "certificateNo" },
     { label: "Remarks Reason", key: "remarksReason" },
     { label: "Deductee Code", key: "deducteeCode" },
-    { label: "Rate at which Tax Deducted", key: "rateAtWhichTaxCollected" },
-    { label: "Cash Withdrawl (194N)", key: "cashWithdrawal194N" },
-    {
-      label: "Cash Withdrawl 194N(20L to 1cr)",
-      key: "cashWithdrawal194N20Lto1Cr",
-    },
-    { label: "Cash Withdrawl 194N(>1cr)", key: "cashWithdrawal194N1Cr" },
-    { label: "Error Description", key: "errorDescription" },
-    { label: "Warning Description", key: "warningDescription" },
-    { label: "Short Deduction", key: "shortDeduction" },
-    { label: "Interest on Short Deduction", key: "interestOnShortDeduction" },
-    { label: "Interest on Late Payment", key: "interestOnLatePayment" },
-    { label: "Interest on Late Deduction", key: "interestOnLateDeduction" },
+    { label: "Rate at which Tax Collected", key: "rateTaxDeductee" },
+    { label: "Total Value Of Purchase", key: "totalValueofPurchase" },
+    { label: "Deductee Non Resident", key: "deducteeNonResident" },
+    { label: "Permanant Establish", key: "permanantEstablish" },
+    { label: "Reason For Non Collection", key: "reasonForNonCollection" },
+    { label: "If Answer To 681A Challan", key: "ifAnswerto681AChallan" },
+    { label: "If Answer To 681A TDS", key: "ifAnswerto681ATDS" },
+    { label: "Short Deduction", key: "ShortDeduction" },
+    { label: "Interest On Short Deduction", key: "InterestOnShortDeduction" },
+    { label: "Interest On Late Payment", key: "InterestOnLatePayment" },
+    { label: "Interest On Late Deduction", key: "InterestOnLateDeduction" },
+    { label: "Error Description", key: "errorDesc" },
+    { label: "Warning Description", key: "warningDesc" },
     { label: "Comments", key: "comments" },
-    { label: "Status", key: "resolved" }, // ✅ Consider mapping boolean to "Pending"/"Resolved"
+    {
+      label: "Status",
+      key: "status",
+      formatter: (value) => statusFormatter(value, true),
+    },
   ];
 
   const filteredExtraColumns = extraColumns.filter((col) =>

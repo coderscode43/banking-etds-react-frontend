@@ -2,7 +2,8 @@ import common from "@/common/common";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import { date, dateWithTime, statusFormatter } from "@/lib/utils";
+import DynamicTableApproveReject from "@/components/tables/DynamicTableApproveReject";
 import UpdateForm24QDeducteeModal from "@/components/modals/UpdateForm24QDeducteeModal";
 
 const DetailForm24QDeductee = () => {
@@ -45,8 +46,8 @@ const DetailForm24QDeductee = () => {
     { label: "PAN Ref No.", key: "panRefNo" },
     { label: "PAN", key: "pan" },
     { label: "Section Code", key: "sectionCode" },
-    { label: "Date of Payment", key: "dateOfPayment" },
-    { label: "Date of Deduction", key: "dateOfDeduction" },
+    { label: "Date of Payment", key: "dateOfPayment", formatter: date },
+    { label: "Date of Deduction", key: "dateOfDeduction", formatter: date },
     { label: "Amount Paid", key: "amountPaid" },
     { label: "TDS", key: "tds" },
     { label: "Surcharge", key: "surcharge" },
@@ -64,8 +65,7 @@ const DetailForm24QDeductee = () => {
     {
       label: "Status",
       key: "resolved",
-      formatter: (value) =>
-        value === true || value === "true" ? "Resolved" : "Not Resolved",
+      formatter: (value) => statusFormatter(value, true),
     },
   ];
 
@@ -73,9 +73,9 @@ const DetailForm24QDeductee = () => {
     { key: "srNo", label: "Sr.No" },
     { key: "addedby", label: "Added By" },
     { key: "remark", label: "Remark" },
-    { key: "datetime", label: "Date of Remark" },
+    { key: "datetime", label: "Date of Remark", formatter: dateWithTime },
     { key: "status", label: "Status" },
-    { key: "approvedon", label: "Approved On" },
+    { key: "approvedon", label: "Approved On", formatter: dateWithTime },
     { key: "approvedby", label: "Approved By" },
     { key: "action", label: "Action" },
   ];
@@ -107,7 +107,12 @@ const DetailForm24QDeductee = () => {
           </button>
         </div>
         <div className="mt-5">
-          <DynamicTableAction tableHead={tableHead} tableData={tableData} />
+          <DynamicTableApproveReject
+            tableHead={tableHead}
+            tableData={tableData}
+            formTitle={"24Q"}
+            entity={entity}
+          />
         </div>
       </div>
     </>

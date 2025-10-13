@@ -1,5 +1,7 @@
 import common from "@/common/common";
 import { DetailGrid } from "@/components/component/DetailGrid";
+import DynamicTableApproveReject from "@/components/tables/DynamicTableApproveReject";
+import { date, dateWithTime, statusFormatter } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import UpdateForm27EQDeducteeModal from "@/components/modals/UpdateForm27EQDeducteeModal";
@@ -11,6 +13,7 @@ const DetailForm27EQDeductee = () => {
   const { fy, branchCode, id } = useParams();
 
   const [detailGridData, setDetailGridData] = useState({});
+  const [detailListData, setDetailListData] = useState([]);
 
   useEffect(() => {
     const fetchDetailListData = async () => {
@@ -22,6 +25,7 @@ const DetailForm27EQDeductee = () => {
           id
         );
         setDetailGridData(response.data.deductee || {});
+        setDetailListData(response.data.remarks || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
       }
@@ -44,27 +48,37 @@ const DetailForm27EQDeductee = () => {
     { label: "PAN of the Party", key: "pan" },
     { label: "Name of the Party", key: "name" },
     { label: "Amount Receipt/Debited", key: "amountPaid" },
-    { label: "Date of Received/Debited", key: "dateOfDeduction" },
+    {
+      label: "Date of Received/Debited",
+      key: "dateOfDeduction",
+      formatter: date,
+    },
     { label: "TDS", key: "tds" },
     { label: "Surcharge", key: "surcharge" },
     { label: "Education Cess.", key: "eduCess" },
     { label: "Total Tax Collected", key: "totalTaxDeducted" },
     { label: "Total Tax Deposited", key: "totalTaxDeposited" },
-    { label: "Date of Collected", key: "dateOfPayment" },
+    { label: "Date of Collected", key: "dateOfPayment", formatter: date },
     { label: "Total Value of Purchase", key: "amountPaid" },
-    { label: "Rate at which Tax Collected", key: "rateAtWhichTaxCollected" },
+    { label: "Rate at which Tax Collected", key: "rateatwhichTaxCollected" },
     { label: "Reason for Non Collection", key: "remarksReason" },
     { label: "Section / Collection Code", key: "sectionCode" },
     { label: "Certificate Number  ", key: "certificateNumber" },
-    { label: "Deductee is Non-Resident", key: "" }, // no data key
-    { label: "Permanent Establishment ", key: "" }, // no data key
-    { label: "Reason For NonCollection F or G", key: "" }, // no data key
-    { label: "if Answer to 681A is Yes Then Challan Number", key: "" }, // no data key
+    { label: "Deductee is Non-Resident", key: "deducteeisNonResident" },
+    { label: "Permanent Establishment ", key: "permanentEstablishment" },
+    {
+      label: "Reason For NonCollection F or G",
+      key: "reasonForNonCollectionForG",
+    },
+    {
+      label: "if Answer to 681A is Yes Then Challan Number",
+      key: "ifAnswerTo681AisyesthenChallanNumber",
+    },
     {
       label:
         "if Answer to 681A is Yes Then Date Of Payment Of TDS To Central Government",
-      key: "",
-    }, // no data key
+      key: "ifAnswerto681AisyesthenDateofpaymentofTDStoCentralGovernment",
+    },
     { label: "Error Description", key: "errorDescription" },
     { label: "Warning Description", key: "warningDescription" },
     { label: "Short Deduction", key: "shortDeduction" },
@@ -74,10 +88,25 @@ const DetailForm27EQDeductee = () => {
     {
       label: "Status",
       key: "resolved",
-      formatter: (value) =>
-        value === true || value === "true" ? "Resolved" : "Not Resolved",
+      formatter: (value) => statusFormatter(value, true),
     },
   ];
+
+  const tableHead = [
+    { key: "srNo", label: "Sr.No" },
+    { key: "addedby", label: "Added By" },
+    { key: "remark", label: "Remark" },
+    { key: "datetime", label: "Date of Remark", formatter: dateWithTime },
+    { key: "status", label: "Status" },
+    { key: "approvedon", label: "Approved On", formatter: dateWithTime },
+    { key: "approvedby", label: "Approved By" },
+    { key: "action", label: "Action" },
+  ];
+
+  const tableData = detailListData?.map((data, index) => ({
+    srNo: index + 1,
+    ...data,
+  }));
 
   return (
     <>
@@ -88,13 +117,24 @@ const DetailForm27EQDeductee = () => {
 
         <DetailGrid fields={fields} data={detailGridData} columns={2} />
         <div className="mt-5 flex justify-end gap-4 pr-5">
-          <UpdateForm27EQDeducteeModal />
+          <UpdateForm27EQDeducteeModal
+            data={detailGridData}
+            initialEntity={"deducteeremark"}
+          />
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
             onClick={() => navigate(-1)}
           >
             <i className="fa-solid fa-reply-all"></i>&nbsp; Back
           </button>
+        </div>
+        <div className="mt-5">
+          <DynamicTableApproveReject
+            tableHead={tableHead}
+            tableData={tableData}
+            formTitle={"27EQ"}
+            entity={entity}
+          />
         </div>
       </div>
     </>

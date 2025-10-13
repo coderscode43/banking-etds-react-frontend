@@ -1,3 +1,4 @@
+import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
 import { useNavigate } from "react-router-dom";
 
 const DynamicTableCheckBoxAction = ({
@@ -64,83 +65,100 @@ const DynamicTableCheckBoxAction = ({
   return (
     <div className="relative w-full">
       <div className="w-full overflow-clip rounded-md border border-gray-200">
-        <table className="w-full text-[14px]">
-          <thead className="bg-[var(--secondary-color)]">
-            <tr className="border-[1.5px] border-[var(--secondary-color)]">
-              {enhancedTableHead.map(({ label }, index) => (
-                <th
-                  key={index}
-                  className={`sticky top-[56px] bg-[var(--secondary-color)] p-2 whitespace-nowrap text-white ${
-                    index === enhancedTableHead.length - 1
-                      ? "border-[var(--secondary-color)]"
-                      : "border-gray-300"
-                  } z-0 border-r-[1.5px]`}
-                >
-                  <div className="block min-w-[70px] resize-x overflow-auto">
-                    {label}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-
-          <tbody>
-            {tableData.length === 0 ? (
+        <StickyScrollbarWrapper>
+          <table className="w-full text-[14px]">
+            <thead
+              className="bg-[var(--secondary-color)]"
+              style={{
+                zIndex: "9",
+                position: "sticky",
+                top: "56px",
+              }}
+            >
               <tr>
-                <td
-                  colSpan={enhancedTableHead.length}
-                  className="p-4 text-center text-[16px] font-semibold text-red-500"
-                >
-                  No Data Found
-                </td>
-              </tr>
-            ) : (
-              tableData.map((data, index) => {
-                const isChecked = selectedRows.includes(index);
-                return (
-                  <tr
+                {enhancedTableHead.map(({ label }, index) => (
+                  <th
                     key={index}
-                    className={`cursor-pointer bg-white text-center ${isChecked ? "bg-blue-100" : ""}`}
-                    onDoubleClick={() => {
-                      if (entity !== "branch") {
-                        navigate(
-                          `/home/detail/${entity}/${data.id}/detail${
-                            entity.charAt(0).toUpperCase() + entity.slice(1)
-                          }`
-                        );
-                      }
-                    }}
+                    className={`sticky top-[56px] bg-[var(--secondary-color)] p-2 whitespace-nowrap text-white ${
+                      index === enhancedTableHead.length - 1
+                        ? "border-[var(--secondary-color)]"
+                        : "border-gray-300"
+                    }${
+                      index === 0
+                        ? "border-l-[var(--secondary-color)]" // left on first th
+                        : "border-l-gray-300"
+                    }${
+                      index === tableHead.length - 1
+                        ? "border-r-[var(--secondary-color)]" // right border on last th
+                        : "border-r-gray-300"
+                    } `}
                   >
-                    {/* Checkbox cell */}
-                    <td className="border-[1.5px] border-gray-300 p-2">
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={() => handleSelectRow(index, data)}
-                      />
-                    </td>
+                    <div className="block min-w-[70px] resize-x overflow-auto">
+                      {label}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
 
-                    {/* Other cells */}
-                    {tableHead.map(({ key, formatter }, colIndex) => (
-                      <td
-                        key={colIndex}
-                        className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${autoResize ? "w-auto" : "max-w-[60px] min-w-[70px] overflow-hidden"}`}
-                      >
-                        {key === "action" ? (
-                          <i className="fa-solid fa-file-pen text-lg"></i>
-                        ) : formatter ? (
-                          formatter(data[key])
-                        ) : (
-                          (data[key] ?? " ")
-                        )}
+            <tbody>
+              {tableData.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={enhancedTableHead.length}
+                    className="p-4 text-center text-[16px] font-semibold text-red-500"
+                  >
+                    No Data Found
+                  </td>
+                </tr>
+              ) : (
+                tableData.map((data, index) => {
+                  const isChecked = selectedRows.includes(index);
+                  return (
+                    <tr
+                      key={index}
+                      className={`cursor-pointer bg-white text-center ${isChecked ? "bg-blue-100" : ""}`}
+                      onDoubleClick={() => {
+                        if (entity !== "branch") {
+                          navigate(
+                            `/home/detail/${entity}/${data.id}/detail${
+                              entity.charAt(0).toUpperCase() + entity.slice(1)
+                            }`
+                          );
+                        }
+                      }}
+                    >
+                      {/* Checkbox cell */}
+                      <td className="border-[1.5px] border-gray-300 p-2">
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={() => handleSelectRow(index, data)}
+                        />
                       </td>
-                    ))}
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+
+                      {/* Other cells */}
+                      {tableHead.map(({ key, formatter }, colIndex) => (
+                        <td
+                          key={colIndex}
+                          className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${autoResize ? "w-auto" : "max-w-[110px] min-w-[20px] overflow-hidden"}`}
+                        >
+                          {key === "action" ? (
+                            <i className="fa-solid fa-file-pen text-lg"></i>
+                          ) : formatter ? (
+                            formatter(data[key])
+                          ) : (
+                            (data[key] ?? " ")
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </StickyScrollbarWrapper>
       </div>
     </div>
   );
