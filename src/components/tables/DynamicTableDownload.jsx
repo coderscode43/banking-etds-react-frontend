@@ -1,11 +1,16 @@
 import React from "react";
+import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
 
 const DynamicTableDownload = ({
   tableHead,
   tableData,
   downloadKey = "download",
   handleDownload,
+  loading = false,
 }) => {
+  // Skeleton loader rows count (adjust as needed)
+  const skeletonRows = 100;
+
   return (
     <div className="relative w-full">
       <div className="w-full overflow-clip rounded-md border border-gray-200">
@@ -30,7 +35,12 @@ const DynamicTableDownload = ({
           </thead>
 
           <tbody>
-            {tableData.length === 0 ? (
+            {loading ? (
+              <TableLoadingSkeleton
+                columns={tableHead.length}
+                rows={skeletonRows}
+              />
+            ) : tableData.length === 0 ? (
               <tr>
                 <td
                   colSpan={tableHead.length}

@@ -18,6 +18,7 @@ const UploadCertificate = () => {
   const navigate = useNavigate();
   const { Quarter, financialYear, typeOfCertificate } =
     useContext(staticDataContext);
+
   const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const [gotoPage, setGotoPage] = useState(1);
@@ -32,6 +33,7 @@ const UploadCertificate = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true);
         let response;
         if (params) {
           const pageNo = 0;

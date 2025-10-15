@@ -18,6 +18,7 @@ const Form27EQDeductee = () => {
   const navigate = useNavigate();
   const { Quarter, Tan, Section } = useContext(staticDataContext);
 
+  const [loading, setLoading] = useState(true);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,6 +41,7 @@ const Form27EQDeductee = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true); // Start loading
         let response;
         if (params) {
           const pageNo = 0;
@@ -65,6 +67,8 @@ const Form27EQDeductee = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
@@ -87,8 +91,8 @@ const Form27EQDeductee = () => {
   ];
 
   const extraColumns = [
-    { label: "Date of Payment", key: "dateOfPayment" , formatter:date},
-    { label: "Date of Deduction", key: "dateOfDeduction" , formatter:date},
+    { label: "Date of Payment", key: "dateOfPayment", formatter: date },
+    { label: "Date of Deduction", key: "dateOfDeduction", formatter: date },
     { label: "Amount Paid", key: "amountPaid" },
     { label: "Unique Ref No", key: "uniqueRefNo" },
     { label: "Account Number", key: "accNo" },
@@ -409,6 +413,7 @@ const Form27EQDeductee = () => {
             tableHead={combinedTableHead}
             tableData={tableData}
             autoResize={autoResize}
+            loading={loading}
           />
         </div>
       </div>

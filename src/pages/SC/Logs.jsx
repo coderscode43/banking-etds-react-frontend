@@ -13,6 +13,7 @@ const Logs = () => {
   const { params } = useParams();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(true);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
@@ -29,6 +30,7 @@ const Logs = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true); // Start loading
         let response;
         if (params) {
           const pageNo = 0;
@@ -50,6 +52,8 @@ const Logs = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
@@ -217,6 +221,7 @@ const Logs = () => {
             entity={entity}
             tableHead={tableHead}
             tableData={tableData}
+            loading={loading}
           />
         </div>
       </div>

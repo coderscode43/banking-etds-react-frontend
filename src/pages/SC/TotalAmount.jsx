@@ -16,6 +16,7 @@ const TotalAmount = () => {
   const { params } = useParams();
   const { financialYear, Month, Section } = useContext(staticDataContext);
 
+  const [loading, setLoading] = useState(true);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [autoResize, setAutoResize] = useState(false);
@@ -38,6 +39,7 @@ const TotalAmount = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true); // Start loading
         let response;
         if (params) {
           const pageNo = 0;
@@ -65,6 +67,8 @@ const TotalAmount = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
@@ -378,6 +382,7 @@ const TotalAmount = () => {
             tableHead={tableHead}
             tableData={tableData}
             autoResize={autoResize}
+            loading={loading}
           />
         </div>
       </div>

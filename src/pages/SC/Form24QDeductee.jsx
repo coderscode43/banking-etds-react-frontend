@@ -18,6 +18,7 @@ const Form24QDeductee = () => {
   const navigate = useNavigate();
   const { Quarter, Tan, Section } = useContext(staticDataContext);
 
+  const [loading, setLoading] = useState(true);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
@@ -40,6 +41,7 @@ const Form24QDeductee = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true); // Start loading
         let response;
         if (params) {
           const pageNo = 0;
@@ -65,6 +67,8 @@ const Form24QDeductee = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
@@ -112,7 +116,7 @@ const Form24QDeductee = () => {
       label: "Status",
       key: "resolved",
       formatter: (value) => statusFormatter(value, true),
-    }, 
+    },
   ];
 
   const filteredExtraColumns = extraColumns.filter((col) =>
@@ -399,6 +403,7 @@ const Form24QDeductee = () => {
           tableHead={combinedTableHead}
           tableData={tableData}
           autoResize={autoResize}
+          loading={loading}
         />
       </div>
 

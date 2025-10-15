@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
 import { TooltipWrapper } from "../component/Tooltip";
 import ApproveRejectDeducteeModalSC from "../modals/ApproveRejectDeducteeModalSC";
 
@@ -8,11 +9,15 @@ const DynamicTableApproveReject = ({
   tableHead,
   tableData,
   formTitle,
+  loading = false,
 }) => {
   const { id } = useParams();
 
   const [openModal, setOpenModal] = useState(false);
   const [rowData, setRowData] = useState({});
+
+  // Skeleton loader rows count (adjust as needed)
+  const skeletonRows = 100;
 
   const closeModal = () => setOpenModal(false);
 
@@ -41,7 +46,12 @@ const DynamicTableApproveReject = ({
             </thead>
 
             <tbody>
-              {tableData.length === 0 ? (
+              {loading ? (
+                <TableLoadingSkeleton
+                  columns={tableHead.length}
+                  rows={skeletonRows}
+                />
+              ) : tableData.length === 0 ? (
                 <tr>
                   <td
                     colSpan={tableHead.length}
@@ -95,6 +105,7 @@ const DynamicTableApproveReject = ({
         rowData={rowData}
         deducteeId={id}
         entity={entity}
+        loading={loading}
       />
     </>
   );

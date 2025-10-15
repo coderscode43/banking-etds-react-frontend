@@ -12,6 +12,7 @@ const DynamicTableAction = ({
   loading = false,
 }) => {
   const navigate = useNavigate();
+
   // Skeleton loader rows count (adjust as needed)
   const skeletonRows = 100;
 
@@ -51,7 +52,12 @@ const DynamicTableAction = ({
             </thead>
 
             <tbody>
-              {tableData.length === 0 ? (
+              {loading ? (
+                <TableLoadingSkeleton
+                  columns={tableHead.length}
+                  rows={skeletonRows}
+                />
+              ) : tableData.length === 0 ? (
                 <tr>
                   <td
                     colSpan={tableHead.length}

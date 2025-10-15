@@ -19,6 +19,7 @@ const RegularReturn = () => {
     useContext(staticDataContext);
   const { showError } = useContext(statusContext);
 
+  const [loading, setLoading] = useState(true);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [autoResize, setAutoResize] = useState(false);
@@ -40,6 +41,7 @@ const RegularReturn = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true);
         let response;
         if (params) {
           const pageNo = 0;
@@ -62,6 +64,8 @@ const RegularReturn = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -323,6 +327,7 @@ const RegularReturn = () => {
           selectedRows={selectedRows}
           setSelectedRows={setSelectedRows}
           setSelectedRowsData={setSelectedRowsData}
+          loading={loading}
         />
       </div>
 

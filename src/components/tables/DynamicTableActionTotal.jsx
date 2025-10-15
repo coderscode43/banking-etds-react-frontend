@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
+import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
 import { TooltipWrapper } from "../component/Tooltip";
 
 const DynamicTableActionTotal = ({
@@ -7,6 +8,7 @@ const DynamicTableActionTotal = ({
   layoutType,
   tableHead,
   tableData,
+  loading = false,
   autoResize,
 }) => {
   const { fy } = useParams();
@@ -20,6 +22,9 @@ const DynamicTableActionTotal = ({
     (sum, row) => sum + (Number(row[totalKey]) || 0),
     0
   );
+
+  // Skeleton loader rows count (adjust as needed)
+  const skeletonRows = 100;
 
   return (
     <div className="relative w-full">
@@ -57,7 +62,12 @@ const DynamicTableActionTotal = ({
             </thead>
 
             <tbody>
-              {tableData.length === 0 ? (
+              {loading ? (
+                <TableLoadingSkeleton
+                  columns={tableHead.length}
+                  rows={skeletonRows}
+                />
+              ) : tableData.length === 0 ? (
                 <tr>
                   <td
                     colSpan={tableHead.length}

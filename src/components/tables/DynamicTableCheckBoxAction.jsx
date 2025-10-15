@@ -1,4 +1,5 @@
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
+import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
 import { useNavigate } from "react-router-dom";
 
 const DynamicTableCheckBoxAction = ({
@@ -9,8 +10,12 @@ const DynamicTableCheckBoxAction = ({
   selectedRows,
   setSelectedRows,
   setSelectedRowsData,
+  loading = false,
 }) => {
   const navigate = useNavigate();
+
+  // Skeleton loader rows count (adjust as needed)
+  const skeletonRows = 100;
 
   const isAllSelected =
     tableData.length > 0 && selectedRows.length === tableData.length;
@@ -102,7 +107,12 @@ const DynamicTableCheckBoxAction = ({
             </thead>
 
             <tbody>
-              {tableData.length === 0 ? (
+              {loading ? (
+                <TableLoadingSkeleton
+                  columns={tableHead.length}
+                  rows={skeletonRows}
+                />
+              ) : tableData.length === 0 ? (
                 <tr>
                   <td
                     colSpan={enhancedTableHead.length}

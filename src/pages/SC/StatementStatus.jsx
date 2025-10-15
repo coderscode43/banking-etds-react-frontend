@@ -15,6 +15,7 @@ const StatementStatus = () => {
   const { params } = useParams();
   const navigate = useNavigate();
   const { Quarter, Tan, financialYear, Form } = useContext(staticDataContext);
+
   const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
@@ -33,6 +34,7 @@ const StatementStatus = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true); // Start loading
         let response;
         if (params) {
           const pageNo = 0;

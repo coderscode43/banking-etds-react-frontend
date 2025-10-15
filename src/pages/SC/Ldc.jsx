@@ -16,6 +16,7 @@ const Ldc = () => {
   const { params } = useParams();
   const { Tan, financialYear, Section } = useContext(staticDataContext);
 
+  const [loading, setLoading] = useState(true);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,6 +38,7 @@ const Ldc = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true);
         let response;
         if (params) {
           const pageNo = 0;
@@ -62,6 +64,8 @@ const Ldc = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -348,6 +352,7 @@ const Ldc = () => {
             tableHead={tableHead}
             tableData={tableData}
             autoResize={autoResize}
+            loading={loading}
           />
         </div>
       </div>

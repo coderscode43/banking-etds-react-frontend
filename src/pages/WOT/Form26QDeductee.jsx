@@ -17,6 +17,7 @@ const Form26QDeductee = () => {
   const { fy, branchCode, params } = useParams();
   const { Quarter, Tan, Section } = useContext(staticDataContext);
 
+  const [loading, setLoading] = useState(true);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
@@ -35,6 +36,7 @@ const Form26QDeductee = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
+        setLoading(true);
         let response;
         if (params) {
           const pageNo = 0;
@@ -63,6 +65,8 @@ const Form26QDeductee = () => {
         setTotalPages(pages);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchListData();
@@ -329,6 +333,7 @@ const Form26QDeductee = () => {
             layoutType={"wot"}
             tableHead={combinedTableHead}
             tableData={tableData}
+            loading={loading}
           />
         </div>
       </div>

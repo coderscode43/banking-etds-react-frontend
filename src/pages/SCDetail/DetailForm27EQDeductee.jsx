@@ -12,12 +12,14 @@ const DetailForm27EQDeductee = () => {
   const navigate = useNavigate();
   const { fy, branchCode, id } = useParams();
 
+  const [loading, setLoading] = useState(true);
   const [detailGridData, setDetailGridData] = useState({});
   const [detailListData, setDetailListData] = useState([]);
 
   useEffect(() => {
     const fetchDetailListData = async () => {
       try {
+        setLoading(true);
         const response = await common.getDetailListData(
           entity,
           fy,
@@ -28,6 +30,8 @@ const DetailForm27EQDeductee = () => {
         setDetailListData(response.data.remarks || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchDetailListData();
@@ -134,6 +138,7 @@ const DetailForm27EQDeductee = () => {
             tableData={tableData}
             formTitle={"27EQ"}
             entity={entity}
+            loading={loading}
           />
         </div>
       </div>

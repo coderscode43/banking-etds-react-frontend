@@ -16,18 +16,22 @@ const DetailRegularReturn = () => {
   const { fy, branchCode, id } = useParams();
   const { showError } = useContext(statusContext);
 
+  const [loading, setLoading] = useState(true);
   const [detailGridData, setDetailGridData] = useState({});
   const [detailListData, setDetailListData] = useState([]);
 
   useEffect(() => {
     const fetchDetailListData = async () => {
       try {
+        setLoading(true);
         const response = await common.getDetailListDataSC(entity, id);
 
         setDetailListData(response.data.RRR || []);
         setDetailGridData(response.data.RR || {});
       } catch (error) {
         console.error("Error fetching list data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -103,6 +107,7 @@ const DetailRegularReturn = () => {
             tableData={tableData}
             downloadKey="supportingDocName"
             handleDownload={handleDownload}
+            loading={loading}
           />
         </div>
       </div>
