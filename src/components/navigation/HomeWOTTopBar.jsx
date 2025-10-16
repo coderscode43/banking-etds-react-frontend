@@ -3,7 +3,7 @@ import DropdownMenu from "../component/DropdownMenu";
 import { useNavigate } from "react-router-dom";
 import { TooltipWrapper } from "../component/Tooltip";
 
-const HomeWOTTopBar = ({ handleSideBar }) => {
+const HomeWOTTopBar = ({ isSidebarOpen, setSideBarOpen }) => {
   const { fy, branchCode } = useParams();
   const navigate = useNavigate();
 
@@ -12,8 +12,23 @@ const HomeWOTTopBar = ({ handleSideBar }) => {
       <header className="border-b-2 border-gray-300 bg-white">
         <div className="mx-10 flex h-14 items-center justify-between">
           <div className="flex items-center gap-10">
-            <button onClick={handleSideBar}>
-              <i className="fa-solid fa-bars cursor-pointer text-gray-400"></i>
+            <button onClick={() => setSideBarOpen((prev) => !prev)}>
+              <span className="relative block h-5 w-5">
+                <i
+                  className={`fa-solid fa-bars absolute top-0 left-0 transition-all duration-300 ease-in-out ${
+                    isSidebarOpen
+                      ? "scale-75 rotate-90 opacity-0"
+                      : "scale-100 rotate-0 opacity-100"
+                  }`}
+                ></i>
+                <i
+                  className={`fa-solid fa-xmark absolute top-0 left-0 transition-all duration-300 ease-in-out ${
+                    isSidebarOpen
+                      ? "scale-100 rotate-0 opacity-100"
+                      : "scale-75 -rotate-90 opacity-0"
+                  }`}
+                ></i>
+              </span>
             </button>
             <div>
               <img

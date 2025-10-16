@@ -640,7 +640,7 @@ const AddCorrectionRequestWOT = () => {
                       />
 
                       <button className="mt-1 ml-3 h-[40px] cursor-pointer rounded-sm bg-red-600 px-4 py-2 font-semibold text-white">
-                        <i className="fa-solid fa-x"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </button>
                     </span>
                   )}

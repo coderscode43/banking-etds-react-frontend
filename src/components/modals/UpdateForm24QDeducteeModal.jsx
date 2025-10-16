@@ -521,7 +521,7 @@ const UpdateForm24QDeductee = ({ data }) => {
                         className="absolute top-6 right-10 cursor-pointer"
                         onClick={() => setIsOpen(false)}
                       >
-                        <i className="fa-solid fa-x"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </div>
                     </div>
 

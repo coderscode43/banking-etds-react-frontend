@@ -636,7 +636,7 @@ const UpdateForm26QDeductee = ({ data }) => {
                         className="absolute top-6 right-10 cursor-pointer"
                         onClick={closeModal}
                       >
-                        <i className="fa-solid fa-x"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </div>
                     </div>
                     <div className="mt-5 flex justify-end bg-[#eaf0f9] p-[2%]">

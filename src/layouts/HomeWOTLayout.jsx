@@ -9,10 +9,12 @@ import WarningModal from "@/components/modals/WarningModal";
 const HomeWOTLayout = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
-  const handleSideBar = () => setSideBarOpen((prev) => !prev);
   return (
     <>
-      <HomeWOTTopBar handleSideBar={handleSideBar} />
+      <HomeWOTTopBar
+        setSideBarOpen={setSideBarOpen}
+        isSidebarOpen={sideBarOpen}
+      />
       <HomeWOTSidebar sideBarOpen={sideBarOpen} />
       <SuccessModal />
       <WarningModal />

@@ -210,7 +210,7 @@ const EditBranchDetailsModal = ({ data, entity }) => {
                       className="cursor-pointer"
                       onClick={() => setIsOpen(false)}
                     >
-                      <i className="fa-solid fa-x"></i>
+                      <i className="fa-solid fa-xmark"></i>
                     </div>
                   </div>
                   <form onSubmit={handleUpdate} noValidate>

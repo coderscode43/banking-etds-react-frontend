@@ -99,7 +99,7 @@ const BulkResponseReminderModal = ({
               aria-label="Close"
               onClick={() => setBulkResponseModal(false)}
             >
-              <i className="fa-solid fa-x" />
+              <i className="fa-solid fa-xmark" />
             </button>
           </div>
 

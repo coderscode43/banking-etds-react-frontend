@@ -234,7 +234,7 @@ const DownloadCertificateSinglePan = () => {
             type="submit"
             className="cursor-pointer rounded-md bg-[#00c950] p-2 px-4 font-semibold text-white"
           >
-            <i className="fa-solid fa-plus"></i>&nbsp; Download
+            <i className="fa-solid fa-download"></i>&nbsp; Download
           </button>
         </form>
       </div>

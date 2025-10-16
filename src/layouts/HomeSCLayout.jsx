@@ -9,11 +9,12 @@ import WarningModal from "@/components/modals/WarningModal";
 const HomeSClayout = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
-  const handleSideBar = () => setSideBarOpen((prev) => !prev);
-
   return (
     <>
-      <HomeSCTopBar handleSideBar={handleSideBar} />
+      <HomeSCTopBar
+        setSideBarOpen={setSideBarOpen}
+        isSidebarOpen={sideBarOpen}
+      />
       <HomeSCSidebar sideBarOpen={sideBarOpen} />
       <SuccessModal />
       <WarningModal />

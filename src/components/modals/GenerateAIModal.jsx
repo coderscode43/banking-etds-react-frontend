@@ -1,6 +1,5 @@
 import { Dialog, DialogPanel, TransitionChild } from "@headlessui/react";
 import { Fragment } from "react";
-import chatbotImg from "/public/images/chatbot.png";
 
 export default function GenerateAIModal({ isOpen, onClose }) {
   return (
@@ -29,7 +28,7 @@ export default function GenerateAIModal({ isOpen, onClose }) {
           leaveFrom="translate-x-0 opacity-100"
           leaveTo="translate-x-full opacity-0"
         >
-          <DialogPanel className="ring-opacity-5 relative flex h-[90vh] w-full max-w-sm flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+          <DialogPanel className="ring-opacity-5 relative flex h-[85vh] w-full max-w-[22rem] flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
             {/* Close Button */}
             <button
               onClick={onClose}
@@ -42,12 +41,16 @@ export default function GenerateAIModal({ isOpen, onClose }) {
             {/* Header */}
             <div className="flex items-center gap-4 rounded-t-2xl bg-gradient-to-r from-blue-500 to-blue-700 px-6 py-4 text-white shadow-sm">
               <div className="flex-shrink-0 rounded-full bg-white p-2">
-                <img src={chatbotImg} alt="AI Chatbot" className="h-8 w-8" />
+                <img
+                  src={"/images/chatbot.png"}
+                  alt="AI Chatbot"
+                  className="h-8 w-8"
+                />
               </div>
               <div className="ml-2 text-lg font-semibold">
                 Chat with TAXO AI
-                <div className="flex items-center text-sm text-blue-100">
-                  <span className="mr-1 h-2 w-2 rounded-full bg-green-400"></span>
+                <div className="flex items-center text-sm text-white">
+                  <span className="mr-1 h-2 w-2 animate-pulse rounded-full bg-green-400"></span>
                   Online
                 </div>
               </div>
@@ -56,14 +59,14 @@ export default function GenerateAIModal({ isOpen, onClose }) {
             {/* Chat Messages */}
             <div className="flex-grow space-y-3 overflow-y-auto px-4 py-4">
               {/* AI Message */}
-              <div className="w-fit max-w-[80%] rounded-lg bg-blue-100 px-4 py-3 text-blue-900 shadow">
+              <div className="w-fit max-w-[80%] rounded-full bg-blue-100 px-4 py-2 text-blue-900 shadow">
                 <p>
                   <strong>AI:</strong> Hey! How can I help you?
                 </p>
               </div>
 
               {/* User Message */}
-              <div className="ml-auto w-fit max-w-[80%] rounded-lg bg-gray-100 px-4 py-3 text-gray-800 shadow">
+              <div className="ml-auto w-fit max-w-[80%] rounded-full bg-gray-100 px-4 py-2 text-gray-800 shadow">
                 <p>
                   <strong>You:</strong> What is data?
                 </p>
@@ -85,10 +88,10 @@ export default function GenerateAIModal({ isOpen, onClose }) {
                 <input
                   type="text"
                   placeholder="Type your message..."
-                  className="flex-grow rounded-full border border-gray-300 px-4 py-2 text-sm text-gray-800 placeholder-gray-700 shadow-sm focus:outline-none"
+                  className="w-5/6 rounded-full border border-gray-300 px-4 py-2 text-sm text-gray-800 placeholder-gray-700 shadow-sm focus:outline-none"
                 />
                 <button
-                  className="w-[15%] cursor-pointer rounded-full bg-blue-600 p-1.5 text-white transition hover:bg-blue-700"
+                  className="w-1/6 cursor-pointer rounded-full bg-blue-600 p-1.5 text-white transition hover:bg-blue-700"
                   aria-label="Send message"
                 >
                   <i className="fa-solid fa-paper-plane"></i>

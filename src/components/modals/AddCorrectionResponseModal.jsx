@@ -94,7 +94,7 @@ const AddRegularReturnResponse = () => {
                       className="absolute top-4 right-3 cursor-pointer"
                       onClick={closeModal}
                     >
-                      <i className="fa-solid fa-x"></i>
+                      <i className="fa-solid fa-xmark"></i>
                     </div>
                   </div>
 
