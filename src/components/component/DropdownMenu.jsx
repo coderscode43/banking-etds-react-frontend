@@ -28,7 +28,7 @@ const DropdownMenu = () => {
           <MenuItem>
             <button className="group flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-1.5 data-focus:bg-gray-100">
               <img
-                className="h-6 w-6"
+                className="h-6 w-6 cursor-pointer mix-blend-multiply"
                 src="/images/user.png"
                 alt="User Image"
               />
@@ -44,7 +44,7 @@ const DropdownMenu = () => {
               onClick={() => setIsModalOpen(true)}
             >
               <img
-                className="h-6 w-6"
+                className="h-6 w-6 mix-blend-multiply"
                 src="/images/signOut.png"
                 alt="Sign Out Image"
               />

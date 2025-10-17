@@ -1,7 +1,8 @@
 import common from "@/common/common";
 import statusContext from "@/context/statusContext";
+import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 import { errorMessage } from "@/lib/utils";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import ErrorMessage from "../component/ErrorMessage";
 
 const AddRegularReturnResponseWOT = ({ regularReturnId }) => {
@@ -15,6 +16,8 @@ const AddRegularReturnResponseWOT = ({ regularReturnId }) => {
     remark: "",
     tdsfileblob: "",
   });
+  const fileInputRef = useRef(null);
+  useLockBodyScroll(isOpen);
 
   const validate = (data) => {
     const newErrors = {};
@@ -78,12 +81,18 @@ const AddRegularReturnResponseWOT = ({ regularReturnId }) => {
       response = await common.getSubmitWithFileRR(entity, formDataObj);
 
       setIsOpen(false);
-      showSuccess(response.data.successMsg);
       setFormData({
         remark: "",
         tdsfileblob: "",
       });
+      setErrors({});
+      showSuccess(response.data.successMsg);
     } catch (error) {
+      setFormData({
+        remark: "",
+        tdsfileblob: "",
+      });
+      setErrors({});
       showError(
         `Can not save ${error?.response?.data?.entityName}  ${errorMessage(error)}`
       );
@@ -121,10 +130,10 @@ const AddRegularReturnResponseWOT = ({ regularReturnId }) => {
             </h2>
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-6 right-5 cursor-pointer text-gray-600 hover:text-gray-900"
+              className="absolute top-6 right-5 cursor-pointer text-gray-800"
               aria-label="Close modal"
             >
-              <i className="fa-solid fa-x text-xl"></i>
+              <i className="fa-solid fa-xmark text-xl"></i>
             </button>
           </div>
 
@@ -162,6 +171,7 @@ const AddRegularReturnResponseWOT = ({ regularReturnId }) => {
                   id="tdsfileblob"
                   name="tdsfileblob"
                   type="file"
+                  ref={fileInputRef}
                   onChange={handleInputChange}
                   className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 />
@@ -178,8 +188,19 @@ const AddRegularReturnResponseWOT = ({ regularReturnId }) => {
                 Add
               </button>
               <button
+                type="button"
                 className="cursor-pointer rounded-md bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setFormData({
+                    remark: "",
+                    tdsfileblob: "",
+                  });
+                  setErrors({});
+                  setIsOpen(false);
+                  if (fileInputRef.current) {
+                    fileInputRef.current.value = null; // Clear the file input
+                  }
+                }}
               >
                 No
               </button>

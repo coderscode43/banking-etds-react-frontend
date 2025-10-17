@@ -148,12 +148,14 @@ const UserDetails = () => {
           </div>
         </div>
 
-        <UserDetailsTable
-          entity={entity}
-          tableHead={tableHead}
-          tableData={tableData}
-          loading={loading}
-        />
+        <div className="mt-10">
+          <UserDetailsTable
+            entity={entity}
+            tableHead={tableHead}
+            tableData={tableData}
+            loading={loading}
+          />
+        </div>
       </div>
 
       {/* Pagination */}

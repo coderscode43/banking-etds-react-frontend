@@ -1,15 +1,9 @@
+import { useContext, useState } from "react";
 import common from "@/common/common";
 import ErrorMessage from "@/components/component/ErrorMessage";
 import RequestGenerateZipModal from "@/components/modals/RequestGenerateZipModal";
 import staticDataContext from "@/context/staticDataContext";
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Transition,
-  TransitionChild,
-} from "@headlessui/react";
-import { Fragment, useContext, useState } from "react";
+import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 
 const GenerateZipFiles = () => {
   const entity = "downloadCertificate";
@@ -21,18 +15,17 @@ const GenerateZipFiles = () => {
   const [errors, setErrors] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [showGenerateZipModal, setGenerateZipModal] = useState(false);
+  useLockBodyScroll(isOpen);
 
   const closeZipModal = () => setGenerateZipModal(false);
 
   const validate = (data) => {
     const newErrors = {};
 
-    // Helper function to prettify field names
-    const prettyFieldName = (field) => {
-      return field
-        .replace(/([A-Z])/g, " $1") // add space before uppercase letters
-        .replace(/^./, (str) => str.toUpperCase()); // capitalize first letter
-    };
+    const prettyFieldName = (field) =>
+      field
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, (str) => str.toUpperCase());
 
     const requiredFields = ["form", "fy", "quarter"];
 
@@ -45,6 +38,20 @@ const GenerateZipFiles = () => {
     return newErrors;
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (!name) return;
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    const fieldError = validate({ ...formData, [name]: value })[name];
+
+    setErrors((prev) => {
+      const { [name]: _removed, ...rest } = prev;
+      return fieldError ? { ...rest, [name]: fieldError } : rest;
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,39 +60,23 @@ const GenerateZipFiles = () => {
       setErrors(validationErrors);
       return;
     }
-    setErrors({});
 
     try {
       await common.getGenerateZipFile(entity, formData);
       setIsOpen(false);
+      setFormData({});
+      setErrors({});
       setGenerateZipModal(true);
     } catch (error) {
-      console.log(error);
+      setFormData({});
+      setErrors({});
+      console.error(error);
     }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (!name) return;
-
-    // Update form data
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    // Validate just this field inside full form context
-    const fieldError = validate({ ...formData, [name]: value })[name];
-
-    // Cleanly update errors: overwrite if error exists, remove key if no error
-    setErrors((prev) => {
-      const { [name]: _removed, ...rest } = prev; // remove old error for this field
-      return fieldError ? { ...rest, [name]: fieldError } : rest;
-    });
   };
 
   return (
     <>
+      {/* Trigger Button */}
       <div className="flex items-center justify-center">
         <button
           onClick={() => setIsOpen(true)}
@@ -95,158 +86,121 @@ const GenerateZipFiles = () => {
         </button>
       </div>
 
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10 rounded-md"
-          onClose={() => {}}
-        >
-          <TransitionChild
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black/25" />
-          </TransitionChild>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <TransitionChild
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <DialogPanel className="relative w-full max-w-md transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
-                  <DialogTitle
-                    as="h2"
-                    className="mb-5 bg-[#eaf0f9] p-[5%] text-lg leading-6 font-medium text-gray-900"
-                  >
-                    Generate Zip Files
-                  </DialogTitle>
-                  <div>
-                    <form
-                      className="space-y-3"
-                      onSubmit={handleSubmit}
-                      noValidate
-                    >
-                      <div className="justify-center px-5">
-                        <div className="mt-3 w-full">
-                          <label className="font-semibold text-[var(--primary-color)]">
-                            Type of Certificate
-                            <span className="text-red-600">*</span>
-                          </label>
-                          <select
-                            name="form"
-                            id="form"
-                            className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                            value={formData.form || ""}
-                            onChange={handleInputChange}
-                          >
-                            <option value="">Select Certificate</option>
-                            {typeOfCertificate &&
-                              typeOfCertificate.length > 0 &&
-                              typeOfCertificate.map((certificate, index) => {
-                                return (
-                                  <option key={index} value={certificate}>
-                                    {certificate}
-                                  </option>
-                                );
-                              })}
-                          </select>
-                          <ErrorMessage error={errors.form} />
-                        </div>
-
-                        <div className="mt-3 w-full">
-                          <label className="font-semibold text-[var(--primary-color)]">
-                            Financial Year
-                            <span className="text-red-600">*</span>
-                          </label>
-                          <select
-                            name="fy"
-                            id="fy"
-                            className="custom-scrollbar mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                            value={formData.fy || ""}
-                            onChange={handleInputChange}
-                          >
-                            <option value="">Select Financial Year</option>
-                            {financialYear &&
-                              financialYear.length > 0 &&
-                              financialYear.map((fy, index) => {
-                                return (
-                                  <option key={index} value={fy}>
-                                    {fy}
-                                  </option>
-                                );
-                              })}
-                          </select>
-                          <ErrorMessage error={errors.fy} />
-                        </div>
-
-                        <div className="mt-3 w-full">
-                          <label className="font-semibold text-[var(--primary-color)]">
-                            Quarter<span className="text-red-600">*</span>
-                          </label>
-                          <select
-                            name="quarter"
-                            id="quarter"
-                            className="custom-scrollbar mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                            value={formData.quarter || ""}
-                            onChange={handleInputChange}
-                          >
-                            <option value="">Select Quarter</option>
-                            {Quarter &&
-                              Quarter.length > 0 &&
-                              Quarter.map((qtr, index) => {
-                                return (
-                                  <option key={index} value={qtr}>
-                                    {qtr}
-                                  </option>
-                                );
-                              })}
-                          </select>
-                          <ErrorMessage error={errors.quarter} />
-                        </div>
-
-                        <div
-                          className="absolute top-6 right-6 cursor-pointer"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <i className="fa-solid fa-x"></i>
-                        </div>
-                      </div>
-
-                      <div className="mt-5 flex justify-end bg-[#eaf0f9] p-[4%]">
-                        <button
-                          type="submit"
-                          className="mr-2.5 cursor-pointer rounded-md bg-[#03d87f] p-2 px-4 font-semibold text-white"
-                        >
-                          Generate Zip
-                        </button>
-
-                        <button
-                          onClick={() => setIsOpen(false)}
-                          className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </DialogPanel>
-              </TransitionChild>
-            </div>
+      {/* Custom Modal */}
+      <div
+        className={`fixed inset-0 z-50 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${
+          isOpen ? "visible opacity-100" : "invisible opacity-0"
+        }`}
+      >
+        <div className="relative w-full max-w-lg rounded-md bg-white shadow-lg">
+          {/* Modal Header */}
+          <div className="flex items-center justify-between rounded-t-md bg-blue-100 px-6 py-5">
+            <h2 className="text-lg font-semibold text-gray-800">
+              Generate Zip Files
+            </h2>
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                setFormData({});
+                setErrors({});
+              }}
+            >
+              <i className="fa-solid fa-xmark cursor-pointer text-xl text-gray-600" />
+            </button>
           </div>
-        </Dialog>
-      </Transition>
 
+          {/* Modal Form */}
+          <form onSubmit={handleSubmit} noValidate>
+            <div className="space-y-4 p-6">
+              {/* Type of Certificate */}
+              <div>
+                <label className="font-semibold text-[var(--primary-color)]">
+                  Type of Certificate <span className="text-red-600">*</span>
+                </label>
+                <select
+                  name="form"
+                  value={formData.form || ""}
+                  onChange={handleInputChange}
+                  className="mt-1 w-full cursor-pointer rounded-md border border-gray-300 px-3 py-2"
+                >
+                  <option value="">Select Certificate</option>
+                  {typeOfCertificate?.map((type, idx) => (
+                    <option key={idx} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+                <ErrorMessage error={errors.form} />
+              </div>
+
+              {/* Financial Year */}
+              <div>
+                <label className="font-semibold text-[var(--primary-color)]">
+                  Financial Year <span className="text-red-600">*</span>
+                </label>
+                <select
+                  name="fy"
+                  value={formData.fy || ""}
+                  onChange={handleInputChange}
+                  className="mt-1 w-full cursor-pointer rounded-md border border-gray-300 px-3 py-2"
+                >
+                  <option value="">Select Financial Year</option>
+                  {financialYear?.map((fy, idx) => (
+                    <option key={idx} value={fy}>
+                      {fy}
+                    </option>
+                  ))}
+                </select>
+                <ErrorMessage error={errors.fy} />
+              </div>
+
+              {/* Quarter */}
+              <div>
+                <label className="font-semibold text-[var(--primary-color)]">
+                  Quarter <span className="text-red-600">*</span>
+                </label>
+                <select
+                  name="quarter"
+                  value={formData.quarter || ""}
+                  onChange={handleInputChange}
+                  className="mt-1 w-full cursor-pointer rounded-md border border-gray-300 px-3 py-2"
+                >
+                  <option value="">Select Quarter</option>
+                  {Quarter?.map((qtr, idx) => (
+                    <option key={idx} value={qtr}>
+                      {qtr}
+                    </option>
+                  ))}
+                </select>
+                <ErrorMessage error={errors.quarter} />
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex justify-end gap-3 rounded-b-md bg-blue-100 px-6 py-4">
+              <button
+                type="submit"
+                className="cursor-pointer rounded-md bg-green-600 px-4 py-2 font-semibold text-white hover:bg-green-500"
+              >
+                Generate Zip
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsOpen(false);
+                  setFormData({});
+                  setErrors({});
+                }}
+                className="cursor-pointer rounded-md bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-500"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {/* Success Modal (Assumed existing component) */}
       <RequestGenerateZipModal
         closeZipModal={closeZipModal}
         isModalOpen={showGenerateZipModal}

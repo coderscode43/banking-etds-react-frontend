@@ -1,10 +1,13 @@
 import statusContext from "@/context/statusContext";
+import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SuccessModal = () => {
   const { successModal, setSuccessModal, successMessage, redirectPath } =
     useContext(statusContext);
+
+  useLockBodyScroll(successModal);
 
   const navigate = useNavigate();
 

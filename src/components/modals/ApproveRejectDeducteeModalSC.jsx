@@ -1,11 +1,10 @@
-import { X } from "lucide-react";
 import React from "react";
 import { useState, useContext } from "react";
 import common from "@/common/common";
 import { errorMessage } from "@/lib/utils";
 import statusContext from "@/context/statusContext";
-
 import ErrorMessage from "@/components/component/ErrorMessage";
+import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 
 const ApproveRejectDeducteeModalSC = ({
   formTitle,
@@ -17,6 +16,7 @@ const ApproveRejectDeducteeModalSC = ({
 }) => {
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({});
+  useLockBodyScroll(isModalOpen);
 
   const { showSuccess, showError } = useContext(statusContext);
 

@@ -173,12 +173,14 @@ const Branch = () => {
           </div>
         </div>
 
-        <DynamicTableEdit
-          entity={entity}
-          tableHead={tableHead}
-          tableData={tableData}
-          loading={loading}
-        />
+        <div className="mt-10">
+          <DynamicTableEdit
+            entity={entity}
+            tableHead={tableHead}
+            tableData={tableData}
+            loading={loading}
+          />
+        </div>
       </div>
 
       {/* Pagination */}

@@ -1,4 +1,6 @@
+import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 import { LogOut, TriangleAlert, X } from "lucide-react";
+import { createPortal } from "react-dom";
 
 const DynamicModal = ({
   title,
@@ -8,15 +10,16 @@ const DynamicModal = ({
   closeModal,
   handler,
 }) => {
-  return (
-    <div
-      className={`fixed inset-0 z-20 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${
-        isModalOpen ? "visible opacity-100" : "invisible opacity-0"
-      }`}
-    >
+  useLockBodyScroll(isModalOpen); // Hook is now always called properly
+
+  const modalRoot = document.getElementById("modal-root");
+  if (!modalRoot || !isModalOpen) return null; // Prevent rendering if not needed
+
+  return createPortal(
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="relative w-full max-w-[23rem] rounded-xl bg-white p-6 shadow-xl transition-all">
         <div className="absolute top-5 right-5 cursor-pointer">
-          <X size={22} onClick={() => closeModal()} />
+          <X size={22} onClick={closeModal} />
         </div>
         <div className="flex flex-col items-center justify-center gap-2 text-center">
           {type === "delete" ? (
@@ -37,20 +40,21 @@ const DynamicModal = ({
 
         <div className="flex w-full justify-between rounded-b-md">
           <button
-            onClick={() => closeModal()}
+            onClick={closeModal}
             className="mx-2 w-full cursor-pointer rounded-lg bg-[#d40008] py-2 font-medium text-white hover:bg-red-500"
           >
             No
           </button>
           <button
-            onClick={() => handler()}
+            onClick={handler}
             className="mx-2 w-full cursor-pointer rounded-lg bg-green-600 py-2 font-medium text-white hover:bg-green-500"
           >
             Yes
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    modalRoot
   );
 };
 

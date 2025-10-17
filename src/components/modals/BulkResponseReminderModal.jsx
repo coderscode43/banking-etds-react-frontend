@@ -3,6 +3,7 @@ import staticDataContext from "@/context/staticDataContext";
 import { useContext, useState } from "react";
 import statusContext from "@/context/statusContext";
 import { errorMessage } from "@/lib/utils";
+import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 
 const BulkResponseReminderModal = ({
   bulkResponseModal,
@@ -18,6 +19,7 @@ const BulkResponseReminderModal = ({
   const [selectedStatus, setSelectedStatus] = useState("");
   const [returnFilingDate, setReturnFilingDate] = useState("");
   const [responseData, setResponse] = useState("");
+  useLockBodyScroll(bulkResponseModal);
 
   // Conditional Logic for Choosing of CheckBoxes
   const handleCheckboxChange = (checkboxId) => {

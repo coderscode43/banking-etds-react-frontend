@@ -210,11 +210,13 @@ const UploadCertificate = () => {
           </div>
         </div>
 
-        <DynamicTable
-          tableHead={tableHead}
-          tableData={tableData}
-          loading={loading}
-        />
+        <div className="mt-10">
+          <DynamicTable
+            tableHead={tableHead}
+            tableData={tableData}
+            loading={loading}
+          />
+        </div>
       </div>
 
       {/* Pagination */}

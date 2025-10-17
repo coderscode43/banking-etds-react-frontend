@@ -1,10 +1,13 @@
+import { useContext } from "react";
 import statusContext from "@/context/statusContext";
 import { OctagonAlert } from "lucide-react"; // use the right package here
-import { useContext } from "react";
+import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 
 const WarningModal = () => {
   const { warningModal, setWarningModal, warningMessage, warningTitle } =
     useContext(statusContext);
+
+  useLockBodyScroll(warningModal);
 
   return (
     <div

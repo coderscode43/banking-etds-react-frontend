@@ -1,6 +1,9 @@
+import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 import React from "react";
 
 const RequestGenerateZipModal = ({ isModalOpen, closeZipModal }) => {
+  useLockBodyScroll(isModalOpen);
+
   return (
     <div
       className={`fixed inset-0 z-20 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${

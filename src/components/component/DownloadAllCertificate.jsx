@@ -209,7 +209,7 @@ const DownloadAllCertificate = () => {
           <div className="flex justify-center">
             <button
               type="submit"
-              className="rounded-md bg-green-500 p-2 text-center text-white"
+              className="cursor-pointer rounded-md bg-green-500 p-2 text-center text-white"
             >
               <i className="fa-solid fa-download"></i> Download
             </button>

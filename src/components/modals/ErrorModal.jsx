@@ -1,8 +1,11 @@
-import statusContext from "@/context/statusContext";
 import { useContext } from "react";
+import statusContext from "@/context/statusContext";
+import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 
 const ErrorModal = () => {
   const { errorModal, setErrorModal, errorMessage } = useContext(statusContext);
+
+  useLockBodyScroll(errorModal);
 
   return (
     <div
