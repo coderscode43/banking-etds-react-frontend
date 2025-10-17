@@ -61,6 +61,28 @@ export const zipDownload = (response) => {
   window.URL.revokeObjectURL(url);
 };
 
+export const anyFileDownload = (response) => {
+  // Try to get filename from Content-Disposition
+  let fileName = "export.xlsx";
+  const cd = response.headers["content-disposition"];
+  if (cd) {
+    const match = cd.match(/filename\*=UTF-8''([^;]+)|filename="?([^"]+)"?/i);
+    if (match) fileName = decodeURIComponent(match[1] || match[2]);
+  }
+
+  const blob = new Blob([response.data], {
+    type: response.headers["content-type"],
+  });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", fileName); // use filename as passed in
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(url);
+};
+
 export const statusFormatter = (value, invert = false) => {
   const isResolved =
     typeof value === "string"

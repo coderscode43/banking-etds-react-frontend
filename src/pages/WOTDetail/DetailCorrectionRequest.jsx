@@ -1,17 +1,20 @@
 import common from "@/common/common";
-import { useState, useEffect } from "react";
+import DynamicTableDownload from "@/components/tables/DynamicTableDownload";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import DynamicTable from "@/components/tables/DynamicTable";
 import { DetailGrid } from "@/components/component/DetailGrid";
-import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import AddResponseModalWOT from "@/components/correctionRequestModals/AddResponseModalWOT";
+import statusContext from "@/context/statusContext";
+import { errorMessage } from "@/lib/utils";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { date, dateWithTime } from "@/lib/utils";
 
 const DetailCorrectionRequest = () => {
   const entity = "correctionRequest";
+  const page = "correctionRemark";
 
   const navigate = useNavigate();
   const { fy, branchCode, id } = useParams();
+  const { showSuccess, showError } = useContext(statusContext);
 
   const [loading, setLoading] = useState(false);
   const [detailGridData, setDetailGridData] = useState([]);
@@ -29,10 +32,10 @@ const DetailCorrectionRequest = () => {
           branchCode,
           id
         );
-        setDetailGridData(response.data.details || {});
-        setChallanDetails(response.data.details || {});
-        setCorrectionTracker(response.data.remark || []);
-        setOtherDetails(response.data.amountDetails || []);
+        setDetailGridData(response?.data?.details || []);
+        setChallanDetails(response?.data?.ac || []);
+        setCorrectionTracker(response?.data?.remark || []);
+        setOtherDetails(response?.data?.amountDetails || []);
       } catch (error) {
         console.error("Error fetching list data:", error);
       } finally {
@@ -51,7 +54,7 @@ const DetailCorrectionRequest = () => {
     { label: "Ticket Number", key: "ticketNumber" },
     { label: "Financial Year", key: "fy" },
     { label: "Quarter", key: "quarter" },
-    { label: "Date of Request", key: "correctionRequestDate", formatter: date },
+    { label: "Date of Request", key: "lastUpdatedOn" },
     { label: "Name of Customer", key: "name" },
     { label: "Type of Form", key: "typeOfForm" },
     { label: "Type of Correction", key: "typeOfCorrection" },
@@ -61,41 +64,47 @@ const DetailCorrectionRequest = () => {
       key: "mobileNumber",
       fullRow: true,
     },
-    { label: "Response", key: "status" },
-    { label: "Document", key: "fileName" },
+    { label: "Response", key: "status", wideValue: true },
+    {
+      label: "Document",
+      key: "fileName",
+      type: "download",
+      wideValue: true,
+    },
   ];
 
   const fields1 = [
     { label: "Request Created By", key: "makerBy" },
-    {
-      label: "Request Created On",
-      key: "correctionRequestDate",
-      formatter: dateWithTime,
-    },
+    { label: "Request Created On", key: "correctionRequestDate" },
     { label: "Status", key: "status" },
     { label: "Checker Approved By", key: "checkerApprovedBy" },
-    {
-      label: "Checker Approved On",
-      key: "checkerApprovedOn",
-      formatter: dateWithTime,
-    },
+    { label: "Checker Approved On", key: "checkerApprovedOn" },
     { label: "Tax Team Approved By", key: "taxTeamApprovedBy" },
-    {
-      label: "Tax Team Approved On",
-      key: "taxTeamApprovedOn",
-      formatter: dateWithTime,
-    },
+    { label: "Tax Team Approved On", key: "taxTeamApprovedOn" },
     { label: "Correction By", key: "correctionBy" },
-    { label: "Correction On", key: "correctionOn", formatter: dateWithTime },
+    { label: "Correction On", key: "correctionOn" },
+  ];
+
+  const challanGrid = [
+    { label: "Challan Serial Number", key: "challanSrNo" },
+    { label: "BSR Code", key: "challanBsrCode" },
+    { label: "Challan Section", key: "challanSection" },
+    { label: "Challan Amount", key: "challanAmount" },
+    { label: "Challan Date", key: "challanDate" },
+    {
+      label: "Challan Supporting Document",
+      key: "challanSupportingDocument",
+      wideValue: true,
+    },
   ];
 
   const tableHeadCorrectionTracker = [
-    { key: "srNo", label: "Sr.No" },
-    { key: "correctionRemark", label: "Correction Response" },
-    { key: "supportingDocName", label: "Supporting Document Name" },
-    { key: "addedBy", label: "Added By" },
-    { key: "dateTime", label: "Added On", formatter: dateWithTime },
-    { key: "remarkStatus", label: "Action" },
+    { label: "Sr.No", key: "srNo" },
+    { label: "Correction Response", key: "correctionRemark" },
+    { label: "Supporting Document Name", key: "supportingDocName" },
+    { label: "Added By", key: "addedBy" },
+    { label: "Added On", key: "dateTime" },
+    { label: "Action", key: "download" },
   ];
 
   const tableDataCorrectionTracker = correctionTracker?.map((data, index) => ({
@@ -104,20 +113,47 @@ const DetailCorrectionRequest = () => {
   }));
 
   const tableHeadOtherDetails = [
-    { key: "srNo", label: "Sr.No" },
-    { key: "name", label: "Name" },
-    { key: "dateOfPayment", label: "Date of Payment", formatter: date },
-    { key: "tds", label: "TDS Amount" },
-    { key: "amountPaid", label: "Gross Amount" },
-    { key: "quarter", label: "Quarter" },
-    { key: "pan", label: "PAN" },
-    { key: "correctPan", label: "Correct PAN" },
-    { key: "status", label: "Other Response" },
+    { label: "Sr.No", key: "srNo" },
+    { label: "Name", key: "name" },
+    { label: "Date of Payment", key: "dateOfPayment" },
+    { label: "TDS Amount", key: "tds" },
+    { label: "Gross Amount", key: "amountPaid" },
+    { label: "Quarter", key: "quarter" },
+    { label: "PAN", key: "pan" },
+    { label: "Correct PAN", key: "correctPan" },
+    { label: "Other Response", key: "status" },
   ];
+
   const tableDataOtherDetails = otherDetails?.map((data, index) => ({
     srNo: index + 1,
     ...data,
   }));
+
+  const onGridDownload = async () => {
+    try {
+      await common.getDownloadDocument(entity, id);
+      showSuccess("File Downloaded Successfully");
+    } catch (error) {
+      showError(errorMessage(error));
+    }
+  };
+
+  const handleTableDownload = async (id) => {
+    try {
+      await common.getDownloadFile(page, id);
+    } catch (error) {
+      showError(
+        `Can not download.
+         ${error?.response?.data?.entityName}  
+         ${errorMessage(error)}`
+      );
+    }
+  };
+
+  const refinedFormData = {
+    detailGridData: { ...detailGridData },
+    correctionTrackerData: { ...correctionTracker[0] },
+  };
 
   return (
     <>
@@ -126,9 +162,15 @@ const DetailCorrectionRequest = () => {
           Correction Details
         </h1>
 
-        <DetailGrid fields={fields} data={detailGridData} columns={3} />
+        <DetailGrid
+          fields={fields}
+          data={detailGridData}
+          columns={3}
+          onDownload={onGridDownload}
+        />
         <hr className="m-5 bg-gray-400" />
-        <DetailGrid fields={fields1} data={challanDetails} columns={3} />
+        <DetailGrid fields={fields1} data={detailGridData} columns={3} />
+        {/* Back Button */}
         <div className="mb-3 flex justify-end gap-4 py-5">
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"
@@ -145,8 +187,8 @@ const DetailCorrectionRequest = () => {
                 className={({ selected }) =>
                   `w-full cursor-pointer space-x-1 rounded-md border-0 px-28 py-2 font-semibold ${
                     selected
-                      ? "bg-[#1d3864] text-[#fff] outline-none"
-                      : "w-full text-[#1d3864] outline-none"
+                      ? "bg-[var(--secondary-color)] text-[#fff] outline-none"
+                      : "w-full text-[var(--secondary-color)] outline-none"
                   }`
                 }
               >
@@ -154,25 +196,50 @@ const DetailCorrectionRequest = () => {
               </Tab>
             ))}
           </TabList>
-          <TabPanels className="mt-9 w-full">
-            <TabPanel
-              key={categories.name}
-              className="rounded-xl bg-gray-100 shadow-sm"
-            >
-              <DynamicTableAction
+          <TabPanels className="mt-5 w-full">
+            <TabPanel key={categories.name} className="p-5">
+              <div className="mb-2 flex items-center justify-end">
+                <AddResponseModalWOT
+                  entity={page}
+                  branchCode={branchCode}
+                  correctionRequestId={id}
+                  refinedFormData={refinedFormData}
+                  fy={fy}
+                />
+              </div>
+              <DynamicTableDownload
                 tableHead={tableHeadCorrectionTracker}
                 tableData={tableDataCorrectionTracker}
                 loading={loading}
+                downloadKey="supportingDocName"
+                handleDownload={handleTableDownload}
               />
             </TabPanel>
-            <TabPanel
-              key={categories.name}
-              className="rounded-xl bg-white shadow-sm"
-            >
-              <DynamicTable
+            <TabPanel key={categories.name} className="p-5">
+              <div className="mb-2 flex items-center justify-end">
+                {/* <AddRegularReturnResponseModalWOT
+                  entity={entity}
+                  branchCode={branchCode}
+                  correctionRequestId={id}
+                  status={detailGridData?.remarkStatus}
+                  fy={fy}
+                  quarter={detailGridData?.quarter}
+                /> */}
+              </div>
+              <DynamicTableDownload
                 tableHead={tableHeadOtherDetails}
                 tableData={tableDataOtherDetails}
                 loading={loading}
+              />
+              <hr className="m-5 bg-gray-200" />
+              <h1 className="ms-2 mb-5 text-2xl font-bold text-[var(--primary-color)]">
+                Challan Details
+              </h1>
+
+              <DetailGrid
+                fields={challanGrid}
+                data={challanDetails}
+                columns={3}
               />
             </TabPanel>
           </TabPanels>

@@ -1,3 +1,4 @@
+import { anyFileDownload } from "@/lib/utils";
 import axios from "axios";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -225,26 +226,7 @@ export const downloadFile = async (entity, id) => {
     }
   );
 
-  // Try to get filename from Content-Disposition
-  let fileName = "export.xlsx";
-  const cd = response.headers["content-disposition"];
-  if (cd) {
-    const match = cd.match(/filename\*=UTF-8''([^;]+)|filename="?([^"]+)"?/i);
-    if (match) fileName = decodeURIComponent(match[1] || match[2]);
-  }
-
-  const blob = new Blob([response.data], {
-    type: response.headers["content-type"],
-  });
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.setAttribute("download", fileName); // use filename as passed in
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  window.URL.revokeObjectURL(url);
-
+  anyFileDownload(response);
   return response;
 };
 
@@ -320,6 +302,45 @@ export const rejectDeductee = async (
     {
       headers: {
         "Content-Type": "application/json",
+      },
+    }
+  );
+  return response;
+};
+
+export const downloadDocument = async (entity, id) => {
+  const response = await axios.get(
+    `${API_BASE_URL}${entity}/downloadDoc/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/zip",
+      },
+      responseType: "blob",
+    }
+  );
+  anyFileDownload(response);
+  return response;
+};
+export const addResponse = async (entity, formData) => {
+  const response = await axios.post(
+    `${API_BASE_URL}${entity}/addRemark`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response;
+};
+
+export const addReponseWithFile = async (entity, formData) => {
+  const response = await axios.post(
+    `${API_BASE_URL}${entity}/addRemarkWithDocument`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
     }
   );

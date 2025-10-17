@@ -1,6 +1,6 @@
 import React from "react";
 
-export const DetailGrid = ({ fields, data, columns = 1 }) => {
+export const DetailGrid = ({ fields, data, columns = 1, onDownload }) => {
   const rows = [];
   let buffer = [];
 
@@ -21,9 +21,6 @@ export const DetailGrid = ({ fields, data, columns = 1 }) => {
   });
 
   if (buffer.length) rows.push(buffer);
-
-  // Calculate width percentage for columns (for inline style)
-  const columnWidth = 100 / columns;
 
   return (
     <>
@@ -52,32 +49,37 @@ export const DetailGrid = ({ fields, data, columns = 1 }) => {
 
             const isFull = field.fullRow;
 
-            // Container styles and classes
+            // Adjust container width for wideValue spanning multiple columns
+            const wideSpan = field.wideValue ? 2 : 1;
+            const wideColumnWidth = (100 / columns) * wideSpan;
+
             const containerCls =
               field.containerClassName || "flex p-0 space-y-2";
 
-            // Inline style for width, full row takes 100%
             const containerStyle =
               field.containerStyle ||
               (isFull
                 ? { width: "100%" }
                 : {
-                    flexBasis: `${columnWidth}%`,
-                    maxWidth: `${columnWidth}%`,
+                    flexBasis: `${wideColumnWidth}%`,
+                    maxWidth: `${wideColumnWidth}%`,
                   });
 
-            // Label and value classes
             const labelCls =
               field.labelClassName ||
               (isFull
-                ? "md:w-4/12 px-2 font-semibold text-[var(--primary-color)] text-sm flex items-start"
-                : "w-1/2 px-2 font-semibold text-[var(--primary-color)] text-sm flex items-start");
+                ? "md:w-6/12 px-2 font-semibold text-[var(--primary-color)] text-sm flex items-start"
+                : field.wideValue
+                  ? "w-3/12 px-2 font-semibold text-[var(--primary-color)] text-sm flex items-start"
+                  : "w-1/2 px-2 font-semibold text-[var(--primary-color)] text-sm flex items-start");
 
             const valueCls =
               field.valueClassName ||
               (isFull
-                ? "md:w-8/12 px-2 text-[var(--secondary-color)] text-sm flex items-start fontSize-[16px]"
-                : "w-1/2 px-2 text-[var(--secondary-color)] text-sm flex items-start");
+                ? "md:w-6/12 px-2 text-[var(--secondary-color)] text-sm flex items-start fontSize-[16px]"
+                : field.wideValue
+                  ? "w-8/12 px-2 text-[var(--secondary-color)] text-sm flex items-start"
+                  : "w-1/2 px-2 text-[var(--secondary-color)] text-sm flex items-start");
 
             return (
               <div
@@ -89,7 +91,30 @@ export const DetailGrid = ({ fields, data, columns = 1 }) => {
                   <label>{field.label}</label>
                 </div>
                 <div className={valueCls}>
-                  <span>: &nbsp;{displayValue}</span>
+                  {field.key === "fileName" &&
+                  field.type === "download" &&
+                  data[field.key] ? (
+                    <>
+                      : &nbsp;
+                      {displayValue
+                        .split("^")
+                        .map((file) => file.trim())
+                        .filter(Boolean)
+                        .map((file, idx, arr) => (
+                          <span key={idx}>
+                            {file}
+                            {idx < arr.length - 1 ? " ,  " : ""}
+                          </span>
+                        ))}
+                      &nbsp;
+                      <i
+                        className="fa-solid fa-download cursor-pointer"
+                        onClick={onDownload}
+                      />
+                    </>
+                  ) : (
+                    <span>: &nbsp;{displayValue}</span>
+                  )}
                 </div>
               </div>
             );

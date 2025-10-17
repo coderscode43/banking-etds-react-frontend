@@ -21,6 +21,9 @@ import {
   rejectDeductee,
   WOTSearchListData,
   generateExcel,
+  downloadDocument,
+  addReponseWithFile,
+  addResponse,
 } from "@/service/apiService";
 
 const common = {
@@ -203,6 +206,18 @@ const common = {
       formData,
       jsonData
     );
+  },
+
+  getDownloadDocument: async (entity, id) => {
+    return await downloadDocument(entity, id);
+  },
+
+  getAddResponse: async (entity, formData) => {
+    return await addResponse(entity, formData);
+  },
+
+  getAddResponseWithFile: async (entity, formData) => {
+    return await addReponseWithFile(entity, formData);
   },
 };
 

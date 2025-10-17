@@ -9,7 +9,7 @@ const DynamicTableDownload = ({
   loading = false,
 }) => {
   // Skeleton loader rows count (adjust as needed)
-  const skeletonRows = 100;
+  const skeletonRows = 10;
 
   return (
     <div className="relative w-full">
