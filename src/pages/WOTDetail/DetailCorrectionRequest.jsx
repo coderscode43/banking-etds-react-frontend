@@ -150,11 +150,6 @@ const DetailCorrectionRequest = () => {
     }
   };
 
-  const refinedFormData = {
-    detailGridData: { ...detailGridData },
-    correctionTrackerData: { ...correctionTracker[0] },
-  };
-
   return (
     <>
       <div className="rounded-md border border-gray-100 p-4 shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
@@ -203,7 +198,7 @@ const DetailCorrectionRequest = () => {
                   entity={page}
                   branchCode={branchCode}
                   correctionRequestId={id}
-                  refinedFormData={refinedFormData}
+                  detail={detailGridData}
                   fy={fy}
                 />
               </div>

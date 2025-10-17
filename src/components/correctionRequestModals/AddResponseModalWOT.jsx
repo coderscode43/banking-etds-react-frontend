@@ -8,7 +8,7 @@ const AddResponseModalWOT = ({
   entity,
   branchCode,
   correctionRequestId,
-  refinedFormData,
+  detail,
   fy,
 }) => {
   const { showSuccess, showError } = useContext(statusContext);
@@ -16,16 +16,17 @@ const AddResponseModalWOT = ({
   const [isOpen, setIsOpen] = useState(false);
   const [errors, setErrors] = useState({});
   let [formData, setFormData] = useState({
-    correctionRemark: "",
     blob: null,
     branchCode: branchCode,
+    correctionRemark: "",
+    correctionRequestId: correctionRequestId,
     fy: fy,
     remarkStatus: "Remark",
+    quarter: detail?.quarter || "",
   });
 
-  const quarter = refinedFormData?.detailGridData?.quarter;
-  const status = refinedFormData?.detailGridData?.status;
-
+  const quarter = detail?.quarter;
+  const status = detail?.status;
   // Validate only correctionRemark (required), blob optional
   const validate = (data) => {
     const newErrors = {};
@@ -42,6 +43,7 @@ const AddResponseModalWOT = ({
     const fieldValue = name === "blob" ? files[0] : value;
 
     setFormData((prev) => ({
+      quarter: quarter,
       correctionRequestId: correctionRequestId,
       ...prev,
       [name]: fieldValue,
@@ -68,8 +70,8 @@ const AddResponseModalWOT = ({
 
     try {
       let response;
-      const dat = new FormData();
       if (formData?.blob != null && formData?.blob != undefined) {
+        const dat = new FormData();
         dat.append("downloadFile", formData?.blob);
         dat.append("branchCode", branchCode);
         dat.append("crId", correctionRequestId);
@@ -80,14 +82,8 @@ const AddResponseModalWOT = ({
 
         response = await common.getAddResponseWithFile(entity, dat);
       } else {
-        dat.append("branchCode", branchCode);
-        dat.append("crId", correctionRequestId);
-        dat.append("remark", formData?.correctionRemark);
-        dat.append("status", formData?.remarkStatus);
-        dat.append("fy", fy);
-        dat.append("quarter", quarter);
-
-        response = await common.getAddResponse(entity, dat);
+        delete formData.blob;
+        response = await common.getAddResponse(entity, formData);
       }
       setIsOpen(false);
       showSuccess(response.data.successMsg);
