@@ -1,14 +1,13 @@
 import { anyFileDownload } from "@/lib/utils";
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL ?? "/";
 axios.defaults.withCredentials = true;
 
 // SC Layout API's
 export const listData = async (entity) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}${entity}/list/count/`);
+    const response = await axios.get(`api${entity}/list/count/`);
     return response;
   } catch (error) {
     console.error(error);
@@ -18,7 +17,7 @@ export const listData = async (entity) => {
 export const detailListData = async (entity, fy, branchCode, id) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}${entity}/detail/${fy}/${branchCode}/${id}`
+      `api${entity}/detail/${fy}/${branchCode}/${id}`
     );
     return response;
   } catch (error) {
@@ -28,7 +27,7 @@ export const detailListData = async (entity, fy, branchCode, id) => {
 
 export const detailListDataSC = async (entity, id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}${entity}/detail/${id}`);
+    const response = await axios.get(`api${entity}/detail/${id}`);
     return response;
   } catch (error) {
     console.error(error);
@@ -39,7 +38,7 @@ export const detailListDataSC = async (entity, id) => {
 export const WOTListData = async (entity, fy, branchCode) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}${entity}/list/${fy}/${branchCode}/count/`
+      `api${entity}/list/${fy}/${branchCode}/count/`
     );
     return response;
   } catch (error) {
@@ -50,9 +49,7 @@ export const WOTListData = async (entity, fy, branchCode) => {
 // Pagination Functionality
 export const paginationListData = async (entity, pageNo) => {
   try {
-    const response = await axios.get(
-      `${API_BASE_URL}${entity}/list/get/${pageNo}/100`
-    );
+    const response = await axios.get(`api${entity}/list/get/${pageNo}/100`);
     return response;
   } catch (error) {
     console.error("Error in fetching entities:", error);
@@ -66,7 +63,7 @@ export const paginationWithSearchListData = async (
 ) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}${entity}/search/get/${pageNo}/100/${searchParams}`
+      `api${entity}/search/get/${pageNo}/100/${searchParams}`
     );
     return response;
   } catch (error) {
@@ -83,7 +80,7 @@ export const WOTSearchListData = async (
 ) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}${entity}/search/${fy}/${branchCode}/${pageNo}/100/${searchParams}`
+      `api${entity}/search/${fy}/${branchCode}/${pageNo}/100/${searchParams}`
     );
     return response;
   } catch (error) {
@@ -92,7 +89,7 @@ export const WOTSearchListData = async (
 };
 
 export const addBulkRemark = async (entity, rowsData, enhancedFormData) => {
-  const response = await axios.post(`${API_BASE_URL}${entity}/addBulkRemark`, {
+  const response = await axios.post(`api${entity}/addBulkRemark`, {
     ...rowsData,
     ...enhancedFormData,
   });
@@ -101,7 +98,7 @@ export const addBulkRemark = async (entity, rowsData, enhancedFormData) => {
 
 export const generateExcel = async (entity, encodedParams) => {
   const response = await axios.get(
-    `${API_BASE_URL}${entity}/generateExcel/${encodedParams}`,
+    `api${entity}/generateExcel/${encodedParams}`,
     {
       responseType: "blob",
     }
@@ -138,21 +135,21 @@ export const generateExcel = async (entity, encodedParams) => {
 };
 
 export const sendReminder = async (entity, rowsData) => {
-  const response = await axios.post(`${API_BASE_URL}${entity}/sendReminder`, {
+  const response = await axios.post(`api${entity}/sendReminder`, {
     ...rowsData,
   });
   return response;
 };
 
 export const submitEntity = async (entity, formData) => {
-  const response = await axios.post(`${API_BASE_URL}${entity}/add`, {
+  const response = await axios.post(`api${entity}/add`, {
     ...formData,
   });
   return response;
 };
 
 export const updateEntity = async (entity, formData) => {
-  const response = await axios.put(`${API_BASE_URL}${entity}/update`, {
+  const response = await axios.put(`api${entity}/update`, {
     ...formData,
   });
   return response;
@@ -160,9 +157,7 @@ export const updateEntity = async (entity, formData) => {
 
 export const deleteUserDetails = async (entity, employeeId) => {
   try {
-    const response = await axios.delete(
-      `${API_BASE_URL}${entity}/delete/${employeeId}`
-    );
+    const response = await axios.delete(`api${entity}/delete/${employeeId}`);
     return response;
   } catch (error) {
     console.error(error);
@@ -170,21 +165,17 @@ export const deleteUserDetails = async (entity, employeeId) => {
 };
 
 export const submitWithFile = async (entity, formDataObj) => {
-  const response = await axios.post(
-    `${API_BASE_URL}${entity}/addWithFile`,
-    formDataObj,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
+  const response = await axios.post(`api${entity}/addWithFile`, formDataObj, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response;
 };
 
 export const submitWithFileRegularReturn = async (entity, formDataObj) => {
   const response = await axios.post(
-    `${API_BASE_URL}${entity}/addRegularReturnRO`,
+    `api${entity}/addRegularReturnRO`,
     formDataObj,
     {
       headers: {
@@ -198,33 +189,26 @@ export const submitWithFileRegularReturn = async (entity, formDataObj) => {
 export const generateZipFile = async (entity, formdata) => {
   const { form, fy, quarter } = formdata;
   const response = await axios.get(
-    `${API_BASE_URL}${entity}/createBranchZip/${encodeURIComponent("ALL TAN")}/${form}/${fy}/${quarter}`,
+    `api${entity}/createBranchZip/${encodeURIComponent("ALL TAN")}/${form}/${fy}/${quarter}`,
     { ...formdata }
   );
   return response;
 };
 
 export const uploadCertificate = async (entity, formData) => {
-  const response = await axios.post(
-    `${API_BASE_URL}${entity}/uploadZip`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
+  const response = await axios.post(`api${entity}/uploadZip`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response;
 };
 
 export const downloadFile = async (entity, id) => {
-  const response = await axios.get(
-    `${API_BASE_URL}${entity}/downloadDoc/${id}`,
-    {
-      responseType: "blob",
-      headers: { Accept: "*/*" },
-    }
-  );
+  const response = await axios.get(`api${entity}/downloadDoc/${id}`, {
+    responseType: "blob",
+    headers: { Accept: "*/*" },
+  });
 
   anyFileDownload(response);
   return response;
@@ -238,7 +222,7 @@ export const generateReport = async (entity, formdata) => {
   const typeOfReport = formdata.typeOfReport || " ";
 
   const response = await axios.get(
-    `${API_BASE_URL}${entity}/files/${tan}/${typeOfForm}/${fy}/${quarter}/${typeOfReport}`,
+    `api${entity}/files/${tan}/${typeOfForm}/${fy}/${quarter}/${typeOfReport}`,
     {
       headers: {
         "Content-Type": "application/zip",
@@ -258,7 +242,7 @@ export const downloadCertificate = async (page, formdata) => {
   const pan = formdata.panNumber || " ";
 
   const response = await axios.get(
-    `${API_BASE_URL}downloadCertificate/${page}/${tan}/${form}/${fy}/${quarter}/${pan}`,
+    `apidownloadCertificate/${page}/${tan}/${form}/${fy}/${quarter}/${pan}`,
     {
       headers: {
         "Content-Type": "application/zip",
@@ -277,7 +261,7 @@ export const updateDeductee = async (
   jsonData
 ) => {
   const response = await axios.put(
-    `${API_BASE_URL}${entity}/updateDeductee/${remarkId}/${deducteeId}`,
+    `api${entity}/updateDeductee/${remarkId}/${deducteeId}`,
     jsonData,
     {
       headers: {
@@ -297,7 +281,7 @@ export const rejectDeductee = async (
   jsonData
 ) => {
   const response = await axios.put(
-    `${API_BASE_URL}${entity}/rejectDeductee/${remarkId}/${deducteeId}/${formData}`,
+    `api${entity}/rejectDeductee/${remarkId}/${deducteeId}/${formData}`,
     jsonData,
     {
       headers: {
@@ -309,34 +293,27 @@ export const rejectDeductee = async (
 };
 
 export const downloadDocument = async (entity, id) => {
-  const response = await axios.get(
-    `${API_BASE_URL}${entity}/downloadDoc/${id}`,
-    {
-      headers: {
-        "Content-Type": "application/zip",
-      },
-      responseType: "blob",
-    }
-  );
+  const response = await axios.get(`api${entity}/downloadDoc/${id}`, {
+    headers: {
+      "Content-Type": "application/zip",
+    },
+    responseType: "blob",
+  });
   anyFileDownload(response);
   return response;
 };
 export const addResponse = async (entity, formData) => {
-  const response = await axios.post(
-    `${API_BASE_URL}${entity}/addRemark`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const response = await axios.post(`api${entity}/addRemark`, formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   return response;
 };
 
 export const addReponseWithFile = async (entity, formData) => {
   const response = await axios.post(
-    `${API_BASE_URL}${entity}/addRemarkWithDocument`,
+    `api${entity}/addRemarkWithDocument`,
     formData,
     {
       headers: {
