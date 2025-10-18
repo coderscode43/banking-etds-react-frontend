@@ -96,7 +96,7 @@ const DetailCorrectionRequest = () => {
     { label: "Correction Response", key: "correctionRemark" },
     { label: "Supporting Document Name", key: "supportingDocName" },
     { label: "Added By", key: "addedBy" },
-    { label: "Added On", key: "dateTime", formatter: dateWithTime },
+    { label: "Added On", key: "dateTime" },
     { label: "Action", key: "action" },
   ];
 

@@ -69,7 +69,7 @@ const GenerateReport = () => {
       zipDownload(response);
     } catch (error) {
       showWarning(
-        "Certificate not available!",
+        "Tax Audit Report not available!",
         "File not found for this TAN Number"
       );
       console.log(error);

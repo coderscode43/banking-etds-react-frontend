@@ -7,6 +7,7 @@ import BulkResponseReminderModal from "@/components/modals/BulkResponseReminderM
 import DynamicTableCheckBoxAction from "@/components/tables/DynamicTableCheckBoxAction";
 import staticDataContext from "@/context/staticDataContext";
 import statusContext from "@/context/statusContext";
+import { date, dateWithTime } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -74,7 +75,7 @@ const RegularReturn = () => {
 
   const tableHead = [
     { label: "Sr.No.", key: "srNo" },
-    { key: "addedOn", label: "Date" },
+    { key: "addedOn", label: "Date", formatter: dateWithTime },
     { key: "fy", label: "Financial Year", format: (value) => value || "-" },
     { key: "tan", label: "TAN" },
     { key: "quarter", label: "Quarter" },
@@ -85,8 +86,7 @@ const RegularReturn = () => {
     {
       key: "returnFilingDate",
       label: "Return Filing Date",
-      // format: (d) =>
-      //   d ? new Date(d.replace(/-/g, "/")).toLocaleDateString("en-GB") : "",
+      formatter: date,
     },
     { key: "action", label: "Action" },
   ];

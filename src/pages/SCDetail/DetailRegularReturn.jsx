@@ -6,7 +6,7 @@ import AddRegularReturnResponseModal from "@/components/modals/AddRegularReturnR
 import DynamicTableDownload from "@/components/tables/DynamicTableDownload";
 import { useContext } from "react";
 import statusContext from "@/context/statusContext";
-import { errorMessage } from "@/lib/utils";
+import { date, dateWithTime, errorMessage } from "@/lib/utils";
 
 const DetailRegularReturn = () => {
   const entity = "regularReturn";
@@ -52,6 +52,12 @@ const DetailRegularReturn = () => {
       formatter: (value) =>
         value === true || value === "true" ? "Resolved" : "Not Resolved",
     },
+    {
+      label: "Return Filing Date",
+      key: "returnFilingDate",
+      show: (data) => !!data.returnFilingDate,
+      formatter: date,
+    },
   ];
 
   const tableHead = [
@@ -60,7 +66,7 @@ const DetailRegularReturn = () => {
     { label: "Status", key: "remarkStatus" },
     { label: "Supporting Document Name", key: "supportingDocName" },
     { label: "Added By", key: "addedBy" },
-    { label: "Added On", key: "addedOn" },
+    { label: "Added On", key: "addedOn", formatter: dateWithTime },
     { label: "Action", key: "download" },
   ];
 

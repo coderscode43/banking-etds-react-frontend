@@ -5,7 +5,6 @@ import SwitchButton from "@/components/component/SwitchButton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 import DynamicTableAction from "@/components/tables/DynamicTableAction";
 import staticDataContext from "@/context/staticDataContext";
-import { dateWithTime } from "@/lib/utils";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -83,7 +82,7 @@ const CorrectionRequest = () => {
     { key: "pan", label: "Pan Of Customer" },
     { key: "typeOfCorrection", label: "Type of Correction" },
     { key: "status", label: "Status" },
-    { key: "lastUpdatedOn", label: "Last Updated On", formatter: dateWithTime },
+    { key: "lastUpdatedOn", label: "Last Updated On" },
     { key: "action", label: "Action" },
   ];
 

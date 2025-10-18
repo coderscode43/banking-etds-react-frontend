@@ -16,7 +16,6 @@ const AddRegularReturnResponse = ({ regularReturnId, status }) => {
   let [formData, setFormData] = useState({
     remark: "",
     remarkStatus: "",
-    returnFilingDate: "",
     blob: "",
   });
 
@@ -41,7 +40,7 @@ const AddRegularReturnResponse = ({ regularReturnId, status }) => {
     // Conditionally validate returnFilingDate only if remarkStatus === "Return filed"
     if (data.remarkStatus === "Return filed") {
       if (!data.returnFilingDate || data.returnFilingDate.trim() === "") {
-        newErrors.returnFilingDate = "Please enter a valid Return Filing Date";
+        newErrors.returnFilingDate = "Please enter a Return Filing Date";
       }
     }
 
@@ -145,7 +144,7 @@ const AddRegularReturnResponse = ({ regularReturnId, status }) => {
               className="absolute top-6 right-5 cursor-pointer text-gray-600 hover:text-gray-900"
               aria-label="Close modal"
             >
-              <i className="fa-solid fa-x text-xl"></i>
+              <i className="fa-solid fa-xmark text-xl"></i>
             </button>
           </div>
 
