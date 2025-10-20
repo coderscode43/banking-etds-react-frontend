@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import statusContext from "@/context/statusContext";
 import { errorMessage } from "@/lib/utils";
 import useLockBodyScroll from "@/hooks/useLockBodyScroll";
+import ErrorMessage from "../component/ErrorMessage";
 
 const BulkResponseReminderModal = ({
   bulkResponseModal,
@@ -15,58 +16,133 @@ const BulkResponseReminderModal = ({
   const { showSuccess, showError } = useContext(statusContext);
   const { regularReturnStatus } = useContext(staticDataContext);
 
+  const [formData, setFormData] = useState({
+    Status: "",
+    returnFilingDate: "",
+    responseData: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [checkboxError, setCheckboxError] = useState("");
+
   const [selectedCheckBox, setSelectedCheckedBox] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState("");
-  const [returnFilingDate, setReturnFilingDate] = useState("");
-  const [responseData, setResponse] = useState("");
   useLockBodyScroll(bulkResponseModal);
 
   // Conditional Logic for Choosing of CheckBoxes
   const handleCheckboxChange = (checkboxId) => {
-    setSelectedCheckedBox((prev) => {
+    setSelectedCheckedBox((prevSelected) => {
+      const isAlreadySelected = prevSelected.includes(checkboxId);
+      let updatedSelection;
+
       if (checkboxId === "reminder") {
-        if (prev.includes("reminder")) {
-          return prev.filter((id) => id !== checkboxId);
+        if (isAlreadySelected) {
+          updatedSelection = prevSelected.filter((id) => id !== "reminder");
         } else {
-          setSelectedStatus(" ");
-          setReturnFilingDate(" ");
-          setResponse(" ");
-          return ["reminder"];
+          updatedSelection = ["reminder"];
+
+          // Reset form and clear errors
+          setFormData({
+            Status: "",
+            returnFilingDate: "",
+            responseData: "",
+          });
+          setErrors({});
+          setCheckboxError("");
         }
       } else {
-        let newSelection = prev.includes(checkboxId)
-          ? prev.filter((id) => id !== checkboxId) // unselect clicked box
-          : [...prev, checkboxId]; // add clicked box
-
-        // Remove "reminder" if present
-        if (newSelection.includes("reminder")) {
-          newSelection = newSelection.filter((id) => id !== "reminder");
+        if (isAlreadySelected) {
+          updatedSelection = prevSelected.filter((id) => id !== checkboxId);
+        } else {
+          updatedSelection = [...prevSelected, checkboxId];
         }
-        return newSelection;
+
+        // Remove "reminder" if other checkboxes are selected
+        updatedSelection = updatedSelection.filter((id) => id !== "reminder");
       }
+
+      // Clear checkbox error if any valid box is selected
+      if (updatedSelection.length > 0) {
+        setCheckboxError("");
+      }
+
+      return updatedSelection;
     });
   };
 
-  const handleSubmit = async () => {
+  const validate = () => {
+    const newErrors = {};
+    let isValid = true;
+
+    // Validate checkbox selection
+    if (selectedCheckBox.length === 0) {
+      setCheckboxError("Please select at least one checkbox.");
+      isValid = false;
+    } else {
+      setCheckboxError(""); // clear if already valid
+    }
+
+    if (selectedCheckBox.includes("Status") && !formData.Status.trim()) {
+      newErrors.Status = "Status is required.";
+      isValid = false;
+    }
+
+    if (
+      selectedCheckBox.includes("returnFilingDate") &&
+      !formData.returnFilingDate
+    ) {
+      newErrors.returnFilingDate = "Return filing date is required.";
+      isValid = false;
+    }
+
+    if (
+      selectedCheckBox.includes("responseData") &&
+      !formData.responseData.trim()
+    ) {
+      newErrors.responseData = "Response is required.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    // Proceed to submit if valid
     const rowsData = {
-      regularReturns, // Array of selected rows
+      regularReturns,
     };
 
-    const formData = {
-      //Modal Data
-      Status: selectedStatus,
-      returnFilingDate: returnFilingDate,
-      remark: responseData,
+    const payload = {
+      Status: formData.Status,
+      returnFilingDate: formData.returnFilingDate,
+      remark: formData.responseData,
     };
 
-    let response;
     try {
-      response = await common.getAddBulk(entity, rowsData, formData);
+      const response = await common.getAddBulk(entity, rowsData, payload);
       setBulkResponseModal(false);
       showSuccess(response.data.successMsg);
     } catch (error) {
       setBulkResponseModal(false);
       showError(errorMessage(error));
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
+    if (errors[field]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
     }
   };
 
@@ -111,29 +187,30 @@ const BulkResponseReminderModal = ({
             <div className="flex flex-wrap gap-y-2">
               {["Status", "returnFilingDate", "responseData", "reminder"].map(
                 (item) => (
-                  <label
-                    key={item}
-                    className="flex w-1/2 items-center space-x-2"
-                  >
+                  <div key={item} className="flex w-1/2 items-center space-x-2">
                     <input
+                      type="checkbox"
                       id={item}
                       name={item}
-                      type="checkbox"
                       checked={selectedCheckBox.includes(item)}
                       onChange={() => handleCheckboxChange(item)}
                       className="form-checkbox cursor-pointer text-blue-400"
                     />
-                    <span>
+                    <label
+                      htmlFor={item}
+                      className="cursor-pointer select-none"
+                    >
                       {item === "reminder"
                         ? "Send Reminder"
                         : item
-                            .replace(/([A-Z])/g, " $1") // camelCase to words
+                            .replace(/([A-Z])/g, " $1")
                             .replace(/^./, (str) => str.toUpperCase())}
-                    </span>
-                  </label>
+                    </label>
+                  </div>
                 )
               )}
             </div>
+            {checkboxError && <ErrorMessage error={checkboxError} />}
 
             <hr className="my-4 text-gray-400" />
 
@@ -141,7 +218,6 @@ const BulkResponseReminderModal = ({
             <form className="flex flex-col gap-3">
               <div>
                 <label
-                  htmlFor="Status"
                   className={`mb-1 block font-semibold ${
                     selectedCheckBox.includes("Status") ? "" : "text-gray-600"
                   }`}
@@ -157,8 +233,8 @@ const BulkResponseReminderModal = ({
                   id="Status"
                   name="Status"
                   disabled={!selectedCheckBox.includes("Status")}
-                  value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value)}
+                  value={formData.Status}
+                  onChange={(e) => handleInputChange("Status", e.target.value)}
                 >
                   <option value="" disabled>
                     Select Status
@@ -171,11 +247,11 @@ const BulkResponseReminderModal = ({
                       </option>
                     ))}
                 </select>
+                <ErrorMessage error={errors.Status} />
               </div>
 
               <div>
                 <label
-                  htmlFor="returnFilingDate"
                   className={`mb-1 block font-semibold ${
                     selectedCheckBox.includes("returnFilingDate")
                       ? ""
@@ -188,20 +264,27 @@ const BulkResponseReminderModal = ({
                   type="date"
                   id="returnFilingDate"
                   name="returnFilingDate"
-                  disabled={!selectedCheckBox.includes("returnFilingDate")}
+                  onClick={(e) => {
+                    if (!selectedCheckBox.includes("returnFilingDate")) {
+                      e.preventDefault(); // prevent picker if not selected
+                    }
+                  }}
+                  onChange={(e) =>
+                    handleInputChange("returnFilingDate", e.target.value)
+                  }
+                  value={formData.returnFilingDate}
                   className={`form-input focus:outline-none ${
                     selectedCheckBox.includes("returnFilingDate")
                       ? "cursor-pointer"
                       : "cursor-not-allowed bg-gray-300 text-gray-500"
                   }`}
-                  value={returnFilingDate}
-                  onChange={(e) => setReturnFilingDate(e.target.value)}
                 />
+
+                <ErrorMessage error={errors.returnFilingDate} />
               </div>
 
               <div>
                 <label
-                  htmlFor="responseData"
                   className={`mb-1 block font-semibold ${
                     selectedCheckBox.includes("responseData")
                       ? ""
@@ -216,14 +299,17 @@ const BulkResponseReminderModal = ({
                   id="responseData"
                   name="responseData"
                   disabled={!selectedCheckBox.includes("responseData")}
+                  value={formData.responseData}
+                  onChange={(e) =>
+                    handleInputChange("responseData", e.target.value)
+                  }
                   className={`form-input focus:outline-none ${
                     selectedCheckBox.includes("responseData")
                       ? "cursor-text"
                       : "cursor-not-allowed bg-gray-300 text-gray-500"
                   }`}
-                  value={responseData}
-                  onChange={(e) => setResponse(e.target.value)}
                 />
+                <ErrorMessage error={errors.responseData} />
               </div>
             </form>
           </div>
@@ -248,7 +334,17 @@ const BulkResponseReminderModal = ({
             <button
               type="button"
               className="cursor-pointer rounded-md border border-gray-300 bg-gray-300 px-4 py-2 text-black hover:bg-gray-200"
-              onClick={() => setBulkResponseModal(false)}
+              onClick={() => {
+                setBulkResponseModal(false);
+                setFormData({
+                  Status: "",
+                  returnFilingDate: "",
+                  responseData: "",
+                });
+                setErrors({});
+                setCheckboxError("");
+                setSelectedCheckedBox([]); // (Optional) if you also want to clear checkboxes
+              }}
             >
               Close
             </button>

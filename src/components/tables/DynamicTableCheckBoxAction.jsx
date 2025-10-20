@@ -1,5 +1,6 @@
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
 import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
+import { TooltipWrapper } from "@/components/component/Tooltip";
 import { useNavigate } from "react-router-dom";
 
 const DynamicTableCheckBoxAction = ({
@@ -128,14 +129,19 @@ const DynamicTableCheckBoxAction = ({
                     <tr
                       key={index}
                       className={`cursor-pointer bg-white text-center ${isChecked ? "bg-blue-100" : ""}`}
-                      onDoubleClick={() => {
-                        if (entity !== "branch") {
-                          navigate(
-                            `/home/detail/${entity}/${data.id}/detail${
-                              entity.charAt(0).toUpperCase() + entity.slice(1)
-                            }`
-                          );
+                      onDoubleClick={(e) => {
+                        // Check if the clicked column is the last one
+                        if (
+                          e.target.cellIndex ===
+                          enhancedTableHead.length - 1
+                        ) {
+                          return; // Do nothing if it's the last column
                         }
+                        navigate(
+                          `/home/detail/${entity}/${data.id}/detail${
+                            entity.charAt(0).toUpperCase() + entity.slice(1)
+                          }`
+                        );
                       }}
                     >
                       {/* Checkbox cell */}
@@ -154,7 +160,22 @@ const DynamicTableCheckBoxAction = ({
                           className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${autoResize ? "w-auto" : "max-w-[110px] min-w-[20px] overflow-hidden"}`}
                         >
                           {key === "action" ? (
-                            <i className="fa-solid fa-file-pen text-lg"></i>
+                            <TooltipWrapper tooltipText="Detail">
+                              <i
+                                className="fa-solid fa-file-pen cursor-pointer text-lg"
+                                onClick={(e) => {
+                                  e.stopPropagation(); // Prevents triggering row double-click
+                                  if (entity !== "branch") {
+                                    navigate(
+                                      `/home/detail/${entity}/${data.id}/detail${
+                                        entity.charAt(0).toUpperCase() +
+                                        entity.slice(1)
+                                      }`
+                                    );
+                                  }
+                                }}
+                              ></i>
+                            </TooltipWrapper>
                           ) : formatter ? (
                             formatter(data[key])
                           ) : (

@@ -87,7 +87,7 @@ const CorrectionRequest = () => {
     { key: "typeOfCorrection", label: "Type of Correction" },
     { key: "status", label: "Status" },
     { key: "lastUpdatedOn", label: "Last Updated On" },
-    { key: "status", label: "Action" },
+    { key: "action", label: "Action" },
   ];
 
   const tableData = listData?.map((data, index) => ({
