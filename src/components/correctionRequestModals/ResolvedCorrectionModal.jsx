@@ -1,0 +1,190 @@
+import common from "@/common/common";
+import statusContext from "@/context/statusContext";
+import { errorMessage } from "@/lib/utils";
+import ErrorMessage from "../component/ErrorMessage";
+import { useContext, useState } from "react";
+import { useEffect } from "react";
+
+const ResolvedCorrectionModal = ({
+  isOpen,
+  setIsOpen,
+  branchCode,
+  fy,
+  correctionRequestId,
+  detail,
+  entity,
+}) => {
+  const quarter = detail.quarter;
+
+  const { showSuccess, showError } = useContext(statusContext);
+  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    correctionRemark: "",
+    blob: null,
+    branchCode: branchCode,
+    fy: fy,
+    quarter: detail?.quarter,
+    correctionRequestId: correctionRequestId,
+    remarkStatus: "Approved",
+  });
+
+  useEffect(() => {
+    if (detail?.quarter) {
+      setFormData((prevData) => ({
+        ...prevData,
+        quarter: detail.quarter,
+      }));
+    }
+  }, [detail?.quarter]);
+  const validate = (data) => {
+    const newErrors = {};
+    if (!data.correctionRemark || data.correctionRemark.trim() === "") {
+      newErrors.correctionRemark = "Please enter a valid Response";
+    }
+    return newErrors;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    const fieldValue = name === "blob" ? files[0] : value;
+
+    const updatedData = {
+      ...formData,
+      [name]: fieldValue,
+    };
+    setFormData(updatedData);
+
+    const fieldError = validate(updatedData)[name];
+    setErrors((prev) => {
+      const { [name]: _removed, ...rest } = prev;
+      return fieldError ? { ...rest, [name]: fieldError } : rest;
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validationErrors = validate(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
+
+    try {
+      let response;
+      if (formData?.blob != null && formData?.blob != undefined) {
+        const dat = new FormData();
+        dat.append("downloadFile", formData?.blob);
+        dat.append("branchCode", branchCode);
+        dat.append("crId", correctionRequestId);
+        dat.append("remark", formData?.correctionRemark);
+        dat.append("status", formData?.remarkStatus);
+        dat.append("fy", fy);
+        dat.append("quarter", quarter);
+        response = await common.getAddResponseWithFile(entity, dat);
+      } else {
+        delete formData.blob;
+        response = await common.getAddResponse(entity, formData, quarter);
+      }
+      setIsOpen(false);
+      showSuccess(response.data.successMsg);
+      // Reset form
+      setFormData({
+        correctionRemark: "",
+        blob: null,
+      });
+    } catch (error) {
+      showError(
+        `Cannot save ${error?.response?.data?.entityName} ${errorMessage(error)}`
+      );
+      console.error(error);
+    }
+  };
+
+  return (
+    <div
+      className={`bg-opacity-50 fixed inset-0 z-10 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${
+        isOpen
+          ? "visible opacity-100"
+          : "pointer-events-none invisible opacity-0"
+      }`}
+      onClick={() => setIsOpen(false)}
+    >
+      <div
+        className="relative w-full max-w-md rounded-md bg-white shadow-xl transition-all"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-5 rounded-t-md bg-[#eaf0f9] px-6 pt-6 pb-3 text-left">
+          <h2 className="text-lg font-medium text-gray-800">Resolved</h2>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute top-6 right-5 cursor-pointer text-gray-600 hover:text-gray-900"
+            aria-label="Close modal"
+          >
+            <i className="fa-solid fa-xmark text-xl"></i>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} noValidate>
+          <div className="space-y-4 px-6">
+            <div>
+              <label
+                htmlFor="correctionRemark"
+                className="block font-semibold text-[var(--primary-color)]"
+              >
+                Resolved
+                <span className="text-red-600"> *</span>
+              </label>
+              <textarea
+                id="correctionRemark"
+                name="correctionRemark"
+                placeholder="Enter your response"
+                rows={3}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:outline-none"
+                maxLength={500}
+                value={formData.correctionRemark}
+                onChange={handleInputChange}
+              />
+              <ErrorMessage error={errors.correctionRemark} />
+            </div>
+
+            <div>
+              <label
+                htmlFor="blob"
+                className="block font-semibold text-[var(--primary-color)]"
+              >
+                Upload Certificate :
+              </label>
+              <input
+                id="blob"
+                name="blob"
+                type="file"
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="mt-6 flex justify-end space-x-3 rounded-b-md bg-[#eaf0f9] px-6 pt-4 pb-5">
+            <button
+              type="submit"
+              className="cursor-pointer rounded-md bg-[#1761fd] px-4 py-2 font-semibold text-white hover:bg-blue-700"
+            >
+              Add
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="cursor-pointer rounded-md bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700"
+            >
+              No
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default ResolvedCorrectionModal;

@@ -212,8 +212,12 @@ const common = {
     return await downloadDocument(entity, id);
   },
 
-  getAddResponse: async (entity, formData) => {
-    return await addResponse(entity, formData);
+  getAddResponse: async (entity, formData, quarter) => {
+    const refinedFormData = {
+      ...formData,
+      quarter: quarter,
+    };
+    return await addResponse(entity, refinedFormData);
   },
 
   getAddResponseWithFile: async (entity, formData) => {

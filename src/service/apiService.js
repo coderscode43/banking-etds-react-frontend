@@ -302,12 +302,9 @@ export const downloadDocument = async (entity, id) => {
   anyFileDownload(response);
   return response;
 };
-export const addResponse = async (entity, formData) => {
-  const response = await axios.post(`api${entity}/addRemark`, formData, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+
+export const addResponse = async (entity, refinedFormData) => {
+  const response = await axios.post(`api${entity}/addRemark`, refinedFormData);
   return response;
 };
 

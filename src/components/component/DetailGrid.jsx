@@ -106,10 +106,12 @@ export const DetailGrid = ({ fields, data, columns = 1, onDownload }) => {
                                 </span>
                               ))}
                             &nbsp;
-                            <i
-                              className="fa-solid fa-download cursor-pointer"
-                              onClick={onDownload}
-                            />
+                            <div className="rounded-md bg-blue-400 px-2 py-0.5 text-white">
+                              <i
+                                className="fa-solid fa-download cursor-pointer"
+                                onClick={onDownload}
+                              />
+                            </div>
                           </>
                         ) : (
                           <span>: &nbsp;{displayValue}</span>
