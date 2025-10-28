@@ -218,7 +218,6 @@ const Logs = () => {
 
         <div>
           <DynamicTable
-            entity={entity}
             tableHead={tableHead}
             tableData={tableData}
             loading={loading}

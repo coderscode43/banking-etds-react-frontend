@@ -79,7 +79,7 @@ const navItems = [
     id: "uploadCertificate",
     label: "Upload Certificate",
     page: "uploadCertificate",
-    iconClass: "fa-solid fa-display",
+    iconClass: "fa-solid fa-file-arrow-up",
   },
   {
     id: "ldc",

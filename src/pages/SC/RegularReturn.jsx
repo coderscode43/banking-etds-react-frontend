@@ -320,7 +320,6 @@ const RegularReturn = () => {
         </div>
         <DynamicTableCheckBoxAction
           entity={entity}
-          layoutType={"sc"}
           tableHead={tableHead}
           tableData={tableData}
           autoResize={autoResize}

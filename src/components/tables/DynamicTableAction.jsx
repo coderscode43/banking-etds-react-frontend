@@ -67,82 +67,73 @@ const DynamicTableAction = ({
                   </td>
                 </tr>
               ) : (
-                <>
-                  {loading ? (
-                    <TableLoadingSkeleton
-                      columns={tableHead.length}
-                      rows={skeletonRows}
-                    />
-                  ) : (
-                    tableData.map((data, index) => (
-                      <tr
-                        key={index}
-                        // Correction Request color based on Data
-                        style={{ backgroundColor: data.color || "transparent" }}
-                        className={`cursor-pointer text-center hover:bg-gray-100`}
-                        onDoubleClick={(e) => {
-                          // Check if the clicked column is the last one
-                          if (e.target.cellIndex === tableHead.length - 1) {
-                            return; // Do nothing if it's the last column
-                          }
-                          if (layoutType === "sc") {
-                            navigate(
-                              `/home/detail/${entity}/${data.id}/${data.fy}/${data.branchCode}/detail${
-                                entity.charAt(0).toUpperCase() + entity.slice(1)
-                              }`
-                            );
-                          } else if (layoutType === "wot") {
-                            navigate(
-                              `/homeWOT/${data.branchCode}/${data.fy}/detail/${entity}/${data.id}/detail${entity.charAt(0).toUpperCase() + entity.slice(1)}`
-                            );
-                          }
-                        }}
+                tableData.map((data, index) => (
+                  <tr
+                    key={index}
+                    // Correction Request color based on Data
+                    style={{ backgroundColor: data.color || "transparent" }}
+                    className={`cursor-pointer text-center hover:bg-gray-100`}
+                    onDoubleClick={(e) => {
+                      // Check if the clicked column is the last one
+                      if (e.target.cellIndex === tableHead.length - 1) {
+                        return; // Do nothing if it's the last column
+                      }
+                      if (layoutType === "sc") {
+                        navigate(
+                          `/home/detail/${entity}/${data.id}/${data.fy}/${data.branchCode}/detail${
+                            entity.charAt(0).toUpperCase() + entity.slice(1)
+                          }`
+                        );
+                      } else if (layoutType === "wot") {
+                        navigate(
+                          `/homeWOT/${data.branchCode}/${data.fy}/detail/${entity}/${data.id}/detail${entity.charAt(0).toUpperCase() + entity.slice(1)}`
+                        );
+                      }
+                    }}
+                  >
+                    {tableHead.map(({ key, formatter }, colIndex) => (
+                      <td
+                        key={colIndex}
+                        className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${
+                          autoResize
+                            ? "w-auto"
+                            : "max-w-[110px] min-w-[20px] overflow-hidden"
+                        } `}
                       >
-                        {tableHead.map(({ key, formatter }, colIndex) => (
-                          <td
-                            key={colIndex}
-                            className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${
-                              autoResize
-                                ? "w-auto"
-                                : "max-w-[110px] min-w-[20px] overflow-hidden"
-                            } `}
-                          >
-                            {/* Handle the action icon separately */}
-                            {key === "action" ? (
-                              <TooltipWrapper tooltipText="Detail">
-                                <i
-                                  className="fa-solid fa-file-pen cursor-pointer text-lg"
-                                  onClick={(e) => {
-                                    e.stopPropagation(); // Prevents double-click from triggering
-                                    if (layoutType === "sc") {
-                                      navigate(
-                                        `/home/detail/${entity}/${data.id}/${data.fy}/${data.branchCode}/detail${
-                                          entity.charAt(0).toUpperCase() +
-                                          entity.slice(1)
-                                        }`
-                                      );
-                                    } else if (layoutType === "wot") {
-                                      navigate(
-                                        `/homeWOT/${data.branchCode}/${data.fy}/detail/${entity}/${data.id}/detail${
-                                          entity.charAt(0).toUpperCase() +
-                                          entity.slice(1)
-                                        }`
-                                      );
-                                    }
-                                  }}
-                                ></i>
-                              </TooltipWrapper>
-                            ) : formatter ? (
-                              formatter(data[key])
-                            ) : (
-                              (data[key] ?? " ")
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-                    ))
-                  )}
-                </>
+                        {/* Handle the action icon separately */}
+                        {key === "action" ? (
+                          <TooltipWrapper tooltipText="Detail">
+                            <i
+                              className="fa-solid fa-file-pen cursor-pointer text-lg"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevents double-click from triggering
+                                if (layoutType === "sc") {
+                                  navigate(
+                                    `/home/detail/${entity}/${data.id}/${data.fy}/${data.branchCode}/detail${
+                                      entity.charAt(0).toUpperCase() +
+                                      entity.slice(1)
+                                    }`
+                                  );
+                                } else if (layoutType === "wot") {
+                                  navigate(
+                                    `/homeWOT/${data.branchCode}/${data.fy}/detail/${entity}/${data.id}/detail${
+                                      entity.charAt(0).toUpperCase() +
+                                      entity.slice(1)
+                                    }`
+                                  );
+                                }
+                              }}
+                            ></i>
+                          </TooltipWrapper>
+                        ) : formatter ? (
+                          formatter(data[key])
+                        ) : (
+                          (data[key] ?? " ")
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))
               )}
             </tbody>
           </table>

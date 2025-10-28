@@ -1,5 +1,7 @@
-const ErrorMessage = ({ error }) => {
+import { cn } from "@/lib/utils";
+
+const ErrorMessage = ({ error, className }) => {
   if (!error) return null;
-  return <p className="mt-1 text-sm text-red-600">{error}</p>;
+  return <p className={cn("mt-1 text-sm text-red-600", className)}>{error}</p>;
 };
 export default ErrorMessage;

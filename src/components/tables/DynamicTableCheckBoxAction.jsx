@@ -1,7 +1,7 @@
+import { useNavigate } from "react-router-dom";
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
 import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
-import { useNavigate } from "react-router-dom";
 
 const DynamicTableCheckBoxAction = ({
   entity,
@@ -85,16 +85,12 @@ const DynamicTableCheckBoxAction = ({
                 {enhancedTableHead.map(({ label }, index) => (
                   <th
                     key={index}
-                    className={`sticky top-[56px] bg-[var(--secondary-color)] p-2 whitespace-nowrap text-white ${
-                      index === enhancedTableHead.length - 1
-                        ? "border-[var(--secondary-color)]"
-                        : "border-gray-300"
-                    }${
+                    className={`z-0 border-r-[1.5px] border-l-[1.5px] bg-[var(--secondary-color)] p-2 whitespace-nowrap text-white ${
                       index === 0
-                        ? "border-l-[var(--secondary-color)]" // left on first th
+                        ? "border-l-[var(--secondary-color)]" // left border on first th
                         : "border-l-gray-300"
-                    }${
-                      index === tableHead.length - 1
+                    } ${
+                      index === enhancedTableHead.length - 1
                         ? "border-r-[var(--secondary-color)]" // right border on last th
                         : "border-r-gray-300"
                     } `}
@@ -128,7 +124,7 @@ const DynamicTableCheckBoxAction = ({
                   return (
                     <tr
                       key={index}
-                      className={`cursor-pointer bg-white text-center ${isChecked ? "bg-blue-100" : ""}`}
+                      className={`cursor-pointer text-center ${isChecked ? "bg-blue-100" : "hover:bg-gray-100"}`}
                       onDoubleClick={(e) => {
                         // Check if the clicked column is the last one
                         if (

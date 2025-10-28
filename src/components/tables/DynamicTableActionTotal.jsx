@@ -105,7 +105,7 @@ const DynamicTableActionTotal = ({
                       {tableHead.map(({ key, formatter }, colIndex) => (
                         <td
                           key={colIndex}
-                          className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${autoResize ? "w-auto" : "max-w-[110ox] min-w-[20px] overflow-hidden"}`}
+                          className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${autoResize ? "w-auto" : "max-w-[110px] min-w-[20px] overflow-hidden"}`}
                         >
                           {/* Handle the action icon separately */}
                           {key === "action" ? (

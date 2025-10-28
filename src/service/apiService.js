@@ -320,3 +320,62 @@ export const addReponseWithFile = async (entity, formData) => {
   );
   return response;
 };
+
+export const searchDataCorrectionRequest = async (entity, jsonObj, pageNo) => {
+  const response = await axios.get(
+    `api${entity}/searchTable/get/${pageNo}/100/${jsonObj}`
+  );
+  return response;
+};
+
+export const submitCorrection = async (entity, entireFormData) => {
+  const data = new FormData();
+  if (entireFormData.cad !== undefined) {
+    const supportingDocs = entireFormData?.docs;
+    const challanSupportingDoc = entireFormData?.cad?.challanSupportingDoc;
+
+    if (
+      supportingDocs.length === 0 &&
+      (challanSupportingDoc === null || challanSupportingDoc === undefined)
+    ) {
+      return await submitEntity(entity, entireFormData);
+    } else {
+      if (
+        (supportingDocs.length !== 0 && challanSupportingDoc === null) ||
+        challanSupportingDoc === undefined
+      ) {
+        for (let i = 0; i < supportingDocs.length; i++) {
+          data.append("blob", supportingDocs[i].blob);
+        }
+        data.append("dec", JSON.stringify(entireFormData));
+
+        const response = await axios.post(
+          `api${entity}/addCorrection/singleFile`,
+          data
+        );
+        return response;
+      } else if (supportingDocs.length === 0 && challanSupportingDoc !== null) {
+        data.append("blob", challanSupportingDoc);
+        data.append("dec", JSON.stringify(entireFormData));
+
+        const response = await axios.post(
+          `api${entity}/addCorrection/singleFile`,
+          data
+        );
+        return response;
+      } else {
+        for (let i = 0; i < supportingDocs.length; i++) {
+          data.append("blob", supportingDocs[i].blob);
+        }
+        data.append("blob2", challanSupportingDoc);
+        data.append("dec", JSON.stringify(entireFormData));
+
+        const response = await axios.post(
+          `api${entity}/addCorrection/multipleFile`,
+          data
+        );
+        return response;
+      }
+    }
+  }
+};

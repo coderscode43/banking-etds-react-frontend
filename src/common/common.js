@@ -14,6 +14,7 @@ import {
   generateZipFile,
   uploadCertificate,
   downloadFile,
+  searchDataCorrectionRequest,
   submitWithFileRegularReturn,
   generateReport,
   downloadCertificate,
@@ -24,6 +25,7 @@ import {
   downloadDocument,
   addReponseWithFile,
   addResponse,
+  submitCorrection,
 } from "@/service/apiService";
 
 const common = {
@@ -222,6 +224,114 @@ const common = {
 
   getAddResponseWithFile: async (entity, formData) => {
     return await addReponseWithFile(entity, formData);
+  },
+
+  getSearchDataCorrectionRequest: async (entity, pageNo, formData) => {
+    const tan = formData.tanOfCust;
+
+    if (typeof tan === "undefined") {
+      formData.tanOfCust = "";
+    }
+
+    const refinedFormData = {
+      ...formData,
+      quarter: Array.isArray(formData.quarter)
+        ? formData.quarter.join(", ")
+        : formData.quarter || "",
+      typeOfCorrection: Array.isArray(formData.typeOfCorrection)
+        ? formData.typeOfCorrection.join(", ")
+        : formData.typeOfCorrection || "",
+    };
+    const jsonObj = common.getRefinedSearchParams(refinedFormData);
+
+    const toc = refinedFormData.typeOfCorrection;
+
+    let response;
+    const excludedTocs = [
+      "Others",
+      "Exempted",
+      "Add Entry/Challan",
+      "Default Correction",
+    ];
+
+    if (!excludedTocs.includes(toc)) {
+      response = await searchDataCorrectionRequest(entity, jsonObj, pageNo - 1);
+    }
+
+    return response || [];
+  },
+
+  getSubmitCorrection: async (
+    entity,
+    entireFormData,
+    documents,
+    modifiedRows
+  ) => {
+    let valid = true;
+    const toc = entireFormData?.cd?.typeOfCorrection;
+    const remark = entireFormData?.cad?.remark;
+
+    if (typeof modifiedRows !== "undefined") {
+      if (Array.isArray(modifiedRows) && modifiedRows.length === 0) {
+        if (
+          toc.includes("PAN Updation") ||
+          toc.includes("Mismatch In TDS Amount") ||
+          toc.includes("Mismatch In Gross Amount") ||
+          toc.includes("Section Correction")
+        ) {
+          valid = false;
+          throw new Error("Please select a row to add correction");
+        } else if (
+          modifiedRows == "addWithoutData" &&
+          remark != undefined &&
+          remark != ""
+        ) {
+          valid = true;
+        } else {
+          if (
+            toc.includes("Add Entry/Challan") &&
+            entireFormData?.cad?.challanSupportingDoc != undefined
+          ) {
+            valid = true;
+          } else {
+            if (toc.includes("Add Entry/Challan")) {
+              valid = false;
+              throw new Error("Please upload challan supporting document");
+            }
+          }
+        }
+      }
+    } else {
+      if (
+        toc.includes("PAN Updation") ||
+        toc.includes("Mismatch In TDS Amount") ||
+        toc.includes("Mismatch In Gross Amount") ||
+        toc.includes("Section Correction")
+      ) {
+        valid = false;
+        throw new Error("Please select row to add correction");
+      } else {
+        if (
+          toc.includes("Add Entry/Challan") &&
+          entity?.cad?.challanSupportingDoc != undefined
+        ) {
+          valid = true;
+        } else {
+          if (toc.includes("Add Entry/Challan")) {
+            valid = false;
+            throw new Error("Please upload challan supporting document");
+          }
+        }
+      }
+    }
+
+    if (valid === true) {
+      if (modifiedRows !== "addWithoutData") {
+        entireFormData.correctAmount = modifiedRows;
+      }
+      entireFormData.docs = documents;
+      return await submitCorrection(entity, entireFormData);
+    }
   },
 };
 
