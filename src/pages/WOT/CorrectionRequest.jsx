@@ -1,12 +1,13 @@
-import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState, useContext } from "react";
-import staticDataContext from "@/context/staticDataContext";
-import { useNavigate, useParams } from "react-router-dom";
-import DynamicTableAction from "@/components/tables/DynamicTableAction";
-import { TooltipWrapper } from "@/components/component/Tooltip";
-import Pagination from "@/components/component/Pagination";
 import GenerateExcelButton from "@/components/component/GenerateExcelButton";
+import Pagination from "@/components/component/Pagination";
+import SwitchButton from "@/components/component/SwitchButton";
+import { TooltipWrapper } from "@/components/component/Tooltip";
+import DynamicTableAction from "@/components/tables/DynamicTableAction";
+import staticDataContext from "@/context/staticDataContext";
+import clsx from "clsx";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CorrectionRequest = () => {
   const entity = "correctionRequest";
@@ -22,6 +23,7 @@ const CorrectionRequest = () => {
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [autoResize, setAutoResize] = useState(false);
   const [searchParams, setSearchParams] = useState({
     status: "",
     fy: "",
@@ -222,6 +224,10 @@ const CorrectionRequest = () => {
                   <i className="fa-solid fa-plus"></i>
                 </button>
               </TooltipWrapper>
+              <SwitchButton
+                autoResize={autoResize}
+                setAutoResize={setAutoResize}
+              />
             </div>
           </div>
         </div>
@@ -363,6 +369,7 @@ const CorrectionRequest = () => {
         <DynamicTableAction
           entity={entity}
           layoutType="wot"
+          autoResize={autoResize}
           tableHead={tableHead}
           tableData={tableData}
           loading={loading}

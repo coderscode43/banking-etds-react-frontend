@@ -169,6 +169,14 @@ const PanUpdateList = () => {
                   <i className="fa-solid fa-filter"></i>
                 </button>
               </TooltipWrapper>
+              <div>
+                <GenerateExcelButton
+                  entity={entity}
+                  params={params}
+                  searchParams={searchParams}
+                  layoutType={"sc"}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -253,14 +261,6 @@ const PanUpdateList = () => {
                     );
                   })}
               </select>
-            </div>
-            <div>
-              <GenerateExcelButton
-                entity={entity}
-                params={params}
-                searchParams={searchParams}
-                layoutType={"sc"}
-              />
             </div>
           </div>
         </div>

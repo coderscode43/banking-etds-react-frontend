@@ -192,6 +192,14 @@ const Ldc = () => {
                   <i className="fa-solid fa-filter"></i>
                 </button>
               </TooltipWrapper>
+              <div>
+                <GenerateExcelButton
+                  entity={entity}
+                  params={params}
+                  searchParams={searchParams}
+                  layoutType={"sc"}
+                />
+              </div>
               <SwitchButton
                 autoResize={autoResize}
                 setAutoResize={setAutoResize}
@@ -334,14 +342,6 @@ const Ldc = () => {
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
                 }
-              />
-            </div>
-            <div>
-              <GenerateExcelButton
-                entity={entity}
-                params={params}
-                searchParams={searchParams}
-                layoutType={"sc"}
               />
             </div>
           </div>

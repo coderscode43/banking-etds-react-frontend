@@ -1,14 +1,14 @@
-import clsx from "clsx";
 import common from "@/common/common";
-import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
-import staticDataContext from "@/context/staticDataContext";
-import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
 import FilterButtonDropdown from "@/components/component/FilterButtonDropdown";
-import { TooltipWrapper } from "@/components/component/Tooltip";
-import Pagination from "@/components/component/Pagination";
-import { useNavigate } from "react-router-dom";
 import GenerateExcelButton from "@/components/component/GenerateExcelButton";
+import Pagination from "@/components/component/Pagination";
+import SwitchButton from "@/components/component/SwitchButton";
+import { TooltipWrapper } from "@/components/component/Tooltip";
+import DynamicTableActionTotal from "@/components/tables/DynamicTableActionTotal";
+import staticDataContext from "@/context/staticDataContext";
+import clsx from "clsx";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Form26QDeductee = () => {
   const entity = "form26QDeductee";
@@ -20,6 +20,7 @@ const Form26QDeductee = () => {
   const [loading, setLoading] = useState(true);
   const [listData, setListData] = useState([]);
   const [showDivs, setShowDivs] = useState(false);
+  const [autoResize, setAutoResize] = useState(false);
   const [gotoPage, setGotoPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -233,6 +234,10 @@ const Form26QDeductee = () => {
                 checkedItems={checkedItems}
                 setCheckedItems={setCheckedItems}
               />
+              <SwitchButton
+                autoResize={autoResize}
+                setAutoResize={setAutoResize}
+              />
             </div>
           </div>
         </div>
@@ -331,6 +336,7 @@ const Form26QDeductee = () => {
           <DynamicTableActionTotal
             entity={entity}
             layoutType={"wot"}
+            autoResize={autoResize}
             tableHead={combinedTableHead}
             tableData={tableData}
             loading={loading}
