@@ -1,9 +1,21 @@
-import { Eye, EyeOff } from "lucide-react";
+import common from "@/common/common";
+import { useAuth } from "@/context/authContext";
+import staticDataContext from "@/context/staticDataContext";
+import { authenticationStatus, getStaticData } from "@/service/apiService";
+import { CircleCheck, Eye, EyeOff } from "lucide-react";
+import { useContext } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
-const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
+const SignIn = () => {
+  const navigate = useNavigate();
+
+  const { setAuthStatus } = useAuth();
+  const { setStaticData } = useContext(staticDataContext);
+
   const [formData, setFormData] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -16,8 +28,46 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log(formData);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.username || !formData.password) {
+      toast.error("Please fill all fields!");
+      return;
+    }
+
+    try {
+      // POST login
+      await common.getSignIn(formData);
+
+      // Fetch auth status
+      const response = await authenticationStatus();
+      const newAuthStatus = { ...response.data, loading: false };
+      setAuthStatus(newAuthStatus);
+
+      if (newAuthStatus.authenticated) {
+        // Fetch static data
+        const staticDataResponse = await getStaticData();
+        setStaticData(staticDataResponse?.data || {});
+
+        // Use setTimeout to avoid React render conflicts
+        setTimeout(() => {
+          toast.success("Logged in successfully!", {
+            icon: <CircleCheck fill="#00c951" className="text-white" />,
+            closeButton: true,
+          });
+          navigate("/home/homepage", { replace: true });
+        }, 0);
+      }
+    } catch (error) {
+      console.error("Failed to sign in invalid credentials", error);
+      setAuthStatus({
+        ...error?.response?.data,
+        loading: false,
+      });
+
+      toast.error("Invalid Credentials");
+    }
   };
 
   return (
@@ -45,11 +95,11 @@ const Login = () => {
               />
             </div>
             <div className="flex-col items-center justify-center text-center">
-              <p className="font-semibold text-white">Powered By</p>
+              <p className="mb-1 font-semibold text-white">Powered By</p>
               <div>
                 <img
-                  src="/images/TOS-TRANSPARENT.png"
-                  className="h-[50px] object-contain"
+                  src="/images/taxosmart-logo-white.png"
+                  className="h-[55px] object-contain"
                   alt="Tax-O-Smart"
                 />
               </div>
@@ -77,11 +127,13 @@ const Login = () => {
                   id="fy"
                   name="fy"
                   className="mt-1 block w-full cursor-pointer rounded-md border border-[#E2E8F0] bg-white px-3 py-1.5 text-sm text-[#1E293B] outline-none"
-                  value={formData.fy || ""}
-                  onChange={handleChange}
+                  // value={formData.fy || ""}
+                  // onChange={handleChange}
                 >
                   <option value="Select FY">Select FY</option>
                   <option value="2025-26">2025-26</option>
+                  <option value="2025-26">2024-25</option>
+                  <option value="2025-26">2023-24</option>
                 </select>
               </div>
 
@@ -156,4 +208,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;

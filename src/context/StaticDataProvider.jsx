@@ -1,29 +1,25 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import StaticDataContext from "./staticDataContext";
-
-// Set base URL and withCredentials globally
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL ?? "/";
-axios.defaults.withCredentials = true;
+import { getStaticData } from "@/service/apiService";
 
 const StaticDataProvider = ({ children }) => {
   const [staticData, setStaticData] = useState({});
 
   useEffect(() => {
-    const getStaticData = async () => {
+    const fetchStaticData = async () => {
       try {
-        const response = await axios.get("/index/staticData");
-        setStaticData(response.data || {});
+        const response = await getStaticData();
+        setStaticData(response?.data || {});
       } catch (error) {
         console.error("Error fetching static data:", error);
       }
     };
 
-    getStaticData();
+    fetchStaticData();
   }, []);
 
   return (
-    <StaticDataContext.Provider value={staticData}>
+    <StaticDataContext.Provider value={{ ...staticData, setStaticData }}>
       {children}
     </StaticDataContext.Provider>
   );

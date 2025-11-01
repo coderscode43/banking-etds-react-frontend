@@ -16,6 +16,30 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+.form-input {
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #d1d5dc;
+  background-color: #ffffff;
+  padding: 0.5rem 0.75rem;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+
 /* Hide scrollbar for Chrome, Safari and Edge */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;

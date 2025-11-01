@@ -28,7 +28,7 @@ export default function GenerateAIModal({ isOpen, onClose }) {
           leaveFrom="translate-x-0 opacity-100"
           leaveTo="translate-x-full opacity-0"
         >
-          <DialogPanel className="ring-opacity-5 relative flex h-[85vh] w-full max-w-[22rem] flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+          <DialogPanel className="ring-opacity-5 relative flex h-[85vh] w-full max-w-[23.5rem] flex-col overflow-hidden rounded-xl bg-white shadow-xl">
             {/* Close Button */}
             <button
               onClick={onClose}
@@ -39,7 +39,7 @@ export default function GenerateAIModal({ isOpen, onClose }) {
             </button>
 
             {/* Header */}
-            <div className="flex items-center gap-4 rounded-t-2xl bg-gradient-to-r from-blue-500 to-blue-700 px-6 py-4 text-white shadow-sm">
+            <div className="flex items-center gap-4 rounded-t-xl bg-gradient-to-r from-blue-500 to-blue-700 px-6 py-4 text-white shadow-sm">
               <div className="flex-shrink-0 rounded-full bg-white p-2">
                 <img
                   src={"/images/chatbot.png"}

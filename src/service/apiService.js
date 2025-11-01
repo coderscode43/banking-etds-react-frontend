@@ -379,3 +379,22 @@ export const submitCorrection = async (entity, entireFormData) => {
     }
   }
 };
+
+export const authenticationStatus = async () => {
+  const response = await axios.get(`apiAuth/getStatus`);
+  return response;
+};
+
+export const signIn = async (urlEncodedData) => {
+  const response = await axios.post(`/login`, urlEncodedData, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
+  return response;
+};
+
+export const getStaticData = async () => {
+  const response = await axios.get("/index/staticData");
+  return response;
+};

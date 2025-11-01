@@ -50,152 +50,174 @@ import DetailRegularReturnWOT from "./pages/WOTDetail/DetailRegularReturn";
 import AddBranch from "./pages/SCAdd/AddBranch";
 import DetailBranch from "./pages/SCDetail/DetailBranch";
 import AddRegularReturn from "./pages/SCAdd/AddRegularReturn";
-import Login from "./components/auth/Login";
+import SignIn from "./auth/SignIn";
 import AddUserDetails from "./pages/SCAdd/AddUserDetails";
 import AddCorrectionRequest from "./pages/SCAdd/AddCorrectionRequest";
 import AddCorrectionRequestWOT from "./pages/WOTAdd/AddCorrectionRequestWOT";
 import DynamicPageSC from "./common/DynamicPageSC";
 import DynamicPageWOT from "./common/DynamicPageWOT";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import RootRedirect from "./components/auth/RootRedirect";
+import { useAuth } from "./context/authContext";
 
 const App = () => {
+  const { authStatus } = useAuth();
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="/" element={<Navigate to={"home/homepage"} replace />} />
-
-        <Route path="login" element={<Login />} />
+        <Route path="/" element={<RootRedirect />} />
 
         <Route
-          path="home"
-          element={<HomeSClayout />}
-          errorElement={<ErrorPage />}
-        >
-          <Route path="homepage" element={<Homepage />} />
-          <Route
-            path="listSearch/:entity/:params"
-            element={<DynamicPageSC />}
-          />
+          path="sign-in"
+          element={
+            authStatus?.authenticated ? (
+              <Navigate to="/home/homepage" replace />
+            ) : (
+              <SignIn />
+            )
+          }
+        />
 
-          <Route path="list">
-            <Route path="branch" element={<Branch />} />
-            <Route path="form24QDeductee" element={<Form24QDeductee />} />
-            <Route path="form26QDeductee" element={<Form26QDeductee />} />
-            <Route path="form27EQDeductee" element={<Form27EQDeductee />} />
-            <Route path="form27QDeductee" element={<Form27QDeductee />} />
-            <Route path="challan" element={<Challan />} />
-            <Route path="totalAmount" element={<TotalAmount />} />
-            <Route path="panUpdateList" element={<PanUpdateList />} />
-            <Route path="statementStatus" element={<StatementStatus />} />
-            <Route path="deductorDetails" element={<DeductorDetails />} />
-            <Route path="correctionRequest" element={<CorrectionRequest />} />
-            <Route path="regularReturn" element={<RegularReturn />} />
-            <Route path="uploadCertificate" element={<UploadCertificate />} />
-            <Route path="ldc" element={<Ldc />} />
-            <Route path="userDetails" element={<UserDetails />} />
-            <Route path="logs" element={<Logs />} />
+        <Route element={<ProtectedRoute />} errorElement={<ErrorPage />}>
+          <Route
+            path="home"
+            element={<HomeSClayout />}
+            errorElement={<ErrorPage />}
+          >
+            <Route path="homepage" element={<Homepage />} />
+            <Route
+              path="listSearch/:entity/:params"
+              element={<DynamicPageSC />}
+            />
+
+            <Route path="list">
+              <Route path="branch" element={<Branch />} />
+              <Route path="form24QDeductee" element={<Form24QDeductee />} />
+              <Route path="form26QDeductee" element={<Form26QDeductee />} />
+              <Route path="form27EQDeductee" element={<Form27EQDeductee />} />
+              <Route path="form27QDeductee" element={<Form27QDeductee />} />
+              <Route path="challan" element={<Challan />} />
+              <Route path="totalAmount" element={<TotalAmount />} />
+              <Route path="panUpdateList" element={<PanUpdateList />} />
+              <Route path="statementStatus" element={<StatementStatus />} />
+              <Route path="deductorDetails" element={<DeductorDetails />} />
+              <Route path="correctionRequest" element={<CorrectionRequest />} />
+              <Route path="regularReturn" element={<RegularReturn />} />
+              <Route path="uploadCertificate" element={<UploadCertificate />} />
+              <Route path="ldc" element={<Ldc />} />
+              <Route path="userDetails" element={<UserDetails />} />
+              <Route path="logs" element={<Logs />} />
+            </Route>
+
+            <Route path="detail">
+              <Route path=":entity/:id/:fy/:branchCode">
+                <Route
+                  path="detailForm24QDeductee"
+                  element={<DetailForm24QDeductee />}
+                />
+                <Route
+                  path="detailForm26QDeductee"
+                  element={<DetailForm26QDeductee />}
+                />
+                <Route
+                  path="detailForm27EQDeductee"
+                  element={<DetailForm27EQDeductee />}
+                />
+                <Route
+                  path="detailForm27QDeductee"
+                  element={<DetailForm27QDeductee />}
+                />
+                <Route
+                  path="detailCorrectionRequest"
+                  element={<DetailCorrectionRequest />}
+                />
+              </Route>
+
+              <Route path=":entity/:id">
+                <Route path="detailBranch" element={<DetailBranch />} />
+                <Route
+                  path="detailRegularReturn"
+                  element={<DetailRegularReturn />}
+                />
+              </Route>
+            </Route>
+
+            <Route path="add">
+              <Route path="addBranch" element={<AddBranch />} />
+              <Route path="addUserDetails" element={<AddUserDetails />} />
+              <Route path="addRegularReturn" element={<AddRegularReturn />} />
+              <Route
+                path="addCorrectionRequest"
+                element={<AddCorrectionRequest />}
+              />
+            </Route>
           </Route>
 
-          <Route path="detail">
-            <Route path=":entity/:id/:fy/:branchCode">
+          <Route
+            path="homeWOT/:branchCode/:fy"
+            element={<HomeWOTLayout />}
+            errorElement={<ErrorPage />}
+          >
+            <Route path="homepage" element={<Homepage />} />
+            <Route
+              path="downloadCertificate"
+              element={<DownloadCertificate />}
+            />
+            <Route path="generateReport" element={<GenerateReport />} />
+            <Route
+              path="listSearch/:entity/:params"
+              element={<DynamicPageWOT />}
+            />
+
+            <Route path="list">
+              <Route path="form24QDeductee" element={<Form24QDeducteeWOT />} />
+              <Route path="form26QDeductee" element={<Form26QDeducteeWOT />} />
+              <Route
+                path="form27EQDeductee"
+                element={<Form27EQDeducteeWOT />}
+              />
+              <Route path="form27QDeductee" element={<Form27QDeducteeWOT />} />
+              <Route
+                path="correctionRequest"
+                element={<CorrectionRequestWOT />}
+              />
+              <Route path="regularReturn" element={<RegularReturnWOT />} />
+            </Route>
+
+            <Route path="detail/:entity/:id">
               <Route
                 path="detailForm24QDeductee"
-                element={<DetailForm24QDeductee />}
+                element={<DetailForm24QDeducteeWOT />}
               />
               <Route
                 path="detailForm26QDeductee"
-                element={<DetailForm26QDeductee />}
+                element={<DetailForm26QDeducteeWOT />}
               />
               <Route
                 path="detailForm27EQDeductee"
-                element={<DetailForm27EQDeductee />}
+                element={<DetailForm27EQDeducteeWOT />}
               />
               <Route
                 path="detailForm27QDeductee"
-                element={<DetailForm27QDeductee />}
+                element={<DetailForm27QDeducteeWOT />}
+              />
+              <Route
+                path="detailRegularReturn"
+                element={<DetailRegularReturnWOT />}
               />
               <Route
                 path="detailCorrectionRequest"
-                element={<DetailCorrectionRequest />}
+                element={<DetailCorrectionRequestWOT />}
               />
             </Route>
 
-            <Route path=":entity/:id">
-              <Route path="detailBranch" element={<DetailBranch />} />
+            <Route path="add">
               <Route
-                path="detailRegularReturn"
-                element={<DetailRegularReturn />}
+                path="addCorrectionRequest"
+                element={<AddCorrectionRequestWOT />}
               />
             </Route>
-          </Route>
-
-          <Route path="add">
-            <Route path="addBranch" element={<AddBranch />} />
-            <Route path="addUserDetails" element={<AddUserDetails />} />
-            <Route path="addRegularReturn" element={<AddRegularReturn />} />
-            <Route
-              path="addCorrectionRequest"
-              element={<AddCorrectionRequest />}
-            />
-          </Route>
-        </Route>
-
-        <Route
-          path="homeWOT/:branchCode/:fy"
-          element={<HomeWOTLayout />}
-          errorElement={<ErrorPage />}
-        >
-          <Route path="homepage" element={<Homepage />} />
-          <Route path="downloadCertificate" element={<DownloadCertificate />} />
-          <Route path="generateReport" element={<GenerateReport />} />
-          <Route
-            path="listSearch/:entity/:params"
-            element={<DynamicPageWOT />}
-          />
-
-          <Route path="list">
-            <Route path="form24QDeductee" element={<Form24QDeducteeWOT />} />
-            <Route path="form26QDeductee" element={<Form26QDeducteeWOT />} />
-            <Route path="form27EQDeductee" element={<Form27EQDeducteeWOT />} />
-            <Route path="form27QDeductee" element={<Form27QDeducteeWOT />} />
-            <Route
-              path="correctionRequest"
-              element={<CorrectionRequestWOT />}
-            />
-            <Route path="regularReturn" element={<RegularReturnWOT />} />
-          </Route>
-
-          <Route path="detail/:entity/:id">
-            <Route
-              path="detailForm24QDeductee"
-              element={<DetailForm24QDeducteeWOT />}
-            />
-            <Route
-              path="detailForm26QDeductee"
-              element={<DetailForm26QDeducteeWOT />}
-            />
-            <Route
-              path="detailForm27EQDeductee"
-              element={<DetailForm27EQDeducteeWOT />}
-            />
-            <Route
-              path="detailForm27QDeductee"
-              element={<DetailForm27QDeducteeWOT />}
-            />
-            <Route
-              path="detailRegularReturn"
-              element={<DetailRegularReturnWOT />}
-            />
-            <Route
-              path="detailCorrectionRequest"
-              element={<DetailCorrectionRequestWOT />}
-            />
-          </Route>
-
-          <Route path="add">
-            <Route
-              path="addCorrectionRequest"
-              element={<AddCorrectionRequestWOT />}
-            />
           </Route>
         </Route>
 

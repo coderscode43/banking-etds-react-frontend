@@ -26,6 +26,7 @@ import {
   addReponseWithFile,
   addResponse,
   submitCorrection,
+  signIn,
 } from "@/service/apiService";
 
 const common = {
@@ -332,6 +333,22 @@ const common = {
       entireFormData.docs = documents;
       return await submitCorrection(entity, entireFormData);
     }
+  },
+
+  getSignIn: async (formData) => {
+    const refinedFormData = common.getRefinedObject(formData);
+
+    // Convert the refinedFormData object into URL-encoded format
+    const urlEncodedData = new URLSearchParams();
+
+    // Populate the URLSearchParams with the refinedFormData key-value pairs
+    for (let key in refinedFormData) {
+      if (key) {
+        urlEncodedData.append(key, refinedFormData[key]);
+      }
+    }
+
+    return await signIn(urlEncodedData);
   },
 };
 

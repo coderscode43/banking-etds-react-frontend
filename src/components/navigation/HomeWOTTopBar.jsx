@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import DropdownMenu from "../component/DropdownMenu";
 import { useNavigate } from "react-router-dom";
 import { TooltipWrapper } from "../component/Tooltip";
+import TextLoadingSkeleton from "../component/TextLoadingSkeleton";
 
 const HomeWOTTopBar = ({ isSidebarOpen, setSideBarOpen }) => {
   const { fy, branchCode } = useParams();
@@ -40,10 +41,14 @@ const HomeWOTTopBar = ({ isSidebarOpen, setSideBarOpen }) => {
             </div>
           </div>
           <div className="mr-[90px]">
-            <h1 className="text-2xl text-[var(--primary-color)]">
-              Financial Year : <span className="font-bold">{fy}</span>, Branch
-              Code : <span className="font-bold">{branchCode}</span>
-            </h1>
+            {fy && branchCode ? (
+              <h1 className="text-2xl text-[var(--primary-color)]">
+                Financial Year : <span className="font-bold">{fy}</span>, Branch
+                Code : <span className="font-bold">{branchCode}</span>
+              </h1>
+            ) : (
+              <TextLoadingSkeleton width={500} height={32} />
+            )}
           </div>
           <div className="flex items-center justify-center gap-5">
             <div>

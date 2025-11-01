@@ -3,6 +3,7 @@ import DropdownMenu from "../component/DropdownMenu";
 import { TooltipWrapper } from "../component/Tooltip";
 import staticDataContext from "@/context/staticDataContext";
 import { useContext } from "react";
+import TextLoadingSkeleton from "../component/TextLoadingSkeleton";
 
 const HomeSCTopBar = ({ isSidebarOpen, setSideBarOpen }) => {
   const navigate = useNavigate();
@@ -41,9 +42,13 @@ const HomeSCTopBar = ({ isSidebarOpen, setSideBarOpen }) => {
             </div>
           </div>
           <div className="mr-[90px]">
-            <h1 className="text-2xl font-bold text-[var(--primary-color)]">
-              {clientDetails?.ClientName} - {clientDetails?.ClientPAN}
-            </h1>
+            {clientDetails ? (
+              <h1 className="text-2xl font-bold text-[var(--primary-color)]">
+                {clientDetails.ClientName} - {clientDetails.ClientPAN}
+              </h1>
+            ) : (
+              <TextLoadingSkeleton width={480} height={32} />
+            )}
           </div>
           <div className="flex items-center justify-center gap-5">
             <div>
