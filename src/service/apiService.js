@@ -394,6 +394,11 @@ export const signIn = async (urlEncodedData) => {
   return response;
 };
 
+export const signOut = async () => {
+  const response = await axios.get(`/index/logout`);
+  return response;
+};
+
 export const getStaticData = async () => {
   const response = await axios.get("/index/staticData");
   return response;

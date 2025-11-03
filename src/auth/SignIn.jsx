@@ -50,14 +50,11 @@ const SignIn = () => {
         const staticDataResponse = await getStaticData();
         setStaticData(staticDataResponse?.data || {});
 
-        // Use setTimeout to avoid React render conflicts
-        setTimeout(() => {
-          toast.success("Logged in successfully!", {
-            icon: <CircleCheck fill="#00c951" className="text-white" />,
-            closeButton: true,
-          });
-          navigate("/home/homepage", { replace: true });
-        }, 0);
+        toast.success("Logged in successfully!", {
+          icon: <CircleCheck fill="#00c951" className="text-white" />,
+          closeButton: true,
+        });
+        navigate("/home/homepage", { replace: true });
       }
     } catch (error) {
       console.error("Failed to sign in invalid credentials", error);

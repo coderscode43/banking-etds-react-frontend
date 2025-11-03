@@ -1,14 +1,46 @@
 import DynamicModal from "@/components/modals/DynamicModal";
+import { useAuth } from "@/context/authContext";
 import staticDataContext from "@/context/staticDataContext";
+import { signOut } from "@/service/apiService";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { CircleCheck } from "lucide-react";
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const DropdownMenu = () => {
+  const navigate = useNavigate();
+
+  const { setAuthStatus } = useAuth();
   const { userDetails } = useContext(staticDataContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const closeModal = () => setIsModalOpen(false);
+
+  const handleLogout = async () => {
+    try {
+      const response = await signOut();
+
+      const newAuthStatus = { ...response.data, loading: false };
+      setAuthStatus(newAuthStatus);
+
+      if (!newAuthStatus.authenticated) {
+        toast.success("Logged out successfully!", {
+          icon: <CircleCheck fill="#00c951" className="text-white" />,
+          closeButton: true,
+        });
+        navigate("/sign-in", { replace: true });
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      setAuthStatus({
+        ...error.response.data,
+        loading: false,
+      });
+      toast.error("Failed to log out. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -61,6 +93,7 @@ const DropdownMenu = () => {
           description="Do you want to logout !!!"
           isModalOpen={() => setIsModalOpen(true)}
           closeModal={closeModal}
+          handler={handleLogout}
         />
       )}
     </>
