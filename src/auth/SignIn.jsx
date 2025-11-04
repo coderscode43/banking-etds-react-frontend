@@ -6,6 +6,7 @@ import { CircleCheck, Eye, EyeOff } from "lucide-react";
 import { useContext } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 import { toast } from "sonner";
 
 const SignIn = () => {
@@ -16,6 +17,7 @@ const SignIn = () => {
 
   const [formData, setFormData] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -37,12 +39,13 @@ const SignIn = () => {
     }
 
     try {
+      setLoading(true);
       // POST login
       await common.getSignIn(formData);
 
       // Fetch auth status
       const response = await authenticationStatus();
-      const newAuthStatus = { ...response.data, loading: false };
+      const newAuthStatus = { ...response?.data };
       setAuthStatus(newAuthStatus);
 
       if (newAuthStatus.authenticated) {
@@ -58,12 +61,10 @@ const SignIn = () => {
       }
     } catch (error) {
       console.error("Failed to sign in invalid credentials", error);
-      setAuthStatus({
-        ...error?.response?.data,
-        loading: false,
-      });
-
+      setAuthStatus(error?.response?.data);
       toast.error("Invalid Credentials");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -195,7 +196,19 @@ const SignIn = () => {
                 className="w-full cursor-pointer rounded-md bg-[#0A3D91] py-2 font-medium text-white transition-colors hover:bg-[#173F73]"
                 onClick={handleSubmit}
               >
-                Sign In
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <ClipLoader
+                      color={"#29abeb"}
+                      loading={loading}
+                      size={15}
+                      aria-label="Loading Spinner"
+                      data-testid="loader"
+                    />
+                  </div>
+                ) : (
+                  "Sign In"
+                )}
               </button>
             </div>
           </div>

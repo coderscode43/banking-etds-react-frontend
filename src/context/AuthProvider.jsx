@@ -7,18 +7,21 @@ const AuthProvider = ({ children }) => {
   const [authStatus, setAuthStatus] = useState({
     status: "inactive",
     authenticated: false,
-    loading: true,
   });
   const [delayed, setDelayed] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getAuthStatus = async () => {
       try {
+        setLoading(true);
         const response = await authenticationStatus();
-        setAuthStatus({ ...response.data, loading: false });
+        setAuthStatus(response?.data);
       } catch (error) {
         console.error("Error fetching auth status", error);
-        setAuthStatus({ ...error?.response?.data, loading: false });
+        setAuthStatus(error?.response?.data);
+      } finally {
+        setLoading(false);
       }
     };
     getAuthStatus();
@@ -33,8 +36,8 @@ const AuthProvider = ({ children }) => {
   // Step 1: If still delaying, show nothing or loader
   if (delayed) return <Loader loading />;
 
-  if (authStatus.loading) {
-    return <Loader loading={authStatus?.loading} />;
+  if (loading) {
+    return <Loader loading={loading} />;
   }
 
   return (

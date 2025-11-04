@@ -386,7 +386,7 @@ export const authenticationStatus = async () => {
 };
 
 export const signIn = async (urlEncodedData) => {
-  const response = await axios.post(`/login`, urlEncodedData, {
+  const response = await axios.post(`login`, urlEncodedData, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
@@ -395,11 +395,24 @@ export const signIn = async (urlEncodedData) => {
 };
 
 export const signOut = async () => {
-  const response = await axios.get(`/index/logout`);
+  const response = await axios.get(`index/logout`);
+  return response;
+};
+
+// Logout API for SSOAuthServer
+export const logout = async () => {
+  const response = await axios.post("logout");
+  const currentUrl = window.location.href;
+
+  const redirectUrl = `${response.data}?redirect=${encodeURIComponent(
+    currentUrl
+  )}`;
+
+  window.location.href = redirectUrl;
   return response;
 };
 
 export const getStaticData = async () => {
-  const response = await axios.get("/index/staticData");
+  const response = await axios.get("index/staticData");
   return response;
 };

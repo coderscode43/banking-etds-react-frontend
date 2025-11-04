@@ -1,6 +1,12 @@
-import { useContext } from "react";
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    // Safe fallback when provider is not rendered
+    return { setAuthStatus: () => {} };
+  }
+  return context;
+};
