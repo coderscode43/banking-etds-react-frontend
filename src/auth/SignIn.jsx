@@ -2,12 +2,11 @@ import common from "@/common/common";
 import { useAuth } from "@/context/authContext";
 import staticDataContext from "@/context/staticDataContext";
 import { authenticationStatus, getStaticData } from "@/service/apiService";
-import { CircleCheck, Eye, EyeOff } from "lucide-react";
-import { useContext } from "react";
-import { useState } from "react";
+import { errorToast, successToast } from "@/toast/toast";
+import { Eye, EyeOff } from "lucide-react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import { toast } from "sonner";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -34,7 +33,7 @@ const SignIn = () => {
     e.preventDefault();
 
     if (!formData.username || !formData.password) {
-      toast.error("Please fill all fields!");
+      errorToast("Please fill all the fields!");
       return;
     }
 
@@ -52,17 +51,13 @@ const SignIn = () => {
         // Fetch static data
         const staticDataResponse = await getStaticData();
         setStaticData(staticDataResponse?.data || {});
-
-        toast.success("Logged in successfully!", {
-          icon: <CircleCheck fill="#00c951" className="text-white" />,
-          closeButton: true,
-        });
+        successToast("Logged in successfully !!");
         navigate("/home/homepage", { replace: true });
       }
     } catch (error) {
       console.error("Failed to sign in invalid credentials", error);
       setAuthStatus(error?.response?.data);
-      toast.error("Invalid Credentials");
+      errorToast("Invalid Credentials !!");
     } finally {
       setLoading(false);
     }
@@ -201,7 +196,7 @@ const SignIn = () => {
                     <ClipLoader
                       color={"#29abeb"}
                       loading={loading}
-                      size={15}
+                      size={24}
                       aria-label="Loading Spinner"
                       data-testid="loader"
                     />

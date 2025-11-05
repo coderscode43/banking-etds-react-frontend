@@ -2,11 +2,10 @@ import DynamicModal from "@/components/modals/DynamicModal";
 import { useAuth } from "@/context/authContext";
 import staticDataContext from "@/context/staticDataContext";
 import { logout, signOut } from "@/service/apiService";
+import { errorToast, successToast } from "@/toast/toast";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { CircleCheck } from "lucide-react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 // Environment variable for login with SSOAuthServer
 import { loginWithSSO } from "@/config/env";
 
@@ -25,26 +24,32 @@ const DropdownMenu = () => {
       let response;
       if (loginWithSSO) {
         response = await logout();
-        console.log(response);
       } else {
         response = await signOut();
-        const newAuthStatus = { ...response.data };
-        setAuthStatus(newAuthStatus);
 
-        if (!newAuthStatus.authenticated) {
-          toast.success("Logged out successfully!", {
-            icon: <CircleCheck fill="#00c951" className="text-white" />,
-            closeButton: true,
-          });
-          navigate("/sign-in", { replace: true });
+        if (response?.headers["content-type"] === "application/json") {
+          const newAuthStatus = { ...response.data };
+          setAuthStatus(newAuthStatus);
+
+          if (!newAuthStatus?.authenticated) {
+            successToast("Logged out successfully !!");
+            navigate("/sign-in", { replace: true });
+          }
+        } else {
+          throw new Error("Error logging out !!");
         }
       }
     } catch (error) {
       console.error("Logout error:", error);
+      setIsModalOpen(false);
       if (!loginWithSSO) {
-        setAuthStatus(error?.response?.data);
+        if (error && typeof error === "object" && error?.response) {
+          setAuthStatus(error?.response?.data);
+        }
+      } else {
+        setAuthStatus({ status: "active", authenticated: true });
       }
-      toast.error("Failed to log out. Please try again.");
+      errorToast("Failed to log out !!");
     }
   };
 
