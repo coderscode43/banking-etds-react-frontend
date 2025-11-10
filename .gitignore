@@ -25,7 +25,8 @@ dist-ssr
 
 # Environment Variables
 .env
-.env.**
+.env.development
+.env.production
 
 # RollUp Bundle Visualizer
 stats.html
