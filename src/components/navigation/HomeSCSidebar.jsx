@@ -135,7 +135,7 @@ const HomeSCSidebar = ({ sideBarOpen }) => {
                       }}
                       className={({ isActive }) =>
                         [
-                          "flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100",
+                          `flex cursor-pointer items-center rounded-md px-2 py-2 whitespace-nowrap group-hover:justify-between hover:bg-gray-100 ${sideBarOpen ? "justify-between" : "justify-center"} `,
                           // only apply active styling if not logout
                           isActive && id !== "logout"
                             ? "bg-blue-100 font-medium text-blue-500"

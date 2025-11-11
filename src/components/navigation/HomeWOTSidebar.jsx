@@ -93,7 +93,7 @@ const HomeWOTSidebar = ({ sideBarOpen }) => {
                               : `/home/${page}`
                         }
                         className={({ isActive }) =>
-                          `flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100 ${isActive ? "bg-blue-100 font-medium text-blue-500" : ""}`
+                          `flex cursor-pointer items-center justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100 ${isActive ? "bg-blue-100 font-medium text-blue-500" : ""} ${sideBarOpen ? "justify-between" : "justify-center"}`
                         }
                       >
                         <div
