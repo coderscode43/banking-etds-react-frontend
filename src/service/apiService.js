@@ -416,3 +416,10 @@ export const getStaticData = async () => {
   const response = await axios.get("index/staticData");
   return response;
 };
+
+export const downloadCorrectionRequestTemplate = async () => {
+  const response = await axios.get("apicorrectionRequest/downloadTemplate", {
+    responseType: "blob",
+  });
+  return response;
+};

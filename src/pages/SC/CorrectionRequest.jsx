@@ -26,7 +26,7 @@ const CorrectionRequest = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchParams, setSearchParams] = useState({
     status: "",
-    FY: "",
+    fy: "",
     quarter: "",
     ticketNumber: "",
     name: "",
@@ -46,7 +46,7 @@ const CorrectionRequest = () => {
           response = await common.getSearchListData(entity, pageNo, params);
           setSearchParams({
             status: "",
-            FY: "",
+            fy: "",
             quarter: "",
             ticketNumber: "",
             name: "",
@@ -131,12 +131,12 @@ const CorrectionRequest = () => {
                 Financial Year
               </label>
               <select
-                name="FY"
-                id="FY"
+                name="fy"
+                id="fy"
                 className={clsx(
                   "custom-scroll mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
                 )}
-                value={searchParams.FY}
+                value={searchParams.fy}
                 onChange={(e) =>
                   common.handleSearchInputChange(e, setSearchParams)
                 }
@@ -144,10 +144,10 @@ const CorrectionRequest = () => {
                 <option value="">Select Financial Year</option>
                 {financialYear &&
                   financialYear.length > 0 &&
-                  financialYear.map((FY, index) => {
+                  financialYear.map((fy, index) => {
                     return (
-                      <option key={index} value={FY}>
-                        {FY}
+                      <option key={index} value={fy}>
+                        {fy}
                       </option>
                     );
                   })}

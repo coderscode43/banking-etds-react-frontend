@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import AuthProvider from "./context/AuthProvider";
 import StaticDataProvider from "./context/StaticDataProvider";
 import StatusProvider from "./context/StatusProvider";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 // Environment variable for login with SSOAuthServer
 import { loginWithSSO } from "./config/env";
 

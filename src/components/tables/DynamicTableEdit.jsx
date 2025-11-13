@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
 import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
-import { Tooltip } from "../component/Tooltip";
+import { TooltipWrapper } from "../component/Tooltip";
 
 const FINANCIAL_YEAR = import.meta.env.VITE_FINANCIAL_YEAR;
 
@@ -89,7 +89,7 @@ const DynamicTableEdit = ({
                         className="max-w-[110px] min-w-[20] overflow-hidden border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
                       >
                         {key === "branchEdit" ? (
-                          <Tooltip value="Edit">
+                          <TooltipWrapper tooltipText="Edit">
                             <i
                               onClick={() => {
                                 navigate(
@@ -102,7 +102,7 @@ const DynamicTableEdit = ({
                               }}
                               className="fa-solid fa-pen-to-square text-lg"
                             ></i>
-                          </Tooltip>
+                          </TooltipWrapper>
                         ) : formatter ? (
                           formatter(data[key])
                         ) : (
