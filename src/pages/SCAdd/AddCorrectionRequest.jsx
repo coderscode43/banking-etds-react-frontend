@@ -570,11 +570,16 @@ const AddCorrectionRequest = () => {
         cad: refinedChallanFormData,
         deducteeDetails: refinedDeducteeFormData,
       };
-    } else {
+    } else if (challanType === "bulk") {
       entireFormData = {
         cd: refinedFormData,
         file: bulkUploadExcel,
         challanType: "bulk",
+      };
+    } else {
+      entireFormData = {
+        cd: refinedFormData,
+        cad: refinedChallanFormData,
       };
     }
 

@@ -27,6 +27,7 @@ import {
   addResponse,
   submitCorrection,
   signIn,
+  downloadChallanDocument,
 } from "@/service/apiService";
 
 const common = {
@@ -213,6 +214,10 @@ const common = {
 
   getDownloadDocument: async (entity, id) => {
     return await downloadDocument(entity, id);
+  },
+
+  getDownloadChallanDocument: async (entity, id) => {
+    return await downloadChallanDocument(entity, id);
   },
 
   getAddResponse: async (entity, formData, quarter) => {

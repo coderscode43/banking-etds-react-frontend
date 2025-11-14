@@ -137,15 +137,25 @@ const DetailCorrectionRequest = () => {
     {
       label: "Challan Supporting Document",
       key: "challanSupportingDocument",
+      type: "download",
       wideValue: true,
     },
   ];
 
-  const onGridDownload = async () => {
+  const onGridDownload = async (entity) => {
     try {
-      const response = await common.getDownloadDocument(entity, id);
-      showSuccess(response?.data?.succesMsg || "File Downloaded Successfully");
-      zipDownload(response);
+      if (entity === "correctionRequest") {
+        const response = await common.getDownloadDocument(entity, id);
+        showSuccess(
+          response?.data?.succesMsg || "File Downloaded Successfully"
+        );
+        zipDownload(response);
+      } else {
+        const response = await common.getDownloadChallanDocument(entity, id);
+        showSuccess(
+          response?.data?.succesMsg || "File Downloaded Successfully"
+        );
+      }
     } catch (error) {
       showError(errorMessage(error));
     }
@@ -174,7 +184,7 @@ const DetailCorrectionRequest = () => {
           fields={fields}
           data={detailGridData}
           columns={3}
-          onDownload={onGridDownload}
+          onDownload={() => onGridDownload("correctionRequest")}
         />
         <hr className="m-5 bg-gray-400" />
         <DetailGrid fields={fields1} data={detailGridData} columns={3} />
@@ -286,6 +296,7 @@ const DetailCorrectionRequest = () => {
                 fields={challanGrid}
                 data={challanDetails}
                 columns={3}
+                onDownload={() => onGridDownload("addChallan")}
               />
             </TabPanel>
           </TabPanels>

@@ -303,6 +303,14 @@ export const downloadDocument = async (entity, id) => {
   return response;
 };
 
+export const downloadChallanDocument = async (entity, id) => {
+  const response = await axios.get(`api${entity}/downloadDoc/${id}`, {
+    responseType: "blob",
+  });
+  anyFileDownload(response);
+  return response;
+};
+
 export const addResponse = async (entity, refinedFormData) => {
   const response = await axios.post(`api${entity}/addRemark`, refinedFormData);
   return response;

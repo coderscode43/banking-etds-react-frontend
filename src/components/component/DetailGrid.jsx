@@ -90,31 +90,47 @@ export const DetailGrid = ({ fields, data, columns = 1, onDownload }) => {
                         <label>{field.label}</label>
                       </div>
                       <div className={valueCls}>
-                        {field.key === "fileName" &&
-                        field.type === "download" &&
-                        data[field.key] ? (
+                        {(field.key === "fileName" &&
+                          field.type === "download" &&
+                          data[field.key]) ||
+                        (field.key === "challanSupportingDocument" &&
+                          field.type === "download" &&
+                          data[field.key]) ? (
                           <>
-                            : &nbsp;
-                            {displayValue
-                              .split("^")
-                              .map((file) => file.trim())
-                              .filter(Boolean)
-                              .map((file, idx, arr) => (
-                                <span key={idx}>
-                                  {file}
-                                  {idx < arr.length - 1 ? " ,  " : ""}
-                                </span>
-                              ))}
-                            &nbsp;
-                            <div className="rounded-md bg-blue-400 px-2 py-0.5 text-white">
-                              <i
-                                className="fa-solid fa-download cursor-pointer"
-                                onClick={onDownload}
-                              />
-                            </div>
+                            {displayValue ? (
+                              <>
+                                : &nbsp;
+                                {displayValue
+                                  .split("^")
+                                  .map((file) => file.trim())
+                                  .filter(Boolean) // Remove any empty strings
+                                  .map((file, idx, arr) => (
+                                    <span key={idx}>
+                                      {file}
+                                      {idx < arr.length - 1 ? " ,  " : ""}
+                                    </span>
+                                  ))}
+                                &nbsp;
+                                <div className="rounded-md bg-blue-400 px-2 py-0.5 text-white">
+                                  <i
+                                    className="fa-solid fa-download cursor-pointer"
+                                    onClick={onDownload}
+                                  />
+                                </div>
+                              </>
+                            ) : (
+                              // Handle the case where displayValue is null or empty
+                              <span>: &nbsp; No files available</span>
+                            )}
                           </>
                         ) : (
-                          <span>: &nbsp;{displayValue}</span>
+                          <span>
+                            : &nbsp;
+                            {field.key === "fileName" ||
+                            field.key === "challanSupportingDocument"
+                              ? "No file uploaded"
+                              : displayValue || "No data available"}
+                          </span> // Fallback text when no condition is met
                         )}
                       </div>
                     </div>
