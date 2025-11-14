@@ -312,17 +312,28 @@ const common = {
         valid = false;
         throw new Error("Please select row to add correction");
       } else {
-        if (
-          toc.includes("Add Entry/Challan") &&
-          entity?.cad?.challanSupportingDoc != undefined
-        ) {
-          valid = true;
-        } else {
-          if (toc.includes("Add Entry/Challan")) {
+        if (toc.includes("Add Entry/Challan")) {
+          if (
+            entireFormData?.challanType === "bulk" ||
+            entity?.cad?.challanSupportingDoc != undefined
+          ) {
+            valid = true;
+          } else {
             valid = false;
             throw new Error("Please upload challan supporting document");
           }
         }
+        // if (
+        //   toc.includes("Add Entry/Challan") &&
+        //   entity?.cad?.challanSupportingDoc != undefined
+        // ) {
+        //   valid = true;
+        // } else {
+        //   if (toc.includes("Add Entry/Challan")) {
+        //     valid = false;
+        //     throw new Error("Please upload challan supporting document");
+        //   }
+        // }
       }
     }
 
@@ -331,7 +342,8 @@ const common = {
         entireFormData.correctAmount = modifiedRows;
       }
       entireFormData.docs = documents;
-      return await submitCorrection(entity, entireFormData);
+      const refinedEntireFormData = common.getRefinedObject(entireFormData);
+      return await submitCorrection(entity, refinedEntireFormData);
     }
   },
 

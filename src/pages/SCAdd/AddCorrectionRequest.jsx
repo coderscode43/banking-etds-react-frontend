@@ -1,7 +1,6 @@
 import common from "@/common/common";
 import ErrorMessage from "@/components/component/ErrorMessage";
 import Pagination from "@/components/component/Pagination";
-import BulkUploadModal from "@/components/modals/BulkUploadModal";
 import DynamicTableCheckBoxInput from "@/components/tables/DynamicTableCheckBoxInput";
 import staticDataContext from "@/context/staticDataContext";
 import statusContext from "@/context/statusContext";
@@ -36,7 +35,8 @@ const AddCorrectionRequest = () => {
   const [updatedTableData, setUpdatedTableData] = useState([]);
   const [searchListingData, setSearchListingData] = useState([]);
   const [challanType, setChallanType] = useState(null);
-  const [showBulkUploadModal, setShowBulkUploadModal] = useState(false);
+  const [showBulkUploadInput, setShowBulkUploadInput] = useState(false);
+  const [bulkUploadExcel, setBulkUploadExcel] = useState(null);
 
   const categories = [
     { name: "Add Correction Request" },
@@ -186,7 +186,12 @@ const AddCorrectionRequest = () => {
 
           // File type check
           if (
-            !["application/pdf", "image/jpeg", "image/png"].includes(file.type)
+            ![
+              "application/pdf",
+              "application/vnd.ms-excel",
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              "text/plain",
+            ].includes(file.type)
           ) {
             newErrors.challanSupportingDoc =
               "Only PDF, Excel, or TXT files are allowed";
@@ -215,49 +220,51 @@ const AddCorrectionRequest = () => {
     return newErrors;
   };
 
-  const validateDeductee = (data) => {
-    const newErrors = {};
+  // const validateDeductee = (data) => {
+  //   const newErrors = {};
 
-    if (typeOfCorrection.includes("Add Entry/Challan")) {
-      // Helper function to prettify field names
-      const prettyFieldName = (field) => {
-        return field
-          .replace(/([A-Z])/g, " $1") // add space before uppercase letters
-          .replace(/^./, (str) => str.toUpperCase()); // capitalize first letter
-      };
+  //   if (typeOfCorrection.includes("Add Entry/Challan")) {
+  //     if (challanType === "single") {
+  //       // Helper function to prettify field names
+  //       const prettyFieldName = (field) => {
+  //         return field
+  //           .replace(/([A-Z])/g, " $1") // add space before uppercase letters
+  //           .replace(/^./, (str) => str.toUpperCase()); // capitalize first letter
+  //       };
 
-      const requiredFields = [
-        "branchCode",
-        "cif",
-        "amountPaid",
-        "deducteePan",
-        "deducteeName",
-        "dateOfPayment",
-        "amountPaid",
-        "tds",
-      ];
+  //       const requiredFields = [
+  //         "branchCode",
+  //         "cif",
+  //         "amountPaid",
+  //         "pan",
+  //         "name",
+  //         "dateOfPayment",
+  //         "amountPaid",
+  //         "tds",
+  //       ];
 
-      requiredFields.forEach((field) => {
-        const value = data[field];
-        const isEmpty =
-          value === undefined ||
-          value === null ||
-          (typeof value === "string" && value.trim() === "");
+  //       requiredFields.forEach((field) => {
+  //         const value = data[field];
+  //         const isEmpty =
+  //           value === undefined ||
+  //           value === null ||
+  //           (typeof value === "string" && value.trim() === "");
 
-        if (isEmpty) {
-          if (field === "cif") {
-            newErrors[field] = "CIF is required";
-          } else if (field === "tds") {
-            newErrors[field] = `TDS is required`;
-          } else {
-            newErrors[field] = `${prettyFieldName(field)} is required`;
-          }
-        }
-      });
-    }
+  //         if (isEmpty) {
+  //           if (field === "cif") {
+  //             newErrors[field] = "CIF is required";
+  //           } else if (field === "tds") {
+  //             newErrors[field] = `TDS is required`;
+  //           } else {
+  //             newErrors[field] = `${prettyFieldName(field)} is required`;
+  //           }
+  //         }
+  //       });
+  //     }
+  //   }
 
-    return newErrors;
-  };
+  //   return newErrors;
+  // };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -347,15 +354,15 @@ const AddCorrectionRequest = () => {
     }));
 
     // Validate field
-    const fieldError = validateDeductee({
-      ...deducteeFormData,
-      [name]: newValue,
-    })[name];
+    // const fieldError = validateDeductee({
+    //   ...deducteeFormData,
+    //   [name]: newValue,
+    // })[name];
 
-    setErrors((prev) => {
-      const { [name]: _removed, ...rest } = prev;
-      return fieldError ? { ...rest, [name]: fieldError } : rest;
-    });
+    // setErrors((prev) => {
+    //   const { [name]: _removed, ...rest } = prev;
+    //   return fieldError ? { ...rest, [name]: fieldError } : rest;
+    // });
   };
 
   const handleQuarterChange = (e) => {
@@ -519,8 +526,8 @@ const AddCorrectionRequest = () => {
     let validationErrors = {};
 
     // Validate deductee form data
-    const deducteeErrors = validateDeductee(deducteeFormData);
-    validationErrors = { ...validationErrors, ...deducteeErrors };
+    // const deducteeErrors = validateDeductee(deducteeFormData);
+    // validationErrors = { ...validationErrors, ...deducteeErrors };
 
     // Validate challan form data if applicable
     if (challanType === "single") {
@@ -556,11 +563,20 @@ const AddCorrectionRequest = () => {
       selectedRows.includes(index)
     );
 
-    const entireFormData = {
-      cad: refinedChallanFormData,
-      cd: refinedFormData,
-      deducteeDetails: refinedDeducteeFormData,
-    };
+    let entireFormData;
+    if (challanType === "single") {
+      entireFormData = {
+        cd: refinedFormData,
+        cad: refinedChallanFormData,
+        deducteeDetails: refinedDeducteeFormData,
+      };
+    } else {
+      entireFormData = {
+        cd: refinedFormData,
+        file: bulkUploadExcel,
+        challanType: "bulk",
+      };
+    }
 
     if (searchListingData.length === 0) {
       modifiedRows = "addWithoutData";
@@ -568,13 +584,23 @@ const AddCorrectionRequest = () => {
 
     try {
       setLoading(true); // Start loading
-      const response = await common.getSubmitCorrection(
-        entity,
-        entireFormData,
-        documents,
-        modifiedRows
-      );
-      showSuccess(response?.data?.successMsg, "/home/list/correctionRequest");
+      if (challanType === "single") {
+        const response = await common.getSubmitCorrection(
+          entity,
+          entireFormData,
+          documents,
+          modifiedRows
+        );
+        showSuccess(response?.data?.successMsg, "/home/list/correctionRequest");
+      } else {
+        const response = await common.getSubmitCorrection(
+          entity,
+          entireFormData,
+          documents,
+          modifiedRows
+        );
+        showSuccess(response?.data?.successMsg, "/home/list/correctionRequest");
+      }
     } catch (error) {
       showError(`Can not save Correction Request: ${errorMessage(error)}`);
       console.log(error);
@@ -659,7 +685,6 @@ const AddCorrectionRequest = () => {
     } catch (error) {
       console.error(error);
     }
-    console.log("Hello");
   };
 
   // Table Details
@@ -1115,337 +1140,382 @@ const AddCorrectionRequest = () => {
 
                 {typeOfCorrection.includes("Add Entry/Challan") ? (
                   <>
-                    <div className="mb-5 space-y-10">
-                      <h1 className="text-xl font-bold text-[var(--primary-color)]">
-                        Add Deduction Details
-                      </h1>
-
-                      <div className="flex gap-5">
-                        <div className="flex w-full flex-wrap gap-5">
-                          <div className="w-full">
-                            <div className="flex w-full items-center">
-                              <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                Branch Code
-                                <span className="text-red-600">*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="branchCode"
-                                id="branchCode"
-                                value={deducteeFormData.branchCode || ""}
-                                onChange={handleDeducteeInputChange}
-                                placeholder="Branch Code"
-                                className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                              />
-                            </div>
-                            <ErrorMessage
-                              className={"ml-[188px]"}
-                              error={errors.branchCode}
-                            />
-                          </div>
-                          <div className="w-full">
-                            <div className="flex w-full items-center">
-                              <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                CIF<span className="text-red-600">*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="cif"
-                                id="cif"
-                                value={deducteeFormData.cif || ""}
-                                onChange={handleDeducteeInputChange}
-                                placeholder="CIF"
-                                className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                              />
-                            </div>
-                            <ErrorMessage
-                              className={"ml-[188px]"}
-                              error={errors.cif}
-                            />
-                          </div>
-                          <div className="w-full">
-                            <div className="flex w-full items-center">
-                              <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                Deductee PAN
-                                <span className="text-red-600">*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="deducteePan"
-                                id="deducteePan"
-                                value={deducteeFormData.deducteePan || ""}
-                                onChange={handleDeducteeInputChange}
-                                placeholder="Deductee PAN"
-                                className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                              />
-                            </div>
-                            <ErrorMessage
-                              className={"ml-[188px]"}
-                              error={errors.deducteePan}
-                            />
-                          </div>
-                          <div className="w-full">
-                            <div className="flex w-full items-center">
-                              <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                Deductee Name
-                                <span className="text-red-600">*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="deducteeName"
-                                id="deducteeName"
-                                value={deducteeFormData.deducteeName || ""}
-                                onChange={handleDeducteeInputChange}
-                                placeholder="Deductee Name"
-                                className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                              />
-                            </div>
-                            <ErrorMessage
-                              className={"ml-[188px]"}
-                              error={errors.deducteeName}
-                            />
-                          </div>
+                    <div className="flex flex-col">
+                      <div className="flex gap-10">
+                        <div className="space-x-2">
+                          <input
+                            type="checkbox"
+                            name="singleChallan"
+                            id="singleChallan"
+                            checked={challanType === "single"}
+                            onChange={() => {
+                              setChallanType((prev) =>
+                                prev === "single" ? null : "single"
+                              );
+                            }}
+                          />
+                          <label htmlFor="singleChallan">Add Single</label>
                         </div>
-                        <div className="flex w-full flex-wrap gap-5">
-                          <div className="w-full">
-                            <div className="flex w-full items-center">
-                              <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                Date Of Payment
-                                <span className="text-red-600">*</span>
-                              </label>
-                              <input
-                                type="date"
-                                name="dateOfPayment"
-                                id="dateOfPayment"
-                                value={deducteeFormData.dateOfPayment || ""}
-                                onChange={handleDeducteeInputChange}
-                                placeholder="Date Of Payment"
-                                className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                              />
-                            </div>
-                            <ErrorMessage
-                              className={"ml-[188px]"}
-                              error={errors.dateOfPayment}
-                            />
-                          </div>
-                          <div className="w-full">
-                            <div className="flex w-full items-center">
-                              <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                Amount Paid
-                                <span className="text-red-600">*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="amountPaid"
-                                id="amountPaid"
-                                value={deducteeFormData.amountPaid || ""}
-                                onChange={handleDeducteeInputChange}
-                                placeholder="Amount Paid"
-                                className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                              />
-                            </div>
-                            <ErrorMessage
-                              className={"ml-[188px]"}
-                              error={errors.amountPaid}
-                            />
-                          </div>
-                          <div className="w-full">
-                            <div className="flex w-full items-center">
-                              <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                TDS
-                                <span className="text-red-600">*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="tds"
-                                id="tds"
-                                value={deducteeFormData.tds || ""}
-                                onChange={handleDeducteeInputChange}
-                                placeholder="TDS"
-                                className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                              />
-                            </div>
-                            <ErrorMessage
-                              className={"ml-[188px]"}
-                              error={errors.tds}
-                            />
-                          </div>
+
+                        <div className="space-x-2">
+                          <input
+                            type="checkbox"
+                            name="bulkChallan"
+                            id="bulkChallan"
+                            checked={challanType === "bulk"}
+                            onChange={() => {
+                              setChallanType((prev) =>
+                                prev === "bulk" ? null : "bulk"
+                              );
+                            }}
+                          />
+                          <label htmlFor="bulkChallan">Add Bulk</label>
                         </div>
                       </div>
+                      {errors.singleChallan && (
+                        <ErrorMessage error={errors.singleChallan} />
+                      )}
                     </div>
 
-                    <div className="flex gap-10">
-                      <div className="space-x-2">
-                        <input
-                          type="checkbox"
-                          name="singleChallan"
-                          id="singleChallan"
-                          checked={challanType === "single"}
-                          onChange={() => {
-                            setChallanType((prev) =>
-                              prev === "single" ? null : "single"
-                            );
-                          }}
-                        />
-                        <label htmlFor="singleChallan">
-                          Add Single Challan
+                    {challanType === "bulk" && (
+                      <div className="space-x-5">
+                        <button
+                          className="cursor-pointer rounded-md bg-green-700 p-2 px-4 text-white"
+                          onClick={handleDownloadTemplate}
+                        >
+                          <i className="fa-solid fa-file px-2"></i>&nbsp;
+                          Download Template
+                        </button>
+
+                        <button
+                          className="cursor-pointer rounded-md bg-blue-700 p-2 px-4 text-white"
+                          onClick={() =>
+                            setShowBulkUploadInput((prev) => !prev)
+                          }
+                        >
+                          <i className="fa-solid fa-file px-2"></i>&nbsp; Bulk
+                          Upload
+                        </button>
+                      </div>
+                    )}
+
+                    {showBulkUploadInput && challanType === "bulk" && (
+                      <div className="flex flex-col gap-1">
+                        <label className="font-semibold text-[var(--primary-color)]">
+                          Add Document
                         </label>
-                      </div>
-                      <div className="space-x-2">
                         <input
-                          type="checkbox"
-                          name="bulkChallan"
-                          id="bulkChallan"
-                          checked={challanType === "bulk"}
-                          onChange={() => {
-                            setChallanType((prev) =>
-                              prev === "bulk" ? null : "bulk"
-                            );
-                          }}
+                          type="file"
+                          className="mt-1 w-[393px] cursor-pointer rounded-md border border-gray-300 px-3 py-2"
+                          onChange={(e) =>
+                            setBulkUploadExcel(e.target.files[0])
+                          }
                         />
-                        <label htmlFor="bulkChallan">Add Bulk Challan</label>
+                        {/* <ErrorMessage error={errors.form} /> */}
                       </div>
-                    </div>
+                    )}
 
                     {challanType === "single" && (
-                      <div className="my-5 space-y-10">
-                        <h1 className="text-xl font-bold text-[var(--primary-color)]">
-                          Add Challan Details
-                        </h1>
+                      <>
+                        <div className="mb-5 space-y-10">
+                          <h1 className="text-xl font-bold text-[var(--primary-color)]">
+                            Add Deduction Details
+                          </h1>
 
-                        <div className="flex gap-5">
-                          <div className="flex w-full flex-wrap gap-5">
-                            <div className="w-full">
-                              <div className="flex w-full items-center">
-                                <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                  Challan Serial Number
-                                  <span className="text-red-600">*</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  name="challanSrNo"
-                                  id="challanSrNo"
-                                  value={challanFormData.challanSrNo || ""}
-                                  onChange={handleChallanInputChange}
-                                  placeholder="Challan Serial Number"
-                                  className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                                />
+                          <div className="flex gap-5">
+                            <div className="flex w-full flex-wrap gap-5">
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    Branch Code
+                                    {/* <span className="text-red-600">*</span> */}
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="branchCode"
+                                    id="branchCode"
+                                    value={deducteeFormData.branchCode || ""}
+                                    onChange={handleDeducteeInputChange}
+                                    placeholder="Branch Code"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                {/* <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.branchCode}
+                                /> */}
                               </div>
-                              <ErrorMessage
-                                className={"ml-[188px]"}
-                                error={errors.challanSrNo}
-                              />
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    CIF
+                                    {/* <span className="text-red-600">*</span> */}
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="cif"
+                                    id="cif"
+                                    value={deducteeFormData.cif || ""}
+                                    onChange={handleDeducteeInputChange}
+                                    placeholder="CIF"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                {/* <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.cif}
+                                /> */}
+                              </div>
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    Deductee PAN
+                                    {/* <span className="text-red-600">*</span> */}
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="pan"
+                                    id="pan"
+                                    value={deducteeFormData.pan || ""}
+                                    onChange={handleDeducteeInputChange}
+                                    placeholder="Deductee PAN"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                {/* <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.pan}
+                                /> */}
+                              </div>
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    Deductee Name
+                                    {/* <span className="text-red-600">*</span> */}
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    value={deducteeFormData.name || ""}
+                                    onChange={handleDeducteeInputChange}
+                                    placeholder="Deductee Name"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                {/* <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.name}
+                                /> */}
+                              </div>
                             </div>
-                            <div className="w-full">
-                              <div className="flex w-full items-center">
-                                <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                  Section
-                                  <span className="text-red-600">*</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  name="challanSection"
-                                  id="challanSection"
-                                  value={challanFormData.challanSection || ""}
-                                  onChange={handleChallanInputChange}
-                                  placeholder="Section"
-                                  className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                                />
+                            <div className="flex w-full flex-wrap gap-5">
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    Date Of Payment
+                                    {/* <span className="text-red-600">*</span> */}
+                                  </label>
+                                  <input
+                                    type="date"
+                                    name="dateOfPayment"
+                                    id="dateOfPayment"
+                                    value={deducteeFormData.dateOfPayment || ""}
+                                    onChange={handleDeducteeInputChange}
+                                    placeholder="Date Of Payment"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                {/* <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.dateOfPayment}
+                                /> */}
                               </div>
-                              <ErrorMessage
-                                className={"ml-[188px]"}
-                                error={errors.challanSection}
-                              />
-                            </div>
-                            <div className="w-full">
-                              <div className="flex w-full items-center">
-                                <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                  Challan Date
-                                  <span className="text-red-600">*</span>
-                                </label>
-                                <input
-                                  type="date"
-                                  name="challanDate"
-                                  id="challanDate"
-                                  value={challanFormData.challanDate || ""}
-                                  onChange={handleChallanInputChange}
-                                  placeholder="Challan Date"
-                                  className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                                />
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    Amount Paid
+                                    {/* <span className="text-red-600">*</span> */}
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="amountPaid"
+                                    id="amountPaid"
+                                    value={deducteeFormData.amountPaid || ""}
+                                    onChange={handleDeducteeInputChange}
+                                    placeholder="Amount Paid"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                {/* <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.amountPaid}
+                                /> */}
                               </div>
-                              <ErrorMessage
-                                className={"ml-[188px]"}
-                                error={errors.challanDate}
-                              />
-                            </div>
-                          </div>
-                          <div className="flex w-full flex-wrap gap-5">
-                            <div className="w-full">
-                              <div className="flex w-full items-center">
-                                <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                  BSR Code
-                                  <span className="text-red-600">*</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  name="challanBsrCode"
-                                  id="challanBsrCode"
-                                  value={challanFormData.challanBsrCode || ""}
-                                  onChange={handleChallanInputChange}
-                                  placeholder="Challan BSR Code"
-                                  className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                                />
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    TDS
+                                    {/* <span className="text-red-600">*</span> */}
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="tds"
+                                    id="tds"
+                                    value={deducteeFormData.tds || ""}
+                                    onChange={handleDeducteeInputChange}
+                                    placeholder="TDS"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                {/* <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.tds}
+                                /> */}
                               </div>
-                              <ErrorMessage
-                                className={"ml-[188px]"}
-                                error={errors.challanBsrCode}
-                              />
-                            </div>
-                            <div className="w-full">
-                              <div className="flex w-full items-center">
-                                <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                  Challan Amount
-                                  <span className="text-red-600">*</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  name="challanAmount"
-                                  id="challanAmount"
-                                  value={challanFormData.challanAmount || ""}
-                                  onChange={handleChallanInputChange}
-                                  placeholder="Challan Amount"
-                                  className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                                />
-                              </div>
-                              <ErrorMessage
-                                className={"ml-[188px]"}
-                                error={errors.challanAmount}
-                              />
-                            </div>
-                            <div className="w-full">
-                              <div className="flex w-full items-center">
-                                <label className="w-1/3 font-semibold text-[var(--primary-color)]">
-                                  Challan Supporting Documents
-                                  <span className="text-red-600">*</span>
-                                </label>
-                                <input
-                                  type="file"
-                                  accept=".txt, .pdf, .xls, .xlsx"
-                                  name="challanSupportingDoc"
-                                  id="challanSupportingDoc"
-                                  onChange={handleChallanInputChange}
-                                  placeholder="Challan Supporting Document"
-                                  className="w-2/3 cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-                                />
-                              </div>
-                              <ErrorMessage
-                                className={"ml-[188px]"}
-                                error={errors.challanSupportingDoc}
-                              />
                             </div>
                           </div>
                         </div>
-                      </div>
+
+                        <div className="my-5 space-y-10">
+                          <h1 className="text-xl font-bold text-[var(--primary-color)]">
+                            Add Challan Details
+                          </h1>
+
+                          <div className="flex gap-5">
+                            <div className="flex w-full flex-wrap gap-5">
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    Challan Serial Number
+                                    <span className="text-red-600">*</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="challanSrNo"
+                                    id="challanSrNo"
+                                    value={challanFormData.challanSrNo || ""}
+                                    onChange={handleChallanInputChange}
+                                    placeholder="Challan Serial Number"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.challanSrNo}
+                                />
+                              </div>
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    Section
+                                    <span className="text-red-600">*</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="challanSection"
+                                    id="challanSection"
+                                    value={challanFormData.challanSection || ""}
+                                    onChange={handleChallanInputChange}
+                                    placeholder="Section"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.challanSection}
+                                />
+                              </div>
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    Challan Date
+                                    <span className="text-red-600">*</span>
+                                  </label>
+                                  <input
+                                    type="date"
+                                    name="challanDate"
+                                    id="challanDate"
+                                    value={challanFormData.challanDate || ""}
+                                    onChange={handleChallanInputChange}
+                                    placeholder="Challan Date"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.challanDate}
+                                />
+                              </div>
+                            </div>
+                            <div className="flex w-full flex-wrap gap-5">
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    BSR Code
+                                    <span className="text-red-600">*</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="challanBsrCode"
+                                    id="challanBsrCode"
+                                    value={challanFormData.challanBsrCode || ""}
+                                    onChange={handleChallanInputChange}
+                                    placeholder="Challan BSR Code"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.challanBsrCode}
+                                />
+                              </div>
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    Challan Amount
+                                    <span className="text-red-600">*</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="challanAmount"
+                                    id="challanAmount"
+                                    value={challanFormData.challanAmount || ""}
+                                    onChange={handleChallanInputChange}
+                                    placeholder="Challan Amount"
+                                    className="w-2/3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.challanAmount}
+                                />
+                              </div>
+                              <div className="w-full">
+                                <div className="flex w-full items-center">
+                                  <label className="w-1/3 font-semibold text-[var(--primary-color)]">
+                                    Challan Supporting Documents
+                                    <span className="text-red-600">*</span>
+                                  </label>
+                                  <input
+                                    type="file"
+                                    accept=".txt, .pdf, .xls, .xlsx"
+                                    name="challanSupportingDoc"
+                                    id="challanSupportingDoc"
+                                    onChange={handleChallanInputChange}
+                                    placeholder="Challan Supporting Document"
+                                    className="w-2/3 cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
+                                  />
+                                </div>
+                                <ErrorMessage
+                                  className={"ml-[188px]"}
+                                  error={errors.challanSupportingDoc}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
                     )}
                   </>
                 ) : (
@@ -1470,9 +1540,7 @@ const AddCorrectionRequest = () => {
                     <ErrorMessage className={"ml-71"} error={errors.remark} />
                   </div>
 
-                  <div
-                    className={`flex w-full items-center ${challanType === "bulk" ? "justify-between" : "justify-start"}`}
-                  >
+                  <div className={`flex w-full items-center justify-start`}>
                     <label className="w-1/4 font-semibold text-[var(--primary-color)]">
                       Supporting Documents
                     </label>
@@ -1483,31 +1551,11 @@ const AddCorrectionRequest = () => {
                           { id: Date.now(), blob: null },
                         ])
                       }
-                      className={` ${challanType === "bulk" ? "mr-[270px]" : ""} cursor-pointer rounded-md bg-green-700 p-2 px-4 text-white`}
+                      className={`mr-[270px] cursor-pointer rounded-md bg-green-700 p-2 px-4 text-white`}
                     >
                       <i className="fa-solid fa-file px-2"></i>&nbsp; Add
                       Document
                     </button>
-
-                    {challanType === "bulk" && (
-                      <div className="space-x-5">
-                        <button
-                          className="cursor-pointer rounded-md bg-green-700 p-2 px-4 text-white"
-                          onClick={handleDownloadTemplate}
-                        >
-                          <i className="fa-solid fa-file px-2"></i>&nbsp;
-                          Download Template
-                        </button>
-
-                        <button
-                          className="cursor-pointer rounded-md bg-blue-700 p-2 px-4 text-white"
-                          onClick={() => setShowBulkUploadModal(true)}
-                        >
-                          <i className="fa-solid fa-file px-2"></i>&nbsp; Bulk
-                          Upload
-                        </button>
-                      </div>
-                    )}
                   </div>
 
                   {/* Render one file input per document */}
@@ -1576,13 +1624,6 @@ const AddCorrectionRequest = () => {
           </TabPanels>
         </TabGroup>
       </div>
-
-      {showBulkUploadModal && (
-        <BulkUploadModal
-          isOpen={showBulkUploadModal}
-          onClose={() => setShowBulkUploadModal(false)}
-        />
-      )}
     </>
   );
 };

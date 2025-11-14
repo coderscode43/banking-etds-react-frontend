@@ -330,10 +330,11 @@ export const searchDataCorrectionRequest = async (entity, jsonObj, pageNo) => {
 
 export const submitCorrection = async (entity, entireFormData) => {
   const data = new FormData();
-  if (entireFormData.cad !== undefined) {
-    const supportingDocs = entireFormData?.docs;
-    const challanSupportingDoc = entireFormData?.cad?.challanSupportingDoc;
+  const supportingDocs = entireFormData?.docs;
+  const challanSupportingDoc = entireFormData?.cad?.challanSupportingDoc;
+  const bulkUploadExcel = entireFormData?.file;
 
+  if (entireFormData.cad !== undefined) {
     if (
       supportingDocs.length === 0 &&
       (challanSupportingDoc === null || challanSupportingDoc === undefined)
@@ -377,6 +378,21 @@ export const submitCorrection = async (entity, entireFormData) => {
         return response;
       }
     }
+  } else if (entireFormData?.challanType === "bulk") {
+    for (let i = 0; i < supportingDocs.length; i++) {
+      data.append("blob", supportingDocs[i].blob);
+    }
+    data.append("file", bulkUploadExcel);
+    data.append("dec", JSON.stringify(entireFormData));
+
+    const response = await axios.post(`api${entity}/bulkAdd/save`, data);
+    return response;
+  } else {
+    const response = await axios.post(
+      `api${entity}/addCorrection/multipleFile`,
+      data
+    );
+    return response;
   }
 };
 
@@ -421,5 +437,10 @@ export const downloadCorrectionRequestTemplate = async () => {
   const response = await axios.get("apicorrectionRequest/downloadTemplate", {
     responseType: "blob",
   });
+  return response;
+};
+
+export const submitBulkCorrection = async () => {
+  const response = await axios.post("apicorrectionRequest/bulkAdd/save");
   return response;
 };
