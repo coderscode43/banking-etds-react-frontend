@@ -1,5 +1,5 @@
 import React from "react";
-import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
+import TableLoadingSkeleton from "../loader/TableLoadingSkeleton";
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
 
 const DynamicTableDownload = ({

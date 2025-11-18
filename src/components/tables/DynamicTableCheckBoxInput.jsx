@@ -1,5 +1,5 @@
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
-import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
+import TableLoadingSkeleton from "../loader/TableLoadingSkeleton";
 
 const DynamicTableCheckBoxInput = ({
   tableHead,
@@ -50,7 +50,7 @@ const DynamicTableCheckBoxInput = ({
     <div className="relative w-full">
       <div className="w-full overflow-clip rounded-md border border-gray-200">
         <StickyScrollbarWrapper>
-          <div className="custom-scrollbar max-h-[200px] overflow-y-auto">
+          <div className="custom-scrollbar max-h-[300px] overflow-y-auto">
             <table className="w-full text-[14px]">
               <thead
                 className="bg-[var(--secondary-color)]"

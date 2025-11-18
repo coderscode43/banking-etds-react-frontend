@@ -185,9 +185,15 @@ const DetailCorrectionRequest = () => {
           data={detailGridData}
           columns={3}
           onDownload={() => onGridDownload("correctionRequest")}
+          loading={loading}
         />
         <hr className="m-5 bg-gray-400" />
-        <DetailGrid fields={fields1} data={detailGridData} columns={3} />
+        <DetailGrid
+          fields={fields1}
+          data={detailGridData}
+          columns={3}
+          loading={loading}
+        />
         <div className="mb-3 flex justify-end gap-4 py-5">
           <button
             className="cursor-pointer rounded-md bg-red-600 p-2 px-4 font-semibold text-white"

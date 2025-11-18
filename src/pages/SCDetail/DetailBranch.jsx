@@ -10,12 +10,15 @@ const DetailBranch = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
+
   const { rowID } = location.state || {};
 
   const [detailData, setDetailData] = useState({});
 
   useEffect(() => {
     try {
+      setLoading(true);
       const fetchDetailData = async () => {
         const response = await common.getDetailListDataSC(entity, rowID);
         setDetailData(response.data);
@@ -23,6 +26,8 @@ const DetailBranch = () => {
       fetchDetailData();
     } catch (error) {
       console.error("Error fetching detail data:", error);
+    } finally {
+      setLoading(false);
     }
   }, [rowID]);
 
@@ -46,7 +51,12 @@ const DetailBranch = () => {
           RO Details
         </h1>
 
-        <DetailGrid fields={fields} data={data[0]} columns={2} />
+        <DetailGrid
+          fields={fields}
+          data={data[0]}
+          columns={2}
+          loading={loading}
+        />
         <div className="mt-3 flex justify-end gap-4 pr-5">
           <EditBranchDetailsModal data={detailData} entity={entity} />
           <button

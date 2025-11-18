@@ -116,7 +116,7 @@ const HomeSCSidebar = ({ sideBarOpen }) => {
     <>
       <div className="fixed top-14 z-10 h-screen">
         <nav
-          className={`${sideBarOpen ? "w-60" : "w-16"} group transition-width flex h-[91%] w-16 flex-col overflow-hidden rounded-r-md border border-t-2 border-l-0 border-gray-300 bg-white p-2.5 text-gray-500 duration-300 ease-in-out hover:w-60`}
+          className={`${sideBarOpen ? "w-60" : "w-16"} group transition-width flex h-[91%] w-16 flex-col overflow-hidden rounded-r-md border border-t-2 border-l-0  border-gray-300 bg-white p-2.5 text-gray-500 duration-300 ease-in-out hover:w-60`}
           style={{ transitionProperty: "width" }}
         >
           {/* Scrollable nav items */}
@@ -135,7 +135,8 @@ const HomeSCSidebar = ({ sideBarOpen }) => {
                       }}
                       className={({ isActive }) =>
                         [
-                          `flex cursor-pointer items-center rounded-md px-2 py-2 whitespace-nowrap group-hover:justify-between hover:bg-gray-100 ${sideBarOpen ? "justify-between" : "justify-center"} `,
+                          `flex cursor-pointer items-center group-hover:justify-between rounded-md px-2 py-2 whitespace-nowrap hover:bg-gray-100
+                         ${sideBarOpen ? "justify-between" : "justify-center"} `,
                           // only apply active styling if not logout
                           isActive && id !== "logout"
                             ? "bg-blue-100 font-medium text-blue-500"

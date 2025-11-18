@@ -6,6 +6,7 @@ import AuthProvider from "./context/AuthProvider";
 import StaticDataProvider from "./context/StaticDataProvider";
 import StatusProvider from "./context/StatusProvider";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "@fortawesome/fontawesome-free/js/all.min.js";
 // Environment variable for login with SSOAuthServer
 import { loginWithSSO } from "./config/env";
 

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
-import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
+import TableLoadingSkeleton from "../loader/TableLoadingSkeleton";
 import { TooltipWrapper } from "@/components/component/Tooltip";
 
 const DynamicTableCheckBoxAction = ({

@@ -119,7 +119,12 @@ const DetailForm27EQDeductee = () => {
           Details of Form 27EQ Deductee
         </h1>
 
-        <DetailGrid fields={fields} data={detailGridData} columns={2} />
+        <DetailGrid
+          fields={fields}
+          data={detailGridData}
+          columns={2}
+          loading={loading}
+        />
         <div className="mt-5 flex justify-end gap-4 pr-5">
           <UpdateForm27EQDeducteeModal
             data={detailGridData}

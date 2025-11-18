@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
 import { TooltipWrapper } from "../component/Tooltip";
-import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
+import TableLoadingSkeleton from "../loader/TableLoadingSkeleton";
 
 const DynamicTableAction = ({
   entity,

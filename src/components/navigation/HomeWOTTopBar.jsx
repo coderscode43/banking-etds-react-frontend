@@ -2,7 +2,8 @@ import { useParams } from "react-router-dom";
 import DropdownMenu from "../component/DropdownMenu";
 import { useNavigate } from "react-router-dom";
 import { TooltipWrapper } from "../component/Tooltip";
-import TextLoadingSkeleton from "../component/TextLoadingSkeleton";
+import TextLoadingSkeleton from "../loader/TextLoadingSkeleton";
+import { Menu, X } from "lucide-react";
 
 const HomeWOTTopBar = ({ isSidebarOpen, setSideBarOpen }) => {
   const { fy, branchCode } = useParams();
@@ -15,20 +16,24 @@ const HomeWOTTopBar = ({ isSidebarOpen, setSideBarOpen }) => {
           <div className="flex items-center gap-10">
             <button onClick={() => setSideBarOpen((prev) => !prev)}>
               <span className="relative block h-5 w-5">
-                <i
-                  className={`fa-solid fa-bars absolute top-0 left-0 cursor-pointer text-gray-400 transition-all duration-300 ease-in-out ${
+                <Menu
+                  className={`absolute top-0 left-0 cursor-pointer text-gray-400 transition-all duration-300 ease-in-out ${
                     isSidebarOpen
                       ? "scale-75 rotate-90 opacity-0"
                       : "scale-100 rotate-0 opacity-100"
                   }`}
-                ></i>
-                <i
-                  className={`fa-solid fa-xmark absolute top-0 left-0 cursor-pointer text-gray-400 transition-all duration-300 ease-in-out ${
+                  size={19}
+                  strokeWidth={2.5}
+                />
+                <X
+                  className={`absolute top-0 left-0 cursor-pointer text-gray-400 transition-all duration-300 ease-in-out ${
                     isSidebarOpen
                       ? "scale-100 rotate-0 opacity-100"
                       : "scale-75 -rotate-90 opacity-0"
                   }`}
-                ></i>
+                  size={19}
+                  strokeWidth={2.5}
+                />
               </span>
             </button>
             <div>

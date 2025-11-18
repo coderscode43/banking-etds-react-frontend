@@ -3,11 +3,12 @@ import DropdownMenu from "../component/DropdownMenu";
 import { TooltipWrapper } from "../component/Tooltip";
 import staticDataContext from "@/context/staticDataContext";
 import { useContext } from "react";
-import TextLoadingSkeleton from "../component/TextLoadingSkeleton";
+import { Menu, X } from "lucide-react";
+import TextLoadingSkeleton from "../loader/TextLoadingSkeleton";
 
 const HomeSCTopBar = ({ isSidebarOpen, setSideBarOpen }) => {
   const navigate = useNavigate();
-  const { clientDetails } = useContext(staticDataContext);
+  const { clientDetails, loading } = useContext(staticDataContext);
 
   return (
     <div className="sticky top-0 z-10">
@@ -16,20 +17,24 @@ const HomeSCTopBar = ({ isSidebarOpen, setSideBarOpen }) => {
           <div className="flex items-center gap-10">
             <button onClick={() => setSideBarOpen((prev) => !prev)}>
               <span className="relative block h-5 w-5">
-                <i
-                  className={`fa-solid fa-bars absolute top-0 left-0 cursor-pointer text-gray-400 transition-all duration-300 ease-in-out ${
+                <Menu
+                  className={`absolute top-0 left-0 cursor-pointer text-gray-400 transition-all duration-300 ease-in-out ${
                     isSidebarOpen
                       ? "scale-75 rotate-90 opacity-0"
                       : "scale-100 rotate-0 opacity-100"
                   }`}
-                ></i>
-                <i
-                  className={`fa-solid fa-xmark absolute top-0 left-0 cursor-pointer text-gray-400 transition-all duration-300 ease-in-out ${
+                  size={19}
+                  strokeWidth={2.5}
+                />
+                <X
+                  className={`absolute top-0 left-0 cursor-pointer text-gray-400 transition-all duration-300 ease-in-out ${
                     isSidebarOpen
                       ? "scale-100 rotate-0 opacity-100"
                       : "scale-75 -rotate-90 opacity-0"
                   }`}
-                ></i>
+                  size={19}
+                  strokeWidth={2.5}
+                />
               </span>
             </button>
             <div>
@@ -42,12 +47,16 @@ const HomeSCTopBar = ({ isSidebarOpen, setSideBarOpen }) => {
             </div>
           </div>
           <div className="mr-[90px]">
-            {clientDetails ? (
+            {loading ? (
+              <TextLoadingSkeleton width={480} height={32} />
+            ) : clientDetails ? (
               <h1 className="text-2xl font-bold text-[var(--primary-color)]">
-                {clientDetails.ClientName} - {clientDetails.ClientPAN}
+                {clientDetails?.ClientName} - {clientDetails?.ClientPAN}
               </h1>
             ) : (
-              <TextLoadingSkeleton width={480} height={32} />
+              <h1 className="text-2xl font-bold text-[var(--primary-color)]">
+                No Client Details Available
+              </h1>
             )}
           </div>
           <div className="flex items-center justify-center gap-5">

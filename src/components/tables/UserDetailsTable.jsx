@@ -2,7 +2,7 @@ import common from "@/common/common";
 import statusContext from "@/context/statusContext";
 import { errorMessage } from "@/lib/utils";
 import { useContext, useState } from "react";
-import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
+import TableLoadingSkeleton from "../loader/TableLoadingSkeleton";
 import DynamicModal from "../modals/DynamicModal";
 
 const UserDetailsTable = ({

@@ -1,6 +1,13 @@
 import React from "react";
+import TextLoadingSkeleton from "../loader/TextLoadingSkeleton";
 
-export const DetailGrid = ({ fields, data, columns = 1, onDownload }) => {
+export const DetailGrid = ({
+  fields,
+  data,
+  columns = 1,
+  onDownload,
+  loading = false,
+}) => {
   const rows = [];
   let buffer = [];
 
@@ -125,12 +132,18 @@ export const DetailGrid = ({ fields, data, columns = 1, onDownload }) => {
                           </>
                         ) : (
                           <span>
-                            : &nbsp;
-                            {field.key === "fileName" ||
-                            field.key === "challanSupportingDocument"
-                              ? "No file uploaded"
-                              : displayValue || "No data available"}
-                          </span> // Fallback text when no condition is met
+                            {loading ? (
+                              <TextLoadingSkeleton width={120} height={20} />
+                            ) : field.key === "fileName" ||
+                              field.key === "challanSupportingDocument" ? (
+                              "No file uploaded"
+                            ) : displayValue ? (
+                              displayValue
+                            ) : (
+                              <p className="text-gray-400">No data available</p>
+                            )}
+                          </span>
+                          // Fallback text when no condition is met
                         )}
                       </div>
                     </div>

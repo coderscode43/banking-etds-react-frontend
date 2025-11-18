@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
-import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
+import TableLoadingSkeleton from "../loader/TableLoadingSkeleton";
 import { TooltipWrapper } from "../component/Tooltip";
 
 const FINANCIAL_YEAR = import.meta.env.VITE_FINANCIAL_YEAR;

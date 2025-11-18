@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./authContext";
 import { authenticationStatus } from "@/service/apiService";
-import Loader from "@/components/component/Loader";
+import Loader from "@/components/loader/Loader";
 
 const AuthProvider = ({ children }) => {
   const [authStatus, setAuthStatus] = useState({
